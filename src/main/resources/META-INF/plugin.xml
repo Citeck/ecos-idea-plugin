@@ -1,0 +1,40 @@
+<idea-plugin>
+    <id>ru.citeck.ecos-dev-plugin</id>
+    <name>Ecos Idea plugin</name>
+    <vendor email="" url="http://citeck.ru">Citeck</vendor>
+
+    <description>Ecos Idea plugin</description>
+
+    <!-- please see https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html
+         on how to target different products -->
+    <depends>com.intellij.modules.platform</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your extensions here -->
+    </extensions>
+
+    <actions>
+        <group id="ru.citeck.actions.EcosToolbarActionGroup" text="Ecos" popup="true" icon="AllIcons.Actions.Colors">
+            <add-to-group group-id="MainMenu" anchor="last"/>
+
+            <action id="Ecos.ExecuteAlfrescoJsAll" class="ru.citeck.actions.ExecuteJavaScriptCode"
+                    text="Execute Afresco JS"
+                    description="Execute Alfresco JS" icon="AllIcons.Actions.Colors">
+                <keyboard-shortcut keymap="$default" first-keystroke="control alt C" second-keystroke="E"/>
+            </action>
+
+            <action id="Ecos.UploadFileToServer" class="ru.citeck.actions.UploadFileToServer"
+                    text="Upload file to server"
+                    description="Upload file to server" icon="AllIcons.Actions.Uninstall">
+                <keyboard-shortcut keymap="$default" first-keystroke="control alt C" second-keystroke="U"/>
+            </action>
+
+            <action id="Ecos.DownloadFileFromServer" class="ru.citeck.actions.DownloadFileFromServer"
+                    text="Download file from server"
+                    description="Download file from server" icon="AllIcons.Actions.Install">
+                <keyboard-shortcut keymap="$default" first-keystroke="control alt C" second-keystroke="D"/>
+            </action>
+
+        </group>
+    </actions>
+</idea-plugin>
