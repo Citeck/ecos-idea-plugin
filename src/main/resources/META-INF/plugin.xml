@@ -36,5 +36,15 @@
             <add-to-group group-id="EditorContextBarMenu" anchor="last"/>
         </action>
 
+        <group id="ru.citeck.actions.EcosUtf16Converter" text="UTF-16" popup="true" icon="AllIcons.FileTypes.Text">
+            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+            <action id="Ecos.EncodeUtf16" class="ru.citeck.actions.Utf16Encoder" text="Encode UTF-16"
+                    description="Encode to UTF-16" icon="AllIcons.FileTypes.Text">
+            </action>
+            <action id="Ecos.DecodeUtf16" class="ru.citeck.actions.Utf16Decoder" text="Decode UTF-16"
+                    description="Decode from UTF-16" icon="AllIcons.FileTypes.Text">
+            </action>
+        </group>
+
     </actions>
 </idea-plugin>
