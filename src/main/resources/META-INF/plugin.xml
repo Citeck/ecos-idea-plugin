@@ -14,27 +14,27 @@
     </extensions>
 
     <actions>
-        <group id="ru.citeck.actions.EcosToolbarActionGroup" text="Ecos" popup="true" icon="AllIcons.Actions.Colors">
-            <add-to-group group-id="MainMenu" anchor="last"/>
 
-            <action id="Ecos.ExecuteAlfrescoJsAll" class="ru.citeck.actions.ExecuteJavaScriptCode"
-                    text="Execute Afresco JS"
-                    description="Execute Alfresco JS" icon="AllIcons.Actions.Colors">
-                <keyboard-shortcut keymap="$default" first-keystroke="control alt C" second-keystroke="E"/>
-            </action>
+        <action id="Ecos.ExecuteAlfrescoJsAll" class="ru.citeck.actions.ExecuteJavaScriptCode"
+                text="Execute Afresco JS"
+                description="Execute Alfresco JS" icon="AllIcons.Actions.Execute">
+            <keyboard-shortcut keymap="$default" first-keystroke="control alt E" second-keystroke="E"/>
+            <add-to-group group-id="EditorContextBarMenu" anchor="last"/>
+        </action>
 
-            <action id="Ecos.UploadFileToServer" class="ru.citeck.actions.UploadFileToServer"
-                    text="Upload file to server"
-                    description="Upload file to server" icon="AllIcons.Actions.Uninstall">
-                <keyboard-shortcut keymap="$default" first-keystroke="control alt C" second-keystroke="U"/>
-            </action>
+        <action id="Ecos.UploadFileToServer" class="ru.citeck.actions.UploadFileToServer"
+                text="Upload file to server"
+                description="Upload file to server" icon="AllIcons.Actions.Uninstall">
+            <keyboard-shortcut keymap="$default" first-keystroke="control alt E" second-keystroke="U"/>
+            <add-to-group group-id="EditorContextBarMenu" anchor="last"/>
+        </action>
 
-            <action id="Ecos.DownloadFileFromServer" class="ru.citeck.actions.DownloadFileFromServer"
-                    text="Download file from server"
-                    description="Download file from server" icon="AllIcons.Actions.Install">
-                <keyboard-shortcut keymap="$default" first-keystroke="control alt C" second-keystroke="D"/>
-            </action>
+        <action id="Ecos.DownloadFileFromServer" class="ru.citeck.actions.DownloadFileFromServer"
+                text="Download file from server"
+                description="Download file from server" icon="AllIcons.Actions.Install">
+            <keyboard-shortcut keymap="$default" first-keystroke="control alt E" second-keystroke="D"/>
+            <add-to-group group-id="EditorContextBarMenu" anchor="last"/>
+        </action>
 
-        </group>
     </actions>
 </idea-plugin>

@@ -143,7 +143,7 @@ class ExecuteJavaScriptCode : AnAction() {
         e.presentation.isVisible = false
         val vFile = e.getData(PlatformDataKeys.VIRTUAL_FILE) ?: return
         val fileType = vFile.fileType.name
-        e.presentation.isVisible = fileType.equals("JavaScript")
+        e.presentation.isVisible = fileType.equals("JavaScript") || vFile.extension?.toLowerCase().equals("js")
     }
 
 }
