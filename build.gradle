@@ -24,6 +24,8 @@ intellij {
 }
 patchPluginXml {
     changeNotes = ""
+    sinceBuild = '202'
+    untilBuild = '299'
 }
 test {
     useJUnitPlatform()
