@@ -36,15 +36,21 @@
             <add-to-group group-id="EditorContextBarMenu" anchor="last"/>
         </action>
 
-        <group id="ru.citeck.actions.EcosUtf16Converter" text="UTF-16" popup="true" icon="AllIcons.FileTypes.Text">
+        <group id="ru.citeck.actions.EcosEditorPopupMenu" text="ECOS" popup="true" icon="EcosIcons.CiteckLogo">
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
-            <action id="Ecos.EncodeUtf16" class="ru.citeck.actions.Utf16Encoder" text="Encode UTF-16"
-                    description="Encode to UTF-16" icon="AllIcons.FileTypes.Text">
+            <action id="Ecos.EditJsonString" class="ru.citeck.actions.EditJsonStringAsJS" text="Edit attribute as JavaScript"
+                    description="Edit attribute as JavaScript" icon="AllIcons.FileTypes.JavaScript">
             </action>
-            <action id="Ecos.DecodeUtf16" class="ru.citeck.actions.Utf16Decoder" text="Decode UTF-16"
-                    description="Decode from UTF-16" icon="AllIcons.FileTypes.Text">
-            </action>
+            <group id="ru.citeck.actions.EcosUtf16Converter" text="UTF-16" popup="true" icon="AllIcons.FileTypes.Text">
+                <action id="Ecos.EncodeUtf16" class="ru.citeck.actions.Utf16Encoder" text="Encode to UTF-16"
+                        description="Encode to UTF-16" icon="AllIcons.FileTypes.Text">
+                </action>
+                <action id="Ecos.DecodeUtf16" class="ru.citeck.actions.Utf16Decoder" text="Decode from UTF-16"
+                        description="Decode from UTF-16" icon="AllIcons.FileTypes.Text">
+                </action>
+            </group>
         </group>
+
 
     </actions>
 </idea-plugin>
