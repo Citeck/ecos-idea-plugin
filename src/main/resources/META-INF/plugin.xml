@@ -10,7 +10,6 @@
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <!-- Add your extensions here -->
     </extensions>
 
     <actions>
@@ -22,17 +21,15 @@
             <add-to-group group-id="EditorContextBarMenu" anchor="last"/>
         </action>
 
-        <action id="Ecos.UploadFileToServer" class="ru.citeck.actions.UploadFileToServer"
-                text="Upload file to server"
-                description="Upload file to server" icon="AllIcons.Actions.Uninstall">
-            <keyboard-shortcut keymap="$default" first-keystroke="control alt E" second-keystroke="U"/>
+        <action id="Ecos.DeployFile" class="ru.citeck.actions.DeployFile"
+                text="Deploy file" description="Deploy file" icon="AllIcons.Actions.Uninstall">
+            <keyboard-shortcut keymap="$default" first-keystroke="control alt E" second-keystroke="D"/>
             <add-to-group group-id="EditorContextBarMenu" anchor="last"/>
         </action>
 
-        <action id="Ecos.DownloadFileFromServer" class="ru.citeck.actions.DownloadFileFromServer"
-                text="Download file from server"
-                description="Download file from server" icon="AllIcons.Actions.Install">
-            <keyboard-shortcut keymap="$default" first-keystroke="control alt E" second-keystroke="D"/>
+        <action id="Ecos.FetchFile" class="ru.citeck.actions.FetchFile"
+                text="Fetch file" description="Fetch file" icon="AllIcons.Actions.Install">
+            <keyboard-shortcut keymap="$default" first-keystroke="control alt E" second-keystroke="F"/>
             <add-to-group group-id="EditorContextBarMenu" anchor="last"/>
         </action>
 

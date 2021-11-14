@@ -14,7 +14,7 @@ import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowAnchor
 import com.intellij.openapi.wm.ToolWindowManager
 import com.intellij.ui.awt.RelativePoint
-import ru.citeck.RestApiUtils
+import ru.citeck.EcosServer
 import java.awt.MouseInfo
 import java.net.URLEncoder
 import kotlin.collections.HashMap
@@ -23,15 +23,6 @@ class ExecuteJavaScriptCode : AnAction() {
 
     companion object {
         private val consoles = HashMap<ToolWindow, ConsoleView>()
-    }
-
-    private class Request(val script: String) {
-        val runas = "admin"
-        val template = ""
-        val spaceNodeRef = ""
-        val transaction = "readwrite"
-        val urlargs = ""
-        val documentNodeRef = ""
     }
 
     private class Response() {
@@ -65,18 +56,26 @@ class ExecuteJavaScriptCode : AnAction() {
 
 
     override fun actionPerformed(e: AnActionEvent) {
-
         if (!e.presentation.isVisible) return
         val editor = e.getData(CommonDataKeys.EDITOR) ?: return
         val console = getConsole(e)
+        val server = EcosServer.current()
         console.clear()
         console.print("Executing script...", ConsoleViewContentType.LOG_INFO_OUTPUT)
 
         ApplicationManager.getApplication().executeOnPooledThread {
             ApplicationManager.getApplication().runReadAction {
-                val response = RestApiUtils.execute(
-                    "http://localhost/share/proxy/alfresco/de/fme/jsconsole/execute",
-                    Request(editor.document.text),
+                val response = server.execute(
+                    "share/proxy/alfresco/de/fme/jsconsole/execute",
+                    mapOf(
+                        "script" to editor.document.text,
+                        "runas" to "admin",
+                        "template" to "",
+                        "spaceNodeRef" to "",
+                        "transaction" to "readwrite",
+                        "urlargs" to "",
+                        "documentNodeRef" to ""
+                    ),
                     Response::class.java
                 )
                 console.clear()
@@ -87,7 +86,6 @@ class ExecuteJavaScriptCode : AnAction() {
                         "Script executed in ${response.scriptPerf}ms.\r\n",
                         ConsoleViewContentType.LOG_INFO_OUTPUT
                     )
-
                     val pattern =
                         "workspace://SpacesStore/[0-9a-f]{8}\\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\\b[0-9a-f]{12}"
                     val regexSplit = Regex("((?<=${pattern})|(?=${pattern}))")
@@ -115,24 +113,25 @@ class ExecuteJavaScriptCode : AnAction() {
     }
 
     private fun openBrowser(project: Project, nodeRef: String) {
+        val server = EcosServer.current()
         JBPopupFactory.getInstance()
             .createPopupChooserBuilder(
                 listOf(
                     UrlPopupItem(
                         "Node browser",
-                        "http://localhost/share/page/console/admin-console/node-browser#state=panel" + URLEncoder.encode(
+                        "${server.url}/share/page/console/admin-console/node-browser#state=panel" + URLEncoder.encode(
                             "=view&nodeRef=${nodeRef}&search=${nodeRef}&lang=noderef&store=workspace%3A%2F%2FSpacesStore"
                         )
                     ),
-                    UrlPopupItem("Card details", "http://localhost/share/page/card-details?&nodeRef=${nodeRef}"),
+                    UrlPopupItem("Card details", "${server.url}/share/page/card-details?&nodeRef=${nodeRef}"),
                     UrlPopupItem(
                         "Card details (old)",
-                        "http://localhost/share/page/card-details?&forceOld=true&nodeRef=${nodeRef}"
+                        "${server.url}/share/page/card-details?&forceOld=true&nodeRef=${nodeRef}"
                     )
                 )
             )
             .setTitle("Browse node in:")
-            .setItemChosenCallback({ BrowserUtil.browse(it.url, project) })
+            .setItemChosenCallback { BrowserUtil.browse(it.url, project) }
             .setRequestFocus(true).createPopup()
             .show(
                 RelativePoint.fromScreen(MouseInfo.getPointerInfo().location)
