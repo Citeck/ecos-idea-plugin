@@ -14,7 +14,10 @@ class FetchFile : AnAction() {
     )
 
     override fun update(event: AnActionEvent) {
-        event.presentation.isVisible = getFetcher(event) != null
+        event.presentation.isVisible = false
+        val fetcher = getFetcher(event) ?: return
+        event.presentation.isVisible = true
+        event.presentation.icon = fetcher.icon
     }
 
     private fun getFetcher(event: AnActionEvent): FileFetcher? {

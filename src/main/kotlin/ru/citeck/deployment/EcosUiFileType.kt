@@ -6,9 +6,7 @@ import com.intellij.openapi.vfs.VirtualFile
 
 class EcosUiFileType(
     val name: String,
-    val directory: String,
-    val deploy: Boolean = true,
-    val fetch: Boolean = true
+    val directory: String
 ) {
 
     companion object {

@@ -17,8 +17,7 @@ class EcosUiFileDeployer : FileDeployer {
     override fun canDeploy(event: AnActionEvent): Boolean {
         val virtualFile = event.getData(PlatformDataKeys.VIRTUAL_FILE) ?: return false
         if (virtualFile.fileType.name != "JSON") return false
-        val type = EcosUiFileType.get(event)
-        return type != null && type.deploy
+        return EcosUiFileType.get(event) != null
     }
 
     override fun deploy(event: AnActionEvent) {

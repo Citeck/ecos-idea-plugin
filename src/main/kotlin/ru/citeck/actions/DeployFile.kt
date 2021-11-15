@@ -5,15 +5,20 @@ import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.PlatformDataKeys
 import ru.citeck.deployment.EcosUiFileDeployer
 import ru.citeck.deployment.FileDeployer
+import ru.citeck.deployment.TomcatFileDeployer
 
 class DeployFile : AnAction() {
 
     private val deployers = listOf(
-        EcosUiFileDeployer()
+        EcosUiFileDeployer(),
+        TomcatFileDeployer()
     )
 
     override fun update(event: AnActionEvent) {
-        event.presentation.isVisible = getDeployer(event) != null
+        event.presentation.isVisible = false
+        val deployer = getDeployer(event) ?: return
+        event.presentation.isVisible = true
+        event.presentation.icon = deployer.icon
     }
 
     private fun getDeployer(event: AnActionEvent): FileDeployer? {

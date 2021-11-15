@@ -18,8 +18,7 @@ class EcosUiFileFetcher : FileFetcher {
     override fun canFetch(event: AnActionEvent): Boolean {
         val virtualFile = event.getData(PlatformDataKeys.VIRTUAL_FILE) ?: return false
         if (virtualFile.fileType.name != "JSON") return false
-        val type = EcosUiFileType.get(event)
-        return type != null && type.fetch
+        return EcosUiFileType.get(event) != null
     }
 
     override fun fetch(event: AnActionEvent) {
