@@ -81,7 +81,12 @@ class EcosServer(var name: String, var url: String, var userName: String, var pa
         out.flush()
         out.close()
 
-        return objectMapper.readValue(connection.inputStream, clazz)
+        connection.responseCode
+        return if (connection.errorStream != null) {
+            objectMapper.readValue(connection.errorStream, clazz)
+        } else {
+            objectMapper.readValue(connection.inputStream, clazz)
+        }
 
     }
 
