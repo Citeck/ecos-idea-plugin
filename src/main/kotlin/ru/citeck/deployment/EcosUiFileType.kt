@@ -14,7 +14,7 @@ class EcosUiFileType(
         val TYPES = listOf(
             EcosUiFileType("eform", "/ecos-forms"),
             EcosUiFileType("dashboard", "/ui/dashboard"),
-            EcosUiFileType("journal", "ui/journal")
+            EcosUiFileType("journal", "/ui/journal")
         )
 
         fun get(event: AnActionEvent): EcosUiFileType? {
