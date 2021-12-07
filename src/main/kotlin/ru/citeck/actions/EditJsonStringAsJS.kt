@@ -21,6 +21,7 @@ import com.intellij.refactoring.suggested.endOffset
 import com.intellij.refactoring.suggested.startOffset
 import com.intellij.testFramework.LightVirtualFile
 import org.apache.commons.lang.StringEscapeUtils
+import java.awt.Dimension
 import java.util.*
 import javax.swing.*
 
@@ -36,12 +37,14 @@ class EditJsonStringAsJS : AnAction() {
 
         init {
             title = "Edit JavaScript"
+
             val lvf = LightVirtualFile(
                 "${UUID.randomUUID()}.js",
                 FileTypeManager.getInstance().getFileTypeByExtension("js"),
                 text
             )
             fileEditor = TextEditorProvider.getInstance().createEditor(project, lvf)
+            fileEditor.component.minimumSize = Dimension(640, 480)
             init()
         }
 
