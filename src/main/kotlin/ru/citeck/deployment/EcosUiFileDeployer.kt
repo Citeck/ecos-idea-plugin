@@ -8,6 +8,7 @@ import com.intellij.openapi.actionSystem.PlatformDataKeys
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.command.CommandProcessor
 import ru.citeck.EcosServer
+import ru.citeck.utils.EcosNotification
 import java.util.*
 import javax.swing.JOptionPane
 
@@ -21,6 +22,7 @@ class EcosUiFileDeployer : FileDeployer {
     }
 
     override fun deploy(event: AnActionEvent) {
+        val project = event.project ?: return
         val type = EcosUiFileType.get(event) ?: return
         val editor = event.getData(CommonDataKeys.EDITOR) ?: return
         val node = ObjectMapper().readValue(editor.document.text, JsonNode::class.java)
@@ -40,26 +42,35 @@ class EcosUiFileDeployer : FileDeployer {
         ApplicationManager.getApplication().runWriteAction {
             val response = server.execute(
                 "/share/api/records/mutate?k=recs_count_1_",
-                mapOf("records" to listOf(
-                    mapOf(
-                        "id" to "uiserv/${type.name}@",
-                        "attributes" to mapOf(
-                            ".att(n:\"_content\"){as(n:\"content-data\"){json}}" to listOf(
-                                mapOf(
-                                    "storage" to "base64",
-                                    "name" to "${id}.json",
-                                    "url" to "data:application/json;base64,${
-                                        Base64.getEncoder().encodeToString(editor.document.text.toByteArray(Charsets.UTF_8))
-                                    }",
-                                    "type" to "application/json",
-                                    "originalName" to "${id}.json"
+                mapOf(
+                    "records" to listOf(
+                        mapOf(
+                            "id" to "uiserv/${type.name}@",
+                            "attributes" to mapOf(
+                                ".att(n:\"_content\"){as(n:\"content-data\"){json}}" to listOf(
+                                    mapOf(
+                                        "storage" to "base64",
+                                        "name" to "${id}.json",
+                                        "url" to "data:application/json;base64,${
+                                            Base64.getEncoder()
+                                                .encodeToString(editor.document.text.toByteArray(Charsets.UTF_8))
+                                        }",
+                                        "type" to "application/json",
+                                        "originalName" to "${id}.json"
+                                    )
                                 )
                             )
                         )
                     )
-                ))
+                )
             )
-            println(response)
+
+            EcosNotification.Information(
+                "File deployed",
+                "File ${type.name}/${id} deployed to \"${server.url}\"",
+                project
+            )
+
         }
     }
 

@@ -4,15 +4,16 @@ import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.dataformat.xml.XmlMapper
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.PlatformDataKeys
-import com.intellij.openapi.fileEditor.FileDocumentManager
 import com.intellij.openapi.module.ModuleManager
 import com.intellij.openapi.project.guessProjectDir
 import com.intellij.openapi.roots.ModuleRootManager
 import icons.EcosIcons
 import org.jetbrains.jps.model.java.JavaModuleSourceRootTypes
+import ru.citeck.utils.EcosNotification
 import java.io.File
 import java.io.FileWriter
 import javax.swing.Icon
+import javax.swing.JOptionPane
 
 class TomcatFileDeployer : FileDeployer {
 
@@ -58,12 +59,26 @@ class TomcatFileDeployer : FileDeployer {
 
 
     override fun deploy(event: AnActionEvent) {
+        val project = event.project ?: return
         val vFile = event.getData(PlatformDataKeys.VIRTUAL_FILE) ?: return
         val document = event.getData(PlatformDataKeys.EDITOR)?.document ?: return
         val path = getTomcatPath(event) + getRelativePath(event)
-        val fileWriter = FileWriter(path)
+
+        if (JOptionPane.showConfirmDialog(
+                null,
+                "Deploy file \"${vFile.name}\" to local Tomcat server?",
+                "Deploy file",
+                JOptionPane.YES_NO_OPTION
+            ) != JOptionPane.YES_OPTION
+        ) {
+            return
+        }
+
+        val fileWriter = FileWriter(path, Charsets.UTF_8)
         fileWriter.write(document.text)
         fileWriter.close()
+
+        EcosNotification.Information("File deployed", "File \"${vFile.name}\" deployed to \"${path}\"", project)
     }
 
 

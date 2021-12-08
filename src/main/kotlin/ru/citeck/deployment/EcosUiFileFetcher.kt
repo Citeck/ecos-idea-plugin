@@ -8,6 +8,7 @@ import com.intellij.openapi.actionSystem.PlatformDataKeys
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.command.CommandProcessor
 import ru.citeck.EcosServer
+import ru.citeck.utils.EcosNotification
 import ru.citeck.utils.EcosPrettyPrinter
 import javax.swing.JOptionPane
 
@@ -22,6 +23,7 @@ class EcosUiFileFetcher : FileFetcher {
     }
 
     override fun fetch(event: AnActionEvent) {
+        val project = event.project ?: return
         val type = EcosUiFileType.get(event) ?: return
         val editor = event.getData(CommonDataKeys.EDITOR) ?: return
         val node = ObjectMapper().readValue(editor.document.text, JsonNode::class.java)
@@ -50,6 +52,13 @@ class EcosUiFileFetcher : FileFetcher {
             CommandProcessor.getInstance().runUndoTransparentAction {
                 editor.document.setText(text)
             }
+
+            EcosNotification.Information(
+                "File fetched",
+                "File ${type.name}/${id} fetched from \"${server.url}\"",
+                project
+            )
+
         }
 
     }
