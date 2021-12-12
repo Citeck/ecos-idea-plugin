@@ -1,0 +1,21 @@
+{
+  "name": "ECOS Chrome extension",
+  "description": "ECOS Chrome extension",
+  "version": "1.0",
+  "manifest_version": 3,
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": [
+    "contextMenus",
+    "clipboardWrite",
+    "scripting"
+  ],
+  "host_permissions": [
+    "http://*/",
+    "https://*/"
+  ],
+  "icons": {
+    "16": "citeck_16x16.png"
+  }
+}
