@@ -9,7 +9,8 @@
   "permissions": [
     "contextMenus",
     "clipboardWrite",
-    "scripting"
+    "scripting",
+    "storage"
   ],
   "host_permissions": [
     "http://*/",
@@ -17,5 +18,9 @@
   ],
   "icons": {
     "16": "citeck_16x16.png"
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": false
   }
 }

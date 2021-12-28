@@ -102,3 +102,55 @@ chrome.contextMenus.onClicked.addListener(onEcosCopyNodeRef);
 chrome.contextMenus.onClicked.addListener(onEcosOpenInNodeBorwser);
 chrome.contextMenus.onClicked.addListener(onEcosOpenCard);
 chrome.contextMenus.onClicked.addListener(onEcosOpenCardOld);
+
+
+chrome.tabs.onUpdated.addListener( function (tabId, changeInfo, tab) {
+
+    if (changeInfo.status == 'complete') {
+        if (!tab.url) {
+            return;
+        }
+
+        chrome.storage.local.get({
+            testServers: "",
+            productiveServers: ""
+        }, function (items) {
+
+            var testServers = items.testServers.split("\n");
+            var productiveServers = items.productiveServers.split("\n");
+
+            var color = null;
+            for (i in testServers) {
+                if (tab.url.startsWith(testServers[i])) {
+                    color = "#ffc107";
+                    break;
+                }
+            }
+            for (i in productiveServers) {
+                if (tab.url.startsWith(productiveServers[i])) {
+                    color = "#ec4f1d";
+                    break;
+                }
+            }
+            if (color == null) {
+                return ;
+            }
+
+            chrome.scripting.executeScript({
+                target: {tabId: tab.id},
+                function: function (color) {
+                    var checkExist = setInterval(function() {
+                        var headers = document.getElementsByClassName("ecos-header");
+                        if (headers.length > 0) {
+                            headers[0].setAttribute("style", "background-color: " + color + " !important");
+                            clearInterval(checkExist);
+                        }
+                    }, 1000);
+                },
+                args: [color]
+            })
+
+        });
+
+    }
+})
