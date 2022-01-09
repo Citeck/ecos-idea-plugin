@@ -20,12 +20,13 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.6.0'
-    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.13.0'
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.13.1'
 }
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
     version = '2020.2.4'
+    plugins = ['com.intellij.java']
 }
 patchPluginXml {
     changeNotes = ""
@@ -34,4 +35,9 @@ patchPluginXml {
 }
 test {
     useJUnitPlatform()
+}
+tasks{
+    runIde {
+        jvmArgs("-Xmx2G")
+    }
 }

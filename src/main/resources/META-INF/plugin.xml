@@ -8,9 +8,14 @@
     <!-- please see https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html
          on how to target different products -->
     <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.java</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <liveTemplateMacro implementation="ru.citeck.livetemplate.functions.EcosEnum"/>
+        <postStartupActivity implementation="ru.citeck.metadata.EcosPluginPostStartupActivity"/>
+        <completion.contributor language="JAVA"
+                                implementationClass="ru.citeck.completetion.java.JavaCompletionContributor"/>
+        <projectService serviceImplementation="ru.citeck.metadata.providers.ModelsProvider"/>
+        <projectService serviceImplementation="ru.citeck.metadata.providers.QNamesProvider"/>
     </extensions>
 
     <actions>
@@ -24,7 +29,8 @@
 
         <group id="Ecos.MainMenu" text="Ecos" popup="true" icon="EcosIcons.CiteckLogo">
             <add-to-group group-id="MainMenu" anchor="last"/>
-            <action id="Ecos.ExecuteAlfrescoJsFromScratchFile" class="ru.citeck.actions.ExecuteAlfrescoJsFromScratchFile"
+            <action id="Ecos.ExecuteAlfrescoJsFromScratchFile"
+                    class="ru.citeck.actions.ExecuteAlfrescoJsFromScratchFile"
                     text="Execute Afresco JS from scratch file"
                     description="Execute Alfresco JS from scratch file" icon="AllIcons.FileTypes.JavaScript">
                 <keyboard-shortcut keymap="$default" first-keystroke="control alt E" second-keystroke="J"/>
@@ -45,7 +51,8 @@
 
         <group id="ru.citeck.actions.EcosEditorPopupMenu" text="Ecos" popup="true" icon="EcosIcons.CiteckLogo">
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
-            <action id="Ecos.EditJsonString" class="ru.citeck.actions.EditJsonStringAsJS" text="Edit attribute as JavaScript"
+            <action id="Ecos.EditJsonString" class="ru.citeck.actions.EditJsonStringAsJS"
+                    text="Edit attribute as JavaScript"
                     description="Edit attribute as JavaScript" icon="AllIcons.FileTypes.JavaScript">
             </action>
         </group>
