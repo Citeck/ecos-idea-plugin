@@ -28,6 +28,7 @@ class QNamesProvider(project: Project) : MetadataProvider<List<QName>>(project) 
             ?: return listOf()
 
         val qnames = mutableListOf<QName>()
+
         ApplicationManager.getApplication().runReadAction {
             ReferencesSearch.search(qNamePsiClass, GlobalSearchScope.allScope(project))
                 .filter { it is PsiJavaCodeReferenceElement && it.parentOfType<PsiField>() != null }
@@ -46,14 +47,14 @@ class QNamesProvider(project: Project) : MetadataProvider<List<QName>>(project) 
                     val argExpressions = methodExpr.argumentList.expressions
                     if (argExpressions.size != 2) return@forEach
 
-                    val uri = resolveValue(argExpressions[0]) ?: return@forEach
                     val localName = resolveValue(argExpressions[1]) ?: return@forEach
+                    if (localName == "") return@forEach
+                    val uri = resolveValue(argExpressions[0]) ?: return@forEach
                     val prefix = namespaces[uri] ?: return@forEach
 
-                    val pkg = field.parentOfType<PsiJavaFile>()!!.packageName
                     val fieldName = field.name
                     val className = field.parentOfType<PsiClass>()?.name ?: return@forEach
-                    qnames.add(QName(localName as String, prefix, fieldName, className))
+                    qnames.add(QName(localName.toString(), prefix, fieldName, className))
 
                 }
 

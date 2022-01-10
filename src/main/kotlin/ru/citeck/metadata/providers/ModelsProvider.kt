@@ -27,7 +27,7 @@ class ModelsProvider(project: Project) : MetadataProvider<List<Model>>(project) 
                 GlobalSearchScope.projectScope(project).uniteWith(ProjectScope.getLibrariesScope(project))
             )
                 .filter {
-                    it.parent.path.endsWith("/model") && (it.url.startsWith("jar://") && it.path.contains("-sources.jar!") || it.url.startsWith("file://"))
+                    it.parent.path.endsWith("/alf_data_dev/solr/alfrescoModels")
                 }
                 .forEach { vFile ->
                     val psiFile = PsiManager.getInstance(project).findFile(vFile) as XmlFile

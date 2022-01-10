@@ -1,12 +1,11 @@
 package ru.citeck.completetion.java
 
-import com.intellij.codeInsight.completion.CompletionParameters
-import com.intellij.codeInsight.completion.CompletionProvider
-import com.intellij.codeInsight.completion.CompletionResultSet
-import com.intellij.codeInsight.completion.JavaCompletionUtil
+import com.intellij.codeInsight.completion.*
+import com.intellij.codeInsight.lookup.LookupElement
 import com.intellij.codeInsight.lookup.LookupElementBuilder
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.command.CommandProcessor
+import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.popup.JBPopupFactory
 import com.intellij.openapi.wm.WindowManager
 import com.intellij.ui.awt.RelativePoint
@@ -31,31 +30,53 @@ class QNamesCompletionProvider : CompletionProvider<CompletionParameters?>() {
         val qnames = project.getService(QNamesProvider::class.java).getData() ?: return
 
 
-        val lookup = LookupElementBuilder.create("qname").withIcon(EcosIcons.CiteckLogo)
-            .withInsertHandler { ctx, item ->
-                JBPopupFactory.getInstance()
-                    .createPopupChooserBuilder(qnames)
-                    .setTitle("Select QName:")
-
-                    .setItemChosenCallback {
-                        ApplicationManager.getApplication().runWriteAction {
-                            CommandProcessor.getInstance().runUndoTransparentAction {
-                                ctx.document.replaceString(
-                                    ctx.startOffset,
-                                    ctx.tailOffset,
-                                    "${it.javaClass}.${it.javaField}"
-                                )
-                            }
-                        }
-                    }
-                    .setNamerForFiltering { it.toString() }
-                    .setRequestFocus(true).createPopup()
-                    .show(
-                        RelativePoint.getCenterOf(WindowManager.getInstance().getFrame(project)!!.rootPane)
-                    )
+        val lookupProperty = LookupElementBuilder.create("").withPresentableText("QName property").withIcon(EcosIcons.CiteckLogo)
+            .withInsertHandler { context, item ->
+                qNameInsertHandler(
+                    project,
+                    qnames.filter { it.jField.startsWith("PROP_") }.toList(),
+                    context,
+                    item
+                )
             }
-        resultSet.addElement(lookup)
+
+        val lookupAssoc = LookupElementBuilder.create("").withPresentableText("QName association").withIcon(EcosIcons.CiteckLogo)
+            .withInsertHandler { context, item ->
+                qNameInsertHandler(
+                    project,
+                    qnames.filter { it.jField.startsWith("ASSOC_") }.toList(),
+                    context,
+                    item
+                )
+            }
+
+        resultSet.addElement(lookupProperty)
+        resultSet.addElement(lookupAssoc)
 
     }
+
+    private fun qNameInsertHandler(project: Project, qnames: List<QName>, ctx: InsertionContext, item: LookupElement) {
+        JBPopupFactory.getInstance()
+            .createPopupChooserBuilder(qnames)
+            .setTitle("Select QName:")
+            .setRenderer(QNameListCellRenderer())
+            .setItemChosenCallback {
+                ApplicationManager.getApplication().runWriteAction {
+                    CommandProcessor.getInstance().runUndoTransparentAction {
+                        ctx.document.replaceString(
+                            ctx.startOffset,
+                            ctx.tailOffset,
+                            "${it.jClass}.${it.jField}"
+                        )
+                    }
+                }
+            }
+            .setNamerForFiltering { it.toString() }
+            .setRequestFocus(true).createPopup()
+            .show(
+                RelativePoint.getCenterOf(WindowManager.getInstance().getFrame(project)!!.rootPane)
+            )
+    }
+
 
 }
