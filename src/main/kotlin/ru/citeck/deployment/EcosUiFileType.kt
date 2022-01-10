@@ -15,7 +15,8 @@ class EcosUiFileType(
             EcosUiFileType("eform", "/ecos-forms"),
             EcosUiFileType("dashboard", "/ui/dashboard"),
             EcosUiFileType("journal", "/ui/journal"),
-            EcosUiFileType("action", "/ui/action")
+            EcosUiFileType("action", "/ui/action"),
+            EcosUiFileType("menu", "/ui/menu")
         )
 
         fun get(event: AnActionEvent): EcosUiFileType? {
