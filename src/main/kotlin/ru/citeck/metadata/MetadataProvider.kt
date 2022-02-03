@@ -2,9 +2,12 @@ package ru.citeck.metadata
 
 import com.intellij.openapi.project.Project
 
-abstract class MetadataProvider<T>(val project: Project) {
+abstract class MetadataProvider<T>(val project: Project, val initOrder: Int = 0) {
 
-    private var data: T? = null
+    var data: T? = null
+        private set(value) {
+            field = value
+        }
 
     private val initialized: Boolean
         get() {
@@ -13,17 +16,9 @@ abstract class MetadataProvider<T>(val project: Project) {
 
     protected abstract fun loadData(): T?
 
-    fun getData(): T? {
-        return data
-    }
 
     fun initialize() {
-        if (initialized) return
         data = loadData()
-    }
-
-    fun reset() {
-        data = null
     }
 
 }

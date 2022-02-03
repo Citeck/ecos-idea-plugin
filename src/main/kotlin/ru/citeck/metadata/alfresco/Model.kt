@@ -9,5 +9,6 @@ class Model(
     @JsonProperty("published") val published: String?,
     @JsonProperty("version") val version: String?,
     @JsonProperty("imports") val imports: List<Import>?,
-    @JsonProperty("namespaces") val namespaces: List<Namespace>?
+    @JsonProperty("namespaces") val namespaces: List<Namespace>?,
+    @JsonProperty("types") val types: List<Type>?
 )

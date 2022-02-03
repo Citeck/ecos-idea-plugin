@@ -18,37 +18,39 @@ import ru.citeck.metadata.providers.QNamesProvider
 class QNamesCompletionProvider : CompletionProvider<CompletionParameters?>() {
 
     override fun addCompletions(
-        parameters: @NotNull CompletionParameters,
-        context: @NotNull ProcessingContext,
-        resultSet: @NotNull CompletionResultSet
+        parameters: CompletionParameters,
+        context: ProcessingContext,
+        resultSet: CompletionResultSet
     ) {
         if (JavaCompletionUtil.getExpectedTypes(parameters)?.any { it.canonicalText == QName.CLASS } != true) {
             return
         }
         val project = parameters.editor.project ?: return
 
-        val qnames = project.getService(QNamesProvider::class.java).getData() ?: return
+        val qnames = project.getService(QNamesProvider::class.java).data ?: return
 
 
-        val lookupProperty = LookupElementBuilder.create("").withPresentableText("QName property").withIcon(EcosIcons.CiteckLogo)
-            .withInsertHandler { context, item ->
-                qNameInsertHandler(
-                    project,
-                    qnames.filter { it.jField.startsWith("PROP_") }.toList(),
-                    context,
-                    item
-                )
-            }
+        val lookupProperty =
+            LookupElementBuilder.create("").withPresentableText("QName property").withIcon(EcosIcons.CiteckLogo)
+                .withInsertHandler { context, item ->
+                    qNameInsertHandler(
+                        project,
+                        qnames.filter { it.jField.startsWith("PROP_") }.toList(),
+                        context,
+                        item
+                    )
+                }
 
-        val lookupAssoc = LookupElementBuilder.create("").withPresentableText("QName association").withIcon(EcosIcons.CiteckLogo)
-            .withInsertHandler { context, item ->
-                qNameInsertHandler(
-                    project,
-                    qnames.filter { it.jField.startsWith("ASSOC_") }.toList(),
-                    context,
-                    item
-                )
-            }
+        val lookupAssoc =
+            LookupElementBuilder.create("").withPresentableText("QName association").withIcon(EcosIcons.CiteckLogo)
+                .withInsertHandler { context, item ->
+                    qNameInsertHandler(
+                        project,
+                        qnames.filter { it.jField.startsWith("ASSOC_") }.toList(),
+                        context,
+                        item
+                    )
+                }
 
         resultSet.addElement(lookupProperty)
         resultSet.addElement(lookupAssoc)

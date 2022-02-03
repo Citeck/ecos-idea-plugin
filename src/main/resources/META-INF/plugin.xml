@@ -17,6 +17,7 @@
         <projectService serviceImplementation="ru.citeck.metadata.providers.ModelsProvider"/>
         <projectService serviceImplementation="ru.citeck.metadata.providers.QNamesProvider"/>
         <searchScopesProvider implementation="ru.citeck.search.EcosArtifactsSearchScopeProvider"/>
+        <liveTemplateMacro implementation="ru.citeck.livetemplates.functions.EcosTypesEnumMacro"/>
     </extensions>
 
     <actions>

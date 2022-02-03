@@ -23,6 +23,7 @@ class EcosPluginPostStartupActivity : StartupActivity {
 
         DumbService.getInstance(project).smartInvokeLater {
             runBackgroundableTask("Loading Ecos metadata", project) {
+                it.isIndeterminate = true
                 for (i in metadataProviders.indices) {
                     it.fraction = (i / metadataProviders.size.toDouble())
                     project.getService(metadataProviders[i]).initialize()

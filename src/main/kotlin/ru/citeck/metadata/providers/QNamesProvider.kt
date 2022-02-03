@@ -11,11 +11,11 @@ import com.intellij.psi.util.parentOfType
 import ru.citeck.metadata.MetadataProvider
 import ru.citeck.metadata.QName
 
-class QNamesProvider(project: Project) : MetadataProvider<List<QName>>(project) {
+class QNamesProvider(project: Project) : MetadataProvider<List<QName>>(project, initOrder = 100) {
 
     override fun loadData(): List<QName>? {
 
-        val models = project.getService(ModelsProvider::class.java).getData() ?: return null
+        val models = project.getService(ModelsProvider::class.java).data ?: return null
         val namespaces = HashMap<String, String>()
         models.forEach { model ->
             model.namespaces?.forEach { namespace ->
@@ -23,23 +23,30 @@ class QNamesProvider(project: Project) : MetadataProvider<List<QName>>(project) 
             }
         }
 
-        val qNamePsiClass = JavaPsiFacade.getInstance(project)
-            .findClass(QName.CLASS, ProjectScope.getLibrariesScope(project))
-            ?: return listOf()
-
         val qnames = mutableListOf<QName>()
 
         ApplicationManager.getApplication().runReadAction {
+
+            val qNamePsiClass = JavaPsiFacade.getInstance(project)
+                .findClass(QName.CLASS, ProjectScope.getLibrariesScope(project))
+                ?: return@runReadAction
+
             ReferencesSearch.search(qNamePsiClass, GlobalSearchScope.allScope(project))
-                .filter { it is PsiJavaCodeReferenceElement && it.parentOfType<PsiField>() != null }
+                .allowParallelProcessing()
+                .filtering {
+                    if (it is PsiJavaCodeReferenceElement) {
+                        val psiField = it.parentOfType<PsiField>() ?: return@filtering false
+                        return@filtering psiField.type.canonicalText == QName.CLASS
+                                && psiField.hasModifier(JvmModifier.PUBLIC)
+                                && psiField.hasModifier(JvmModifier.STATIC)
+                                && psiField.hasModifier(JvmModifier.FINAL)
+                    } else {
+                        return@filtering false
+                    }
+                }
                 .map { (it as PsiJavaCodeReferenceElement).parentOfType<PsiField>() }
                 .distinct()
-                .filter {
-                    it!!.hasModifier(JvmModifier.PUBLIC)
-                            && it.hasModifier(JvmModifier.STATIC)
-                            && it.hasModifier(JvmModifier.FINAL)
-                            && it.type.canonicalText == QName.CLASS
-                }.forEach { field ->
+                .forEach { field ->
                     val methodExpr = field?.children?.filterIsInstance<PsiMethodCallExpression>()
                         ?.firstOrNull { it.methodExpression.qualifiedName == "QName.createQName" }
                         ?: return@forEach

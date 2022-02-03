@@ -11,6 +11,7 @@ import com.intellij.psi.search.ProjectScope
 import com.intellij.psi.xml.XmlFile
 import ru.citeck.metadata.MetadataProvider
 import ru.citeck.metadata.alfresco.Model
+import ru.citeck.utils.EcosNotification
 
 class ModelsProvider(project: Project) : MetadataProvider<List<Model>>(project) {
 
@@ -31,10 +32,12 @@ class ModelsProvider(project: Project) : MetadataProvider<List<Model>>(project) 
                 }
                 .forEach { vFile ->
                     val psiFile = PsiManager.getInstance(project).findFile(vFile) as XmlFile
-
-                    val model = xmlMapper.readValue(psiFile.text, Model::class.java)
-
-                    models.add(model)
+                    try {
+                        val model = xmlMapper.readValue(psiFile.text, Model::class.java)
+                        models.add(model)
+                    } catch (e: Exception) {
+                        EcosNotification.Error("Error loading model", psiFile.name, project)
+                    }
                 }
         }
         return models
