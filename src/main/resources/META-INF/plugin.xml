@@ -16,6 +16,7 @@
                                 implementationClass="ru.citeck.completetion.java.JavaCompletionContributor"/>
         <projectService serviceImplementation="ru.citeck.metadata.providers.ModelsProvider"/>
         <projectService serviceImplementation="ru.citeck.metadata.providers.QNamesProvider"/>
+        <searchScopesProvider implementation="ru.citeck.search.EcosArtifactsSearchScopeProvider"/>
     </extensions>
 
     <actions>

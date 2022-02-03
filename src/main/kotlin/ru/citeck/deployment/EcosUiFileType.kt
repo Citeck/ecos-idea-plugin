@@ -21,15 +21,15 @@ class EcosUiFileType(
 
         fun get(event: AnActionEvent): EcosUiFileType? {
             val virtualFile = event.getData(PlatformDataKeys.VIRTUAL_FILE) ?: return null
-            val fileDirectory = virtualFile.parent.path
-            TYPES.forEach { type ->
-                if (fileDirectory.endsWith(type.directory)) {
-                    return type
-                }
-            }
+            TYPES.forEach { type -> if (type.accept(virtualFile)) return type }
             return null
         }
 
+    }
+
+    fun accept(virtualFile: VirtualFile): Boolean {
+        return virtualFile.extension == "json" &&
+                virtualFile.parent.path.endsWith(directory)
     }
 
 }
