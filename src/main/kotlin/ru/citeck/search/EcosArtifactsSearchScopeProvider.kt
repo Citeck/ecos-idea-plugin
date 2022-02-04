@@ -13,7 +13,7 @@ class EcosArtifactsSearchScopeProvider : SearchScopeProvider {
     }
 
     override fun getSearchScopes(project: Project, dataContext: DataContext): MutableList<SearchScope> {
-        return EcosUiFileType.TYPES.map { EcosUiSearchScope(project, it) }
+        return EcosUiFileType.values().map { EcosUiSearchScope(project, it) }
             .union(listOf(AlfrescoModelSearchScope(project)))
             .toMutableList()
     }

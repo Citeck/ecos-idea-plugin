@@ -1,19 +1,14 @@
 package ru.citeck.completetion.java
 
 import com.intellij.codeInsight.completion.*
-import com.intellij.codeInsight.lookup.LookupElement
 import com.intellij.codeInsight.lookup.LookupElementBuilder
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.command.CommandProcessor
-import com.intellij.openapi.project.Project
-import com.intellij.openapi.ui.popup.JBPopupFactory
-import com.intellij.openapi.wm.WindowManager
-import com.intellij.ui.awt.RelativePoint
 import com.intellij.util.ProcessingContext
 import icons.EcosIcons
-import org.jetbrains.annotations.NotNull
+import ru.citeck.indexes.qnames.QNamesService
 import ru.citeck.metadata.QName
-import ru.citeck.metadata.providers.QNamesProvider
+import ru.citeck.metadata.providers.ModelsProvider
 
 class QNamesCompletionProvider : CompletionProvider<CompletionParameters?>() {
 
@@ -27,58 +22,39 @@ class QNamesCompletionProvider : CompletionProvider<CompletionParameters?>() {
         }
         val project = parameters.editor.project ?: return
 
-        val qnames = project.getService(QNamesProvider::class.java).data ?: return
-
-
-        val lookupProperty =
-            LookupElementBuilder.create("").withPresentableText("QName property").withIcon(EcosIcons.CiteckLogo)
-                .withInsertHandler { context, item ->
-                    qNameInsertHandler(
-                        project,
-                        qnames.filter { it.jField.startsWith("PROP_") }.toList(),
-                        context,
-                        item
-                    )
-                }
-
-        val lookupAssoc =
-            LookupElementBuilder.create("").withPresentableText("QName association").withIcon(EcosIcons.CiteckLogo)
-                .withInsertHandler { context, item ->
-                    qNameInsertHandler(
-                        project,
-                        qnames.filter { it.jField.startsWith("ASSOC_") }.toList(),
-                        context,
-                        item
-                    )
-                }
-
-        resultSet.addElement(lookupProperty)
-        resultSet.addElement(lookupAssoc)
-
-    }
-
-    private fun qNameInsertHandler(project: Project, qnames: List<QName>, ctx: InsertionContext, item: LookupElement) {
-        JBPopupFactory.getInstance()
-            .createPopupChooserBuilder(qnames)
-            .setTitle("Select QName:")
-            .setRenderer(QNameListCellRenderer())
-            .setItemChosenCallback {
-                ApplicationManager.getApplication().runWriteAction {
-                    CommandProcessor.getInstance().runUndoTransparentAction {
-                        ctx.document.replaceString(
-                            ctx.startOffset,
-                            ctx.tailOffset,
-                            "${it.jClass}.${it.jField}"
-                        )
-                    }
-                }
+        val models = project.getService(ModelsProvider::class.java).data ?: return
+        val namespaces = HashMap<String, String>()
+        models.forEach { model ->
+            model.namespaces?.forEach { namespace ->
+                namespaces[namespace.uri] = namespace.prefix
             }
-            .setNamerForFiltering { it.toString() }
-            .setRequestFocus(true).createPopup()
-            .show(
-                RelativePoint.getCenterOf(WindowManager.getInstance().getFrame(project)!!.rootPane)
-            )
-    }
+        }
 
+        val qnames = project.getService(QNamesService::class.java).findAll()
+
+        qnames.forEach {
+
+            val prefix = namespaces[it.uri] ?: return@forEach
+
+            resultSet.addElement(
+                LookupElementBuilder
+                    .create("${prefix}_${it.localName}")
+                    .withIcon(EcosIcons.CiteckLogo)
+                    .withTypeText("${it.jClass}.${it.jField}")
+                    .withInsertHandler { context, item ->
+                        ApplicationManager.getApplication().runWriteAction {
+                            CommandProcessor.getInstance().runUndoTransparentAction {
+                                context.document.replaceString(
+                                    context.startOffset,
+                                    context.tailOffset,
+                                    "${it.jClass}.${it.jField}"
+                                )
+                            }
+                        }
+                    }
+            )
+        }
+
+    }
 
 }

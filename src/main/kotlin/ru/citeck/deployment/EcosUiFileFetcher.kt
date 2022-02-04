@@ -32,7 +32,7 @@ class EcosUiFileFetcher : FileFetcher {
 
         if (JOptionPane.showConfirmDialog(
                 null,
-                "Fetch ${type.name}/${id} from \"${server.url}\"?",
+                "Fetch ${type.typeName}/${id} from \"${server.url}\"?",
                 "Fetch file",
                 JOptionPane.YES_NO_OPTION
             ) != JOptionPane.YES_OPTION
@@ -42,9 +42,9 @@ class EcosUiFileFetcher : FileFetcher {
 
         ApplicationManager.getApplication().runWriteAction {
             val response = server.execute(
-                "/share/api/records/query?k=recs_count_1_uiserv%2F${type.name}",
+                "/share/api/records/query?k=recs_count_1_uiserv%2F${type.typeName}",
                 mapOf(
-                    "records" to listOf("uiserv/${type.name}@${id}"),
+                    "records" to listOf("uiserv/${type.typeName}@${id}"),
                     "attributes" to listOf(".json")
                 )
             )
@@ -55,7 +55,7 @@ class EcosUiFileFetcher : FileFetcher {
 
             EcosNotification.Information(
                 "File fetched",
-                "File ${type.name}/${id} fetched from \"${server.url}\"",
+                "File ${type.typeName}/${id} fetched from \"${server.url}\"",
                 project
             )
 

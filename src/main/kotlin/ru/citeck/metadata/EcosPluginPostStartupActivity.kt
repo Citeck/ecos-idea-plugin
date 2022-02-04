@@ -6,13 +6,11 @@ import com.intellij.openapi.project.DumbService
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.startup.StartupActivity
 import ru.citeck.metadata.providers.ModelsProvider
-import ru.citeck.metadata.providers.QNamesProvider
 
 class EcosPluginPostStartupActivity : StartupActivity {
 
     private val metadataProviders = arrayListOf(
-        ModelsProvider::class.java,
-        QNamesProvider::class.java
+        ModelsProvider::class.java
     )
 
     override fun runActivity(project: Project) {

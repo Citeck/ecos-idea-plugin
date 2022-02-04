@@ -15,9 +15,11 @@
         <completion.contributor language="JAVA"
                                 implementationClass="ru.citeck.completetion.java.JavaCompletionContributor"/>
         <projectService serviceImplementation="ru.citeck.metadata.providers.ModelsProvider"/>
-        <projectService serviceImplementation="ru.citeck.metadata.providers.QNamesProvider"/>
+        <projectService serviceImplementation="ru.citeck.indexes.qnames.QNamesService"/>
         <searchScopesProvider implementation="ru.citeck.search.EcosArtifactsSearchScopeProvider"/>
         <liveTemplateMacro implementation="ru.citeck.livetemplates.functions.EcosTypesEnumMacro"/>
+        <fileBasedIndex implementation="ru.citeck.indexes.qnames.QNamesFileBasedIndex" />
+        <fileBasedIndex implementation="ru.citeck.indexes.EcosUiFileBasedIndex" />
     </extensions>
 
     <actions>
@@ -36,6 +38,12 @@
                     text="Execute Afresco JS from scratch file"
                     description="Execute Alfresco JS from scratch file" icon="AllIcons.FileTypes.JavaScript">
                 <keyboard-shortcut keymap="$default" first-keystroke="control alt E" second-keystroke="J"/>
+            </action>
+            <action id="Ecos.EcosArtifactsNavigator"
+                    class="ru.citeck.actions.EcosArtifactsNavigator"
+                    text="Ecos Artifacts Navigator"
+                    description="Ecos Artifacts Navigator" icon="EcosIcons.CiteckLogo">
+                <keyboard-shortcut keymap="$default" first-keystroke="control alt E" second-keystroke="N"/>
             </action>
         </group>
 

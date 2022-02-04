@@ -42,9 +42,7 @@ class ExecuteAlfrescoJsFromScratchFile : AnAction() {
             }
             .setNamerForFiltering { it.toString() }
             .setRequestFocus(true).createPopup()
-            .show(
-                RelativePoint.getCenterOf(WindowManager.getInstance().getFrame(project)!!.rootPane)
-            )
+            .showInCenterOf(WindowManager.getInstance().getFrame(project)!!.rootPane)
     }
 
 }

@@ -11,7 +11,7 @@ import javax.swing.Icon
 class EcosUiSearchScope(project: Project, private val ecosUiFileType: EcosUiFileType): GlobalSearchScope(project) {
 
     override fun getDisplayName(): String {
-        return ecosUiFileType.name
+        return ecosUiFileType.typeName
     }
 
     override fun getIcon(): Icon {

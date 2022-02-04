@@ -6,7 +6,6 @@ import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.actionSystem.PlatformDataKeys
 import com.intellij.openapi.application.ApplicationManager
-import com.intellij.openapi.command.CommandProcessor
 import ru.citeck.EcosServer
 import ru.citeck.utils.EcosNotification
 import java.util.*
@@ -31,7 +30,7 @@ class EcosUiFileDeployer : FileDeployer {
 
         if (JOptionPane.showConfirmDialog(
                 null,
-                "Deploy ${type.name}/${id} to \"${server.url}\"?",
+                "Deploy ${type.typeName}/${id} to \"${server.url}\"?",
                 "Deploy file",
                 JOptionPane.YES_NO_OPTION
             ) != JOptionPane.YES_OPTION
@@ -45,7 +44,7 @@ class EcosUiFileDeployer : FileDeployer {
                 mapOf(
                     "records" to listOf(
                         mapOf(
-                            "id" to "uiserv/${type.name}@",
+                            "id" to "uiserv/${type.typeName}@",
                             "attributes" to mapOf(
                                 ".att(n:\"_content\"){as(n:\"content-data\"){json}}" to listOf(
                                     mapOf(
@@ -67,7 +66,7 @@ class EcosUiFileDeployer : FileDeployer {
 
             EcosNotification.Information(
                 "File deployed",
-                "File ${type.name}/${id} deployed to \"${server.url}\"",
+                "File ${type.typeName}/${id} deployed to \"${server.url}\"",
                 project
             )
 

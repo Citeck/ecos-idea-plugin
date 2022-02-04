@@ -1,12 +1,8 @@
 package ru.citeck.metadata
 
-import java.awt.Color
-import javax.swing.BorderFactory
-import javax.swing.JEditorPane
-
 class QName(
     val localName: String,
-    val prefix: String,
+    val uri: String,
     val jField: String,
     val jClass: String
 ) {
@@ -16,29 +12,33 @@ class QName(
     }
 
     private fun toHtml(): String {
-        return "<div style=\"padding:4px\"><b>$prefix:$localName</b><br/>$jClass.$jField<br/></div>"
-    }
-
-    private val component: JEditorPane = JEditorPane()
-    private val border = BorderFactory.createLineBorder(Color.decode("#2E86C1"), 2, true)
-
-    fun getComponent(hasFocus: Boolean): JEditorPane {
-        if (hasFocus) {
-            component.border = border
-        } else {
-            component.border = null
-        }
-        return component
+        return "<div style=\"padding:4px\"><b>$uri:$localName</b><br/>$jClass.$jField<br/></div>"
     }
 
     override fun toString(): String {
-        return "${prefix?:""}:$localName $jClass.$jField"
+        return "${uri ?: ""}:$localName $jClass.$jField"
     }
 
-    init {
-        component.isEditable = false
-        component.contentType = "text/html"
-        component.text = toHtml()
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as QName
+
+        if (localName != other.localName) return false
+        if (uri != other.uri) return false
+        if (jField != other.jField) return false
+        if (jClass != other.jClass) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = localName.hashCode()
+        result = 31 * result + uri.hashCode()
+        result = 31 * result + jField.hashCode()
+        result = 31 * result + jClass.hashCode()
+        return result
     }
 
 }

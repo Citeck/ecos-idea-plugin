@@ -4,27 +4,23 @@ import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.PlatformDataKeys
 import com.intellij.openapi.vfs.VirtualFile
 
-class EcosUiFileType(
-    val name: String,
+enum class EcosUiFileType(
+    val typeName: String,
     val directory: String
 ) {
 
+    EFORM("eform", "/ecos-forms"),
+    DASHBOARD("dashboard", "/ui/dashboard"),
+    JOURNAL("journal", "/ui/journal"),
+    ACTION("action", "/ui/action"),
+    MENU("menu", "/ui/menu");
+
     companion object {
-
-        val TYPES = listOf(
-            EcosUiFileType("eform", "/ecos-forms"),
-            EcosUiFileType("dashboard", "/ui/dashboard"),
-            EcosUiFileType("journal", "/ui/journal"),
-            EcosUiFileType("action", "/ui/action"),
-            EcosUiFileType("menu", "/ui/menu")
-        )
-
         fun get(event: AnActionEvent): EcosUiFileType? {
             val virtualFile = event.getData(PlatformDataKeys.VIRTUAL_FILE) ?: return null
-            TYPES.forEach { type -> if (type.accept(virtualFile)) return type }
+            values().forEach { type -> if (type.accept(virtualFile)) return type }
             return null
         }
-
     }
 
     fun accept(virtualFile: VirtualFile): Boolean {
@@ -32,4 +28,7 @@ class EcosUiFileType(
                 virtualFile.parent.path.endsWith(directory)
     }
 
+    override fun toString(): String {
+        return typeName
+    }
 }

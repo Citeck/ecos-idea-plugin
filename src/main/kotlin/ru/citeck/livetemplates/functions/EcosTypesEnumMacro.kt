@@ -5,6 +5,8 @@ import com.intellij.codeInsight.lookup.LookupElementBuilder
 import com.intellij.codeInsight.template.Expression
 import com.intellij.codeInsight.template.ExpressionContext
 import com.intellij.codeInsight.template.macro.EnumMacro
+import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.command.CommandProcessor
 import ru.citeck.metadata.providers.ModelsProvider
 
 class EcosTypesEnumMacro : EnumMacro() {
@@ -23,7 +25,21 @@ class EcosTypesEnumMacro : EnumMacro() {
         val models = project.getService(ModelsProvider::class.java).data
         models?.forEach { model ->
             model.types?.forEach { type ->
-                lookupElements.add(LookupElementBuilder.create(type.name))
+                lookupElements.add(
+                    LookupElementBuilder
+                        .create(type.name.replace(":", "_"))
+                        .withInsertHandler { context, item ->
+                            ApplicationManager.getApplication().runWriteAction {
+                                CommandProcessor.getInstance().runUndoTransparentAction {
+                                    context.document.replaceString(
+                                        context.startOffset,
+                                        context.tailOffset,
+                                        type.name
+                                    )
+                                }
+                            }
+                        }
+                )
             }
         }
         lookupElements.sortBy { it.lookupString }
