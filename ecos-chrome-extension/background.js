@@ -121,13 +121,13 @@ chrome.tabs.onUpdated.addListener( function (tabId, changeInfo, tab) {
 
             var color = null;
             for (i in testServers) {
-                if (tab.url.startsWith(testServers[i])) {
+                if (tab.url.startsWith(testServers[i]) && testServers[i] !== "") {
                     color = "#ffc107";
                     break;
                 }
             }
             for (i in productiveServers) {
-                if (tab.url.startsWith(productiveServers[i])) {
+                if (tab.url.startsWith(productiveServers[i]) && productiveServers[i] !== "") {
                     color = "#ec4f1d";
                     break;
                 }
