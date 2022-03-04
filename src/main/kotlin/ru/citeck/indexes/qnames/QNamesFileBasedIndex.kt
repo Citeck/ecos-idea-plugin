@@ -51,13 +51,11 @@ class QNamesFileBasedIndex : ScalarIndexExtension<Boolean>() {
         override fun map(inputData: FileContent): MutableMap<Boolean, Void?> {
             val result = mutableMapOf<Boolean, Void?>()
             val project = inputData.project ?: return result
-
             val text = inputData.contentAsText
             if (!(text.contains(QName.CLASS) && text.contains("QName.createQName"))) {
                 return result
             }
-            val qnamesService = project.getService(QNamesService::class.java)
-            if (qnamesService.getQNamePsiFields(inputData.psiFile).isNotEmpty()) {
+            if (QNamesService.getQNamePsiFields(inputData.psiFile).isNotEmpty()) {
                 result[true] = null
             }
             return result
