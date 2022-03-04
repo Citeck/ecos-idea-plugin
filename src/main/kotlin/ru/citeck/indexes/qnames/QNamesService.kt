@@ -4,21 +4,14 @@ import com.intellij.lang.jvm.JvmModifier
 import com.intellij.openapi.project.Project
 import com.intellij.psi.*
 import com.intellij.psi.search.GlobalSearchScope
-import com.intellij.psi.search.ProjectScope
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.psi.util.PsiUtil
 import com.intellij.psi.util.parentOfType
 import com.intellij.util.gist.GistManager
 import com.intellij.util.indexing.FileBasedIndex
 import ru.citeck.metadata.QName
-import ru.citeck.metadata.providers.ModelsProvider
 
 class QNamesService(val project: Project) {
-
-    private val psiClass: PsiClass? by lazy {
-        JavaPsiFacade.getInstance(project)
-            .findClass(QName.CLASS, ProjectScope.getLibrariesScope(project))
-    }
 
     private val qNamesGist = GistManager.getInstance()
         .newPsiFileGist("ru.citeck.metadata.QName", 1, QNamesDataExternalizer(), ::findQNames)

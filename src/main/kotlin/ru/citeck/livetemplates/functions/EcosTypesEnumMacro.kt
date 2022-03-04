@@ -7,7 +7,8 @@ import com.intellij.codeInsight.template.ExpressionContext
 import com.intellij.codeInsight.template.macro.EnumMacro
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.command.CommandProcessor
-import ru.citeck.metadata.providers.ModelsProvider
+import com.intellij.util.indexing.FileBasedIndex
+import ru.citeck.indexes.models.AlfTypeIndex
 
 class EcosTypesEnumMacro : EnumMacro() {
 
@@ -22,27 +23,24 @@ class EcosTypesEnumMacro : EnumMacro() {
     override fun calculateLookupItems(params: Array<Expression>, context: ExpressionContext?): Array<LookupElement>? {
         val project = context?.project ?: return null
         val lookupElements = ArrayList<LookupElement>()
-        val models = project.getService(ModelsProvider::class.java).data
-        models?.forEach { model ->
-            model.types?.forEach { type ->
-                lookupElements.add(
-                    LookupElementBuilder
-                        .create(type.name.replace(":", "_"))
-                        .withInsertHandler { context, item ->
-                            ApplicationManager.getApplication().runWriteAction {
-                                CommandProcessor.getInstance().runUndoTransparentAction {
-                                    context.document.replaceString(
-                                        context.startOffset,
-                                        context.tailOffset,
-                                        type.name
-                                    )
-                                }
+        FileBasedIndex.getInstance().getAllKeys(AlfTypeIndex.NAME, project)
+            .sortedBy { it }
+            .forEach { type ->
+                lookupElements.add(LookupElementBuilder
+                    .create(type.replace(":", "_"))
+                    .withInsertHandler { context, item ->
+                        ApplicationManager.getApplication().runWriteAction {
+                            CommandProcessor.getInstance().runUndoTransparentAction {
+                                context.document.replaceString(
+                                    context.startOffset,
+                                    context.tailOffset,
+                                    type
+                                )
                             }
                         }
+                    }
                 )
             }
-        }
-        lookupElements.sortBy { it.lookupString }
         return lookupElements.toTypedArray()
     }
 

@@ -11,15 +11,17 @@
     <depends>com.intellij.java</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <postStartupActivity implementation="ru.citeck.metadata.EcosPluginPostStartupActivity"/>
         <completion.contributor language="JAVA"
                                 implementationClass="ru.citeck.completetion.java.JavaCompletionContributor"/>
-        <projectService serviceImplementation="ru.citeck.metadata.providers.ModelsProvider"/>
         <projectService serviceImplementation="ru.citeck.indexes.qnames.QNamesService"/>
         <searchScopesProvider implementation="ru.citeck.search.EcosArtifactsSearchScopeProvider"/>
         <liveTemplateMacro implementation="ru.citeck.livetemplates.functions.EcosTypesEnumMacro"/>
+
         <fileBasedIndex implementation="ru.citeck.indexes.qnames.QNamesFileBasedIndex" />
         <fileBasedIndex implementation="ru.citeck.indexes.EcosUiFileBasedIndex" />
+        <fileBasedIndex implementation="ru.citeck.indexes.models.AlfNamespaceIndex" />
+        <fileBasedIndex implementation="ru.citeck.indexes.models.AlfTypeIndex" />
+
     </extensions>
 
     <actions>

@@ -11,10 +11,6 @@ class QName(
         const val CLASS = "org.alfresco.service.namespace.QName"
     }
 
-    private fun toHtml(): String {
-        return "<div style=\"padding:4px\"><b>$uri:$localName</b><br/>$jClass.$jField<br/></div>"
-    }
-
     override fun toString(): String {
         return "${uri ?: ""}:$localName $jClass.$jField"
     }

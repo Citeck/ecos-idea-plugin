@@ -4,11 +4,13 @@ import com.intellij.codeInsight.completion.*
 import com.intellij.codeInsight.lookup.LookupElementBuilder
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.command.CommandProcessor
+import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.util.ProcessingContext
+import com.intellij.util.indexing.FileBasedIndex
 import icons.EcosIcons
+import ru.citeck.indexes.models.AlfNamespaceIndex
 import ru.citeck.indexes.qnames.QNamesService
 import ru.citeck.metadata.QName
-import ru.citeck.metadata.providers.ModelsProvider
 
 class QNamesCompletionProvider : CompletionProvider<CompletionParameters?>() {
 
@@ -22,19 +24,20 @@ class QNamesCompletionProvider : CompletionProvider<CompletionParameters?>() {
         }
         val project = parameters.editor.project ?: return
 
-        val models = project.getService(ModelsProvider::class.java).data ?: return
-        val namespaces = HashMap<String, String>()
-        models.forEach { model ->
-            model.namespaces?.forEach { namespace ->
-                namespaces[namespace.uri] = namespace.prefix
-            }
-        }
-
         val qnames = project.getService(QNamesService::class.java).findAll()
+
+        val fileBasedIndex = FileBasedIndex.getInstance()
+        val searchScope = GlobalSearchScope.allScope(project)
+        val namespaces = mutableMapOf<String, String>()
 
         qnames.forEach {
 
-            val prefix = namespaces[it.uri] ?: return@forEach
+            var prefix = namespaces[it.uri]
+            if (prefix == null) {
+                prefix = fileBasedIndex.getValues(AlfNamespaceIndex.NAME, it.uri, searchScope).firstOrNull()?.prefix
+                if (prefix == null) return@forEach
+                namespaces[it.uri] = prefix
+            }
 
             resultSet.addElement(
                 LookupElementBuilder
