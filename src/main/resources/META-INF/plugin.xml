@@ -15,7 +15,7 @@
                                 implementationClass="ru.citeck.completetion.java.JavaCompletionContributor"/>
         <projectService serviceImplementation="ru.citeck.indexes.qnames.QNamesService"/>
         <searchScopesProvider implementation="ru.citeck.search.EcosArtifactsSearchScopeProvider"/>
-        <liveTemplateMacro implementation="ru.citeck.livetemplates.functions.EcosTypesEnumMacro"/>
+        <liveTemplateMacro implementation="ru.citeck.livetemplates.functions.AlfrescoTypesEnumMacro"/>
 
         <fileBasedIndex implementation="ru.citeck.indexes.qnames.QNamesFileBasedIndex" />
         <fileBasedIndex implementation="ru.citeck.indexes.EcosUiFileBasedIndex" />

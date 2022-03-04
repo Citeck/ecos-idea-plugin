@@ -10,14 +10,14 @@ import com.intellij.openapi.command.CommandProcessor
 import com.intellij.util.indexing.FileBasedIndex
 import ru.citeck.indexes.models.AlfTypeIndex
 
-class EcosTypesEnumMacro : EnumMacro() {
+class AlfrescoTypesEnumMacro : EnumMacro() {
 
     override fun getName(): String {
-        return "ecosTypes"
+        return "alfTypes"
     }
 
     override fun getPresentableName(): String {
-        return "ecosTypes()"
+        return "alfTypes()"
     }
 
     override fun calculateLookupItems(params: Array<Expression>, context: ExpressionContext?): Array<LookupElement>? {
