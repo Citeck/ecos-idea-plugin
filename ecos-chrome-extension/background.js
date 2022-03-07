@@ -35,17 +35,6 @@ function onEcosOpenInNodeBorwser(contextInfo, tab) {
     chrome.tabs.create({url: link});
 }
 
-function onEcosOpenCard(contextInfo, tab) {
-    console.log("onEcosOpenCard  " + contextInfo.menuItemId);
-    if (contextInfo.menuItemId !== "EcosOpenCard") {
-        return;
-    }
-    var nodeRef = getNodeRef(contextInfo);
-    var url = new URL(contextInfo.linkUrl);
-    var link = url.origin + "/share/page/card-details?&nodeRef=" + nodeRef;
-    chrome.tabs.create({url: link});
-}
-
 function onEcosOpenCardOld(contextInfo, tab) {
     console.log("onEcosOpenCardOld  " + contextInfo.menuItemId);
     if (contextInfo.menuItemId !== "EcosOpenCardOld") {
@@ -56,7 +45,6 @@ function onEcosOpenCardOld(contextInfo, tab) {
     var link = url.origin + "/share/page/card-details?forceOld=true&nodeRef=" + nodeRef;
     chrome.tabs.create({url: link});
 }
-
 
 chrome.runtime.onInstalled.addListener(() => {
 
@@ -83,13 +71,6 @@ chrome.runtime.onInstalled.addListener(() => {
     });
 
     chrome.contextMenus.create({
-        title: "Open card",
-        parentId: "EcosNodeRef",
-        contexts: ["link"],
-        id: "EcosOpenCard"
-    });
-
-    chrome.contextMenus.create({
         title: "Open card (old)",
         parentId: "EcosNodeRef",
         contexts: ["link"],
@@ -100,7 +81,6 @@ chrome.runtime.onInstalled.addListener(() => {
 
 chrome.contextMenus.onClicked.addListener(onEcosCopyNodeRef);
 chrome.contextMenus.onClicked.addListener(onEcosOpenInNodeBorwser);
-chrome.contextMenus.onClicked.addListener(onEcosOpenCard);
 chrome.contextMenus.onClicked.addListener(onEcosOpenCardOld);
 
 

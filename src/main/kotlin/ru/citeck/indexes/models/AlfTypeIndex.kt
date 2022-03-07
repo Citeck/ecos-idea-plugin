@@ -1,6 +1,7 @@
 package ru.citeck.indexes.models
 
 import com.intellij.psi.xml.XmlFile
+import com.intellij.refactoring.suggested.startOffset
 import com.intellij.util.indexing.FileContent
 import com.intellij.util.indexing.ID
 import ru.citeck.metadata.alfresco.Property
@@ -36,7 +37,7 @@ class AlfTypeIndex : AbstractAlfrescoIndex<Type>(Type::class.java) {
                 properties.add(property)
             }
 
-            val type = Type(name, prefix, parent, properties)
+            val type = Type(name, prefix, parent, properties, xType.startOffset)
 
             result[name] = type
         }
