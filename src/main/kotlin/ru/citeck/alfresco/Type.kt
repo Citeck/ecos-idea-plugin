@@ -1,4 +1,4 @@
-package ru.citeck.metadata.alfresco
+package ru.citeck.alfresco
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
@@ -7,6 +7,7 @@ class Type(
     @JsonProperty("prefix") val prefix: String,
     @JsonProperty("parent") val parent: String?,
     @JsonProperty("properties") val properties: List<Property>,
+    @JsonProperty("associations") val associations: List<Association>,
     @JsonProperty("psiElementOffset") val psiElementOffset: Int
 ) {
 

@@ -3,7 +3,7 @@ package ru.citeck.indexes.models
 import com.intellij.psi.xml.XmlFile
 import com.intellij.util.indexing.FileContent
 import com.intellij.util.indexing.ID
-import ru.citeck.metadata.alfresco.Namespace
+import ru.citeck.alfresco.Namespace
 
 class AlfNamespaceIndex : AbstractAlfrescoIndex<Namespace>(Namespace::class.java) {
 

@@ -4,7 +4,7 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.util.indexing.*
 import com.intellij.util.io.KeyDescriptor
 import ru.citeck.indexes.BooleanKeyDescriptor
-import ru.citeck.metadata.QName
+import ru.citeck.alfresco.QName
 
 class QNamesFileBasedIndex : ScalarIndexExtension<Boolean>() {
 

@@ -1,10 +1,8 @@
 package ru.citeck.indexes
 
-import com.intellij.json.psi.JsonFile
 import com.intellij.json.psi.JsonObject
 import com.intellij.json.psi.JsonPsiUtil
 import com.intellij.openapi.vfs.VirtualFile
-import com.intellij.psi.PsiFile
 import com.intellij.psi.impl.source.PsiFileImpl
 import com.intellij.util.indexing.*
 import com.intellij.util.io.DataExternalizer
@@ -12,9 +10,8 @@ import com.intellij.util.io.KeyDescriptor
 import ru.citeck.deployment.EcosUiFileType
 import java.io.DataInput
 import java.io.DataOutput
-import java.util.*
 
-class EcosUiFileBasedIndex : FileBasedIndexExtension<EcosUiFileType, String>() {
+class EcosUiFileBasedIndex : FileBasedIndexExtension<EcosUiFileType, String>(), DocumentChangeDependentIndex {
 
     companion object {
         val NAME = ID.create<EcosUiFileType, String>("ru.citeck.indexes.EcosUiFileBasedIndex")

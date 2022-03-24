@@ -9,14 +9,14 @@ import com.intellij.psi.util.PsiUtil
 import com.intellij.psi.util.parentOfType
 import com.intellij.util.gist.GistManager
 import com.intellij.util.indexing.FileBasedIndex
-import ru.citeck.metadata.QName
+import ru.citeck.alfresco.QName
 
 class QNamesService(val project: Project) {
 
     companion object {
 
         private val QNAMES_GIST = GistManager.getInstance()
-            .newPsiFileGist("ru.citeck.metadata.QName", 1, QNamesDataExternalizer(), ::findQNames)
+            .newPsiFileGist("ru.citeck.alfresco.QName", 1, QNamesDataExternalizer(), ::findQNames)
 
 
         private fun findQNames(psiFile: PsiFile): List<QName>? {

@@ -10,9 +10,7 @@ import java.io.DataInput
 import java.io.DataOutput
 
 
-abstract class AbstractAlfrescoIndex<T>(clazz: Class<T>) :
-
-    FileBasedIndexExtension<String, T>() {
+abstract class AbstractAlfrescoIndex<T>(clazz: Class<T>) : FileBasedIndexExtension<String, T>(), DocumentChangeDependentIndex {
 
     private val inputFilter = ModelsInputFilter()
     private val valueExternalizer = AlfDataExternalizer(clazz)

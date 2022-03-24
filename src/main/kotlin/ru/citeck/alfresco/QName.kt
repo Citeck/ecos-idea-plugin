@@ -1,4 +1,4 @@
-package ru.citeck.metadata
+package ru.citeck.alfresco
 
 class QName(
     val localName: String,

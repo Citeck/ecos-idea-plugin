@@ -1,4 +1,4 @@
-package ru.citeck.metadata.alfresco
+package ru.citeck.alfresco
 
 import com.fasterxml.jackson.annotation.JsonProperty
 

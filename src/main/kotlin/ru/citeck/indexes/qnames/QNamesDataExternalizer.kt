@@ -1,7 +1,7 @@
 package ru.citeck.indexes.qnames
 
 import com.intellij.util.io.DataExternalizer
-import ru.citeck.metadata.QName
+import ru.citeck.alfresco.QName
 import java.io.DataInput
 import java.io.DataOutput
 

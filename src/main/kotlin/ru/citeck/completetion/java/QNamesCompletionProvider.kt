@@ -10,7 +10,7 @@ import com.intellij.util.indexing.FileBasedIndex
 import icons.EcosIcons
 import ru.citeck.indexes.models.AlfNamespaceIndex
 import ru.citeck.indexes.qnames.QNamesService
-import ru.citeck.metadata.QName
+import ru.citeck.alfresco.QName
 
 class QNamesCompletionProvider : CompletionProvider<CompletionParameters?>() {
 

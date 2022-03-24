@@ -17,11 +17,13 @@
         <searchScopesProvider implementation="ru.citeck.search.EcosArtifactsSearchScopeProvider"/>
         <liveTemplateMacro implementation="ru.citeck.livetemplates.functions.AlfrescoTypesEnumMacro"/>
 
-        <fileBasedIndex implementation="ru.citeck.indexes.qnames.QNamesFileBasedIndex" />
-        <fileBasedIndex implementation="ru.citeck.indexes.EcosUiFileBasedIndex" />
-        <fileBasedIndex implementation="ru.citeck.indexes.models.AlfNamespaceIndex" />
-        <fileBasedIndex implementation="ru.citeck.indexes.models.AlfTypeIndex" />
-
+        <fileBasedIndex implementation="ru.citeck.indexes.qnames.QNamesFileBasedIndex"/>
+        <fileBasedIndex implementation="ru.citeck.indexes.EcosUiFileBasedIndex"/>
+        <fileBasedIndex implementation="ru.citeck.indexes.models.AlfNamespaceIndex"/>
+        <fileBasedIndex implementation="ru.citeck.indexes.models.AlfTypeIndex"/>
+        <localInspection implementationClass="ru.citeck.inspections.NamespacesInspection" language="XML"
+                         enabledByDefault="true" level="ERROR" displayName="Namespace prefix not imported"
+                         groupName="XML"/>
     </extensions>
 
     <actions>
