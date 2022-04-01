@@ -19,7 +19,7 @@ class AlfNamespaceIndex : AbstractAlfrescoIndex<Namespace>(Namespace::class.java
 
         val result = mutableMapOf<String, Namespace>()
         val root = (inputData.psiFile as XmlFile).document?.rootTag ?: return result
-        if (root.namespace != "http://www.alfresco.org/model/dictionary/1.0") return result
+        if (root.namespace != MODEL_NAMESPACE) return result
 
         val namespaces = root.findFirstSubTag("namespaces")?.findSubTags("namespace") ?: return result
         namespaces.forEach {

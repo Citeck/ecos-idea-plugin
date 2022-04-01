@@ -12,8 +12,9 @@ import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.psi.xml.*
 import com.intellij.util.containers.toArray
 import com.intellij.util.indexing.FileBasedIndex
-import ru.citeck.indexes.models.AlfNamespaceIndex
 import ru.citeck.alfresco.Namespace
+import ru.citeck.indexes.models.AbstractAlfrescoIndex
+import ru.citeck.indexes.models.AlfNamespaceIndex
 
 class NamespacesInspection : XmlSuppressableInspectionTool() {
 
@@ -44,7 +45,7 @@ class NamespacesInspection : XmlSuppressableInspectionTool() {
 
         file as XmlFile
         val rootTag = file.rootTag ?: return null
-        if (rootTag.namespace != "http://www.alfresco.org/model/dictionary/1.0") return null
+        if (rootTag.namespace != AbstractAlfrescoIndex.MODEL_NAMESPACE) return null
 
         val prefixes = mutableSetOf<String>()
         rootTag.findFirstSubTag("namespaces")?.findSubTags("namespace")?.forEach { namespace ->

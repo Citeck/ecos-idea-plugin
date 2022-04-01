@@ -12,6 +12,10 @@ import java.io.DataOutput
 
 abstract class AbstractAlfrescoIndex<T>(clazz: Class<T>) : FileBasedIndexExtension<String, T>(), DocumentChangeDependentIndex {
 
+    companion object {
+        val MODEL_NAMESPACE = "http://www.alfresco.org/model/dictionary/1.0"
+    }
+
     private val inputFilter = ModelsInputFilter()
     private val valueExternalizer = AlfDataExternalizer(clazz)
     private val dataIndexer = AlfDataIndexer(::map)
