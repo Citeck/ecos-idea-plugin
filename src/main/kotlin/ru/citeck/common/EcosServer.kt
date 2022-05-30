@@ -1,4 +1,4 @@
-package ru.citeck
+package ru.citeck.common
 
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.JsonNode
@@ -55,7 +55,7 @@ class EcosServer(var name: String, var url: String, var userName: String, var pa
     }
 
 
-    fun execute(path: String, request: Any): JsonNode {
+    fun execute(path: String, request: Any? = null): JsonNode {
         return execute(path, request, JsonNode::class.java)
     }
 
@@ -107,6 +107,22 @@ class EcosServer(var name: String, var url: String, var userName: String, var pa
             return objectMapper.readValue(stream, clazz)
         }
 
+    }
+
+    fun executeJs(script: String): JsConsoleResponse {
+        return execute(
+            "share/proxy/alfresco/de/fme/jsconsole/execute",
+            mapOf(
+                "script" to script,
+                "runas" to "admin",
+                "template" to "",
+                "spaceNodeRef" to "",
+                "transaction" to "readwrite",
+                "urlargs" to "",
+                "documentNodeRef" to ""
+            ),
+            JsConsoleResponse::class.java
+        )
     }
 
 }

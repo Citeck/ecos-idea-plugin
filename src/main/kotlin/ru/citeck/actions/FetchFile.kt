@@ -4,13 +4,15 @@ import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.PlatformDataKeys
 import com.intellij.openapi.vfs.VirtualFile
+import ru.citeck.deployment.EcosCaseTemplateFetcher
 import ru.citeck.deployment.EcosUiFileFetcher
 import ru.citeck.deployment.FileFetcher
 
 class FetchFile : AnAction() {
 
     private val fetchers = listOf(
-        EcosUiFileFetcher()
+        EcosUiFileFetcher(),
+        EcosCaseTemplateFetcher()
     )
 
     override fun update(event: AnActionEvent) {

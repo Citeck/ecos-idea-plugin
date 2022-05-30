@@ -7,7 +7,7 @@ import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.actionSystem.PlatformDataKeys
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.command.CommandProcessor
-import ru.citeck.EcosServer
+import ru.citeck.common.EcosServer
 import ru.citeck.utils.EcosNotification
 import ru.citeck.utils.EcosPrettyPrinter
 import javax.swing.JOptionPane

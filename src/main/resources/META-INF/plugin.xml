@@ -35,11 +35,21 @@
             <add-to-group group-id="EditorContextBarMenu" anchor="last"/>
         </action>
 
+        <group id="Ecos.HotReloadJava" icon="EcosIcons.CiteckLogo">
+            <add-to-group group-id="EditorContextBarMenu" anchor="last"/>
+            <action id="Ecos.RunJavaMethod" class="ru.citeck.actions.RunJavaMethod" text="Run Java Method" icon="AllIcons.Actions.Execute">
+                <keyboard-shortcut keymap="$default" first-keystroke="control alt E" second-keystroke="R"/>
+            </action>
+            <action id="Ecos.BuildAndReloadJavaClass" class="ru.citeck.actions.BuildAndReloadJavaClass" text="Build and Reload Java Class" icon="AllIcons.Actions.Compile">
+                <keyboard-shortcut keymap="$default" first-keystroke="control alt E" second-keystroke="B"/>
+            </action>
+        </group>
+
         <group id="Ecos.MainMenu" text="Ecos" popup="true" icon="EcosIcons.CiteckLogo">
             <add-to-group group-id="MainMenu" anchor="last"/>
             <action id="Ecos.ExecuteAlfrescoJsFromScratchFile"
                     class="ru.citeck.actions.ExecuteAlfrescoJsFromScratchFile"
-                    text="Execute Afresco JS from scratch file"
+                    text="Execute Afresco JS From Scratch File"
                     description="Execute Alfresco JS from scratch file" icon="AllIcons.FileTypes.JavaScript">
                 <keyboard-shortcut keymap="$default" first-keystroke="control alt E" second-keystroke="J"/>
             </action>

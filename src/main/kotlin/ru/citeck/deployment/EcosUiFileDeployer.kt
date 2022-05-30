@@ -2,12 +2,11 @@ package ru.citeck.deployment
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.intellij.json.JsonFileType
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.actionSystem.PlatformDataKeys
 import com.intellij.openapi.application.ApplicationManager
-import ru.citeck.EcosServer
+import ru.citeck.common.EcosServer
 import ru.citeck.utils.EcosNotification
 import java.util.*
 import javax.swing.JOptionPane

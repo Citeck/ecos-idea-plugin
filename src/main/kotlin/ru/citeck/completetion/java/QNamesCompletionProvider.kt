@@ -4,6 +4,7 @@ import com.intellij.codeInsight.completion.*
 import com.intellij.codeInsight.lookup.LookupElementBuilder
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.command.CommandProcessor
+import com.intellij.psi.PsiType
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.util.ProcessingContext
 import com.intellij.util.indexing.FileBasedIndex
@@ -19,10 +20,13 @@ class QNamesCompletionProvider : CompletionProvider<CompletionParameters?>() {
         context: ProcessingContext,
         resultSet: CompletionResultSet
     ) {
-        if (JavaCompletionUtil.getExpectedTypes(parameters)?.any { it.canonicalText == QName.CLASS } != true) {
+
+        val project = parameters.editor.project ?: return
+        val qNamePattern = PsiType.getTypeByName(QName.QNAME_PATTERN, project, GlobalSearchScope.allScope(project))
+
+        if (JavaCompletionUtil.getExpectedTypes(parameters)?.any { qNamePattern.isAssignableFrom(it) } != true) {
             return
         }
-        val project = parameters.editor.project ?: return
 
         val qnames = project.getService(QNamesService::class.java).findAll()
 

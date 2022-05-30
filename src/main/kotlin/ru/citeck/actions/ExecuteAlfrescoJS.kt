@@ -7,11 +7,10 @@ import com.intellij.icons.AllIcons
 import com.intellij.ide.BrowserUtil
 import com.intellij.ide.scratch.ScratchUtil
 import com.intellij.openapi.actionSystem.*
-import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.progress.runBackgroundableTask
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.DialogWrapper
 import com.intellij.openapi.ui.popup.JBPopupFactory
-import com.intellij.openapi.util.IconLoader
 import com.intellij.openapi.wm.RegisterToolWindowTask
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowAnchor
@@ -19,7 +18,7 @@ import com.intellij.openapi.wm.ToolWindowManager
 import com.intellij.ui.ToolbarDecorator
 import com.intellij.ui.awt.RelativePoint
 import com.intellij.ui.table.JBTable
-import ru.citeck.EcosServer
+import ru.citeck.common.EcosServer
 import ru.citeck.utils.HashMapTableModel
 import java.awt.Dimension
 import java.awt.MouseInfo
@@ -31,12 +30,6 @@ class ExecuteAlfrescoJS : AnAction() {
 
     companion object {
         private val consoles = HashMap<ToolWindow, ConsoleView>()
-    }
-
-    private class Response() {
-        var message: String = ""
-        var printOutput: List<String> = listOf()
-        var scriptPerf: String = ""
     }
 
 
@@ -103,45 +96,30 @@ class ExecuteAlfrescoJS : AnAction() {
         val server = EcosServer.current()
         console.clear()
         console.print("Executing script...", ConsoleViewContentType.LOG_INFO_OUTPUT)
-
-        ApplicationManager.getApplication().executeOnPooledThread {
-            ApplicationManager.getApplication().runReadAction {
-                val response = server.execute(
-                    "share/proxy/alfresco/de/fme/jsconsole/execute",
-                    mapOf(
-                        "script" to jsText,
-                        "runas" to "admin",
-                        "template" to "",
-                        "spaceNodeRef" to "",
-                        "transaction" to "readwrite",
-                        "urlargs" to "",
-                        "documentNodeRef" to ""
-                    ),
-                    Response::class.java
+        runBackgroundableTask("Executing Alfresco JS") {
+            val response = server.executeJs(jsText)
+            console.clear()
+            if (response.message != "") {
+                console.print(response.message, ConsoleViewContentType.LOG_ERROR_OUTPUT)
+            } else {
+                console.print(
+                    "Script executed in ${response.scriptPerf}ms.\r\n",
+                    ConsoleViewContentType.LOG_INFO_OUTPUT
                 )
-                console.clear()
-                if (response.message != "") {
-                    console.print(response.message, ConsoleViewContentType.LOG_ERROR_OUTPUT)
-                } else {
-                    console.print(
-                        "Script executed in ${response.scriptPerf}ms.\r\n",
-                        ConsoleViewContentType.LOG_INFO_OUTPUT
-                    )
-                    val pattern =
-                        "workspace://SpacesStore/[0-9a-f]{8}\\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\\b[0-9a-f]{12}"
-                    val regexSplit = Regex("((?<=${pattern})|(?=${pattern}))")
-                    val regexNodeRef = Regex(pattern)
+                val pattern =
+                    "workspace://SpacesStore/[0-9a-f]{8}\\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\\b[0-9a-f]{12}"
+                val regexSplit = Regex("((?<=${pattern})|(?=${pattern}))")
+                val regexNodeRef = Regex(pattern)
 
-                    response.printOutput.forEach { it ->
-                        regexSplit.split(it).forEach { nodeRef ->
-                            if (regexNodeRef.matches(nodeRef)) {
-                                console.printHyperlink(nodeRef) { project -> openBrowser(project, nodeRef) }
-                            } else {
-                                console.print(nodeRef, ConsoleViewContentType.NORMAL_OUTPUT)
-                            }
+                response.printOutput.forEach { it ->
+                    regexSplit.split(it).forEach { nodeRef ->
+                        if (regexNodeRef.matches(nodeRef)) {
+                            console.printHyperlink(nodeRef) { project -> openBrowser(project, nodeRef) }
+                        } else {
+                            console.print(nodeRef, ConsoleViewContentType.NORMAL_OUTPUT)
                         }
-                        console.print("\r\n", ConsoleViewContentType.NORMAL_OUTPUT)
                     }
+                    console.print("\r\n", ConsoleViewContentType.NORMAL_OUTPUT)
                 }
             }
         }

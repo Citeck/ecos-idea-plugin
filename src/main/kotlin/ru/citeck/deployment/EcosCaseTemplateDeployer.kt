@@ -1,13 +1,11 @@
 package ru.citeck.deployment
 
-import com.intellij.openapi.actionSystem.ActionManager
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.actionSystem.PlatformDataKeys
-import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.progress.runBackgroundableTask
 import com.intellij.psi.xml.XmlFile
-import ru.citeck.EcosServer
-import ru.citeck.actions.ExecuteAlfrescoJS
+import ru.citeck.common.EcosServer
 import ru.citeck.utils.EcosNotification
 import java.util.*
 import javax.swing.JOptionPane
@@ -37,7 +35,8 @@ class EcosCaseTemplateDeployer : FileDeployer {
             return
         }
 
-        ApplicationManager.getApplication().runWriteAction {
+        runBackgroundableTask("Deploying case template") {
+
             val response = server.execute(
                 "/share/api/records/mutate?k=recs_count_1_",
                 mapOf(
@@ -63,11 +62,8 @@ class EcosCaseTemplateDeployer : FileDeployer {
                 )
             )
 
-            val executeAlfrescoJSAction =
-                ActionManager.getInstance().getAction("Ecos.ExecuteAlfrescoJs") as ExecuteAlfrescoJS
 
-            executeAlfrescoJSAction.executeJs(
-                project,
+            val jsResponse = EcosServer.current().executeJs(
                 "var srv = services.get('eprocActivityService');\n" +
                         "var cache1 = Packages.org.apache.commons.lang.reflect.FieldUtils.readField(srv, 'typesToRevisionIdCache', true);\n" +
                         "cache1.invalidateAll();\n" +
@@ -80,6 +76,8 @@ class EcosCaseTemplateDeployer : FileDeployer {
                 "Case template ${virtualFile.name} deployed to \"${server.url}\"",
                 project
             )
+
         }
+
     }
 }

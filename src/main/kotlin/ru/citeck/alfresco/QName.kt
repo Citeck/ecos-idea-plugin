@@ -8,6 +8,7 @@ class QName(
 ) {
 
     companion object {
+        const val QNAME_PATTERN = "org.alfresco.service.namespace.QNamePattern"
         const val CLASS = "org.alfresco.service.namespace.QName"
     }
 
