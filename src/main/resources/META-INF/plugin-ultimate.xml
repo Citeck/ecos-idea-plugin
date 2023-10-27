@@ -1,0 +1,20 @@
+<idea-plugin>
+    <extensions defaultExtensionNs="com.intellij">
+        <multiHostInjector implementation="ru.citeck.ecos.languageInjections.EcosFormJavaScriptInjector"/>
+        <completion.contributor implementationClass="ru.citeck.ecos.completion.js.JsCompletionContributor"
+                                language="JavaScript" order="first"/>
+    </extensions>
+
+    <extensions defaultExtensionNs="ru.citeck.ecos">
+        <psiElementValueResolver implementation="ru.citeck.ecos.references.resolvers.JSLiteralExpressionValueResolver"/>
+
+        <completionProvider
+                implementation="ru.citeck.ecos.completion.js.providers.NodeAttributesShortQnamesCompletionProvider"/>
+        <completionProvider implementation="ru.citeck.ecos.completion.js.providers.FormJsDataCompletionProvider"/>
+        <completionProvider
+                implementation="ru.citeck.ecos.completion.js.providers.BaseProcessorExtensionsCompletionProvider"/>
+        <completionProvider
+                implementation="ru.citeck.ecos.completion.js.providers.BaseProcessorExtensionMethodsCompletionProvider"/>
+    </extensions>
+
+</idea-plugin>

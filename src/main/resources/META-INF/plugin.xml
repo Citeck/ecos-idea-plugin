@@ -1,86 +1,158 @@
 <idea-plugin>
-    <id>ru.citeck.ecos-dev-plugin</id>
-    <name>Ecos Idea plugin</name>
+    <id>ru.citeck.ecos</id>
+    <name>ECOS Idea</name>
     <vendor email="" url="http://citeck.ru">Citeck</vendor>
 
-    <description>Ecos Idea plugin</description>
+    <description><![CDATA[ECOS Idea Plugin]]></description>
 
-    <!-- please see https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html
+    <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.java</depends>
+    <depends optional="true" config-file="plugin-ultimate.xml">JavaScript</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <completion.contributor language="JAVA"
-                                implementationClass="ru.citeck.completetion.java.JavaCompletionContributor"/>
-        <projectService serviceImplementation="ru.citeck.indexes.qnames.QNamesService"/>
-        <searchScopesProvider implementation="ru.citeck.search.EcosArtifactsSearchScopeProvider"/>
-        <liveTemplateMacro implementation="ru.citeck.livetemplates.functions.AlfrescoTypesEnumMacro"/>
+        <applicationService serviceImplementation="ru.citeck.ecos.files.FileTypeService"/>
+        <applicationService serviceImplementation="ru.citeck.ecos.rest.EcosRestApiService"/>
+        <projectService serviceImplementation="ru.citeck.ecos.index.IndexesService"/>
+        <projectService serviceImplementation="ru.citeck.ecos.ui.AlfrescoJsConsoleService"/>
+        <projectService serviceImplementation="ru.citeck.ecos.index.indexers.qname.QNameService"/>
+        <searchScopesProvider implementation="ru.citeck.ecos.files.SearchScopeProvider"/>
+        <fileBasedIndex implementation="ru.citeck.ecos.index.EcosIndex"/>
+        <consoleFilterProvider implementation="ru.citeck.ecos.console.NodeRefConsoleFilterProvider"/>
+        <searchEverywhereContributor implementation="ru.citeck.ecos.EcosSearchEveryWhereContributor$Factory"/>
+        <psi.referenceContributor implementation="ru.citeck.ecos.references.EcosReferenceProvider$Contributor"/>
+        <localInspection implementationClass="ru.citeck.ecos.inspections.forms.DuplicateComponentKeyInspection"
+                         language="JSON"
+                         enabledByDefault="true" level="ERROR" displayName="ECOS form component duplicate key"
+                         groupName="JSON"/>
 
-        <fileBasedIndex implementation="ru.citeck.indexes.qnames.QNamesFileBasedIndex"/>
-        <fileBasedIndex implementation="ru.citeck.indexes.EcosUiFileBasedIndex"/>
-        <fileBasedIndex implementation="ru.citeck.indexes.models.AlfNamespaceIndex"/>
-        <fileBasedIndex implementation="ru.citeck.indexes.models.AlfTypeIndex"/>
-        <localInspection implementationClass="ru.citeck.inspections.NamespacesInspection" language="XML"
-                         enabledByDefault="true" level="ERROR" displayName="Namespace prefix not imported"
-                         groupName="XML"/>
+        <completion.contributor implementationClass="ru.citeck.ecos.completion.java.JavaCompletionContributor"
+                                language="JAVA"/>
+        <completion.contributor implementationClass="ru.citeck.ecos.completion.json.JsonCompletionContributor"
+                                language="JSON"/>
+
+        <liveTemplateMacro implementation="ru.citeck.ecos.livetemplates.functions.JavaQNameEnumMacro"/>
+        <liveTemplateMacro implementation="ru.citeck.ecos.livetemplates.functions.alfresco.AlfrescoAnyEnumMacro"/>
+        <liveTemplateMacro implementation="ru.citeck.ecos.livetemplates.functions.alfresco.AlfrescoTypeEnumMacro"/>
+        <liveTemplateMacro implementation="ru.citeck.ecos.livetemplates.functions.alfresco.AlfrescoPropertyEnumMacro"/>
+        <liveTemplateMacro implementation="ru.citeck.ecos.livetemplates.functions.alfresco.AlfrescoAspectEnumMacro"/>
+        <liveTemplateMacro
+                implementation="ru.citeck.ecos.livetemplates.functions.alfresco.AlfrescoAssociationEnumMacro"/>
+        <liveTemplateMacro
+                implementation="ru.citeck.ecos.livetemplates.functions.alfresco.AlfrescoChildAssociationEnumMacro"/>
+
+    </extensions>
+
+    <extensionPoints>
+        <extensionPoint name="fileType" interface="ru.citeck.ecos.files.FileType"/>
+        <extensionPoint name="fileDeployer" interface="ru.citeck.ecos.files.FileDeployer"/>
+        <extensionPoint name="fileFetcher" interface="ru.citeck.ecos.files.FileFetcher"/>
+        <extensionPoint name="fileIndexer" interface="ru.citeck.ecos.index.EcosFileIndexer"/>
+        <extensionPoint name="navigateInFileItemsProvider"
+                        interface="ru.citeck.ecos.files.NavigateInFileItemsProvider"/>
+        <extensionPoint name="psiElementValueResolver" interface="ru.citeck.ecos.references.PsiElementValueResolver"/>
+        <extensionPoint name="completionProvider" interface="ru.citeck.ecos.completion.CompletionProvider"/>
+    </extensionPoints>
+
+    <extensions defaultExtensionNs="ru.citeck.ecos">
+
+        <fileType implementation="ru.citeck.ecos.files.types.AlfrescoModel"/>
+        <fileType implementation="ru.citeck.ecos.files.types.Form"/>
+        <fileType implementation="ru.citeck.ecos.files.types.Action"/>
+        <fileType implementation="ru.citeck.ecos.files.types.CaseType"/>
+        <fileType implementation="ru.citeck.ecos.files.types.Config"/>
+        <fileType implementation="ru.citeck.ecos.files.types.CmmnProcessDefinition"/>
+        <fileType implementation="ru.citeck.ecos.files.types.Dashboard"/>
+        <fileType implementation="ru.citeck.ecos.files.types.Journal"/>
+        <fileType implementation="ru.citeck.ecos.files.types.Localization"/>
+        <fileType implementation="ru.citeck.ecos.files.types.Menu"/>
+        <fileType implementation="ru.citeck.ecos.files.types.NumTemplate"/>
+        <fileType implementation="ru.citeck.ecos.files.types.XmlBeanDefinitions"/>
+        <fileType implementation="ru.citeck.ecos.files.types.Java"/>
+        <fileType implementation="ru.citeck.ecos.files.types.JavaScript"/>
+
+        <fileDeployer implementation="ru.citeck.ecos.files.deployers.EcosArtifactDeployer"/>
+        <fileDeployer implementation="ru.citeck.ecos.files.deployers.CmmnProcessDefinitionDeployer"/>
+        <fileDeployer implementation="ru.citeck.ecos.files.deployers.TomcatFileDeployer"/>
+        <fileDeployer implementation="ru.citeck.ecos.files.deployers.TomcatFileClipboardDeployer"/>
+
+        <fileFetcher implementation="ru.citeck.ecos.files.fetchers.EcosArtifactFetcher"/>
+        <fileFetcher implementation="ru.citeck.ecos.files.fetchers.CmmnProcessDefinitionFetcher"/>
+
+        <fileIndexer implementation="ru.citeck.ecos.index.indexers.EcosArtifactIndexer"/>
+        <fileIndexer implementation="ru.citeck.ecos.index.indexers.CmmnIndexer"/>
+        <fileIndexer implementation="ru.citeck.ecos.index.indexers.AlfrescoModelIndexer"/>
+        <fileIndexer implementation="ru.citeck.ecos.index.indexers.XmlBeanDefinitionIndexer"/>
+        <fileIndexer implementation="ru.citeck.ecos.index.indexers.qname.AlfrescoQNameIndexer"/>
+
+        <navigateInFileItemsProvider implementation="ru.citeck.ecos.files.navigateItemsProviders.FormItemsProvider"/>
+        <navigateInFileItemsProvider implementation="ru.citeck.ecos.files.navigateItemsProviders.JournalItemsProvider"/>
+        <navigateInFileItemsProvider
+                implementation="ru.citeck.ecos.files.navigateItemsProviders.AlfrescoModelItemsProvider"/>
+
+        <psiElementValueResolver
+                implementation="ru.citeck.ecos.references.resolvers.PsiLiteralExpressionValueResolver"/>
+        <psiElementValueResolver implementation="ru.citeck.ecos.references.resolvers.JsonStringLiteralValueResolver"/>
+        <psiElementValueResolver implementation="ru.citeck.ecos.references.resolvers.XmlAttributeValueValueResolver"/>
+        <psiElementValueResolver implementation="ru.citeck.ecos.references.resolvers.XmlTagValueResolver"/>
+
+        <completionProvider implementation="ru.citeck.ecos.completion.java.providers.QNamesCompletionProvider"/>
+
     </extensions>
 
     <actions>
-
-        <action id="Ecos.ExecuteAlfrescoJs" class="ru.citeck.actions.ExecuteAlfrescoJS"
-                text="Execute Afresco JS"
-                description="Execute Alfresco JS" icon="AllIcons.Actions.Execute">
+        <action id="ru.citeck.ecos.actions.DeployFile" class="ru.citeck.ecos.actions.DeployFile"
+                text="Deploy File" description="Deploy file" icon="AllIcons.Actions.Uninstall">
+            <keyboard-shortcut keymap="$default" first-keystroke="control alt E" second-keystroke="D"/>
+            <add-to-group group-id="EditorContextBarMenu" anchor="last"/>
+        </action>
+        <action id="ru.citeck.ecos.actions.FetchFile" class="ru.citeck.ecos.actions.FetchFile"
+                text="Fetch File" description="Fetch file" icon="AllIcons.Actions.Install">
+            <keyboard-shortcut keymap="$default" first-keystroke="control alt E" second-keystroke="F"/>
+            <add-to-group group-id="EditorContextBarMenu" anchor="last"/>
+        </action>
+        <action id="Ecos.ExecuteAlfrescoJs" class="ru.citeck.ecos.actions.ExecuteAlfrescoJs"
+                text="Execute Alfresco Js"
+                description="Execute alfresco js" icon="AllIcons.Actions.Execute">
             <keyboard-shortcut keymap="$default" first-keystroke="control alt E" second-keystroke="E"/>
             <add-to-group group-id="EditorContextBarMenu" anchor="last"/>
         </action>
 
-        <group id="Ecos.HotReloadJava" icon="EcosIcons.CiteckLogo">
-            <add-to-group group-id="EditorContextBarMenu" anchor="last"/>
-            <action id="Ecos.RunJavaMethod" class="ru.citeck.actions.RunJavaMethod" text="Run Java Method" icon="AllIcons.Actions.Execute">
-                <keyboard-shortcut keymap="$default" first-keystroke="control alt E" second-keystroke="R"/>
-            </action>
-            <action id="Ecos.BuildAndReloadJavaClass" class="ru.citeck.actions.BuildAndReloadJavaClass" text="Build and Reload Java Class" icon="AllIcons.Actions.Compile">
-                <keyboard-shortcut keymap="$default" first-keystroke="control alt E" second-keystroke="B"/>
-            </action>
-        </group>
-
-        <group id="Ecos.MainMenu" text="Ecos" popup="true" icon="EcosIcons.CiteckLogo">
+        <group id="ru.citeck.ecos.MainMenu" text="Ecos" popup="true">
             <add-to-group group-id="MainMenu" anchor="last"/>
-            <action id="Ecos.ExecuteAlfrescoJsFromScratchFile"
-                    class="ru.citeck.actions.ExecuteAlfrescoJsFromScratchFile"
-                    text="Execute Afresco JS From Scratch File"
-                    description="Execute Alfresco JS from scratch file" icon="AllIcons.FileTypes.JavaScript">
-                <keyboard-shortcut keymap="$default" first-keystroke="control alt E" second-keystroke="J"/>
-            </action>
-            <action id="Ecos.EcosArtifactsNavigator"
-                    class="ru.citeck.actions.EcosArtifactsNavigator"
-                    text="Ecos Artifacts Navigator"
-                    description="Ecos Artifacts Navigator" icon="EcosIcons.CiteckLogo">
+            <action id="ru.citeck.ecos.actions.EcosSearchEveryWhereAction"
+                    class="ru.citeck.ecos.actions.EcosSearchEveryWhereAction"
+                    text="Search Everywhere"
+                    description="Search everywhere">
                 <keyboard-shortcut keymap="$default" first-keystroke="control alt E" second-keystroke="N"/>
             </action>
-        </group>
-
-        <action id="Ecos.DeployFile" class="ru.citeck.actions.DeployFile"
-                text="Deploy file" description="Deploy file" icon="AllIcons.Actions.Uninstall">
-            <keyboard-shortcut keymap="$default" first-keystroke="control alt E" second-keystroke="D"/>
-            <add-to-group group-id="EditorContextBarMenu" anchor="last"/>
-        </action>
-
-        <action id="Ecos.FetchFile" class="ru.citeck.actions.FetchFile"
-                text="Fetch file" description="Fetch file" icon="AllIcons.Actions.Install">
-            <keyboard-shortcut keymap="$default" first-keystroke="control alt E" second-keystroke="F"/>
-            <add-to-group group-id="EditorContextBarMenu" anchor="last"/>
-        </action>
-
-        <group id="ru.citeck.actions.EcosEditorPopupMenu" text="Ecos" popup="true" icon="EcosIcons.CiteckLogo">
-            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
-            <action id="Ecos.EditJsonString" class="ru.citeck.actions.EditJsonStringAsJS"
-                    text="Edit attribute as JavaScript"
-                    description="Edit attribute as JavaScript" icon="AllIcons.FileTypes.JavaScript">
+            <action id="ru.citeck.ecos.actions.NavigateInFileAction"
+                    class="ru.citeck.ecos.actions.NavigateInFileAction"
+                    text="Navigate in File"
+                    description="Navigate in File">
+                <keyboard-shortcut keymap="$default" first-keystroke="control alt E" second-keystroke="G"/>
+                <keyboard-shortcut keymap="$default" first-keystroke="control alt E" second-keystroke="F12"/>
+            </action>
+            <action id="Ecos.ExecuteAlfrescoJsFromScratch"
+                    class="ru.citeck.ecos.actions.ExecuteAlfrescoJsFromScratch"
+                    text="Execute Afresco JS"
+                    description="Execute Afresco JS"
+                    icon="AllIcons.FileTypes.JavaScript">
+                <keyboard-shortcut keymap="$default" first-keystroke="control alt E" second-keystroke="J"/>
             </action>
         </group>
 
+        <action id="GenerateEcosFormComponent" class="ru.citeck.ecos.actions.codeinsight.GenerateEcosFormComponent"
+                text="Component" icon="Icons.CiteckLogo">
+            <add-to-group group-id="GenerateGroup"/>
+        </action>
+        <action id="GenerateEcosFormLocalization"
+                class="ru.citeck.ecos.actions.codeinsight.GenerateEcosFormLocalization" text="Localization"
+                icon="Icons.CiteckLogo">
+            <add-to-group group-id="GenerateGroup"/>
+        </action>
 
     </actions>
+
 </idea-plugin>
