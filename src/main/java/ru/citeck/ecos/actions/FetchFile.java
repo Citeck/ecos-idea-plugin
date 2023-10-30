@@ -4,6 +4,7 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.extensions.ExtensionPointName;
+import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.NotNull;
 import ru.citeck.ecos.files.FileFetcher;
@@ -17,6 +18,11 @@ public class FetchFile extends EcosAction {
 
     @Override
     protected void perform(@NotNull AnActionEvent event) {
+
+        Project project = event.getProject();
+        if (project == null) {
+            return;
+        }
 
         FileFetcher fetcher = getFetcher(event);
         if (fetcher == null) {
@@ -45,9 +51,9 @@ public class FetchFile extends EcosAction {
                 String result = fetcher.fetch(psiFile);
                 editor.getDocument().setText(result);
                 String message = String.format("File %s successfully fetched from %s", fileName, sourceName);
-                EcosMessages.info("File fetched", message, event.getProject());
+                EcosMessages.info("File fetched", message, project);
             } catch (Exception e) {
-                EcosMessages.error("File fetching error", e.getMessage(), event.getProject());
+                EcosMessages.error("File fetching error", e.getMessage(), project);
             }
         });
 

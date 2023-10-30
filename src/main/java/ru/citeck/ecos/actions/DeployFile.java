@@ -27,17 +27,30 @@ public class DeployFile extends EcosAction {
 
     @Override
     protected void perform(@NotNull AnActionEvent event) {
+
+        PsiFile psiFile = getPsiFile(event);
+        if (psiFile == null) {
+            return;
+        }
+        Project project = event.getProject();
+        if (project == null) {
+            return;
+        }
+
         List<FileDeployer> deployers = getDeployers(event);
         if (deployers.isEmpty()) {
             return;
         }
 
-        if (deployers.size() == 1) {
-            deploy(deployers.get(0), event);
+        Editor editor = event.getData(PlatformDataKeys.EDITOR);
+        if (editor == null) {
             return;
         }
 
-        PsiFile psiFile = getPsiFile(event);
+        if (deployers.size() == 1) {
+            deploy(deployers.get(0), psiFile, project, editor);
+            return;
+        }
 
         List<FileDeployerWrapper> wrappers = deployers
             .stream()
@@ -51,23 +64,19 @@ public class DeployFile extends EcosAction {
             .getInstance()
             .createPopupChooserBuilder(wrappers)
             .setTitle("Deploy to:")
-            .setItemChosenCallback(chosenDeployer -> deploy(chosenDeployer.fileDeployer, event))
+            .setItemChosenCallback(chosenDeployer -> deploy(chosenDeployer.fileDeployer, psiFile, project, editor))
             .setRequestFocus(true)
             .createPopup()
             .showInCenterOf(WindowManager.getInstance().getFrame(event.getProject()).getRootPane());
 
     }
 
-    private void deploy(FileDeployer deployer, AnActionEvent event) {
-
-        PsiFile psiFile = getPsiFile(event);
-        Project project = event.getProject();
+    private void deploy(FileDeployer deployer, @NotNull PsiFile psiFile, @NotNull Project project, @NotNull Editor editor) {
 
         Optional
-            .ofNullable(event.getData(PlatformDataKeys.EDITOR))
+            .of(editor)
             .map(Editor::getDocument)
             .ifPresent(document -> PsiDocumentManager.getInstance(project).commitDocument(document));
-
 
         String destinationName = deployer.getDestinationName(psiFile);
         String fileName = psiFile.getVirtualFile().getName();
