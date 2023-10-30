@@ -41,6 +41,7 @@ public class XmlBeanDefinitionIndexer implements EcosFileIndexer {
         Arrays.stream(rootTag.findSubTags("bean"))
             .filter(xmlTag ->
                 "bean".equals(xmlTag.getName()) &&
+                    xmlTag.getAttribute("parent") != null &&
                     JAVASCRIPT_EXTENSION_PARENTS.contains(xmlTag.getAttributeValue("parent"))
             ).forEach(xmlTag -> {
 
