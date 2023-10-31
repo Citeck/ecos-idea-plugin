@@ -31,9 +31,11 @@ public class XmlBeanDefinitions implements FileType {
 
     };
 
+    private static final FileFilter FILE_FILTER = new FilterAnd(FileExtensionFilter.XML, BEAN_DEFINITIONS_FILE_FILTER);
+
     @Override
     public FileFilter getFilter() {
-        return new FilterAnd(FileExtensionFilter.XML, BEAN_DEFINITIONS_FILE_FILTER);
+        return FILE_FILTER;
     }
 
 }

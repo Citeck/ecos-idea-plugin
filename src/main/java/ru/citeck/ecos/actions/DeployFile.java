@@ -43,9 +43,6 @@ public class DeployFile extends EcosAction {
         }
 
         Editor editor = event.getData(PlatformDataKeys.EDITOR);
-        if (editor == null) {
-            return;
-        }
 
         if (deployers.size() == 1) {
             deploy(deployers.get(0), psiFile, project, editor);
@@ -71,10 +68,10 @@ public class DeployFile extends EcosAction {
 
     }
 
-    private void deploy(FileDeployer deployer, @NotNull PsiFile psiFile, @NotNull Project project, @NotNull Editor editor) {
+    private void deploy(FileDeployer deployer, @NotNull PsiFile psiFile, @NotNull Project project, Editor editor) {
 
         Optional
-            .of(editor)
+            .ofNullable(editor)
             .map(Editor::getDocument)
             .ifPresent(document -> PsiDocumentManager.getInstance(project).commitDocument(document));
 
@@ -124,9 +121,6 @@ public class DeployFile extends EcosAction {
         }
 
         FileType fileType = resolveFileType(event);
-        if (fileType == null) {
-            return Collections.emptyList();
-        }
 
         return EP_NAME
             .extensions()

@@ -58,6 +58,7 @@
     <extensions defaultExtensionNs="ru.citeck.ecos">
 
         <fileType implementation="ru.citeck.ecos.files.types.AlfrescoModel"/>
+        <fileType implementation="ru.citeck.ecos.files.types.AlfrescoViewRepository"/>
         <fileType implementation="ru.citeck.ecos.files.types.Form"/>
         <fileType implementation="ru.citeck.ecos.files.types.Action"/>
         <fileType implementation="ru.citeck.ecos.files.types.CaseType"/>
@@ -76,6 +77,7 @@
         <fileDeployer implementation="ru.citeck.ecos.files.deployers.CmmnProcessDefinitionDeployer"/>
         <fileDeployer implementation="ru.citeck.ecos.files.deployers.TomcatFileDeployer"/>
         <fileDeployer implementation="ru.citeck.ecos.files.deployers.TomcatFileClipboardDeployer"/>
+        <fileDeployer implementation="ru.citeck.ecos.files.deployers.AlfrescoNodeDeployer"/>
 
         <fileFetcher implementation="ru.citeck.ecos.files.fetchers.EcosArtifactFetcher"/>
         <fileFetcher implementation="ru.citeck.ecos.files.fetchers.CmmnProcessDefinitionFetcher"/>
@@ -83,6 +85,7 @@
         <fileIndexer implementation="ru.citeck.ecos.index.indexers.EcosArtifactIndexer"/>
         <fileIndexer implementation="ru.citeck.ecos.index.indexers.CmmnIndexer"/>
         <fileIndexer implementation="ru.citeck.ecos.index.indexers.AlfrescoModelIndexer"/>
+        <fileIndexer implementation="ru.citeck.ecos.index.indexers.AlfrescoContentNodesIndexer"/>
         <fileIndexer implementation="ru.citeck.ecos.index.indexers.XmlBeanDefinitionIndexer"/>
         <fileIndexer implementation="ru.citeck.ecos.index.indexers.qname.AlfrescoQNameIndexer"/>
 
@@ -106,6 +109,7 @@
                 text="Deploy File" description="Deploy file" icon="AllIcons.Actions.Uninstall">
             <keyboard-shortcut keymap="$default" first-keystroke="control alt E" second-keystroke="D"/>
             <add-to-group group-id="EditorContextBarMenu" anchor="last"/>
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
         </action>
         <action id="ru.citeck.ecos.actions.FetchFile" class="ru.citeck.ecos.actions.FetchFile"
                 text="Fetch File" description="Fetch file" icon="AllIcons.Actions.Install">
