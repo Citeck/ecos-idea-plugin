@@ -59,6 +59,7 @@
 
         <fileType implementation="ru.citeck.ecos.files.types.AlfrescoModel"/>
         <fileType implementation="ru.citeck.ecos.files.types.AlfrescoViewRepository"/>
+        <fileType implementation="ru.citeck.ecos.files.types.AlfrescoConfig"/>
         <fileType implementation="ru.citeck.ecos.files.types.Form"/>
         <fileType implementation="ru.citeck.ecos.files.types.Action"/>
         <fileType implementation="ru.citeck.ecos.files.types.CaseType"/>
@@ -78,6 +79,7 @@
         <fileDeployer implementation="ru.citeck.ecos.files.deployers.TomcatFileDeployer"/>
         <fileDeployer implementation="ru.citeck.ecos.files.deployers.TomcatFileClipboardDeployer"/>
         <fileDeployer implementation="ru.citeck.ecos.files.deployers.AlfrescoNodeDeployer"/>
+        <fileDeployer implementation="ru.citeck.ecos.files.deployers.AlfrescoConfigDeployer"/>
 
         <fileFetcher implementation="ru.citeck.ecos.files.fetchers.EcosArtifactFetcher"/>
         <fileFetcher implementation="ru.citeck.ecos.files.fetchers.CmmnProcessDefinitionFetcher"/>

@@ -19,7 +19,7 @@ public class EcosRestApiService {
     private final static String MUTATE_RECORD_URL = "/share/api/records/mutate?k=recs_count_1_";
     private final static String QUERY_RECORD_URL = "/share/api/records/query?k=recs_count_1_";
     private final static String JS_CONSOLE_URL = "/share/proxy/alfresco/de/fme/jsconsole/execute";
-    private final static String DEVTOOLS_INVOKE = "/alfresco/service/devtools/invoke";
+    private final static String RESET_SHARE_INDEX = "/share/page/index?reset=on";
 
     private final String host = "http://localhost";
     private final String userName = "admin";
@@ -69,6 +69,10 @@ public class EcosRestApiService {
     }
 
     public JsonNode execute(String url, byte[] body, Integer timeout) throws Exception {
+        return execute(url, body, timeout, JsonNode.class);
+    }
+
+    public <T> T execute(String url, byte[] body, Integer timeout, Class<T> clazz) throws Exception {
 
         HttpURLConnection connection = (HttpURLConnection) new URL(host + url).openConnection();
         connection.setRequestMethod("POST");
@@ -104,7 +108,10 @@ public class EcosRestApiService {
             String response = new BufferedReader(
                 new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8)).lines().collect(Collectors.joining("\n")
             );
-            return objectMapper.readValue(response, JsonNode.class);
+            if (String.class.equals(clazz)) {
+                return clazz.cast(response);
+            }
+            return objectMapper.readValue(response, clazz);
         }
 
     }
@@ -187,20 +194,14 @@ public class EcosRestApiService {
 
     }
 
-    public JsonNode invoke(String className, String method, byte[] content) throws Exception {
-        Map<String, String> request = Map.of(
-            "className", className,
-            "method", method,
-            "content", Base64.getEncoder().encodeToString(content)
-        );
-        String json = objectMapper.writeValueAsString(request);
+    public void resetShareIndex() {
         try {
-            return execute(DEVTOOLS_INVOKE, json.getBytes(StandardCharsets.UTF_8), 60000);
+            execute(RESET_SHARE_INDEX, "{}".getBytes(), 60000, String.class);
         } catch (Exception ex) {
             try {
-                return objectMapper.readValue(ex.getMessage(), JsonNode.class);
+                objectMapper.readValue(ex.getMessage(), String.class);
             } catch (Exception parseException) {
-                throw new RuntimeException("Unable to invoke method<br>" + parseException.getMessage());
+                throw new RuntimeException("Unable to reset Share index<br>" + parseException.getMessage());
             }
         }
     }
