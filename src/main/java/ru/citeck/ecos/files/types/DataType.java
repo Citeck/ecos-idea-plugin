@@ -7,8 +7,11 @@ import ru.citeck.ecos.files.types.filters.FileFilter;
 import ru.citeck.ecos.files.types.filters.FilterAnd;
 import ru.citeck.ecos.files.types.filters.FolderNamePatternsFilter;
 
+import java.util.Collections;
+import java.util.List;
+
 @SearchScopeName("Data type")
-public class CaseType implements EcosArtifact {
+public class DataType implements EcosArtifact {
 
     public static final String SOURCE_ID = "emodel/types-repo";
 
@@ -25,5 +28,10 @@ public class CaseType implements EcosArtifact {
     @Override
     public String getSourceId() {
         return SOURCE_ID;
+    }
+
+    @Override
+    public List<String> getAdditionalReferences(String artifactId) {
+        return Collections.singletonList("emodel/type@" + artifactId);
     }
 }

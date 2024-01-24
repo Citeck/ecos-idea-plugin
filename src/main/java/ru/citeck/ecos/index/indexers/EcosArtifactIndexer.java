@@ -41,6 +41,10 @@ public class EcosArtifactIndexer implements EcosFileIndexer {
             .addReference(id, idPsiElement)
             .addSearchEverywhere(fullId, idPsiElement);
 
+        fileType
+            .getAdditionalReferences(id)
+            .forEach(reference -> indexes.addReference(reference, idPsiElement));
+
     }
 
 }

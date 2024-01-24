@@ -62,7 +62,7 @@
         <fileType implementation="ru.citeck.ecos.files.types.AlfrescoConfig"/>
         <fileType implementation="ru.citeck.ecos.files.types.Form"/>
         <fileType implementation="ru.citeck.ecos.files.types.Action"/>
-        <fileType implementation="ru.citeck.ecos.files.types.CaseType"/>
+        <fileType implementation="ru.citeck.ecos.files.types.DataType"/>
         <fileType implementation="ru.citeck.ecos.files.types.Config"/>
         <fileType implementation="ru.citeck.ecos.files.types.CmmnProcessDefinition"/>
         <fileType implementation="ru.citeck.ecos.files.types.Dashboard"/>
@@ -136,9 +136,9 @@
             <action id="ru.citeck.ecos.actions.NavigateInFileAction"
                     class="ru.citeck.ecos.actions.NavigateInFileAction"
                     text="Navigate in File"
-                    description="Navigate in File">
+                    description="Navigate in File" icon="AllIcons.CodeWithMe.CwmJump">
                 <keyboard-shortcut keymap="$default" first-keystroke="control alt E" second-keystroke="G"/>
-                <keyboard-shortcut keymap="$default" first-keystroke="control alt E" second-keystroke="F12"/>
+                <add-to-group group-id="EditorContextBarMenu" anchor="last"/>
             </action>
             <action id="Ecos.ExecuteAlfrescoJsFromScratch"
                     class="ru.citeck.ecos.actions.ExecuteAlfrescoJsFromScratch"

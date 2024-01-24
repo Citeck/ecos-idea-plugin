@@ -7,6 +7,9 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.impl.source.PsiFileImpl;
 
+import java.util.Collections;
+import java.util.List;
+
 public interface EcosArtifact extends FileType {
 
     String getSourceId();
@@ -32,6 +35,10 @@ public interface EcosArtifact extends FileType {
             return null;
         }
         return idProperty.getValue();
+    }
+
+    default List<String> getAdditionalReferences(String artifactId) {
+        return Collections.emptyList();
     }
 
 }

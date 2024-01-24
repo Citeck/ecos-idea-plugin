@@ -86,7 +86,7 @@ public class EcosRestApiService {
             Map.of(
                 "id", sourceId + "@" + id,
                 "attributes", Map.of(
-                    ".att(n:\"_content\"){as(n:\"content-data\"){json}}", List.of(
+                    ".att(n:\"_self\"){as(n:\"content-data\"){json}}", List.of(
                         Map.of(
                             "storage", "base64",
                             "type", mimeType,
