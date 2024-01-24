@@ -19,11 +19,11 @@ import java.util.stream.Collectors;
 @SearchScopeName("Form")
 public class Form implements EcosArtifact {
 
-    public static final String SOURCE_ID = "uiserv/eform";
+    public static final String SOURCE_ID = "uiserv/form";
 
     private final FilterAnd filter = new FilterAnd(
         FileExtensionFilter.JSON,
-        new FolderNamePatternsFilter("/ecos-forms/")
+        new FolderNamePatternsFilter("/ui/form/")
     );
 
     @Override

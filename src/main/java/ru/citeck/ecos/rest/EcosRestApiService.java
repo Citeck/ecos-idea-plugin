@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.*;
-import java.net.HttpCookie;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -14,58 +13,20 @@ import java.util.stream.Collectors;
 //TODO Refactoring
 public class EcosRestApiService {
 
-    private final static Set<String> AUTH_COOKIES = Set.of("JSESSIONID", "alfLogin", "alfUsername3");
-    private final static String AUTH_URL = "/share/page/dologin";
-    private final static String MUTATE_RECORD_URL = "/share/api/records/mutate?k=recs_count_1_";
-    private final static String QUERY_RECORD_URL = "/share/api/records/query?k=recs_count_1_";
+    private final static String MUTATE_RECORD_URL = "/gateway/api/records/mutate?k=recs_count_1_";
+    private final static String QUERY_RECORD_URL = "/gateway/api/records/query?k=recs_count_1_";
     private final static String JS_CONSOLE_URL = "/share/proxy/alfresco/de/fme/jsconsole/execute";
     private final static String RESET_SHARE_INDEX = "/share/page/index?reset=on";
 
     private final String host = "http://localhost";
     private final String userName = "admin";
     private final String password = "admin";
+    private final String authenticationProxyHeader = "X-ECOS-User";
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public String getHost() {
         return host;
-    }
-
-    public void authenticate(HttpURLConnection connection) throws Exception {
-
-        String auth = userName + ":" + password;
-        byte[] encodedAuth = Base64.getEncoder().encode(auth.getBytes());
-        connection.setRequestProperty("Authorization", "Basic " + new String(encodedAuth));
-
-        HttpURLConnection authConnection = (HttpURLConnection) new URL(host + AUTH_URL).openConnection();
-        authConnection.setRequestMethod("POST");
-        authConnection.setInstanceFollowRedirects(false);
-        authConnection.setRequestProperty("Host", host);
-        authConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-        authConnection.setConnectTimeout(3000);
-        authConnection.setReadTimeout(3000);
-
-
-        authConnection.setDoOutput(true);
-        OutputStream outputStream = new DataOutputStream(authConnection.getOutputStream());
-        outputStream.write(String.format("username=%s&password=%s", userName, password).getBytes(StandardCharsets.UTF_8));
-        outputStream.flush();
-        outputStream.close();
-
-        authConnection.getResponseCode();
-
-        String cookies = authConnection
-            .getHeaderFields()
-            .get("Set-Cookie")
-            .stream()
-            .map(HttpCookie::parse)
-            .flatMap(Collection::stream)
-            .filter(httpCookie -> AUTH_COOKIES.contains(httpCookie.getName()))
-            .map(HttpCookie::toString)
-            .collect(Collectors.joining(";"));
-
-        connection.setRequestProperty("Cookie", cookies);
-
     }
 
     public JsonNode execute(String url, byte[] body, Integer timeout) throws Exception {
@@ -74,9 +35,14 @@ public class EcosRestApiService {
 
     public <T> T execute(String url, byte[] body, Integer timeout, Class<T> clazz) throws Exception {
 
+        String auth = userName + ":" + password;
+        byte[] encodedAuth = Base64.getEncoder().encode(auth.getBytes());
+
         HttpURLConnection connection = (HttpURLConnection) new URL(host + url).openConnection();
         connection.setRequestMethod("POST");
         connection.setRequestProperty("Host", host);
+        connection.setRequestProperty("Authorization", "Basic " + new String(encodedAuth));
+        connection.setRequestProperty(authenticationProxyHeader, userName);
         connection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
         connection.setRequestProperty("Accept", "application/json; charset=utf-8");
         connection.setRequestProperty("Origin", host);
@@ -84,8 +50,6 @@ public class EcosRestApiService {
         if (timeout != null) {
             connection.setReadTimeout(timeout);
         }
-
-        authenticate(connection);
 
         if (body != null) {
             connection.setDoOutput(true);
@@ -120,7 +84,7 @@ public class EcosRestApiService {
 
         Map<String, Object> request = Map.of("records", List.of(
             Map.of(
-                "id", sourceId + "@",
+                "id", sourceId + "@" + id,
                 "attributes", Map.of(
                     ".att(n:\"_content\"){as(n:\"content-data\"){json}}", List.of(
                         Map.of(

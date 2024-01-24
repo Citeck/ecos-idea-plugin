@@ -7,10 +7,10 @@ import ru.citeck.ecos.files.types.filters.FileFilter;
 import ru.citeck.ecos.files.types.filters.FilterAnd;
 import ru.citeck.ecos.files.types.filters.FolderNamePatternsFilter;
 
-@SearchScopeName("Case type")
+@SearchScopeName("Data type")
 public class CaseType implements EcosArtifact {
 
-    public static final String SOURCE_ID = "emodel/type";
+    public static final String SOURCE_ID = "emodel/types-repo";
 
     private final FilterAnd filter = new FilterAnd(
         FileExtensionFilter.JSON,
