@@ -23,7 +23,7 @@ public class JournalItemsProvider implements NavigateInFileItemsProvider {
         return Journal
             .getColumns(psiFile)
             .stream()
-            .map(column -> new NavigateInFileItem(EcosPsiUtils.getProperty(column, "name"), column))
+            .map(column -> new NavigateInFileItem(EcosPsiUtils.getProperty(column, "id"), column))
             .collect(Collectors.toList());
 
     }
