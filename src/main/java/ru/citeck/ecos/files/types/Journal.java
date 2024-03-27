@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @SearchScopeName("Journal")
-public class Journal implements EcosArtifact {
+public class Journal implements BrowsableEcosArtifact {
 
     public static final String SOURCE_ID = "uiserv/journal";
 

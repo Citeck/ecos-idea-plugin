@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @SearchScopeName("Form")
-public class Form implements EcosArtifact {
+public class Form implements BrowsableEcosArtifact {
 
     public static final String SOURCE_ID = "uiserv/form";
 
