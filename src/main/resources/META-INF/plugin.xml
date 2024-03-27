@@ -64,6 +64,7 @@
         <fileType implementation="ru.citeck.ecos.files.types.Action"/>
         <fileType implementation="ru.citeck.ecos.files.types.DataType"/>
         <fileType implementation="ru.citeck.ecos.files.types.Config"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ModulePatch"/>
         <fileType implementation="ru.citeck.ecos.files.types.CmmnProcessDefinition"/>
         <fileType implementation="ru.citeck.ecos.files.types.Dashboard"/>
         <fileType implementation="ru.citeck.ecos.files.types.Journal"/>
