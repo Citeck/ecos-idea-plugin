@@ -1,0 +1,13 @@
+{
+  "id": "${NAME}",
+  "name": {
+    "ru": "",
+    "en": ""
+  },
+  "typeRef": "",
+  "actions": [
+  ],
+  "editable": false,
+  "columns": [
+  ]
+}

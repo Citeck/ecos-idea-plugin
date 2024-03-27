@@ -53,6 +53,9 @@
                         interface="ru.citeck.ecos.files.NavigateInFileItemsProvider"/>
         <extensionPoint name="psiElementValueResolver" interface="ru.citeck.ecos.references.PsiElementValueResolver"/>
         <extensionPoint name="completionProvider" interface="ru.citeck.ecos.completion.CompletionProvider"/>
+
+        <extensionPoint name="ecosArtifactTemplate" beanClass="ru.citeck.ecos.templates.files.EcosArtifactTemplate"/>
+
     </extensionPoints>
 
     <extensions defaultExtensionNs="ru.citeck.ecos">
@@ -105,9 +108,27 @@
 
         <completionProvider implementation="ru.citeck.ecos.completion.java.providers.QNamesCompletionProvider"/>
 
+        <!-- Templates located resources/fileTemplates/internal -->
+        <ecosArtifactTemplate template="ecos-form" path="/ui/form" kind="Form"/>
+        <ecosArtifactTemplate template="ecos-journal" path="/ui/journal" kind="Journal"/>
+        <ecosArtifactTemplate template="ecos-i18n" path="/ui/i18n" kind="I18n"/>
+
     </extensions>
 
     <actions>
+
+        <action id="ru.citeck.ecos.templates.files.CreateEcosArtifactFromTemplateAction.YAML"
+                class="ru.citeck.ecos.templates.files.CreateEcosArtifactFromTemplateAction$YAML"
+                icon="Icons.CiteckLogo">
+            <add-to-group group-id="NewGroup" anchor="first"/>
+        </action>
+
+        <action id="ru.citeck.ecos.templates.files.CreateEcosArtifactFromTemplateAction.JSON"
+                class="ru.citeck.ecos.templates.files.CreateEcosArtifactFromTemplateAction$JSON"
+                icon="Icons.CiteckLogo">
+            <add-to-group group-id="NewGroup" anchor="first"/>
+        </action>
+
         <action id="ru.citeck.ecos.actions.DeployFile" class="ru.citeck.ecos.actions.DeployFile"
                 text="Deploy File" description="Deploy file" icon="AllIcons.Actions.Uninstall">
             <keyboard-shortcut keymap="$default" first-keystroke="control alt E" second-keystroke="D"/>

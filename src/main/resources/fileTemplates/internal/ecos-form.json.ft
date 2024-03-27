@@ -1,0 +1,28 @@
+{
+  "id": "${NAME}",
+  "title": {
+    "en": "",
+    "ru": ""
+  },
+  "description": {
+    "en": "",
+    "ru": ""
+  },
+  "customModule": "",
+  "typeRef": "",
+  "width": "",
+  "system": false,
+  "i18n": {
+    "ru": {
+    },
+    "en": {
+    }
+  },
+  "definition": {
+    "components": [
+    ],
+    "formId": "${NAME}"
+  },
+  "attributes": {},
+  "notExists": false
+}

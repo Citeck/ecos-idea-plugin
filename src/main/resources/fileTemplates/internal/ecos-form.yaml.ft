@@ -1,0 +1,17 @@
+---
+id: "${NAME}"
+formKey: ""
+title: {}
+description: {}
+customModule: ""
+typeRef: ""
+width: ""
+system: false
+i18n:
+  ru: {}
+  en: {}
+definition:
+  components: []
+  formId: "${NAME}"
+attributes: {}
+notExists: false
