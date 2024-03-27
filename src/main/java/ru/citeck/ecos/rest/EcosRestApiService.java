@@ -2,6 +2,7 @@ package ru.citeck.ecos.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.NullNode;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -122,7 +123,6 @@ public class EcosRestApiService {
         );
         String json = objectMapper.writeValueAsString(request);
 
-
         try {
             return execute(QUERY_RECORD_URL + (sourceId != null ? sourceId.replace("@", "%2F") : ""), json.getBytes(StandardCharsets.UTF_8), 5000)
                 .get("records")
@@ -131,6 +131,10 @@ public class EcosRestApiService {
             throw new RuntimeException("Unable to get record " + sourceId + "@" + id + "<br>" + ex.getMessage());
         }
 
+    }
+
+    public boolean recordExists(String sourceId, String id) throws Exception {
+        return !(queryRecord(sourceId, id, List.of("?json")).get("attributes").get("?json") instanceof NullNode);
     }
 
 

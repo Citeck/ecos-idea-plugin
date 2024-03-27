@@ -7,6 +7,7 @@ import ru.citeck.ecos.ServiceRegistry;
 import ru.citeck.ecos.files.EcosArtifact;
 import ru.citeck.ecos.files.FileDeployer;
 import ru.citeck.ecos.files.FileType;
+import ru.citeck.ecos.rest.EcosRestApiService;
 
 public class EcosArtifactDeployer implements FileDeployer {
 
@@ -16,12 +17,18 @@ public class EcosArtifactDeployer implements FileDeployer {
         EcosArtifact fileType = (EcosArtifact) ServiceRegistry.getFileTypeService().getFileType(psiFile);
         VirtualFile vFile = psiFile.getVirtualFile();
 
-        ServiceRegistry.getEcosRestApiService().mutateRecord(
-            fileType.getSourceId(),
-            fileType.getId(psiFile),
-            "application/json",
-            vFile.getName(),
-            psiFile.getText().getBytes(vFile.getCharset())
+        String sourceId = fileType.getSourceId();
+        String id = fileType.getId(psiFile);
+
+        EcosRestApiService ecosRestApiService = ServiceRegistry.getEcosRestApiService();
+        boolean recordExists = ecosRestApiService.recordExists(sourceId, id);
+
+        ecosRestApiService.mutateRecord(
+                fileType.getSourceId(),
+                recordExists ? id : "",
+                "application/json",
+                vFile.getName(),
+                psiFile.getText().getBytes(vFile.getCharset())
         );
 
     }
