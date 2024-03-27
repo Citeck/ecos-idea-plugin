@@ -3,8 +3,10 @@ package ru.citeck.ecos.rest;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.NullNode;
+import com.intellij.openapi.util.text.StringUtil;
 
 import java.io.*;
+import java.net.HttpCookie;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -14,15 +16,20 @@ import java.util.stream.Collectors;
 //TODO Refactoring
 public class EcosRestApiService {
 
+    private final static String JSESSIONID = "JSESSIONID";
+
     private final static String MUTATE_RECORD_URL = "/gateway/api/records/mutate?k=recs_count_1_";
     private final static String QUERY_RECORD_URL = "/gateway/api/records/query?k=recs_count_1_";
     private final static String JS_CONSOLE_URL = "/share/proxy/alfresco/de/fme/jsconsole/execute";
     private final static String RESET_SHARE_INDEX = "/share/page/index?reset=on";
+    private final static String SHARE_INDEX = "/share/page/index";
 
     private final String host = "http://localhost";
     private final String userName = "admin";
     private final String password = "admin";
     private final String authenticationProxyHeader = "X-ECOS-User";
+
+    private String jSessionId = "";
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -48,6 +55,11 @@ public class EcosRestApiService {
         connection.setRequestProperty("Accept", "application/json; charset=utf-8");
         connection.setRequestProperty("Origin", host);
         connection.setConnectTimeout(3000);
+
+        if (!StringUtil.isEmpty(jSessionId)) {
+            connection.setRequestProperty("Cookie", jSessionId);
+        }
+
         if (timeout != null) {
             connection.setReadTimeout(timeout);
         }
@@ -61,13 +73,14 @@ public class EcosRestApiService {
         }
         connection.getResponseCode();
 
+        updateJSessionId(connection);
+
         InputStream errorStream = connection.getErrorStream();
 
         if (errorStream != null) {
             String error = new BufferedReader(new InputStreamReader(errorStream))
                 .lines()
                 .collect(Collectors.joining("\n"));
-            System.out.println(error);
             throw new RuntimeException(error);
         } else {
             String response = new BufferedReader(
@@ -79,6 +92,19 @@ public class EcosRestApiService {
             return objectMapper.readValue(response, clazz);
         }
 
+    }
+
+    private void updateJSessionId(HttpURLConnection connection) {
+        connection
+                .getHeaderFields()
+                .getOrDefault("Set-Cookie", Collections.emptyList())
+                .stream()
+                .map(HttpCookie::parse)
+                .flatMap(Collection::stream)
+                .filter(httpCookie -> JSESSIONID.equals(httpCookie.getName()))
+                .map(HttpCookie::toString)
+                .findFirst()
+                .ifPresent(cookie -> jSessionId = cookie);
     }
 
     public void mutateRecord(String sourceId, String id, String mimeType, String name, byte[] content) throws Exception {
@@ -163,13 +189,20 @@ public class EcosRestApiService {
     }
 
     public void resetShareIndex() {
+
+        //Do not remove, used for authentication on Alfresco Share
+        try {
+            execute(SHARE_INDEX, "{}".getBytes(), 60000, String.class);
+        } catch (Exception ignored) {
+        }
+
         try {
             execute(RESET_SHARE_INDEX, "{}".getBytes(), 60000, String.class);
         } catch (Exception ex) {
             try {
                 objectMapper.readValue(ex.getMessage(), String.class);
             } catch (Exception parseException) {
-                throw new RuntimeException("Unable to reset Share index<br>" + parseException.getMessage());
+                throw new RuntimeException("Unable to reset Share index<br>" + ex.getMessage());
             }
         }
     }
