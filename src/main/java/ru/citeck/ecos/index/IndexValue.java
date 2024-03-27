@@ -8,12 +8,14 @@ import com.intellij.psi.PsiManager;
 import com.intellij.psi.impl.source.xml.XmlTokenImpl;
 import com.intellij.psi.util.PsiUtil;
 import com.intellij.util.io.DataExternalizer;
+import icons.Icons;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import ru.citeck.ecos.utils.EcosVirtualFileUtils;
 
+import javax.swing.*;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
@@ -25,6 +27,11 @@ import java.util.Map;
 @RequiredArgsConstructor
 @EqualsAndHashCode
 public class IndexValue {
+
+    private static final Icon DEFAULT_ICON = Icons.CiteckLogo;
+    private static final Map<String, Icon> ICONS = Map.of(
+            "alfresco", Icons.AlfrescoLogo
+    );
 
     public static class Externalizer implements DataExternalizer<List<IndexValue>> {
 
@@ -106,6 +113,14 @@ public class IndexValue {
             return element.getParent();
         }
         return element;
+    }
+
+    public Icon getIcon() {
+        String icon = getProperty("icon");
+        if (icon != null) {
+            return ICONS.getOrDefault(icon, DEFAULT_ICON);
+        }
+        return DEFAULT_ICON;
     }
 
 }

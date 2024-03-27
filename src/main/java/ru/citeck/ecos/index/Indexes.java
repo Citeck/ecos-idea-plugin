@@ -8,6 +8,7 @@ import lombok.Data;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Indexes extends HashMap<IndexKey, List<IndexValue>> {
 
@@ -20,16 +21,27 @@ public class Indexes extends HashMap<IndexKey, List<IndexValue>> {
 
         private final VirtualFile virtualFile;
 
+        public FileIndexes addSearchEverywhere(String id, PsiElement psiElement, Map<String, String> properties) {
+            return add(IndexKey.SEARCH_EVERYWHERE, id, psiElement, properties);
+        }
         public FileIndexes addSearchEverywhere(String id, PsiElement psiElement) {
-            return add(IndexKey.SEARCH_EVERYWHERE, id, psiElement);
+            return add(IndexKey.SEARCH_EVERYWHERE, id, psiElement, null);
+        }
+
+        public FileIndexes addReference(String id, PsiElement psiElement,Map<String, String> properties) {
+            return add(new IndexKey(IndexKey.REFERENCE_TYPE, id), id, psiElement, properties);
         }
 
         public FileIndexes addReference(String id, PsiElement psiElement) {
-            return add(new IndexKey(IndexKey.REFERENCE_TYPE, id), id, psiElement);
+            return add(new IndexKey(IndexKey.REFERENCE_TYPE, id), id, psiElement, null);
+        }
+
+        public FileIndexes add(IndexKey key, String id, PsiElement psiElement, Map<String, String> properties) {
+            return add(key, createIndex(id, psiElement, properties));
         }
 
         public FileIndexes add(IndexKey key, String id, PsiElement psiElement) {
-            return add(key, createIndex(id, psiElement));
+            return add(key, createIndex(id, psiElement, null));
         }
 
         public FileIndexes add(IndexKey key, IndexValue indexValue) {
@@ -42,8 +54,16 @@ public class Indexes extends HashMap<IndexKey, List<IndexValue>> {
             return this;
         }
 
+        public IndexValue createIndex(String id, PsiElement psiElement, Map<String, String> properties) {
+            IndexValue indexValue = new IndexValue(id, psiElement.getTextOffset(), virtualFile.getPath());
+            if (properties != null) {
+                properties.forEach(indexValue::setProperty);
+            }
+            return indexValue;
+        }
+
         public IndexValue createIndex(String id, PsiElement psiElement) {
-            return new IndexValue(id, psiElement.getTextOffset(), virtualFile.getPath());
+            return createIndex(id, psiElement, null);
         }
 
     }

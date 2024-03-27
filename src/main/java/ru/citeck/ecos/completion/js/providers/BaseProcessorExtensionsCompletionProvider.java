@@ -39,7 +39,7 @@ public class BaseProcessorExtensionsCompletionProvider implements JsCompletionPr
                 LookupElementBuilder
                     .create(indexValue.getId())
                     .withTypeText(indexValue.getProperty("class"))
-                    .withIcon(Icons.CiteckLogo)
+                    .withIcon(indexValue.getIcon())
             ));
 
     }

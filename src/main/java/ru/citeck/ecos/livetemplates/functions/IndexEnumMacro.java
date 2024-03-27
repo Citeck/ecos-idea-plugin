@@ -17,10 +17,6 @@ import java.util.List;
 
 public abstract class IndexEnumMacro extends EnumMacro {
 
-    public Icon getIcon() {
-        return Icons.CiteckLogo;
-    }
-
     abstract public List<IndexKey> getIndexKeys();
 
     @Override
@@ -45,7 +41,7 @@ public abstract class IndexEnumMacro extends EnumMacro {
                 .stream(key)
                 .map(indexValue -> LookupElementBuilder
                     .create(indexValue.getId())
-                    .withIcon(getIcon())
+                    .withIcon(indexValue.getIcon())
                     .withTypeText(key.getType())
                 )
             )

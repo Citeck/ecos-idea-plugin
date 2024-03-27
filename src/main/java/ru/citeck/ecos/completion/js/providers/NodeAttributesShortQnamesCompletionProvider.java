@@ -68,7 +68,7 @@ public class NodeAttributesShortQnamesCompletionProvider implements JsCompletion
             .forEach(indexValue -> result.addElement(
                 LookupElementBuilder
                     .create(indexValue.getId())
-                    .withIcon(Icons.CiteckLogo)
+                    .withIcon(indexValue.getIcon())
             ));
 
     }

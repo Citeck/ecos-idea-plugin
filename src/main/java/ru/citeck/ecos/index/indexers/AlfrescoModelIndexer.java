@@ -17,6 +17,7 @@ import ru.citeck.ecos.index.Indexes;
 import ru.citeck.ecos.utils.EcosVirtualFileUtils;
 
 import java.util.Arrays;
+import java.util.Map;
 import java.util.function.BiConsumer;
 
 public class AlfrescoModelIndexer implements EcosFileIndexer {
@@ -29,6 +30,8 @@ public class AlfrescoModelIndexer implements EcosFileIndexer {
     public static final String ASSOCIATION = "alfresco/association";
     public static final String CHILD_ASSOCIATION = "alfresco/child-association";
     public static final String CONSTRAINT = "alfresco/aspect";
+
+    private static final Map<String, String> ICON_PROPERTIES = Map.of("icon", "alfresco");
 
     @Override
     public boolean accept(FileType fileType) {
@@ -58,7 +61,7 @@ public class AlfrescoModelIndexer implements EcosFileIndexer {
 
         String name = rootTag.getAttributeValue("name");
         if (name != null) {
-            indexes.addSearchEverywhere(MODEL + "@" + name, rootTag);
+            indexes.addSearchEverywhere(MODEL + "@" + name, rootTag, ICON_PROPERTIES);
         }
 
         mapNamespaces(rootTag, indexes);
@@ -75,8 +78,8 @@ public class AlfrescoModelIndexer implements EcosFileIndexer {
                 return;
             }
             indexes
-                .addSearchEverywhere(CONSTRAINT + "@" + name, tag)
-                .addReference(name, tag);
+                .addSearchEverywhere(CONSTRAINT + "@" + name, tag, ICON_PROPERTIES)
+                .addReference(name, tag, ICON_PROPERTIES);
         });
     }
 
@@ -87,9 +90,9 @@ public class AlfrescoModelIndexer implements EcosFileIndexer {
                 return;
             }
             indexes
-                .addSearchEverywhere(ASPECT + "@" + name, tag)
-                .addReference(name, tag)
-                .add(new IndexKey(ASPECT), indexes.createIndex(name, tag));
+                .addSearchEverywhere(ASPECT + "@" + name, tag, ICON_PROPERTIES)
+                .addReference(name, tag, ICON_PROPERTIES)
+                .add(new IndexKey(ASPECT), indexes.createIndex(name, tag, ICON_PROPERTIES));
 
             mapProperties(tag, indexes);
             mapAssociations(tag, indexes);
@@ -108,14 +111,14 @@ public class AlfrescoModelIndexer implements EcosFileIndexer {
             }
 
             IndexValue indexValue = indexes
-                .createIndex(prefix, tag)
+                .createIndex(prefix, tag, ICON_PROPERTIES)
                 .setProperty("prefix", prefix)
                 .setProperty("uri", uri);
 
             indexes
-                .addSearchEverywhere(NAMESPACE + "@" + prefix, tag)
-                .addSearchEverywhere(NAMESPACE + "@" + uri, tag)
-                .addReference(uri, tag)
+                .addSearchEverywhere(NAMESPACE + "@" + prefix, tag, ICON_PROPERTIES)
+                .addSearchEverywhere(NAMESPACE + "@" + uri, tag, ICON_PROPERTIES)
+                .addReference(uri, tag, ICON_PROPERTIES)
                 .add(new IndexKey(NAMESPACE), indexValue)
                 .add(new IndexKey(NAMESPACE, uri), indexValue);
 
@@ -129,11 +132,11 @@ public class AlfrescoModelIndexer implements EcosFileIndexer {
                 return;
             }
             indexes
-                .addSearchEverywhere(TYPE + "@" + name, tag)
-                .addReference(name, tag)
-                .addReference("dict@" + name, tag)
-                .addReference("alf_" + name, tag)
-                .add(new IndexKey(TYPE), indexes.createIndex(name, tag));
+                .addSearchEverywhere(TYPE + "@" + name, tag, ICON_PROPERTIES)
+                .addReference(name, tag, ICON_PROPERTIES)
+                .addReference("dict@" + name, tag, ICON_PROPERTIES)
+                .addReference("alf_" + name, tag, ICON_PROPERTIES)
+                .add(new IndexKey(TYPE), indexes.createIndex(name, tag, ICON_PROPERTIES));
 
             mapProperties(tag, indexes);
             mapAssociations(tag, indexes);
@@ -147,10 +150,10 @@ public class AlfrescoModelIndexer implements EcosFileIndexer {
                 return;
             }
             indexes
-                .addSearchEverywhere(PROPERTY + "@" + name, tag)
-                .addReference(name, tag)
-                .addReference("_ECM_" + name, tag)
-                .add(new IndexKey(PROPERTY), indexes.createIndex(name, tag));
+                .addSearchEverywhere(PROPERTY + "@" + name, tag, ICON_PROPERTIES)
+                .addReference(name, tag, ICON_PROPERTIES)
+                .addReference("_ECM_" + name, tag, ICON_PROPERTIES)
+                .add(new IndexKey(PROPERTY), indexes.createIndex(name, tag, ICON_PROPERTIES));
         });
     }
 
@@ -162,10 +165,10 @@ public class AlfrescoModelIndexer implements EcosFileIndexer {
                 return;
             }
             indexes
-                .addSearchEverywhere(type + "@" + name, tag)
-                .addReference(name, tag)
-                .addReference("_ECM_" + name, tag)
-                .add(new IndexKey(type), indexes.createIndex(name, tag));
+                .addSearchEverywhere(type + "@" + name, tag, ICON_PROPERTIES)
+                .addReference(name, tag, ICON_PROPERTIES)
+                .addReference("_ECM_" + name, tag, ICON_PROPERTIES)
+                .add(new IndexKey(type), indexes.createIndex(name, tag, ICON_PROPERTIES));
         };
 
         map(parentTag, "associations", "association", tag -> assocMapper.accept(tag, ASSOCIATION));

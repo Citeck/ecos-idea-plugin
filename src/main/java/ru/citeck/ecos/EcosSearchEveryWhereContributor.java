@@ -39,7 +39,7 @@ public class EcosSearchEveryWhereContributor implements SearchEverywhereContribu
         @Override
         protected void customizeCellRenderer(@NotNull JList<? extends IndexValue> list, IndexValue value, int index, boolean selected, boolean hasFocus) {
             setPaintFocusBorder(false);
-            setIcon(Icons.CiteckLogo);
+            setIcon(value.getIcon());
             setFont(list.getFont());
             append(value.getId() + "\t", new SimpleTextAttributes(SimpleTextAttributes.STYLE_PLAIN, list.getForeground()));
         }
