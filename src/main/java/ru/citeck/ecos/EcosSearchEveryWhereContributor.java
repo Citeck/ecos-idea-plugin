@@ -2,6 +2,7 @@ package ru.citeck.ecos;
 
 import com.intellij.ide.actions.searcheverywhere.SearchEverywhereContributor;
 import com.intellij.ide.actions.searcheverywhere.SearchEverywhereContributorFactory;
+import com.intellij.jarRepository.JarRepositoryManager;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.application.ApplicationManager;
@@ -9,14 +10,18 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.ScrollType;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.fileEditor.OpenFileDescriptor;
+import com.intellij.openapi.module.Module;
+import com.intellij.openapi.module.ModuleUtil;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.project.DumbService;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.JarFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.codeStyle.MinusculeMatcher;
 import com.intellij.psi.codeStyle.NameUtil;
 import com.intellij.ui.ColoredListCellRenderer;
 import com.intellij.ui.SimpleTextAttributes;
+import com.intellij.ui.components.JBLabel;
 import com.intellij.util.Processor;
 import icons.Icons;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +33,10 @@ import ru.citeck.ecos.index.IndexValue;
 import ru.citeck.ecos.utils.EcosVirtualFileUtils;
 
 import javax.swing.*;
+import java.awt.*;
+import java.util.Arrays;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 public class EcosSearchEveryWhereContributor implements SearchEverywhereContributor<IndexValue> {
@@ -41,10 +50,34 @@ public class EcosSearchEveryWhereContributor implements SearchEverywhereContribu
             setPaintFocusBorder(false);
             setIcon(value.getIcon());
             setFont(list.getFont());
-            append(value.getId() + "\t", new SimpleTextAttributes(SimpleTextAttributes.STYLE_PLAIN, list.getForeground()));
+            append(value.getId(), new SimpleTextAttributes(SimpleTextAttributes.STYLE_PLAIN, list.getForeground()), true);
+
+            getJarName(value).or(() -> getModuleName(value))
+                    .ifPresent(s -> append(" " + s, SimpleTextAttributes.GRAY_SMALL_ATTRIBUTES));
+
         }
 
     };
+
+    private Optional<String> getJarName(IndexValue indexValue) {
+        return Optional
+                .ofNullable(indexValue.getFile())
+                .filter(fileName -> fileName.contains("!"))
+                .map(fileName -> fileName.split("!"))
+                .stream()
+                .flatMap(Arrays::stream)
+                .filter(s -> s.toLowerCase().endsWith(".jar"))
+                .findFirst()
+                .map(EcosVirtualFileUtils::getFileByPath)
+                .map(VirtualFile::getName);
+    }
+
+    private Optional<String> getModuleName(IndexValue indexValue) {
+        return Optional
+                .ofNullable(EcosVirtualFileUtils.getFileByPath(indexValue.getFile()))
+                .map(virtualFile -> ModuleUtil.findModuleForFile(virtualFile, project))
+                .map(Module::getName);
+    }
 
     @Override
     public boolean isShownInSeparateTab() {
@@ -99,15 +132,15 @@ public class EcosSearchEveryWhereContributor implements SearchEverywhereContribu
             return;
         }
         ApplicationManager
-            .getApplication()
-            .runReadAction(() -> {
-                MinusculeMatcher matcher = NameUtil.buildMatcher("*" + pattern).build();
-                ServiceRegistry
-                    .getIndexesService(project)
-                    .stream(IndexKey.SEARCH_EVERYWHERE)
-                    .filter(indexValue -> matcher.matches(indexValue.getId()))
-                    .forEach(consumer::process);
-            });
+                .getApplication()
+                .runReadAction(() -> {
+                    MinusculeMatcher matcher = NameUtil.buildMatcher("*" + pattern).build();
+                    ServiceRegistry
+                            .getIndexesService(project)
+                            .stream(IndexKey.SEARCH_EVERYWHERE)
+                            .filter(indexValue -> matcher.matches(indexValue.getId()))
+                            .forEach(consumer::process);
+                });
     }
 
     @Override
