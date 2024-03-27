@@ -5,30 +5,20 @@ import com.intellij.json.psi.JsonObject;
 import com.intellij.json.psi.JsonProperty;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.util.PsiTreeUtil;
-import ru.citeck.ecos.files.EcosArtifact;
+import ru.citeck.ecos.files.AbstractEcosArtifact;
 import ru.citeck.ecos.files.SearchScopeName;
-import ru.citeck.ecos.files.types.filters.FileExtensionFilter;
-import ru.citeck.ecos.files.types.filters.FileFilter;
-import ru.citeck.ecos.files.types.filters.FilterAnd;
-import ru.citeck.ecos.files.types.filters.FolderNamePatternsFilter;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @SearchScopeName("Form")
-public class Form implements BrowsableEcosArtifact {
+public class Form extends AbstractEcosArtifact implements BrowsableEcosArtifact {
 
     public static final String SOURCE_ID = "uiserv/form";
 
-    private final FilterAnd filter = new FilterAnd(
-        FileExtensionFilter.JSON,
-        new FolderNamePatternsFilter("/ui/form/")
-    );
-
-    @Override
-    public FileFilter getFilter() {
-        return filter;
+    public Form() {
+        super("/ui/form/");
     }
 
     @Override

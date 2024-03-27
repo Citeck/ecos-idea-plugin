@@ -13,13 +13,14 @@ repositories {
 dependencies {
     compileOnly("org.projectlombok:lombok:1.18.28")
     annotationProcessor("org.projectlombok:lombok:1.18.28")
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.17.0")
 }
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
     version.set("2020.2.4")
     type.set("IU") // Target IDE Platform
-    plugins.set(listOf("com.intellij.java", "JavaScript"))
+    plugins.set(listOf("com.intellij.java", "JavaScript", "org.jetbrains.plugins.yaml"))
 }
 
 

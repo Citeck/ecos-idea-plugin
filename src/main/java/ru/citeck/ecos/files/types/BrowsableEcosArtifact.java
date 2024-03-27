@@ -2,10 +2,10 @@ package ru.citeck.ecos.files.types;
 
 import com.intellij.psi.PsiFile;
 import ru.citeck.ecos.ServiceRegistry;
-import ru.citeck.ecos.files.Browsable;
+import ru.citeck.ecos.files.BrowsableArtifact;
 import ru.citeck.ecos.files.EcosArtifact;
 
-public interface BrowsableEcosArtifact extends EcosArtifact, Browsable {
+public interface BrowsableEcosArtifact extends EcosArtifact, BrowsableArtifact {
 
     @Override
     default String getURL(PsiFile psiFile) {

@@ -2,29 +2,20 @@ package ru.citeck.ecos.files.types;
 
 import com.intellij.json.psi.*;
 import com.intellij.psi.PsiFile;
-import ru.citeck.ecos.files.EcosArtifact;
+import ru.citeck.ecos.files.AbstractEcosArtifact;
 import ru.citeck.ecos.files.SearchScopeName;
-import ru.citeck.ecos.files.types.filters.FileExtensionFilter;
-import ru.citeck.ecos.files.types.filters.FileFilter;
-import ru.citeck.ecos.files.types.filters.FilterAnd;
-import ru.citeck.ecos.files.types.filters.FolderNamePatternsFilter;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @SearchScopeName("Journal")
-public class Journal implements BrowsableEcosArtifact {
+public class Journal extends AbstractEcosArtifact implements BrowsableEcosArtifact {
 
     public static final String SOURCE_ID = "uiserv/journal";
 
-    private final FilterAnd filter = new FilterAnd(
-        FileExtensionFilter.JSON,
-        new FolderNamePatternsFilter("/ui/journal/")
-    );
-
-    @Override
-    public FileFilter getFilter() {
-        return filter;
+    public Journal() {
+        super("/ui/journal/");
     }
 
     @Override
@@ -33,6 +24,10 @@ public class Journal implements BrowsableEcosArtifact {
     }
 
     public static List<JsonObject> getColumns(PsiFile psiFile) {
+
+        if (!(psiFile instanceof JsonFile)) {
+            return Collections.emptyList();
+        }
 
         JsonFile jsonFile = (JsonFile) psiFile;
         JsonValue root = jsonFile.getTopLevelValue();
@@ -46,12 +41,11 @@ public class Journal implements BrowsableEcosArtifact {
         }
 
         return ((JsonArray) columns.getValue())
-            .getValueList()
-            .stream()
-            .filter(column -> column instanceof JsonObject)
-            .map(column -> (JsonObject) column)
-            .collect(Collectors.toList());
-
+                .getValueList()
+                .stream()
+                .filter(column -> column instanceof JsonObject)
+                .map(column -> (JsonObject) column)
+                .collect(Collectors.toList());
     }
 
 }

@@ -10,6 +10,10 @@ public class FileExtensionFilter implements FileFilter {
     public static final FileFilter XML = new FileExtensionFilter("xml");
     public static final FileFilter FTL = new FileExtensionFilter("ftl");
     public static final FileFilter JAVA = new FileExtensionFilter("java");
+    public static final FileFilter YAML = new FilterOr(
+            new FileExtensionFilter("yml"),
+            new FileExtensionFilter("yaml")
+    );
 
 
     private final String extension;

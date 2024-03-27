@@ -2,7 +2,7 @@ package ru.citeck.ecos.files;
 
 import com.intellij.psi.PsiFile;
 
-public interface Browsable {
+public interface BrowsableArtifact {
 
     String getURL(PsiFile psiFile);
 
