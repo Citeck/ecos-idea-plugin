@@ -142,6 +142,7 @@
         <psiElementValueResolver
                 implementation="ru.citeck.ecos.references.resolvers.PsiLiteralExpressionValueResolver"/>
         <psiElementValueResolver implementation="ru.citeck.ecos.references.resolvers.JsonStringLiteralValueResolver"/>
+        <psiElementValueResolver implementation="ru.citeck.ecos.references.resolvers.YAMLScalarValueResolver"/>
         <psiElementValueResolver implementation="ru.citeck.ecos.references.resolvers.XmlAttributeValueValueResolver"/>
         <psiElementValueResolver implementation="ru.citeck.ecos.references.resolvers.XmlTagValueResolver"/>
 
