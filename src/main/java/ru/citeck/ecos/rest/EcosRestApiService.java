@@ -103,13 +103,13 @@ public class EcosRestApiService {
                 .ifPresent(cookie -> jSessionId = cookie);
     }
 
-    public void mutateRecord(String sourceId, String id, String mimeType, String name, byte[] content) throws Exception {
+    public void mutateRecord(String sourceId, String id, String mimeType, String name, byte[] content, String mutationAttribute) throws Exception {
 
         Map<String, Object> request = Map.of("records", List.of(
                 Map.of(
                         "id", sourceId + "@" + id,
                         "attributes", Map.of(
-                                ".att(n:\"_self\"){as(n:\"content-data\"){json}}", List.of(
+                                ".att(n:\"" + mutationAttribute + "\"){as(n:\"content-data\"){json}}", List.of(
                                         Map.of(
                                                 "storage", "base64",
                                                 "type", mimeType,
@@ -156,7 +156,7 @@ public class EcosRestApiService {
     }
 
     public boolean recordExists(String sourceId, String id) throws Exception {
-        return !(queryRecord(sourceId, id, List.of("?json")).get("attributes").get("?json") instanceof NullNode);
+        return !(queryRecord(sourceId, id, List.of("_created?str")).get("attributes").get("_created?str") instanceof NullNode);
     }
 
 
