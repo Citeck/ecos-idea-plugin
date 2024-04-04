@@ -1,5 +1,6 @@
 package ru.citeck.ecos.actions;
 
+import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
@@ -15,6 +16,11 @@ public abstract class EcosAction extends AnAction {
     @Override
     public void update(@NotNull AnActionEvent event) {
         event.getPresentation().setVisible(canPerform(event));
+    }
+
+    @Override
+    public @NotNull ActionUpdateThread getActionUpdateThread() {
+        return ActionUpdateThread.BGT;
     }
 
     protected abstract void perform(@NotNull AnActionEvent event);

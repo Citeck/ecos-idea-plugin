@@ -1,6 +1,5 @@
 package ru.citeck.ecos.index.indexers;
 
-import a.a.s;
 import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.module.ModuleUtil;
 import com.intellij.openapi.project.Project;

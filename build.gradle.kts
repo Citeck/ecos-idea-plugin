@@ -1,5 +1,5 @@
 plugins {
-    id("org.jetbrains.intellij") version "1.14.2"
+    id("org.jetbrains.intellij") version "1.17.2"
     java
 }
 
@@ -18,7 +18,7 @@ dependencies {
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
-    version.set("2020.2.4")
+    version.set("2023.3.6")
     type.set("IU") // Target IDE Platform
     plugins.set(listOf("com.intellij.java", "JavaScript", "org.jetbrains.plugins.yaml", "org.jetbrains.idea.maven"))
 }
@@ -27,12 +27,12 @@ intellij {
 tasks {
     // Set the JVM compatibility versions
     withType<JavaCompile> {
-        sourceCompatibility = "11"
-        targetCompatibility = "11"
+        sourceCompatibility = "17"
+        targetCompatibility = "17"
     }
 
     patchPluginXml {
-        sinceBuild.set("202")
+        sinceBuild.set("233")
         untilBuild.set("250.*")
     }
 

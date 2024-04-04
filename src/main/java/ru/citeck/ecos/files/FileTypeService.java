@@ -41,6 +41,9 @@ public class FileTypeService {
     }
 
     public FileType getFileType(PsiFile psiFile) {
+        if (psiFile == null) {
+            return null;
+        }
         return getFileType(psiFile.getVirtualFile(), psiFile.getProject());
     }
 
