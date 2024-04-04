@@ -80,10 +80,7 @@ public class DeployFile extends EcosAction {
         String destinationName = deployer.getDestinationName(psiFile);
         String fileName = psiFile.getVirtualFile().getName();
 
-        if (!EcosMessages.confirm(
-                "Deploy file",
-                String.format("Deploy %s to %s?", fileName, destinationName))
-        ) {
+        if (!EcosMessages.confirm("Deploy file", String.format("Deploy %s to %s?", fileName, destinationName), project)) {
             return;
         }
 

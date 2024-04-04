@@ -45,6 +45,8 @@
         <liveTemplateMacro
                 implementation="ru.citeck.ecos.livetemplates.functions.alfresco.AlfrescoChildAssociationEnumMacro"/>
 
+        <notificationGroup id="ECOS" displayType="BALLOON"/>
+
     </extensions>
 
     <extensionPoints>

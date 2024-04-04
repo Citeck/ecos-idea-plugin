@@ -38,7 +38,7 @@ public class FetchFile extends EcosAction {
         String fileName = psiFile.getVirtualFile().getName();
         String sourceName = fetcher.getSourceName(psiFile);
 
-        if (!EcosMessages.confirm("Fetch file", String.format("Fetch %s from %s?", fileName, sourceName))) {
+        if (!EcosMessages.confirm("Fetch file", String.format("Fetch %s from %s?", fileName, sourceName), project)) {
             return;
         }
 
