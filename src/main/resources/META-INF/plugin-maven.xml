@@ -1,0 +1,20 @@
+<idea-plugin>
+    <id>ru.citeck.ecos</id>
+    <vendor/>
+
+    <extensionPoints>
+        <extensionPoint name="ecosMavenArchetype" beanClass="ru.citeck.ecos.templates.project.EcosMavenArchetype"/>
+    </extensionPoints>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <moduleBuilder builderClass="ru.citeck.ecos.templates.project.EcosModuleBuilder"/>
+    </extensions>
+
+    <extensions defaultExtensionNs="ru.citeck.ecos">
+        <ecosMavenArchetype displayName="Ecos Microservice" groupId="ru.citeck.ecos"
+                            artifactId="ecos-webapp-archetype" version="LATEST" repository="" description=""/>
+        <ecosMavenArchetype displayName="Ecos Application" groupId="ru.citeck.ecos"
+                            artifactId="ecos-application-archetype" version="LATEST" repository="" description=""/>
+    </extensions>
+
+</idea-plugin>

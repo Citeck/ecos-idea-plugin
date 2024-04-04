@@ -20,7 +20,7 @@ dependencies {
 intellij {
     version.set("2020.2.4")
     type.set("IU") // Target IDE Platform
-    plugins.set(listOf("com.intellij.java", "JavaScript", "org.jetbrains.plugins.yaml"))
+    plugins.set(listOf("com.intellij.java", "JavaScript", "org.jetbrains.plugins.yaml", "org.jetbrains.idea.maven"))
 }
 
 
