@@ -20,7 +20,7 @@ public class EcosArtifactFetcher implements FileFetcher {
 
         JsonNode json = ServiceRegistry
                 .getEcosRestApiService()
-                .queryRecord(fileType.getSourceId(), id, List.of(fileType.getContentAttribute(), "typeRef?id", ".id", "permissions"))
+                .queryRecord(fileType.getSourceId(), id, List.of(fileType.getContentAttribute()))
                 .get("attributes")
                 .get(fileType.getContentAttribute());
 
