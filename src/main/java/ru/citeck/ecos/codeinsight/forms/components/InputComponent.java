@@ -1,28 +1,20 @@
 package ru.citeck.ecos.codeinsight.forms.components;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.Setter;
 import ru.citeck.ecos.codeinsight.forms.Properties;
 
 import java.util.Set;
 
+@Getter
 public abstract class InputComponent extends Component {
 
-    private Boolean optionalWhenDisabled = false;
-    private Boolean clearOnHide = false;
-    private Properties properties = new Properties();
+    private final Boolean optionalWhenDisabled = false;
+    private final Boolean clearOnHide = false;
+    private final Properties properties = new Properties();
+    @Setter
     private Boolean disableInlineEdit = true;
-
-    public Boolean getOptionalWhenDisabled() {
-        return optionalWhenDisabled;
-    }
-
-    public Boolean getClearOnHide() {
-        return clearOnHide;
-    }
-
-    public Properties getProperties() {
-        return properties;
-    }
 
     @Override
     boolean getInput() {
@@ -31,13 +23,5 @@ public abstract class InputComponent extends Component {
 
     @JsonIgnore
     public abstract Set<String> getSupportedArtifactTypes();
-
-    public Boolean getDisableInlineEdit() {
-        return disableInlineEdit;
-    }
-
-    public void setDisableInlineEdit(Boolean disableInlineEdit) {
-        this.disableInlineEdit = disableInlineEdit;
-    }
 
 }

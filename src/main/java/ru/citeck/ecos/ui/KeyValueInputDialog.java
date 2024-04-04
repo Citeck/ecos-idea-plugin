@@ -22,9 +22,9 @@ public class KeyValueInputDialog extends DialogWrapper {
     @Override
     protected @Nullable JComponent createCenterPanel() {
         return ToolbarDecorator
-            .createDecorator(table)
-            .setMinimumSize(new Dimension(600, 800))
-            .createPanel();
+                .createDecorator(table)
+                .setMinimumSize(new Dimension(600, 800))
+                .createPanel();
     }
 
     @Override

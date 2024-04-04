@@ -29,7 +29,7 @@ public class QNameService {
     public QNameService(Project project) {
         this.project = project;
         qnamesGist = GistManager.getInstance().newPsiFileGist(
-            "ru.citeck.plugin.ecos.indexes.qnames.QName-" + project.getLocationHash(), 1, new QNameListExternalizer(), this::findQNames
+                "ru.citeck.plugin.ecos.indexes.qnames.QName-" + project.getLocationHash(), 1, new QNameListExternalizer(), this::findQNames
         );
     }
 
@@ -40,98 +40,98 @@ public class QNameService {
         Map<String, String> prefixesMap = new HashMap<>();
 
         PsiTreeUtil.findChildrenOfType(psiFile, PsiField.class)
-            .stream()
-            .filter(t -> t.getText().contains("QName.createQName"))
-            .forEach(psiField -> {
-                PsiMethodCallExpression psiMethodCallExpression = PsiTreeUtil.findChildOfType(psiField, PsiMethodCallExpression.class);
-                if (psiMethodCallExpression == null) {
-                    return;
-                }
-                PsiReferenceExpression methodExpression = psiMethodCallExpression.getMethodExpression();
-                if (!"QName.createQName".equals(methodExpression.getText())) {
-                    return;
-                }
-                PsiExpression[] argExpressions = psiMethodCallExpression.getArgumentList().getExpressions();
-                if (argExpressions == null || argExpressions.length != 2) {
-                    return;
-                }
-
-                PsiModifierList psiModifierList = PsiTreeUtil.findChildOfType(psiField, PsiModifierList.class);
-                if (psiModifierList == null) {
-                    return;
-                }
-
-                if (!(psiModifierList.hasModifierProperty(PsiModifier.PUBLIC) &&
-                    psiModifierList.hasModifierProperty(PsiModifier.STATIC) &&
-                    psiModifierList.hasModifierProperty(PsiModifier.FINAL))) {
-                    return;
-                }
-
-                String uri = resolveValue(argExpressions[0]);
-                if (uri == null) {
-                    return;
-                }
-                String localName = resolveValue(argExpressions[1]);
-                if (localName == null) {
-                    return;
-                }
-
-                if (!prefixesMap.containsKey(uri)) {
-                    List<IndexValue> namespaces = ServiceRegistry
-                        .getIndexesService(project)
-                        .list(new IndexKey(AlfrescoModelIndexer.NAMESPACE, uri));
-
-                    if (namespaces.size() != 0) {
-                        prefixesMap.put(uri, namespaces.get(0).getProperty("prefix"));
-                    } else {
-                        prefixesMap.put(uri, null);
+                .stream()
+                .filter(t -> t.getText().contains("QName.createQName"))
+                .forEach(psiField -> {
+                    PsiMethodCallExpression psiMethodCallExpression = PsiTreeUtil.findChildOfType(psiField, PsiMethodCallExpression.class);
+                    if (psiMethodCallExpression == null) {
+                        return;
                     }
-                }
-                String prefix = prefixesMap.get(uri);
-                if (prefix == null) {
-                    return;
-                }
+                    PsiReferenceExpression methodExpression = psiMethodCallExpression.getMethodExpression();
+                    if (!"QName.createQName".equals(methodExpression.getText())) {
+                        return;
+                    }
+                    PsiExpression[] argExpressions = psiMethodCallExpression.getArgumentList().getExpressions();
+                    if (argExpressions.length != 2) {
+                        return;
+                    }
 
-                String javaField = psiField.getName();
-                String javaClass = Optional
-                    .ofNullable(PsiTreeUtil.getParentOfType(psiField, PsiClass.class))
-                    .map(PsiNamedElement::getName)
-                    .orElse(null);
+                    PsiModifierList psiModifierList = PsiTreeUtil.findChildOfType(psiField, PsiModifierList.class);
+                    if (psiModifierList == null) {
+                        return;
+                    }
 
-                result.add(new QName(localName, uri, prefix, javaField, javaClass));
-            });
+                    if (!(psiModifierList.hasModifierProperty(PsiModifier.PUBLIC) &&
+                            psiModifierList.hasModifierProperty(PsiModifier.STATIC) &&
+                            psiModifierList.hasModifierProperty(PsiModifier.FINAL))) {
+                        return;
+                    }
+
+                    String uri = resolveValue(argExpressions[0]);
+                    if (uri == null) {
+                        return;
+                    }
+                    String localName = resolveValue(argExpressions[1]);
+                    if (localName == null) {
+                        return;
+                    }
+
+                    if (!prefixesMap.containsKey(uri)) {
+                        List<IndexValue> namespaces = ServiceRegistry
+                                .getIndexesService(project)
+                                .list(new IndexKey(AlfrescoModelIndexer.NAMESPACE, uri));
+
+                        if (!namespaces.isEmpty()) {
+                            prefixesMap.put(uri, namespaces.get(0).getProperty("prefix"));
+                        } else {
+                            prefixesMap.put(uri, null);
+                        }
+                    }
+                    String prefix = prefixesMap.get(uri);
+                    if (prefix == null) {
+                        return;
+                    }
+
+                    String javaField = psiField.getName();
+                    String javaClass = Optional
+                            .ofNullable(PsiTreeUtil.getParentOfType(psiField, PsiClass.class))
+                            .map(PsiNamedElement::getName)
+                            .orElse(null);
+
+                    result.add(new QName(localName, uri, prefix, javaField, javaClass));
+                });
 
         return result;
     }
 
     public List<QName> getQNames() {
         return ServiceRegistry
-            .getIndexesService(project)
-            .stream(AlfrescoQNameIndexer.CONTAINS_QNAMES_KEY)
-            .map(IndexValue::getFile)
-            .map(EcosVirtualFileUtils::getFileByPath)
-            .filter(Objects::nonNull)
-            .map(file -> qnamesGist.getFileData(PsiUtil.getPsiFile(project, file)))
-            .flatMap(Collection::stream)
-            .collect(Collectors.toList());
+                .getIndexesService(project)
+                .stream(AlfrescoQNameIndexer.CONTAINS_QNAMES_KEY)
+                .map(IndexValue::getFile)
+                .map(EcosVirtualFileUtils::getFileByPath)
+                .filter(Objects::nonNull)
+                .map(file -> qnamesGist.getFileData(PsiUtil.getPsiFile(project, file)))
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
     }
 
     public List<LookupElement> createJavaLookupElements() {
         return getQNames()
-            .stream()
-            .map(qName -> LookupElementBuilder
-                .create(qName.getPrefix() + "_" + qName.getLocalName())
-                .withIcon(Icons.AlfrescoLogo)
-                .withTypeText(qName.getJavaClass() + "." + qName.getJavaField())
-                .withInsertHandler((insertionContext, item) -> ApplicationManager.getApplication().runWriteAction(() ->
-                    CommandProcessor.getInstance().runUndoTransparentAction(() ->
-                        insertionContext.getDocument().replaceString(
-                            insertionContext.getStartOffset(),
-                            insertionContext.getTailOffset(),
-                            qName.getJavaClass() + "." + qName.getJavaField()
-                        )))
-                ))
-            .collect(Collectors.toList());
+                .stream()
+                .map(qName -> LookupElementBuilder
+                        .create(qName.getPrefix() + "_" + qName.getLocalName())
+                        .withIcon(Icons.AlfrescoLogo)
+                        .withTypeText(qName.getJavaClass() + "." + qName.getJavaField())
+                        .withInsertHandler((insertionContext, item) -> ApplicationManager.getApplication().runWriteAction(() ->
+                                CommandProcessor.getInstance().runUndoTransparentAction(() ->
+                                        insertionContext.getDocument().replaceString(
+                                                insertionContext.getStartOffset(),
+                                                insertionContext.getTailOffset(),
+                                                qName.getJavaClass() + "." + qName.getJavaField()
+                                        )))
+                        ))
+                .collect(Collectors.toList());
     }
 
     private String resolveValue(PsiExpression psiExpression) {
@@ -143,13 +143,13 @@ public class QNameService {
             return "";
         } else if (psiExpression instanceof PsiReferenceExpression) {
             return Optional
-                .of((PsiReferenceExpression) psiExpression)
-                .map(PsiReference::resolve)
-                .filter(PsiField.class::isInstance)
-                .map(PsiField.class::cast)
-                .map(PsiVariable::computeConstantValue)
-                .map(Object::toString)
-                .orElse(null);
+                    .of((PsiReferenceExpression) psiExpression)
+                    .map(PsiReference::resolve)
+                    .filter(PsiField.class::isInstance)
+                    .map(PsiField.class::cast)
+                    .map(PsiVariable::computeConstantValue)
+                    .map(Object::toString)
+                    .orElse(null);
         } else {
             return null;
         }

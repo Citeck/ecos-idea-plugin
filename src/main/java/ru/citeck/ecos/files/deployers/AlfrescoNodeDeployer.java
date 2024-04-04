@@ -11,20 +11,20 @@ import ru.citeck.ecos.index.IndexKey;
 import ru.citeck.ecos.index.IndexValue;
 import ru.citeck.ecos.index.indexers.AlfrescoContentNodesIndexer;
 
-import java.nio.charset.Charset;
 import java.util.Base64;
 
 public class AlfrescoNodeDeployer implements FileDeployer {
 
-    private static final String DEPLOYMENT_SCRIPT = "" +
-        "var base64 = \"${BASE64}\";\n" +
-        "var contentService = services.get(\"contentService\");\n" +
-        "var node = search.findNode(\"workspace://SpacesStore/${NODE_UUID}\");\n" +
-        "contentWriter = contentService.getWriter(node.nodeRef, Packages.org.alfresco.model.ContentModel.PROP_CONTENT, true);\n" +
-        "contentWriter.setMimetype(\"${MIME_TYPE}\");\n" +
-        "var bytes = Packages.java.util.Base64.getDecoder().decode(base64);\n" +
-        "var bais = Packages.java.io.ByteArrayInputStream(bytes);\n" +
-        "contentWriter.putContent(bais);";
+    private static final String DEPLOYMENT_SCRIPT = """
+            var base64 = "${BASE64}";
+            var contentService = services.get("contentService");
+            var node = search.findNode("workspace://SpacesStore/${NODE_UUID}");
+            contentWriter = contentService.getWriter(node.nodeRef, Packages.org.alfresco.model.ContentModel.PROP_CONTENT, true);
+            contentWriter.setMimetype("${MIME_TYPE}");
+            var bytes = Packages.java.util.Base64.getDecoder().decode(base64);
+            var bais = Packages.java.io.ByteArrayInputStream(bytes);
+            contentWriter.putContent(bais);
+            """;
 
     @Override
     public void deploy(PsiFile psiFile) throws Exception {
@@ -42,13 +42,13 @@ public class AlfrescoNodeDeployer implements FileDeployer {
         String base64 = Base64.getEncoder().encodeToString(content);
 
         String deploymentScript = DEPLOYMENT_SCRIPT
-            .replace("${BASE64}", base64)
-            .replace("${NODE_UUID}", indexValue.getId())
-            .replace("${MIME_TYPE}", indexValue.getProperty("mimetype"));
+                .replace("${BASE64}", base64)
+                .replace("${NODE_UUID}", indexValue.getId())
+                .replace("${MIME_TYPE}", indexValue.getProperty("mimetype"));
 
         ServiceRegistry
-            .getEcosRestApiService()
-            .executeJS(deploymentScript);
+                .getEcosRestApiService()
+                .executeJS(deploymentScript);
 
     }
 
@@ -61,10 +61,10 @@ public class AlfrescoNodeDeployer implements FileDeployer {
         Project project = psiFile.getProject();
         IndexKey key = new IndexKey(AlfrescoContentNodesIndexer.NODE_INDEX_KEY, psiFile.getVirtualFile().getPath());
         return ServiceRegistry
-            .getIndexesService(project)
-            .stream(key)
-            .findFirst()
-            .orElse(null);
+                .getIndexesService(project)
+                .stream(key)
+                .findFirst()
+                .orElse(null);
     }
 
     @Override
@@ -72,7 +72,6 @@ public class AlfrescoNodeDeployer implements FileDeployer {
         IndexValue indexValue = getIndexValue(psiFile);
         return ServiceRegistry.getEcosRestApiService().getHost() + "@workspace://SpacesStore/" + indexValue.getId();
     }
-
 
 
 }

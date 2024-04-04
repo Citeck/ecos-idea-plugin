@@ -1,16 +1,18 @@
 package ru.citeck.ecos.codeinsight.forms.components;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
 public class Columns extends Component {
 
     public static final String TYPE = "columns";
 
-    private List<Column> columns = new ArrayList<>();
-    private Boolean oneColumnInViewMode = true;
+    private final List<Column> columns = new ArrayList<>();
+    private final Boolean oneColumnInViewMode = true;
 
     public Columns(Integer columnsCount) {
         for (int i = 0; i < columnsCount; i++) {

@@ -1,6 +1,6 @@
 package ru.citeck.ecos.templates.files;
 
-import ru.citeck.ecos.files.types.Form;
+import ru.citeck.ecos.files.types.ecos.Form;
 
 import java.util.List;
 

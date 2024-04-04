@@ -27,11 +27,11 @@ import java.util.stream.Stream;
 
 public class AlfrescoContentNodesIndexer implements EcosFileIndexer {
 
-    private static final String CONTENT_URL_CLASSPATH = "contentUrl=classpath:";
     public static final String SYS_NODE_UUID = "sys:node-uuid";
     public static final String CM_NAME = "cm:name";
     public static final String CM_CONTENT = "cm:content";
     public static final String NODE_INDEX_KEY = "alfresco/node";
+    private static final String CONTENT_URL_CLASSPATH = "contentUrl=classpath:";
 
     @Override
     public boolean accept(FileType fileType) {
@@ -57,82 +57,79 @@ public class AlfrescoContentNodesIndexer implements EcosFileIndexer {
         }
 
         List<XmlTag> views = PsiTreeUtil
-            .findChildrenOfType(rootTag, XmlTag.class)
-            .stream()
-            .filter(xmlTag -> "view:properties".equals(xmlTag.getName()))
-            .filter(xmlTag -> Stream
-                .of(SYS_NODE_UUID, CM_NAME, CM_CONTENT)
-                .allMatch(qName -> xmlTag.findFirstSubTag(qName) != null)
-            )
-            .collect(Collectors.toList());
+                .findChildrenOfType(rootTag, XmlTag.class)
+                .stream()
+                .filter(xmlTag -> "view:properties".equals(xmlTag.getName()))
+                .filter(xmlTag -> Stream
+                        .of(SYS_NODE_UUID, CM_NAME, CM_CONTENT)
+                        .allMatch(qName -> xmlTag.findFirstSubTag(qName) != null)
+                )
+                .toList();
 
         if (views.isEmpty()) {
             return;
         }
 
         Set<String> modulesRoots = Arrays
-            .stream(ModuleManager.getInstance(inputData.getProject()).getModules())
-            .map(ModuleUtil::getModuleDirPath)
-            .collect(Collectors.toSet());
+                .stream(ModuleManager.getInstance(inputData.getProject()).getModules())
+                .map(ModuleUtil::getModuleDirPath)
+                .collect(Collectors.toSet());
 
         views.forEach(view -> {
+
             String uuid = Optional
-                .ofNullable(view.findFirstSubTag(SYS_NODE_UUID))
-                .map(XmlTag::getValue)
-                .map(XmlTagValue::getText)
-                .orElse("");
-            String name = Optional
-                .ofNullable(view.findFirstSubTag(CM_NAME))
-                .map(XmlTag::getValue)
-                .map(XmlTagValue::getText)
-                .orElse("");
+                    .ofNullable(view.findFirstSubTag(SYS_NODE_UUID))
+                    .map(XmlTag::getValue)
+                    .map(XmlTagValue::getText)
+                    .orElse("");
+
             String content = Optional
-                .ofNullable(view.findFirstSubTag(CM_CONTENT))
-                .map(XmlTag::getValue)
-                .map(XmlTagValue::getText)
-                .orElse("");
+                    .ofNullable(view.findFirstSubTag(CM_CONTENT))
+                    .map(XmlTag::getValue)
+                    .map(XmlTagValue::getText)
+                    .orElse("");
 
             List<String> contentUrls = Arrays.asList(content.split("\\|"));
 
-            if (contentUrls.size() == 0) {
+            if (contentUrls.isEmpty()) {
                 return;
             }
 
             String contentUrl = contentUrls
-                .stream()
-                .filter(s -> s.startsWith(CONTENT_URL_CLASSPATH))
-                .map(s -> s.substring(CONTENT_URL_CLASSPATH.length()))
-                .findFirst()
-                .orElse(null);
+                    .stream()
+                    .filter(s -> s.startsWith(CONTENT_URL_CLASSPATH))
+                    .map(s -> s.substring(CONTENT_URL_CLASSPATH.length()))
+                    .findFirst()
+                    .orElse(null);
 
             if (contentUrl == null) {
                 return;
             }
 
             VirtualFile contentFile = modulesRoots
-                .stream()
-                .map(module -> VirtualFileManager.getInstance().findFileByNioPath(Path.of(module + "/src/main/resources/" + contentUrl)))
-                .filter(Objects::nonNull)
-                .findFirst()
-                .orElse(null);
+                    .stream()
+                    .map(module -> VirtualFileManager.getInstance().findFileByNioPath(Path.of(module + "/src/main/resources/" + contentUrl)))
+                    .filter(Objects::nonNull)
+                    .findFirst()
+                    .orElse(null);
 
             if (contentFile == null) {
                 return;
             }
 
             String mimeType = contentUrls
-                .stream()
-                .filter(s -> s.startsWith("mimetype="))
-                .map(s -> s.replace("mimetype=", ""))
-                .findFirst()
-                .orElse("");
+                    .stream()
+                    .filter(s -> s.startsWith("mimetype="))
+                    .map(s -> s.replace("mimetype=", ""))
+                    .findFirst()
+                    .orElse("");
 
             IndexValue indexValue = new IndexValue(uuid, 0, contentFile.getPath())
-                .setProperty("mimetype", mimeType);
+                    .setProperty("mimetype", mimeType);
 
             indexes
-                .addReference("workspace://SpacesStore/" + uuid, view)
-                .add(new IndexKey(NODE_INDEX_KEY, contentFile.getPath()), indexValue);
+                    .addReference("workspace://SpacesStore/" + uuid, view)
+                    .add(new IndexKey(NODE_INDEX_KEY, contentFile.getPath()), indexValue);
 
         });
 

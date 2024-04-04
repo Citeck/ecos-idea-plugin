@@ -7,7 +7,7 @@ import java.util.Set;
 public abstract class PropertyComponent extends InputComponent {
 
     private static final Set<String> ARTIFACT_TYPES = Set.of(
-        AlfrescoModelIndexer.PROPERTY
+            AlfrescoModelIndexer.PROPERTY
     );
 
     @Override

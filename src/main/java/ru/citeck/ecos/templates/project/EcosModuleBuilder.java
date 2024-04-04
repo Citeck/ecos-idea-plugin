@@ -22,12 +22,12 @@ public class EcosModuleBuilder extends AbstractMavenModuleBuilder {
 
     @Override
     public String getPresentableName() {
-        return "Ecos";
+        return "ECOS";
     }
 
     @Override
     public String getDescription() {
-        return "Create <b>Ecos</b> project";
+        return "Create <b>ECOS</b> project";
     }
 
     @Override

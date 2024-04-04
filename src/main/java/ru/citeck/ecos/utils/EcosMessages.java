@@ -12,7 +12,7 @@ public class EcosMessages {
 
     public static boolean confirm(String title, String message) {
         return (JOptionPane.YES_OPTION ==
-            JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION)
+                JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION)
         );
     }
 

@@ -45,7 +45,7 @@ public abstract class EcosAction extends AnAction {
 
     public void runUndoTransparentAction(Runnable action) {
         ApplicationManager.getApplication().runWriteAction(() ->
-            CommandProcessor.getInstance().runUndoTransparentAction(action)
+                CommandProcessor.getInstance().runUndoTransparentAction(action)
         );
     }
 

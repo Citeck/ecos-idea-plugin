@@ -18,6 +18,17 @@ public class IndexKey {
     public static final String REFERENCE_TYPE = "reference";
     public static final String ALL = "*";
     public static final IndexKey SEARCH_EVERYWHERE = new IndexKey(SEARCH_EVERYWHERE_TYPE, ALL);
+    private final String type;
+    private final String id;
+    public IndexKey(String type) {
+        this.type = type;
+        this.id = ALL;
+    }
+
+    public IndexKey(String type, String id) {
+        this.type = type;
+        this.id = id;
+    }
 
     public static class Descriptor implements KeyDescriptor<IndexKey> {
 
@@ -40,24 +51,11 @@ public class IndexKey {
         @Override
         public IndexKey read(@NotNull DataInput in) throws IOException {
             return new IndexKey(
-                in.readUTF(),
-                in.readUTF()
+                    in.readUTF(),
+                    in.readUTF()
             );
         }
 
-    }
-
-    private final String type;
-    private final String id;
-
-    public IndexKey(String type) {
-        this.type = type;
-        this.id = ALL;
-    }
-
-    public IndexKey(String type, String id) {
-        this.type = type;
-        this.id = id;
     }
 
 }

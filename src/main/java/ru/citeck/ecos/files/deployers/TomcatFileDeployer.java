@@ -19,30 +19,31 @@ import java.util.Optional;
 
 public class TomcatFileDeployer implements FileDeployer {
 
-    private static final String DEPLOYMENT_SCRIPT = "" +
-        "var base64 = \"${BASE64}\";\n" +
-        "var relativePath = \"/WEB-INF/classes/${RELATIVE_PATH}\";\n" +
-        "var webAppsPath = Packages.java.lang.System.getProperty(\"catalina.base\") + \"/webapps/\";\n" +
-        "var found = new java.io.File(webAppsPath).listFiles().filter(function (file) {\n" +
-        "    if (!file.isDirectory()) {\n" +
-        "        return false;\n" +
-        "    }\n" +
-        "    return new java.io.File(file.toString() + relativePath).exists();\n" +
-        "})\n" +
-        "if (found.length !== 1) {\n" +
-        "    throw Error(\"Unable to determine file path\");\n" +
-        "}\n" +
-        "var path = found[0].toString() + relativePath;\n" +
-        "var bytes = Packages.java.util.Base64.getDecoder().decode(base64);\n" +
-        "var fos = new Packages.java.io.FileOutputStream(path);\n" +
-        "fos.write(bytes);\n" +
-        "fos.close();";
+    private static final String DEPLOYMENT_SCRIPT = """
+            var base64 = "${BASE64}";
+            var relativePath = "/WEB-INF/classes/${RELATIVE_PATH}";
+            var webAppsPath = Packages.java.lang.System.getProperty("catalina.base") + "/webapps/";
+            var found = new java.io.File(webAppsPath).listFiles().filter(function (file) {
+                if (!file.isDirectory()) {
+                    return false;
+                }
+                return new java.io.File(file.toString() + relativePath).exists();
+            })
+            if (found.length !== 1) {
+                throw Error("Unable to determine file path");
+            }
+            var path = found[0].toString() + relativePath;
+            var bytes = Packages.java.util.Base64.getDecoder().decode(base64);
+            var fos = new Packages.java.io.FileOutputStream(path);
+            fos.write(bytes);
+            fos.close();
+            """;
 
     @Override
     public void deploy(PsiFile psiFile) throws Exception {
         ServiceRegistry
-            .getEcosRestApiService()
-            .executeJS(getDeploymentScript(psiFile));
+                .getEcosRestApiService()
+                .executeJS(getDeploymentScript(psiFile));
     }
 
     public String getDeploymentScript(PsiFile psiFile) throws Exception {
@@ -50,10 +51,10 @@ public class TomcatFileDeployer implements FileDeployer {
         Project project = psiFile.getProject();
 
         String relativePath = Optional
-            .of(ProjectFileIndex.getInstance(project))
-            .map(projectFileIndex -> projectFileIndex.getSourceRootForFile(virtualFile))
-            .map(sourceRoot -> VfsUtilCore.getRelativePath(virtualFile, sourceRoot))
-            .orElse(null);
+                .of(ProjectFileIndex.getInstance(project))
+                .map(projectFileIndex -> projectFileIndex.getSourceRootForFile(virtualFile))
+                .map(sourceRoot -> VfsUtilCore.getRelativePath(virtualFile, sourceRoot))
+                .orElse(null);
 
         if (relativePath == null) {
             throw new Exception("Unable to get file relative path");
@@ -63,8 +64,8 @@ public class TomcatFileDeployer implements FileDeployer {
         String base64 = Base64.getEncoder().encodeToString(psiFile.getText().getBytes(charset));
 
         return DEPLOYMENT_SCRIPT
-            .replace("${BASE64}", base64)
-            .replace("${RELATIVE_PATH}", relativePath);
+                .replace("${BASE64}", base64)
+                .replace("${RELATIVE_PATH}", relativePath);
     }
 
     @Override
@@ -83,11 +84,11 @@ public class TomcatFileDeployer implements FileDeployer {
         ModuleManager moduleManager = ModuleManager.getInstance(psiFile.getProject());
 
         return Arrays
-            .stream(moduleManager.getModules())
-            .filter(module -> module.getName().endsWith("-repo"))
-            .filter(module -> module.getModuleScope().contains(virtualFile))
-            .findFirst()
-            .orElse(null);
+                .stream(moduleManager.getModules())
+                .filter(module -> module.getName().endsWith("-repo"))
+                .filter(module -> module.getModuleScope().contains(virtualFile))
+                .findFirst()
+                .orElse(null);
 
     }
 

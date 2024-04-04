@@ -21,8 +21,8 @@ public class XmlBeanDefinitionIndexer implements EcosFileIndexer {
     public static final IndexKey JAVASCRIPT_EXTENSION_KEY = new IndexKey(JAVASCRIPT_EXTENSION_KEY_NAME);
 
     private static final Set<String> JAVASCRIPT_EXTENSION_PARENTS = Set.of(
-        "baseJavaScriptExtension",
-        "ecos.baseJavaScriptExtension"
+            "baseJavaScriptExtension",
+            "ecos.baseJavaScriptExtension"
     );
 
     @Override
@@ -39,40 +39,40 @@ public class XmlBeanDefinitionIndexer implements EcosFileIndexer {
         }
 
         Arrays.stream(rootTag.findSubTags("bean"))
-            .filter(xmlTag ->
-                "bean".equals(xmlTag.getName()) &&
-                    xmlTag.getAttribute("parent") != null &&
-                    JAVASCRIPT_EXTENSION_PARENTS.contains(xmlTag.getAttributeValue("parent"))
-            ).forEach(xmlTag -> {
+                .filter(xmlTag ->
+                        "bean".equals(xmlTag.getName()) &&
+                                xmlTag.getAttribute("parent") != null &&
+                                JAVASCRIPT_EXTENSION_PARENTS.contains(xmlTag.getAttributeValue("parent"))
+                ).forEach(xmlTag -> {
 
-            String clazz = xmlTag.getAttributeValue("class");
-            String extensionName = Arrays
-                .stream(xmlTag.findSubTags("property"))
-                .filter(propertyTag -> "extensionName".equals(propertyTag.getAttributeValue("name")))
-                .findFirst()
-                .map(extensionNameTag -> {
-                    XmlTag valueTag = extensionNameTag.findFirstSubTag("value");
-                    if (valueTag != null) {
-                        return valueTag.getValue().getText();
-                    } else {
-                        return extensionNameTag.getAttributeValue("value");
+                    String clazz = xmlTag.getAttributeValue("class");
+                    String extensionName = Arrays
+                            .stream(xmlTag.findSubTags("property"))
+                            .filter(propertyTag -> "extensionName".equals(propertyTag.getAttributeValue("name")))
+                            .findFirst()
+                            .map(extensionNameTag -> {
+                                XmlTag valueTag = extensionNameTag.findFirstSubTag("value");
+                                if (valueTag != null) {
+                                    return valueTag.getValue().getText();
+                                } else {
+                                    return extensionNameTag.getAttributeValue("value");
+                                }
+                            })
+                            .orElse(null);
+
+                    if (Strings.isEmpty(clazz) || Strings.isEmpty(extensionName)) {
+                        return;
                     }
-                })
-                .orElse(null);
 
-            if (Strings.isEmpty(clazz) || Strings.isEmpty(extensionName)) {
-                return;
-            }
+                    IndexValue indexValue = indexes
+                            .createIndex(extensionName, xmlTag)
+                            .setProperty("class", clazz);
 
-            IndexValue indexValue = indexes
-                .createIndex(extensionName, xmlTag)
-                .setProperty("class", clazz);
+                    indexes
+                            .add(JAVASCRIPT_EXTENSION_KEY, indexValue)
+                            .add(new IndexKey(JAVASCRIPT_EXTENSION_KEY_NAME, extensionName), indexValue);
 
-            indexes
-                .add(JAVASCRIPT_EXTENSION_KEY, indexValue)
-                .add(new IndexKey(JAVASCRIPT_EXTENSION_KEY_NAME, extensionName), indexValue);
-
-        });
+                });
 
     }
 

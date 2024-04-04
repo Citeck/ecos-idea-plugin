@@ -50,8 +50,8 @@ public class CmmnIndexer implements EcosFileIndexer {
         }
 
         indexes
-            .addSearchEverywhere(PREFIX + "@" + caseType, cmmnCaseTag)
-            .addReference(caseType, cmmnCaseTag);
+                .addSearchEverywhere(PREFIX + "@" + caseType, cmmnCaseTag)
+                .addReference(caseType, cmmnCaseTag);
 
     }
 

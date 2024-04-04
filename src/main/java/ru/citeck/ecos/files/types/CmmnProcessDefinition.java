@@ -1,11 +1,9 @@
 package ru.citeck.ecos.files.types;
 
 import ru.citeck.ecos.files.FileType;
-import ru.citeck.ecos.files.SearchScopeName;
 import ru.citeck.ecos.files.types.filters.FileFilter;
 import ru.citeck.ecos.files.types.filters.XmlNamespaceFilter;
 
-@SearchScopeName("CMMN process definition")
 public class CmmnProcessDefinition implements FileType {
 
     public static final String NAMESPACE = "http://www.omg.org/spec/CMMN/20151109/MODEL";

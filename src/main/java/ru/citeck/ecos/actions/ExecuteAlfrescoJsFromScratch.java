@@ -27,19 +27,19 @@ public class ExecuteAlfrescoJsFromScratch extends EcosAction {
         }
 
         JBPopupFactory
-            .getInstance()
-            .createPopupChooserBuilder(
-                FilenameIndex.getAllFilesByExt(project, "js", ScratchesSearchScope.getScratchesScope(project))
-                    .stream()
-                    .map(virtualFile -> new JsFileWrapper(project, virtualFile))
-                    .collect(Collectors.toList())
-            )
-            .setTitle("Execute Alfresco JS:")
-            .setItemChosenCallback(jsFileWrapper -> executeJS(project, jsFileWrapper))
-            .setNamerForFiltering(JsFileWrapper::toString)
-            .setRequestFocus(true)
-            .createPopup()
-            .showInCenterOf(WindowManager.getInstance().getFrame(project).getRootPane());
+                .getInstance()
+                .createPopupChooserBuilder(
+                        FilenameIndex.getAllFilesByExt(project, "js", ScratchesSearchScope.getScratchesScope(project))
+                                .stream()
+                                .map(virtualFile -> new JsFileWrapper(project, virtualFile))
+                                .collect(Collectors.toList())
+                )
+                .setTitle("Execute Alfresco JS:")
+                .setItemChosenCallback(jsFileWrapper -> executeJS(project, jsFileWrapper))
+                .setNamerForFiltering(JsFileWrapper::toString)
+                .setRequestFocus(true)
+                .createPopup()
+                .showInCenterOf(WindowManager.getInstance().getFrame(project).getRootPane());
     }
 
     @Override
@@ -51,7 +51,7 @@ public class ExecuteAlfrescoJsFromScratch extends EcosAction {
         try (InputStream inputStream = jsFileWrapper.getVirtualFile().getInputStream()) {
             ExecuteAlfrescoJs action = (ExecuteAlfrescoJs) ActionManager.getInstance().getAction("Ecos.ExecuteAlfrescoJs");
             String script = new BufferedReader(new InputStreamReader(inputStream))
-                .lines().collect(Collectors.joining("\n"));
+                    .lines().collect(Collectors.joining("\n"));
             action.executeAlfrescoJs(project, script);
         } catch (Exception ex) {
             EcosMessages.error("Error while executing Alfresco JS", ex.getMessage(), project);

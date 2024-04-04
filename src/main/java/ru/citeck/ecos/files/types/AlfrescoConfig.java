@@ -12,20 +12,20 @@ import ru.citeck.ecos.utils.EcosPsiUtils;
 public class AlfrescoConfig implements FileType {
 
     private final FileFilter filter = new FilterAnd(
-        FileExtensionFilter.XML,
-        (file, project) -> {
-            PsiFile psiFile = PsiManager.getInstance(project).findFile(file);
-            if (psiFile == null) {
-                return false;
-            }
+            FileExtensionFilter.XML,
+            (file, project) -> {
+                PsiFile psiFile = PsiManager.getInstance(project).findFile(file);
+                if (psiFile == null) {
+                    return false;
+                }
 
-            XmlTag rootTag = EcosPsiUtils.getRootTag(psiFile);
-            if (rootTag == null) {
-                return false;
-            }
+                XmlTag rootTag = EcosPsiUtils.getRootTag(psiFile);
+                if (rootTag == null) {
+                    return false;
+                }
 
-            return "alfresco-config".equals(rootTag.getName());
-        }
+                return "alfresco-config".equals(rootTag.getName());
+            }
     );
 
     @Override

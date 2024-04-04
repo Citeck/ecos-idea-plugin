@@ -28,10 +28,10 @@ public interface CompletionProvider {
 
     default PsiFile getInjectedInFile(CompletionParameters parameters) {
         return Optional
-            .of(parameters.getOriginalFile())
-            .map(psiFile -> psiFile.getUserData(FileContextUtil.INJECTED_IN_ELEMENT))
-            .map(SmartPsiElementPointer::getContainingFile)
-            .orElse(null);
+                .of(parameters.getOriginalFile())
+                .map(psiFile -> psiFile.getUserData(FileContextUtil.INJECTED_IN_ELEMENT))
+                .map(SmartPsiElementPointer::getContainingFile)
+                .orElse(null);
     }
 
 }

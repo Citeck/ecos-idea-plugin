@@ -17,12 +17,12 @@ import java.util.stream.Collectors;
 public class AlfrescoModelItemsProvider implements NavigateInFileItemsProvider {
 
     private static final Set<String> TAGS = Set.of(
-        "constraint",
-        "type",
-        "property",
-        "association",
-        "child-association",
-        "aspect"
+            "constraint",
+            "type",
+            "property",
+            "association",
+            "child-association",
+            "aspect"
     );
 
     @Override
@@ -38,11 +38,11 @@ public class AlfrescoModelItemsProvider implements NavigateInFileItemsProvider {
         }
 
         return PsiTreeUtil
-            .findChildrenOfType(psiFile, XmlTag.class)
-            .stream()
-            .filter(xmlTag -> TAGS.contains(xmlTag.getName()) && xmlTag.getAttribute("name") != null)
-            .map(xmlTag -> new NavigateInFileItem(xmlTag.getName() + "@" + xmlTag.getAttributeValue("name"), xmlTag))
-            .collect(Collectors.toList());
+                .findChildrenOfType(psiFile, XmlTag.class)
+                .stream()
+                .filter(xmlTag -> TAGS.contains(xmlTag.getName()) && xmlTag.getAttribute("name") != null)
+                .map(xmlTag -> new NavigateInFileItem(xmlTag.getName() + "@" + xmlTag.getAttributeValue("name"), xmlTag))
+                .collect(Collectors.toList());
 
     }
 

@@ -1,7 +1,10 @@
 package ru.citeck.ecos.codeinsight.forms.components;
 
+import lombok.Getter;
+
 import java.util.Map;
 
+@Getter
 public class EcosSelect extends PropertyComponent {
 
     public static final String TYPE = "ecosSelect";
@@ -12,14 +15,6 @@ public class EcosSelect extends PropertyComponent {
     @Override
     public String getType() {
         return TYPE;
-    }
-
-    public Map<String, String> getData() {
-        return data;
-    }
-
-    public Boolean getLazyLoad() {
-        return lazyLoad;
     }
 
 }

@@ -10,7 +10,6 @@ import com.intellij.patterns.PlatformPatterns;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.ProcessingContext;
-import icons.Icons;
 import org.jetbrains.annotations.NotNull;
 import ru.citeck.ecos.ServiceRegistry;
 import ru.citeck.ecos.completion.js.JsCompletionProvider;
@@ -33,21 +32,21 @@ public class BaseProcessorExtensionsCompletionProvider implements JsCompletionPr
 
 
         ServiceRegistry
-            .getIndexesService(referenceExpression.getProject())
-            .stream(XmlBeanDefinitionIndexer.JAVASCRIPT_EXTENSION_KEY)
-            .forEach(indexValue -> result.addElement(
-                LookupElementBuilder
-                    .create(indexValue.getId())
-                    .withTypeText(indexValue.getProperty("class"))
-                    .withIcon(indexValue.getIcon())
-            ));
+                .getIndexesService(referenceExpression.getProject())
+                .stream(XmlBeanDefinitionIndexer.JAVASCRIPT_EXTENSION_KEY)
+                .forEach(indexValue -> result.addElement(
+                        LookupElementBuilder
+                                .create(indexValue.getId())
+                                .withTypeText(indexValue.getProperty("class"))
+                                .withIcon(indexValue.getIcon())
+                ));
 
     }
 
     @Override
     public ElementPattern<? extends PsiElement> getElementPattern() {
         return PlatformPatterns.psiElement()
-            .withParent(PlatformPatterns.psiElement(JSElementTypes.REFERENCE_EXPRESSION))
-            .andNot(PlatformPatterns.psiElement().afterLeaf(".", "?."));
+                .withParent(PlatformPatterns.psiElement(JSElementTypes.REFERENCE_EXPRESSION))
+                .andNot(PlatformPatterns.psiElement().afterLeaf(".", "?."));
     }
 }

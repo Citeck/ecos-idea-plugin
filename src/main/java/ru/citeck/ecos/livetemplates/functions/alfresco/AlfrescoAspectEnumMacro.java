@@ -9,7 +9,7 @@ import java.util.List;
 public class AlfrescoAspectEnumMacro extends AlfrescoEnumMacro {
 
     private static final List<IndexKey> INDEX_KEYS = Collections.singletonList(
-        new IndexKey(AlfrescoModelIndexer.ASPECT)
+            new IndexKey(AlfrescoModelIndexer.ASPECT)
     );
 
     @Override

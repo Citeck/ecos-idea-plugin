@@ -1,7 +1,6 @@
 package ru.citeck.ecos.templates.files;
 
-import ru.citeck.ecos.files.types.Dashboard;
-import ru.citeck.ecos.files.types.Form;
+import ru.citeck.ecos.files.types.ecos.Dashboard;
 
 import java.util.List;
 

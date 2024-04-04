@@ -10,9 +10,9 @@ import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.yaml.psi.YAMLFile;
 import ru.citeck.ecos.ServiceRegistry;
-import ru.citeck.ecos.files.EcosArtifact;
 import ru.citeck.ecos.files.FileFetcher;
 import ru.citeck.ecos.files.FileType;
+import ru.citeck.ecos.files.types.ecos.EcosArtifact;
 import ru.citeck.ecos.utils.JsonPrettyPrinter;
 
 import java.util.List;

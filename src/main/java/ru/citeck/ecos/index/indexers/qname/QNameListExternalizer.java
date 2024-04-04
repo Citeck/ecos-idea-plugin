@@ -29,7 +29,7 @@ public class QNameListExternalizer implements DataExternalizer<List<QName>> {
         List<QName> result = new ArrayList<>();
         for (int i = 0; i < size; i++) {
             result.add(new QName(
-                in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF()
+                    in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF(), in.readUTF()
             ));
         }
         return result;

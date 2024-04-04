@@ -6,13 +6,11 @@ import com.intellij.codeInsight.template.Expression;
 import com.intellij.codeInsight.template.ExpressionContext;
 import com.intellij.codeInsight.template.macro.EnumMacro;
 import com.intellij.openapi.project.Project;
-import icons.Icons;
 import org.jetbrains.annotations.NotNull;
 import ru.citeck.ecos.ServiceRegistry;
 import ru.citeck.ecos.index.IndexKey;
 import ru.citeck.ecos.index.IndexesService;
 
-import javax.swing.*;
 import java.util.List;
 
 public abstract class IndexEnumMacro extends EnumMacro {
@@ -26,7 +24,7 @@ public abstract class IndexEnumMacro extends EnumMacro {
     abstract public String getPresentableName();
 
     @Override
-    public LookupElement[] calculateLookupItems(@NotNull Expression[] params, ExpressionContext context) {
+    public LookupElement[] calculateLookupItems(@NotNull Expression @NotNull [] params, ExpressionContext context) {
 
         Project project = context.getProject();
         if (project == null) {
@@ -36,16 +34,16 @@ public abstract class IndexEnumMacro extends EnumMacro {
         IndexesService indexesService = ServiceRegistry.getIndexesService(project);
 
         return getIndexKeys()
-            .stream()
-            .flatMap(key -> indexesService
-                .stream(key)
-                .map(indexValue -> LookupElementBuilder
-                    .create(indexValue.getId())
-                    .withIcon(indexValue.getIcon())
-                    .withTypeText(key.getType())
+                .stream()
+                .flatMap(key -> indexesService
+                        .stream(key)
+                        .map(indexValue -> LookupElementBuilder
+                                .create(indexValue.getId())
+                                .withIcon(indexValue.getIcon())
+                                .withTypeText(key.getType())
+                        )
                 )
-            )
-            .toArray(LookupElement[]::new);
+                .toArray(LookupElement[]::new);
 
     }
 

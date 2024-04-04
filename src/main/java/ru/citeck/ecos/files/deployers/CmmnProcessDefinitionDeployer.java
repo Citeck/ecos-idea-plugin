@@ -19,13 +19,13 @@ public class CmmnProcessDefinitionDeployer implements FileDeployer {
         EcosRestApiService ecosRestApiService = ServiceRegistry.getEcosRestApiService();
 
         ecosRestApiService.mutateRecord("eproc/procdef", "", "text/xml", virtualFile.getName(), content);
-        ecosRestApiService.executeJS(
-            "var srv = services.get('eprocActivityService');\n" +
-                "var cache1 = Packages.org.apache.commons.lang.reflect.FieldUtils.readField(srv, 'typesToRevisionIdCache', true);\n" +
-                "cache1.invalidateAll();\n" +
-                "var cache2 = Packages.org.apache.commons.lang.reflect.FieldUtils.readField(srv, 'revisionIdToProcessDefinitionCache', true);\n" +
-                "cache2.invalidateAll();"
-        );
+        ecosRestApiService.executeJS("""
+                var srv = services.get('eprocActivityService');
+                var cache1 = Packages.org.apache.commons.lang.reflect.FieldUtils.readField(srv, 'typesToRevisionIdCache', true);
+                cache1.invalidateAll();
+                var cache2 = Packages.org.apache.commons.lang.reflect.FieldUtils.readField(srv, 'revisionIdToProcessDefinitionCache', true);
+                cache2.invalidateAll();
+                """);
 
     }
 

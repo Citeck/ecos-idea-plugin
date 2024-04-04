@@ -67,7 +67,7 @@ public class ExecuteAlfrescoJs extends EcosAction {
         };
 
         Map<String, String> parameters = getParameters(text);
-        if (parameters.size() > 0) {
+        if (!parameters.isEmpty()) {
             var dialog = new KeyValueInputDialog(parameters, "Parameter", "Value");
             dialog.setTitle("Set Parameters for Script:");
             if (!dialog.showAndGet()) {
@@ -77,8 +77,8 @@ public class ExecuteAlfrescoJs extends EcosAction {
         }
 
         ConsoleView consoleView = ServiceRegistry
-            .getAlfrescoJsConsoleService(project)
-            .getConsoleView();
+                .getAlfrescoJsConsoleService(project)
+                .getConsoleView();
         consoleView.clear();
 
         consoleView.print("Executing script...\n", ConsoleViewContentType.LOG_INFO_OUTPUT);
@@ -98,7 +98,7 @@ public class ExecuteAlfrescoJs extends EcosAction {
                     consoleView.print(scriptPerf + "\n", ConsoleViewContentType.LOG_INFO_OUTPUT);
                     ArrayNode printOutput = (ArrayNode) response.get("printOutput");
                     printOutput.forEach(
-                        jsonNode -> consoleView.print(jsonNode.asText() + "\n", ConsoleViewContentType.NORMAL_OUTPUT)
+                            jsonNode -> consoleView.print(jsonNode.asText() + "\n", ConsoleViewContentType.NORMAL_OUTPUT)
                     );
                 } catch (Exception ex) {
                     consoleView.print("Alfresco Js execution error:\n\n", ConsoleViewContentType.LOG_ERROR_OUTPUT);

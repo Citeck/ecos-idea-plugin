@@ -11,8 +11,8 @@ public class TomcatFileClipboardDeployer extends TomcatFileDeployer {
     @Override
     public void deploy(PsiFile psiFile) throws Exception {
         CopyPasteManager
-            .getInstance()
-            .setContents(new SimpleTransferable(getDeploymentScript(psiFile), DataFlavor.stringFlavor));
+                .getInstance()
+                .setContents(new SimpleTransferable(getDeploymentScript(psiFile), DataFlavor.stringFlavor));
     }
 
     @Override

@@ -14,7 +14,7 @@ public class NodeRefConsoleFilterProvider implements ConsoleFilterProvider {
     private final Pattern nodeRefPattern = Pattern.compile("workspace://SpacesStore/[0-9a-f]{8}\\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\\b[0-9a-f]{12}");
 
     @Override
-    public @NotNull Filter[] getDefaultFilters(@NotNull Project project) {
+    public @NotNull Filter @NotNull [] getDefaultFilters(@NotNull Project project) {
         return new Filter[]{this::applyFilter};
     }
 
@@ -25,9 +25,9 @@ public class NodeRefConsoleFilterProvider implements ConsoleFilterProvider {
             return null;
         }
         return new Filter.Result(
-            offset + matcher.start(),
-            offset + matcher.end(),
-            new NodeRefHyperLinkInfo(matcher.group())
+                offset + matcher.start(),
+                offset + matcher.end(),
+                new NodeRefHyperLinkInfo(matcher.group())
         );
     }
 

@@ -6,8 +6,8 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.util.indexing.FileContent;
 import org.jetbrains.annotations.NotNull;
-import ru.citeck.ecos.files.EcosArtifact;
 import ru.citeck.ecos.files.FileType;
+import ru.citeck.ecos.files.types.ecos.EcosArtifact;
 import ru.citeck.ecos.index.EcosFileIndexer;
 import ru.citeck.ecos.index.Indexes;
 
@@ -37,13 +37,13 @@ public class EcosArtifactIndexer implements EcosFileIndexer {
         String fullId = fileType.getSourceId() + "@" + id;
 
         indexes
-            .addReference(fullId, idPsiElement)
-            .addReference(id, idPsiElement)
-            .addSearchEverywhere(fullId, idPsiElement);
+                .addReference(fullId, idPsiElement)
+                .addReference(id, idPsiElement)
+                .addSearchEverywhere(fullId, idPsiElement);
 
         fileType
-            .getAdditionalReferences(id)
-            .forEach(reference -> indexes.addReference(reference, idPsiElement));
+                .getAdditionalReferences(id)
+                .forEach(reference -> indexes.addReference(reference, idPsiElement));
 
     }
 

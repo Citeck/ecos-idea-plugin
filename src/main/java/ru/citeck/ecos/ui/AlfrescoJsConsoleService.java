@@ -27,25 +27,25 @@ public class AlfrescoJsConsoleService {
         if (consoleView == null) {
 
             consoleView = TextConsoleBuilderFactory
-                .getInstance()
-                .createBuilder(project)
-                .getConsole();
+                    .getInstance()
+                    .createBuilder(project)
+                    .getConsole();
 
             toolWindow = ToolWindowManager
-                .getInstance(project)
-                .registerToolWindow(
-                    new RegisterToolWindowTask(
-                        TOOL_WINDOW_NAME,
-                        ToolWindowAnchor.BOTTOM,
-                        consoleView.getComponent(),
-                        false,
-                        false,
-                        false,
-                        true,
-                        null,
-                        Icons.AlfrescoLogo,
-                        null
-                    ));
+                    .getInstance(project)
+                    .registerToolWindow(
+                            new RegisterToolWindowTask(
+                                    TOOL_WINDOW_NAME,
+                                    ToolWindowAnchor.BOTTOM,
+                                    consoleView.getComponent(),
+                                    false,
+                                    false,
+                                    false,
+                                    true,
+                                    null,
+                                    Icons.AlfrescoLogo,
+                                    null
+                            ));
         }
         toolWindow.show();
         return consoleView;

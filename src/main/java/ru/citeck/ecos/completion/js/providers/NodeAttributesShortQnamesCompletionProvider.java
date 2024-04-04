@@ -11,7 +11,6 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.ProcessingContext;
 import com.jgoodies.common.base.Strings;
-import icons.Icons;
 import org.jetbrains.annotations.NotNull;
 import ru.citeck.ecos.ServiceRegistry;
 import ru.citeck.ecos.completion.js.JsCompletionProvider;
@@ -24,11 +23,11 @@ import java.util.Optional;
 public class NodeAttributesShortQnamesCompletionProvider implements JsCompletionProvider {
 
     private final static Map<String, String> NODE_ATTRIBUTES_MAPPING = Map.of(
-        "properties", AlfrescoModelIndexer.PROPERTY,
-        "assocs", AlfrescoModelIndexer.ASSOCIATION,
-        "associations", AlfrescoModelIndexer.ASSOCIATION,
-        "childAssocs", AlfrescoModelIndexer.CHILD_ASSOCIATION,
-        "childAssociations", AlfrescoModelIndexer.CHILD_ASSOCIATION
+            "properties", AlfrescoModelIndexer.PROPERTY,
+            "assocs", AlfrescoModelIndexer.ASSOCIATION,
+            "associations", AlfrescoModelIndexer.ASSOCIATION,
+            "childAssocs", AlfrescoModelIndexer.CHILD_ASSOCIATION,
+            "childAssociations", AlfrescoModelIndexer.CHILD_ASSOCIATION
     );
 
     @Override
@@ -41,45 +40,45 @@ public class NodeAttributesShortQnamesCompletionProvider implements JsCompletion
         PsiElement psiElement = parameters.getPosition();
 
         String quailifier = Optional
-            .ofNullable(PsiTreeUtil.getParentOfType(psiElement, JSIndexedPropertyAccessExpression.class))
-            .map(JSIndexedPropertyAccessExpression::getQualifier)
-            .map(PsiElement::getText)
-            .orElse(null);
+                .ofNullable(PsiTreeUtil.getParentOfType(psiElement, JSIndexedPropertyAccessExpression.class))
+                .map(JSIndexedPropertyAccessExpression::getQualifier)
+                .map(PsiElement::getText)
+                .orElse(null);
 
         if (Strings.isEmpty(quailifier)) {
             return;
         }
 
         String indexType = NODE_ATTRIBUTES_MAPPING
-            .entrySet()
-            .stream()
-            .filter(entry -> quailifier.endsWith("." + entry.getKey()))
-            .map(Map.Entry::getValue)
-            .findFirst()
-            .orElse(null);
+                .entrySet()
+                .stream()
+                .filter(entry -> quailifier.endsWith("." + entry.getKey()))
+                .map(Map.Entry::getValue)
+                .findFirst()
+                .orElse(null);
 
         if (indexType == null) {
             return;
         }
 
         ServiceRegistry
-            .getIndexesService(psiElement.getProject())
-            .stream(new IndexKey(indexType))
-            .forEach(indexValue -> result.addElement(
-                LookupElementBuilder
-                    .create(indexValue.getId())
-                    .withIcon(indexValue.getIcon())
-            ));
+                .getIndexesService(psiElement.getProject())
+                .stream(new IndexKey(indexType))
+                .forEach(indexValue -> result.addElement(
+                        LookupElementBuilder
+                                .create(indexValue.getId())
+                                .withIcon(indexValue.getIcon())
+                ));
 
     }
 
     @Override
     public ElementPattern<? extends PsiElement> getElementPattern() {
         return PlatformPatterns.psiElement().withParent(
-            PlatformPatterns.psiElement(JSElementTypes.STRING_TEMPLATE_EXPRESSION)
-                .withParent(
-                    PlatformPatterns.psiElement(JSElementTypes.INDEXED_PROPERTY_ACCESS_EXPRESSION)
-                )
+                PlatformPatterns.psiElement(JSElementTypes.STRING_TEMPLATE_EXPRESSION)
+                        .withParent(
+                                PlatformPatterns.psiElement(JSElementTypes.INDEXED_PROPERTY_ACCESS_EXPRESSION)
+                        )
         );
     }
 }

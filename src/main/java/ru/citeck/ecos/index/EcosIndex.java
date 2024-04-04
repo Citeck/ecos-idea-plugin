@@ -1,6 +1,5 @@
 package ru.citeck.ecos.index;
 
-import com.intellij.openapi.extensions.ExtensionPointName;
 import com.intellij.util.indexing.*;
 import com.intellij.util.io.DataExternalizer;
 import com.intellij.util.io.KeyDescriptor;
@@ -15,8 +14,6 @@ public class EcosIndex extends FileBasedIndexExtension<IndexKey, List<IndexValue
 
     public static final ID<IndexKey, List<IndexValue>> NAME = ID.create("ru.citeck.ecos.indexes.EcosIndexExtension");
 
-    public static final ExtensionPointName<EcosFileIndexer> EP_NAME =
-        ExtensionPointName.create("ru.citeck.ecos.fileIndexer");
 
     private final DataExternalizer<List<IndexValue>> dataExternalizer = new IndexValue.Externalizer();
     private final KeyDescriptor<IndexKey> keyDescriptor = new IndexKey.Descriptor();
@@ -35,17 +32,18 @@ public class EcosIndex extends FileBasedIndexExtension<IndexKey, List<IndexValue
 
         Indexes indexes = new Indexes();
 
-        EP_NAME
-            .extensions()
-            .filter(indexer -> {
-                FileType fileType = ServiceRegistry
-                    .getFileTypeService()
-                    .getFileType(inputData.getFile(), inputData.getProject());
-                return indexer.accept(fileType);
-            })
-            .forEach(ecosDataIndexer ->
-                ecosDataIndexer.map(inputData, indexes.withFileContent(inputData))
-            );
+        EcosFileIndexer.EP_NAME
+                .getExtensionsIfPointIsRegistered()
+                .stream()
+                .filter(indexer -> {
+                    FileType fileType = ServiceRegistry
+                            .getFileTypeService()
+                            .getFileType(inputData.getFile(), inputData.getProject());
+                    return indexer.accept(fileType);
+                })
+                .forEach(ecosDataIndexer ->
+                        ecosDataIndexer.map(inputData, indexes.withFileContent(inputData))
+                );
 
         return indexes;
     }

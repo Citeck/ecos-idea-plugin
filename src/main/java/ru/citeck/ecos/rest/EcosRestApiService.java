@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.NullNode;
 import com.intellij.openapi.util.text.StringUtil;
+import lombok.Getter;
 
 import java.io.*;
 import java.net.HttpCookie;
@@ -24,18 +25,13 @@ public class EcosRestApiService {
     private final static String RESET_SHARE_INDEX = "/share/page/index?reset=on";
     private final static String SHARE_INDEX = "/share/page/index";
 
+    @Getter
     private final String host = "http://localhost";
     private final String userName = "admin";
     private final String password = "admin";
     private final String authenticationProxyHeader = "X-ECOS-User";
-
-    private String jSessionId = "";
-
     private final ObjectMapper objectMapper = new ObjectMapper();
-
-    public String getHost() {
-        return host;
-    }
+    private String jSessionId = "";
 
     public JsonNode execute(String url, byte[] body, Integer timeout) throws Exception {
         return execute(url, body, timeout, JsonNode.class);
@@ -79,12 +75,12 @@ public class EcosRestApiService {
 
         if (errorStream != null) {
             String error = new BufferedReader(new InputStreamReader(errorStream))
-                .lines()
-                .collect(Collectors.joining("\n"));
+                    .lines()
+                    .collect(Collectors.joining("\n"));
             throw new RuntimeException(error);
         } else {
             String response = new BufferedReader(
-                new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8)).lines().collect(Collectors.joining("\n")
+                    new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8)).lines().collect(Collectors.joining("\n")
             );
             if (String.class.equals(clazz)) {
                 return clazz.cast(response);
@@ -110,24 +106,24 @@ public class EcosRestApiService {
     public void mutateRecord(String sourceId, String id, String mimeType, String name, byte[] content) throws Exception {
 
         Map<String, Object> request = Map.of("records", List.of(
-            Map.of(
-                "id", sourceId + "@" + id,
-                "attributes", Map.of(
-                    ".att(n:\"_self\"){as(n:\"content-data\"){json}}", List.of(
-                        Map.of(
-                            "storage", "base64",
-                            "type", mimeType,
-                            "name", name,
-                            "originalName", name,
-                            "url", String.format(
-                                "data:%s;base64,%s",
-                                mimeType,
-                                Base64.getEncoder().encodeToString(content)
-                            )
+                Map.of(
+                        "id", sourceId + "@" + id,
+                        "attributes", Map.of(
+                                ".att(n:\"_self\"){as(n:\"content-data\"){json}}", List.of(
+                                        Map.of(
+                                                "storage", "base64",
+                                                "type", mimeType,
+                                                "name", name,
+                                                "originalName", name,
+                                                "url", String.format(
+                                                        "data:%s;base64,%s",
+                                                        mimeType,
+                                                        Base64.getEncoder().encodeToString(content)
+                                                )
+                                        )
+                                )
                         )
-                    )
                 )
-            )
         ));
 
         String json = objectMapper.writeValueAsString(request);
@@ -144,15 +140,15 @@ public class EcosRestApiService {
     public JsonNode queryRecord(String sourceId, String id, List<String> attributes) throws Exception {
 
         Map<Object, Object> request = Map.of(
-            "records", List.of(sourceId != null ? sourceId + "@" + id : id),
-            "attributes", attributes
+                "records", List.of(sourceId != null ? sourceId + "@" + id : id),
+                "attributes", attributes
         );
         String json = objectMapper.writeValueAsString(request);
 
         try {
             return execute(QUERY_RECORD_URL + (sourceId != null ? sourceId.replace("@", "%2F") : ""), json.getBytes(StandardCharsets.UTF_8), 5000)
-                .get("records")
-                .get(0);
+                    .get("records")
+                    .get(0);
         } catch (Exception ex) {
             throw new RuntimeException("Unable to get record " + sourceId + "@" + id + "<br>" + ex.getMessage());
         }
@@ -167,13 +163,13 @@ public class EcosRestApiService {
     public JsonNode executeJS(String script) throws Exception {
 
         String json = objectMapper.writeValueAsString(Map.of(
-            "script", script,
-            "runas", "admin",
-            "template", "",
-            "spaceNodeRef", "",
-            "transaction", "readwrite",
-            "urlargs", "",
-            "documentNodeRef", ""
+                "script", script,
+                "runas", "admin",
+                "template", "",
+                "spaceNodeRef", "",
+                "transaction", "readwrite",
+                "urlargs", "",
+                "documentNodeRef", ""
         ));
 
         try {

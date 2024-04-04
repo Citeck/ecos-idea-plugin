@@ -10,7 +10,7 @@
 
         <completionProvider
                 implementation="ru.citeck.ecos.completion.js.providers.NodeAttributesShortQnamesCompletionProvider"/>
-        <completionProvider implementation="ru.citeck.ecos.completion.js.providers.FormJsDataCompletionProvider"/>
+        <completionProvider implementation="ru.citeck.ecos.completion.js.providers.JsonFormJsDataCompletionProvider"/>
         <completionProvider
                 implementation="ru.citeck.ecos.completion.js.providers.BaseProcessorExtensionsCompletionProvider"/>
         <completionProvider

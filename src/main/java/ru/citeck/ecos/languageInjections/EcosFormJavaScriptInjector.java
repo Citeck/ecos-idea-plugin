@@ -13,7 +13,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiLanguageInjectionHost;
 import org.jetbrains.annotations.NotNull;
 import ru.citeck.ecos.ServiceRegistry;
-import ru.citeck.ecos.files.types.Form;
+import ru.citeck.ecos.files.types.ecos.Form;
 
 import java.util.List;
 import java.util.Set;
@@ -21,18 +21,18 @@ import java.util.Set;
 public class EcosFormJavaScriptInjector implements MultiHostInjector {
 
     private static final Set<String> PATHS = Set.of(
-        ".executionCondition",
-        ".source.ajax.mapping",
-        ".calculateValue",
-        ".customDefaultValue",
-        ".customConditional",
-        ".validate.custom",
-        ".javascript",
-        ".ajax.data",
-        ".dataPreProcessingCode",
-        ".data.custom",
-        ".displayElementsJS",
-        ".customPredicateJs"
+            ".executionCondition",
+            ".source.ajax.mapping",
+            ".calculateValue",
+            ".customDefaultValue",
+            ".customConditional",
+            ".validate.custom",
+            ".javascript",
+            ".ajax.data",
+            ".dataPreProcessingCode",
+            ".data.custom",
+            ".displayElementsJS",
+            ".customPredicateJs"
     );
 
     private static final List<? extends Class<? extends PsiElement>> ELEMENTS_TO_INJECT_IN = List.of(JsonProperty.class);
@@ -44,25 +44,22 @@ public class EcosFormJavaScriptInjector implements MultiHostInjector {
             return;
         }
 
-        if (!(context instanceof JsonProperty)) {
+        if (!(context instanceof JsonProperty property)) {
             return;
         }
 
-        JsonProperty property = (JsonProperty) context;
         JsonValue value = property.getValue();
-        if (!(value instanceof JsonStringLiteral)) {
+        if (!(value instanceof JsonStringLiteral literal)) {
             return;
         }
 
         String qualifiedName = DumbService
-            .getInstance(context.getProject())
-            .computeWithAlternativeResolveEnabled(() -> QualifiedNameProviderUtil.getQualifiedName(context));
+                .getInstance(context.getProject())
+                .computeWithAlternativeResolveEnabled(() -> QualifiedNameProviderUtil.getQualifiedName(context));
 
         if (PATHS.stream().noneMatch(qualifiedName::endsWith)) {
             return;
         }
-
-        JsonStringLiteral literal = (JsonStringLiteral) value;
 
         registrar.startInjecting(JavascriptLanguage.INSTANCE);
         registrar.addPlace(null, null, (PsiLanguageInjectionHost) literal, new TextRange(1, literal.getTextLength() - 1));

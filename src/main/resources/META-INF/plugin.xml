@@ -19,11 +19,12 @@
         <projectService serviceImplementation="ru.citeck.ecos.index.IndexesService"/>
         <projectService serviceImplementation="ru.citeck.ecos.ui.AlfrescoJsConsoleService"/>
         <projectService serviceImplementation="ru.citeck.ecos.index.indexers.qname.QNameService"/>
-        <searchScopesProvider implementation="ru.citeck.ecos.files.SearchScopeProvider"/>
+        <searchScopesProvider implementation="ru.citeck.ecos.files.scopes.SearchScopeProvider"/>
         <fileBasedIndex implementation="ru.citeck.ecos.index.EcosIndex"/>
         <consoleFilterProvider implementation="ru.citeck.ecos.console.NodeRefConsoleFilterProvider"/>
         <searchEverywhereContributor implementation="ru.citeck.ecos.EcosSearchEveryWhereContributor$Factory"/>
-        <psi.referenceContributor implementation="ru.citeck.ecos.references.EcosReferenceProvider$Contributor"/>
+        <psi.referenceContributor implementation="ru.citeck.ecos.references.EcosReferenceProvider$Contributor"
+                                  language=""/>
         <localInspection implementationClass="ru.citeck.ecos.inspections.forms.DuplicateComponentKeyInspection"
                          language="JSON"
                          enabledByDefault="true" level="ERROR" displayName="ECOS form component duplicate key"
@@ -55,6 +56,7 @@
                         interface="ru.citeck.ecos.files.NavigateInFileItemsProvider"/>
         <extensionPoint name="psiElementValueResolver" interface="ru.citeck.ecos.references.PsiElementValueResolver"/>
         <extensionPoint name="completionProvider" interface="ru.citeck.ecos.completion.CompletionProvider"/>
+        <extensionPoint name="searchScope" beanClass="ru.citeck.ecos.files.scopes.EcosSearchScope"/>
     </extensionPoints>
 
     <extensions defaultExtensionNs="ru.citeck.ecos">
@@ -62,26 +64,56 @@
         <fileType implementation="ru.citeck.ecos.files.types.AlfrescoModel"/>
         <fileType implementation="ru.citeck.ecos.files.types.AlfrescoViewRepository"/>
         <fileType implementation="ru.citeck.ecos.files.types.AlfrescoConfig"/>
-        <fileType implementation="ru.citeck.ecos.files.types.Form"/>
-        <fileType implementation="ru.citeck.ecos.files.types.Action"/>
-        <fileType implementation="ru.citeck.ecos.files.types.DataType"/>
-        <fileType implementation="ru.citeck.ecos.files.types.Permissions"/>
-        <fileType implementation="ru.citeck.ecos.files.types.PermissionSettings"/>
-        <fileType implementation="ru.citeck.ecos.files.types.KanbanBoard"/>
-        <fileType implementation="ru.citeck.ecos.files.types.Config"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ModulePatch"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.Form$YAML"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.Form$JSON"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.Action$YAML"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.Action$JSON"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.DataType$YAML"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.DataType$JSON"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.Permissions$YAML"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.Permissions$JSON"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.PermissionSettings$YAML"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.PermissionSettings$JSON"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.KanbanBoard$YAML"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.KanbanBoard$JSON"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.Config$YAML"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.Config$JSON"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.ModulePatch$YAML"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.ModulePatch$JSON"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.Dashboard$YAML"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.Dashboard$JSON"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.Journal$YAML"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.Journal$JSON"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.Localization$YAML"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.Localization$JSON"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.Menu$YAML"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.Menu$JSON"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.NumTemplate$YAML"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.NumTemplate$JSON"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.CamelDsl$YAML"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.CamelDsl$JSON"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.Bpmn"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.Dmn"/>
         <fileType implementation="ru.citeck.ecos.files.types.CmmnProcessDefinition"/>
-        <fileType implementation="ru.citeck.ecos.files.types.Dashboard"/>
-        <fileType implementation="ru.citeck.ecos.files.types.Journal"/>
-        <fileType implementation="ru.citeck.ecos.files.types.Localization"/>
-        <fileType implementation="ru.citeck.ecos.files.types.Menu"/>
-        <fileType implementation="ru.citeck.ecos.files.types.NumTemplate"/>
-        <fileType implementation="ru.citeck.ecos.files.types.Bpmn"/>
-        <fileType implementation="ru.citeck.ecos.files.types.Dmn"/>
-        <fileType implementation="ru.citeck.ecos.files.types.CamelDsl"/>
         <fileType implementation="ru.citeck.ecos.files.types.XmlBeanDefinitions"/>
         <fileType implementation="ru.citeck.ecos.files.types.Java"/>
         <fileType implementation="ru.citeck.ecos.files.types.JavaScript"/>
+
+        <searchScope name="Form" class="ru.citeck.ecos.files.types.ecos.Form"/>
+        <searchScope name="Action" class="ru.citeck.ecos.files.types.ecos.Action"/>
+        <searchScope name="Data type" class="ru.citeck.ecos.files.types.ecos.DataType"/>
+        <searchScope name="Permissions" class="ru.citeck.ecos.files.types.ecos.Permissions"/>
+        <searchScope name="Permission Settings" class="ru.citeck.ecos.files.types.ecos.PermissionSettings"/>
+        <searchScope name="Kanban Board" class="ru.citeck.ecos.files.types.ecos.KanbanBoard"/>
+        <searchScope name="Config" class="ru.citeck.ecos.files.types.ecos.Config"/>
+        <searchScope name="Module Patch" class="ru.citeck.ecos.files.types.ecos.ModulePatch"/>
+        <searchScope name="Dashboard" class="ru.citeck.ecos.files.types.ecos.Dashboard"/>
+        <searchScope name="Journal" class="ru.citeck.ecos.files.types.ecos.Journal"/>
+        <searchScope name="Localization" class="ru.citeck.ecos.files.types.ecos.Localization"/>
+        <searchScope name="Menu" class="ru.citeck.ecos.files.types.ecos.Menu"/>
+        <searchScope name="Number Template" class="ru.citeck.ecos.files.types.ecos.NumTemplate"/>
+        <searchScope name="Camel DSL" class="ru.citeck.ecos.files.types.ecos.CamelDsl"/>
+        <searchScope name="Alfresco Model" class="ru.citeck.ecos.files.types.AlfrescoModel"/>
 
         <fileDeployer implementation="ru.citeck.ecos.files.deployers.EcosArtifactDeployer"/>
         <fileDeployer implementation="ru.citeck.ecos.files.deployers.CmmnProcessDefinitionDeployer"/>
@@ -100,8 +132,10 @@
         <fileIndexer implementation="ru.citeck.ecos.index.indexers.XmlBeanDefinitionIndexer"/>
         <fileIndexer implementation="ru.citeck.ecos.index.indexers.qname.AlfrescoQNameIndexer"/>
 
-        <navigateInFileItemsProvider implementation="ru.citeck.ecos.files.navigateItemsProviders.FormItemsProvider"/>
-        <navigateInFileItemsProvider implementation="ru.citeck.ecos.files.navigateItemsProviders.JournalItemsProvider"/>
+        <navigateInFileItemsProvider
+                implementation="ru.citeck.ecos.files.navigateItemsProviders.JsonFormItemsProvider"/>
+        <navigateInFileItemsProvider
+                implementation="ru.citeck.ecos.files.navigateItemsProviders.JsonJournalItemsProvider"/>
         <navigateInFileItemsProvider
                 implementation="ru.citeck.ecos.files.navigateItemsProviders.AlfrescoModelItemsProvider"/>
 

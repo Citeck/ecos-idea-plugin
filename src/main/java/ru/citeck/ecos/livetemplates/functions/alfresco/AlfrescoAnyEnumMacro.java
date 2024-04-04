@@ -8,11 +8,11 @@ import java.util.List;
 public class AlfrescoAnyEnumMacro extends AlfrescoEnumMacro {
 
     private static final List<IndexKey> INDEX_KEYS = List.of(
-        new IndexKey(AlfrescoModelIndexer.TYPE),
-        new IndexKey(AlfrescoModelIndexer.PROPERTY),
-        new IndexKey(AlfrescoModelIndexer.ASPECT),
-        new IndexKey(AlfrescoModelIndexer.ASSOCIATION),
-        new IndexKey(AlfrescoModelIndexer.CHILD_ASSOCIATION)
+            new IndexKey(AlfrescoModelIndexer.TYPE),
+            new IndexKey(AlfrescoModelIndexer.PROPERTY),
+            new IndexKey(AlfrescoModelIndexer.ASPECT),
+            new IndexKey(AlfrescoModelIndexer.ASSOCIATION),
+            new IndexKey(AlfrescoModelIndexer.CHILD_ASSOCIATION)
     );
 
     @Override

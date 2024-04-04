@@ -3,7 +3,6 @@ package ru.citeck.ecos.actions;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.extensions.ExtensionPointName;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.NotNull;
@@ -12,9 +11,6 @@ import ru.citeck.ecos.files.FileType;
 import ru.citeck.ecos.utils.EcosMessages;
 
 public class FetchFile extends EcosAction {
-
-    public static final ExtensionPointName<FileFetcher> EP_NAME =
-        ExtensionPointName.create("ru.citeck.ecos.fileFetcher");
 
     @Override
     protected void perform(@NotNull AnActionEvent event) {
@@ -76,11 +72,12 @@ public class FetchFile extends EcosAction {
             return null;
         }
 
-        return EP_NAME
-            .extensions()
-            .filter(fileFetcher -> fileFetcher.canFetch(psiFile, fileType))
-            .findFirst()
-            .orElse(null);
+        return FileFetcher.EP_NAME
+                .getExtensionsIfPointIsRegistered()
+                .stream()
+                .filter(fileFetcher -> fileFetcher.canFetch(psiFile, fileType))
+                .findFirst()
+                .orElse(null);
 
     }
 

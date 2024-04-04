@@ -21,7 +21,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
 import ru.citeck.ecos.ServiceRegistry;
 import ru.citeck.ecos.codeinsight.forms.components.*;
-import ru.citeck.ecos.files.types.Form;
+import ru.citeck.ecos.files.types.ecos.Form;
 import ru.citeck.ecos.index.IndexKey;
 import ru.citeck.ecos.index.IndexValue;
 import ru.citeck.ecos.index.IndexesService;
@@ -39,16 +39,19 @@ public class GenerateEcosFormComponent extends SimpleCodeInsightAction {
 
     public static final String COMPONENTS_PATH = "/components";
     private static final Map<String, Supplier<Component>> COMPONENTS = Map.of(
-        SelectJournal.TYPE, SelectJournal::new,
-        DateTime.TYPE, DateTime::new,
-        CheckBox.TYPE, CheckBox::new,
-        TextField.TYPE, TextField::new,
-        TextArea.TYPE, TextArea::new,
-        Columns.TYPE + " (1 column)", () -> new Columns(1),
-        Columns.TYPE + " (2 columns)", () -> new Columns(2),
-        Panel.TYPE, Panel::new,
-        EcosSelect.TYPE, EcosSelect::new
+            SelectJournal.TYPE, SelectJournal::new,
+            DateTime.TYPE, DateTime::new,
+            CheckBox.TYPE, CheckBox::new,
+            TextField.TYPE, TextField::new,
+            TextArea.TYPE, TextArea::new,
+            Columns.TYPE + " (1 column)", () -> new Columns(1),
+            Columns.TYPE + " (2 columns)", () -> new Columns(2),
+            Panel.TYPE, Panel::new,
+            EcosSelect.TYPE, EcosSelect::new
     );
+
+    private record InsertionPosition(String path, int index) {
+    }
 
     @Override
     public void invoke(@NotNull Project project, @NotNull Editor editor, @NotNull PsiFile psiFile) {
@@ -59,14 +62,14 @@ public class GenerateEcosFormComponent extends SimpleCodeInsightAction {
         }
 
         JBPopupFactory
-            .getInstance()
-            .createPopupChooserBuilder(Arrays.asList(COMPONENTS.keySet().toArray()))
-            .setTitle("Select Component Type:")
-            .setNamerForFiltering(Object::toString)
-            .setRequestFocus(true)
-            .setItemChosenCallback(componentType -> onComponentTypeSelected(editor, (String) componentType, insertionPosition))
-            .createPopup()
-            .showInCenterOf(WindowManager.getInstance().getFrame(project).getRootPane());
+                .getInstance()
+                .createPopupChooserBuilder(Arrays.asList(COMPONENTS.keySet().toArray()))
+                .setTitle("Select Component Type:")
+                .setNamerForFiltering(Object::toString)
+                .setRequestFocus(true)
+                .setItemChosenCallback(componentType -> onComponentTypeSelected(editor, (String) componentType, insertionPosition))
+                .createPopup()
+                .showInCenterOf(WindowManager.getInstance().getFrame(project).getRootPane());
 
     }
 
@@ -84,13 +87,13 @@ public class GenerateEcosFormComponent extends SimpleCodeInsightAction {
         }
 
         String qualifiedName = DumbService.getInstance(psiFile.getProject()).computeWithAlternativeResolveEnabled(() ->
-            QualifiedNameProviderUtil.getQualifiedName(selectedProperty));
+                QualifiedNameProviderUtil.getQualifiedName(selectedProperty));
 
         String path = "/" + qualifiedName
-            .replace("]", "/")
-            .replace("[", "/")
-            .replace(".", "/")
-            .replace("//", "/");
+                .replace("]", "/")
+                .replace("[", "/")
+                .replace(".", "/")
+                .replace("//", "/");
 
         if (!path.contains(COMPONENTS_PATH)) {
             return null;
@@ -102,9 +105,9 @@ public class GenerateEcosFormComponent extends SimpleCodeInsightAction {
 
         if (selectedProperty.getChildren().length == 2 && selectedProperty.getChildren()[1] instanceof JsonArray) {
             index = (int) Arrays.stream(selectedProperty.getChildren()[1].getChildren())
-                .map(PsiElement::getTextOffset)
-                .filter(offset -> offset < selectionStart)
-                .count();
+                    .map(PsiElement::getTextOffset)
+                    .filter(offset -> offset < selectionStart)
+                    .count();
         }
 
         return new InsertionPosition(path, index);
@@ -117,14 +120,14 @@ public class GenerateEcosFormComponent extends SimpleCodeInsightAction {
 
         if (component instanceof InputComponent) {
             JBPopupFactory
-                .getInstance()
-                .createPopupChooserBuilder(getAttributes(editor.getProject(), (InputComponent) component))
-                .setTitle("Select Attribute:")
-                .setNamerForFiltering(Object::toString)
-                .setRequestFocus(true)
-                .setItemChosenCallback(attribute -> onAttributeSelected(editor, component, attribute, insertionPosition))
-                .createPopup()
-                .showInCenterOf(WindowManager.getInstance().getFrame(editor.getProject()).getRootPane());
+                    .getInstance()
+                    .createPopupChooserBuilder(getAttributes(editor.getProject(), (InputComponent) component))
+                    .setTitle("Select Attribute:")
+                    .setNamerForFiltering(Object::toString)
+                    .setRequestFocus(true)
+                    .setItemChosenCallback(attribute -> onAttributeSelected(editor, component, attribute, insertionPosition))
+                    .createPopup()
+                    .showInCenterOf(WindowManager.getInstance().getFrame(editor.getProject()).getRootPane());
         } else {
             onAttributeSelected(editor, component, "", insertionPosition);
         }
@@ -134,14 +137,13 @@ public class GenerateEcosFormComponent extends SimpleCodeInsightAction {
 
         Project project = editor.getProject();
 
-        String json = null;
+        String json;
 
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode jsonNode = objectMapper.readValue(editor.getDocument().getText(), JsonNode.class);
 
-            if (component instanceof InputComponent) {
-                InputComponent inputComponent = (InputComponent) component;
+            if (component instanceof InputComponent inputComponent) {
                 inputComponent.setKey(attribute.replace(":", "_"));
                 inputComponent.getProperties().setAttribute(attribute);
                 inputComponent.setLabel(attribute);
@@ -156,9 +158,9 @@ public class GenerateEcosFormComponent extends SimpleCodeInsightAction {
                 component.setLabel(key);
             }
 
-            ((ArrayNode) jsonNode.at(insertionPosition.getPath())).insert(
-                insertionPosition.getIndex(),
-                objectMapper.convertValue(component, JsonNode.class)
+            ((ArrayNode) jsonNode.at(insertionPosition.path())).insert(
+                    insertionPosition.index(),
+                    objectMapper.convertValue(component, JsonNode.class)
             );
 
             json = objectMapper.writer(new JsonPrettyPrinter()).writeValueAsString(jsonNode).replace("\r\n", "\n");
@@ -170,9 +172,9 @@ public class GenerateEcosFormComponent extends SimpleCodeInsightAction {
 
         String finalJson = json;
         ApplicationManager.getApplication().runWriteAction(
-            () -> CommandProcessor.getInstance().runUndoTransparentAction(
-                () -> editor.getDocument().setText(finalJson)
-            )
+                () -> CommandProcessor.getInstance().runUndoTransparentAction(
+                        () -> editor.getDocument().setText(finalJson)
+                )
         );
 
 
@@ -183,12 +185,12 @@ public class GenerateEcosFormComponent extends SimpleCodeInsightAction {
         IndexesService indexesService = ServiceRegistry.getIndexesService(project);
 
         return component
-            .getSupportedArtifactTypes()
-            .stream()
-            .map(IndexKey::new)
-            .flatMap(indexesService::stream)
-            .map(IndexValue::getId)
-            .collect(Collectors.toList());
+                .getSupportedArtifactTypes()
+                .stream()
+                .map(IndexKey::new)
+                .flatMap(indexesService::stream)
+                .map(IndexValue::getId)
+                .collect(Collectors.toList());
 
     }
 
@@ -196,24 +198,6 @@ public class GenerateEcosFormComponent extends SimpleCodeInsightAction {
     protected void update(@NotNull Presentation presentation, @NotNull Project project, @NotNull Editor editor, @NotNull PsiFile psiFile) {
         boolean isForm = ServiceRegistry.getFileTypeService().isInstance(psiFile, Form.class);
         presentation.setVisible(isForm && getInsertionPath(editor, psiFile) != null);
-    }
-
-    private static class InsertionPosition {
-        private final String path;
-        private final int index;
-
-        public InsertionPosition(String path, int index) {
-            this.path = path;
-            this.index = index;
-        }
-
-        public String getPath() {
-            return path;
-        }
-
-        public int getIndex() {
-            return index;
-        }
     }
 
 }

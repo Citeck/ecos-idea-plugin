@@ -16,10 +16,7 @@ import ru.citeck.ecos.files.types.CmmnProcessDefinition;
 import ru.citeck.ecos.rest.EcosRestApiService;
 import ru.citeck.ecos.ui.TextInputDialog;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class CmmnProcessDefinitionFetcher implements FileFetcher {
 
@@ -34,8 +31,8 @@ public class CmmnProcessDefinitionFetcher implements FileFetcher {
         String lastNodeRef = lastNodeRefs.get(path);
 
         TextInputDialog nodeRefInputDialog = new TextInputDialog(
-            "Specify NodeRef with case template:",
-            lastNodeRef != null ? lastNodeRef : ""
+                "Specify NodeRef with case template:",
+                lastNodeRef != null ? lastNodeRef : ""
         );
         if (!nodeRefInputDialog.showAndGet()) {
             throw new RuntimeException("Fetching cancelled");
@@ -48,13 +45,13 @@ public class CmmnProcessDefinitionFetcher implements FileFetcher {
         JsonNode response = ecosRestApiService.execute("/share/proxy/alfresco/citeck/case/template?nodeRef=" + nodeRef, null, 20000);
         String template = response.get("template").textValue();
         String content = ecosRestApiService.queryRecord(null, template, List.of("cm:content?disp"))
-            .get("attributes")
-            .get("cm:content?disp")
-            .asText();
+                .get("attributes")
+                .get("cm:content?disp")
+                .asText();
 
         XmlFile newXmlPsi = (XmlFile) PsiFileFactory
-            .getInstance(project)
-            .createFileFromText(XMLLanguage.INSTANCE, content);
+                .getInstance(project)
+                .createFileFromText(XMLLanguage.INSTANCE, content);
 
         XmlTag newCaseTag = newXmlPsi.getRootTag().findFirstSubTag("cmmn:case");
         Arrays.stream(newCaseTag.getAttributes()).forEach(PsiElement::delete);
@@ -68,7 +65,7 @@ public class CmmnProcessDefinitionFetcher implements FileFetcher {
         XmlTag rootTag = ((XmlFile) psiFile).getRootTag();
         XmlTag caseTag = rootTag.findFirstSubTag("cmmn:case");
         Arrays.stream(caseTag.getAttributes())
-            .forEach(xmlAttribute -> newCaseTag.setAttribute(xmlAttribute.getName(), xmlAttribute.getValue()));
+                .forEach(xmlAttribute -> newCaseTag.setAttribute(xmlAttribute.getName(), xmlAttribute.getValue()));
 
         return newXmlPsi.getText();
     }

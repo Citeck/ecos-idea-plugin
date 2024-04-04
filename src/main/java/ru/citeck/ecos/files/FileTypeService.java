@@ -7,26 +7,22 @@ import com.intellij.psi.PsiFile;
 import lombok.Getter;
 
 import java.util.Comparator;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 public class FileTypeService {
 
     public static final ExtensionPointName<FileType> EP_NAME =
-        ExtensionPointName.create("ru.citeck.ecos.fileType");
+            ExtensionPointName.create("ru.citeck.ecos.fileType");
 
     @Getter(lazy = true)
     private final Map<Class<? extends FileType>, FileType> fileTypesByClass = initFileTypesByName();
 
     private Map<Class<? extends FileType>, FileType> initFileTypesByName() {
         return EP_NAME
-            .extensions()
-            .collect(Collectors.toMap(FileType::getClass, fileType -> fileType));
-    }
-
-    public List<FileType> getRegisteredFileTypes() {
-        return EP_NAME.getExtensionList();
+                .getExtensionsIfPointIsRegistered()
+                .stream()
+                .collect(Collectors.toMap(FileType::getClass, fileType -> fileType));
     }
 
     public FileType getFileType(VirtualFile file, Project project) {
@@ -34,10 +30,11 @@ public class FileTypeService {
             return null;
         }
         return EP_NAME
-            .extensions()
-            .filter(fileType -> fileType.accept(file, project))
-            .max(Comparator.comparingInt(FileType::getPriority))
-            .orElse(null);
+                .getExtensionsIfPointIsRegistered()
+                .stream()
+                .filter(fileType -> fileType.accept(file, project))
+                .max(Comparator.comparingInt(FileType::getPriority))
+                .orElse(null);
     }
 
     public FileType getFileType(PsiFile psiFile) {

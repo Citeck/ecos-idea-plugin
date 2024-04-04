@@ -9,7 +9,7 @@ import java.util.List;
 public class AlfrescoAssociationEnumMacro extends AlfrescoEnumMacro {
 
     private static final List<IndexKey> INDEX_KEYS = Collections.singletonList(
-        new IndexKey(AlfrescoModelIndexer.ASSOCIATION)
+            new IndexKey(AlfrescoModelIndexer.ASSOCIATION)
     );
 
     @Override

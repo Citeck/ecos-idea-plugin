@@ -3,7 +3,6 @@ package ru.citeck.ecos.actions;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.ScrollType;
-import com.intellij.openapi.extensions.ExtensionPointName;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.fileEditor.OpenFileDescriptor;
 import com.intellij.openapi.project.Project;
@@ -21,9 +20,6 @@ import java.util.stream.Collectors;
 
 public class NavigateInFileAction extends EcosAction {
 
-    public static final ExtensionPointName<NavigateInFileItemsProvider> EP_NAME =
-        ExtensionPointName.create("ru.citeck.ecos.navigateInFileItemsProvider");
-
     @Override
     protected void perform(@NotNull AnActionEvent event) {
 
@@ -34,30 +30,31 @@ public class NavigateInFileAction extends EcosAction {
 
         Project project = getEventProject(event);
 
-        var items = EP_NAME
-            .extensions()
-            .map(navigateInFileItemsProvider -> navigateInFileItemsProvider.getItems(psiFile))
-            .filter(Objects::nonNull)
-            .flatMap(Collection::stream)
-            .sorted(Comparator.comparing(NavigateInFileItem::getName))
-            .collect(Collectors.toList());
+        var items = NavigateInFileItemsProvider.EP_NAME
+                .getExtensionsIfPointIsRegistered()
+                .stream()
+                .map(navigateInFileItemsProvider -> navigateInFileItemsProvider.getItems(psiFile))
+                .filter(Objects::nonNull)
+                .flatMap(Collection::stream)
+                .sorted(Comparator.comparing(NavigateInFileItem::name))
+                .collect(Collectors.toList());
 
         JBPopupFactory
-            .getInstance()
-            .createPopupChooserBuilder(items)
-            .setTitle("Navigate to:")
-            .setItemChosenCallback(chosenItem -> onItemChosen(project, psiFile, chosenItem))
-            .setNamerForFiltering(NavigateInFileItem::toString)
-            .setRequestFocus(true)
-            .createPopup()
-            .showInCenterOf(WindowManager.getInstance().getFrame(project).getRootPane());
+                .getInstance()
+                .createPopupChooserBuilder(items)
+                .setTitle("Navigate To:")
+                .setItemChosenCallback(chosenItem -> onItemChosen(project, psiFile, chosenItem))
+                .setNamerForFiltering(NavigateInFileItem::toString)
+                .setRequestFocus(true)
+                .createPopup()
+                .showInCenterOf(WindowManager.getInstance().getFrame(project).getRootPane());
 
     }
 
     private void onItemChosen(Project project, PsiFile psiFile, NavigateInFileItem chosenItem) {
         OpenFileDescriptor descriptor = new OpenFileDescriptor(project, psiFile.getVirtualFile());
         Editor editor = FileEditorManager.getInstance(project).openTextEditor(descriptor, true);
-        editor.getCaretModel().moveToOffset(chosenItem.getPsiElement().getTextOffset());
+        editor.getCaretModel().moveToOffset(chosenItem.psiElement().getTextOffset());
         editor.getScrollingModel().scrollToCaret(ScrollType.CENTER_UP);
     }
 
@@ -69,12 +66,13 @@ public class NavigateInFileAction extends EcosAction {
             return false;
         }
 
-        return EP_NAME
-            .extensions()
-            .anyMatch(navigateInFileItemsProvider -> {
-                var items = navigateInFileItemsProvider.getItems(psiFile);
-                return items != null && items.size() > 0;
-            });
+        return NavigateInFileItemsProvider.EP_NAME
+                .getExtensionsIfPointIsRegistered()
+                .stream()
+                .anyMatch(navigateInFileItemsProvider -> {
+                    var items = navigateInFileItemsProvider.getItems(psiFile);
+                    return items != null && !items.isEmpty();
+                });
     }
 
 }

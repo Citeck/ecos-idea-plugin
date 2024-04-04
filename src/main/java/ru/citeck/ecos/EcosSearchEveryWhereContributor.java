@@ -2,9 +2,7 @@ package ru.citeck.ecos;
 
 import com.intellij.ide.actions.searcheverywhere.SearchEverywhereContributor;
 import com.intellij.ide.actions.searcheverywhere.SearchEverywhereContributorFactory;
-import com.intellij.jarRepository.JarRepositoryManager;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.ScrollType;
@@ -15,15 +13,12 @@ import com.intellij.openapi.module.ModuleUtil;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.project.DumbService;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vfs.JarFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.codeStyle.MinusculeMatcher;
 import com.intellij.psi.codeStyle.NameUtil;
 import com.intellij.ui.ColoredListCellRenderer;
 import com.intellij.ui.SimpleTextAttributes;
-import com.intellij.ui.components.JBLabel;
 import com.intellij.util.Processor;
-import icons.Icons;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
@@ -33,10 +28,8 @@ import ru.citeck.ecos.index.IndexValue;
 import ru.citeck.ecos.utils.EcosVirtualFileUtils;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.Arrays;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 public class EcosSearchEveryWhereContributor implements SearchEverywhereContributor<IndexValue> {
@@ -150,9 +143,6 @@ public class EcosSearchEveryWhereContributor implements SearchEverywhereContribu
 
     @Override
     public @Nullable Object getDataForItem(@NotNull IndexValue element, @NotNull String dataId) {
-        if (CommonDataKeys.PSI_ELEMENT.is(dataId)) {
-            return null;
-        }
         return null;
     }
 

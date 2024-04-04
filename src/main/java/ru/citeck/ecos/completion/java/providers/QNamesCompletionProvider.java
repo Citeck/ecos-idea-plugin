@@ -22,9 +22,9 @@ public class QNamesCompletionProvider implements JavaCompletionProvider {
 
     @Override
     public void addCompletions(
-        @NotNull CompletionParameters parameters,
-        @NotNull ProcessingContext context,
-        @NotNull CompletionResultSet result
+            @NotNull CompletionParameters parameters,
+            @NotNull ProcessingContext context,
+            @NotNull CompletionResultSet result
     ) {
         Project project = parameters.getPosition().getProject();
         PsiClassType qNamePattern = PsiType.getTypeByName(QName.QNAME_PATTERN, project, GlobalSearchScope.allScope(project));
@@ -33,7 +33,7 @@ public class QNamesCompletionProvider implements JavaCompletionProvider {
             return;
         }
         result.addAllElements(
-            ServiceRegistry.getQNameService(project).createJavaLookupElements()
+                ServiceRegistry.getQNameService(project).createJavaLookupElements()
         );
     }
 

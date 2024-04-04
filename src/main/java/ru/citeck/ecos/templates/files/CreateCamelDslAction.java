@@ -1,7 +1,6 @@
 package ru.citeck.ecos.templates.files;
 
-import ru.citeck.ecos.files.types.Bpmn;
-import ru.citeck.ecos.files.types.CamelDsl;
+import ru.citeck.ecos.files.types.ecos.CamelDsl;
 
 import java.util.List;
 

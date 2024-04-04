@@ -9,9 +9,9 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import org.jetbrains.yaml.psi.YAMLFile;
 import ru.citeck.ecos.ServiceRegistry;
-import ru.citeck.ecos.files.EcosArtifact;
 import ru.citeck.ecos.files.FileDeployer;
 import ru.citeck.ecos.files.FileType;
+import ru.citeck.ecos.files.types.ecos.EcosArtifact;
 import ru.citeck.ecos.rest.EcosRestApiService;
 
 import java.util.Map;

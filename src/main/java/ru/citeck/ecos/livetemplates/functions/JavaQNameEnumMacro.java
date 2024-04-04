@@ -21,14 +21,14 @@ public class JavaQNameEnumMacro extends EnumMacro {
     }
 
     @Override
-    public LookupElement[] calculateLookupItems(@NotNull Expression[] params, ExpressionContext context) {
+    public LookupElement[] calculateLookupItems(@NotNull Expression @NotNull [] params, ExpressionContext context) {
         Project project = context.getProject();
         if (project == null) {
             return null;
         }
         return ServiceRegistry.getQNameService(project)
-            .createJavaLookupElements()
-            .toArray(LookupElement[]::new);
+                .createJavaLookupElements()
+                .toArray(LookupElement[]::new);
     }
 
 }

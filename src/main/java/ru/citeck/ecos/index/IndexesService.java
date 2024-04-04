@@ -17,10 +17,10 @@ public class IndexesService {
 
     public Stream<IndexValue> stream(IndexKey key) {
         return FileBasedIndex
-            .getInstance()
-            .getValues(EcosIndex.NAME, key, GlobalSearchScope.allScope(project))
-            .stream()
-            .flatMap(Collection::stream);
+                .getInstance()
+                .getValues(EcosIndex.NAME, key, GlobalSearchScope.allScope(project))
+                .stream()
+                .flatMap(Collection::stream);
     }
 
     public List<IndexValue> list(IndexKey key) {

@@ -27,10 +27,10 @@ public class EcosPsiUtils {
     public static Map<String, String> getProperties(@NotNull JsonObject jsonObject, String... property) {
         Set<String> properties = Set.of(property);
         return jsonObject
-            .getPropertyList()
-            .stream()
-            .filter(jsonProperty -> properties.contains(jsonProperty.getName()))
-            .collect(Collectors.toMap(JsonProperty::getName, EcosPsiUtils::getValue));
+                .getPropertyList()
+                .stream()
+                .filter(jsonProperty -> properties.contains(jsonProperty.getName()))
+                .collect(Collectors.toMap(JsonProperty::getName, EcosPsiUtils::getValue));
     }
 
     public static String getProperty(@NotNull JsonObject jsonObject, String property) {

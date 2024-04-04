@@ -1,7 +1,6 @@
 package ru.citeck.ecos.files.deployers;
 
 import com.intellij.psi.PsiFile;
-
 import ru.citeck.ecos.ServiceRegistry;
 import ru.citeck.ecos.files.FileType;
 import ru.citeck.ecos.files.types.AlfrescoConfig;

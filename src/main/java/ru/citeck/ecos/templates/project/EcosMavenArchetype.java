@@ -2,10 +2,7 @@ package ru.citeck.ecos.templates.project;
 
 import com.intellij.openapi.extensions.ExtensionPointName;
 import com.intellij.util.xmlb.annotations.Attribute;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.jetbrains.idea.maven.model.MavenArchetype;
-import ru.citeck.ecos.files.FileType;
 
 public class EcosMavenArchetype {
 

@@ -47,13 +47,13 @@ public class BaseProcessorExtensionMethodsCompletionProvider implements JsComple
         Template template = templateManager.createTemplate("", "", templateText);
 
         new Scanner(templateText)
-            .findAll(TEMPLATE_VARIABLE_PATTERN)
-            .map(MatchResult::group)
-            .filter(variable -> !"$END$".equals(variable))
-            .map(variable -> variable.substring(1, variable.length() - 1))
-            .forEach(variable -> template
-                .addVariable(variable, "", "\"" + variable + "\"", true)
-            );
+                .findAll(TEMPLATE_VARIABLE_PATTERN)
+                .map(MatchResult::group)
+                .filter(variable -> !"$END$".equals(variable))
+                .map(variable -> variable.substring(1, variable.length() - 1))
+                .forEach(variable -> template
+                        .addVariable(variable, "", "\"" + variable + "\"", true)
+                );
 
         context.getDocument().deleteString(context.getStartOffset(), context.getTailOffset());
         templateManager.startTemplate(context.getEditor(), template);
@@ -74,9 +74,9 @@ public class BaseProcessorExtensionMethodsCompletionProvider implements JsComple
         }
 
         String qualifier = Optional
-            .ofNullable(referenceExpression.getQualifier())
-            .map(PsiElement::getText)
-            .orElse(null);
+                .ofNullable(referenceExpression.getQualifier())
+                .map(PsiElement::getText)
+                .orElse(null);
         if (Strings.isEmpty(qualifier)) {
             return;
         }
@@ -84,90 +84,90 @@ public class BaseProcessorExtensionMethodsCompletionProvider implements JsComple
         Project project = referenceExpression.getProject();
 
         String clazz = ServiceRegistry
-            .getIndexesService(project)
-            .stream(new IndexKey(XmlBeanDefinitionIndexer.JAVASCRIPT_EXTENSION_KEY_NAME, qualifier))
-            .findFirst()
-            .map(indexValue -> indexValue.getProperty("class"))
-            .orElse("org.alfresco.repo.jscript.ScriptNode");
+                .getIndexesService(project)
+                .stream(new IndexKey(XmlBeanDefinitionIndexer.JAVASCRIPT_EXTENSION_KEY_NAME, qualifier))
+                .findFirst()
+                .map(indexValue -> indexValue.getProperty("class"))
+                .orElse("org.alfresco.repo.jscript.ScriptNode");
 
         PsiClass psiClass = JavaPsiFacade
-            .getInstance(project)
-            .findClass(clazz, GlobalSearchScope.allScope(project));
+                .getInstance(project)
+                .findClass(clazz, GlobalSearchScope.allScope(project));
 
         if (psiClass == null) {
             return;
         }
 
         Arrays
-            .stream(psiClass.getAllMethods())
-            .filter(psiMethod -> {
-                if (psiMethod.isConstructor()) {
-                    return false;
-                }
-                PsiModifierList modifiers = PsiTreeUtil.findChildOfType(psiMethod, PsiModifierList.class);
-                if (modifiers == null) {
-                    return false;
-                }
-                return modifiers.hasModifierProperty(PsiModifier.PUBLIC) && !modifiers.hasModifierProperty(PsiModifier.STATIC);
-            })
-            .forEach(psiMethod -> {
+                .stream(psiClass.getAllMethods())
+                .filter(psiMethod -> {
+                    if (psiMethod.isConstructor()) {
+                        return false;
+                    }
+                    PsiModifierList modifiers = PsiTreeUtil.findChildOfType(psiMethod, PsiModifierList.class);
+                    if (modifiers == null) {
+                        return false;
+                    }
+                    return modifiers.hasModifierProperty(PsiModifier.PUBLIC) && !modifiers.hasModifierProperty(PsiModifier.STATIC);
+                })
+                .forEach(psiMethod -> {
 
-                String methodName = psiMethod.getName();
+                    String methodName = psiMethod.getName();
 
-                PsiType returnType = psiMethod.getReturnType();
-                String returnTypeName = Optional
-                    .ofNullable(returnType)
-                    .map(PsiType::getPresentableText)
-                    .orElse("");
+                    PsiType returnType = psiMethod.getReturnType();
+                    String returnTypeName = Optional
+                            .ofNullable(returnType)
+                            .map(PsiType::getPresentableText)
+                            .orElse("");
 
-                if (returnType != null &&
-                    psiMethod.getParameterList().isEmpty() &&
-                    methodName.length() >= 4 &&
-                    methodName.startsWith("get")
-                ) {
+                    if (returnType != null &&
+                            psiMethod.getParameterList().isEmpty() &&
+                            methodName.length() >= 4 &&
+                            methodName.startsWith("get")
+                    ) {
 
-                    String propertyName = Introspector.decapitalize(methodName.substring(3));
-                    String presentableName = propertyName;
-                    if (returnTypeName.startsWith("Map<")) {
-                        propertyName += "[$END$]";
+                        String propertyName = Introspector.decapitalize(methodName.substring(3));
+                        String presentableName = propertyName;
+                        if (returnTypeName.startsWith("Map<")) {
+                            propertyName += "[$END$]";
+                        }
+
+                        result.addElement(
+                                buidTemplateElement(
+                                        propertyName,
+                                        presentableName,
+                                        returnTypeName
+                                )
+                        );
+                    } else {
+
+                        PsiParameter[] methodParameters = psiMethod.getParameterList().getParameters();
+
+                        String templateMethodParams = Arrays
+                                .stream(methodParameters)
+                                .map(psiParameter -> "$" + psiParameter.getName() + "$")
+                                .collect(Collectors.joining(", "));
+
+                        String presentableMethodParams = Arrays
+                                .stream(methodParameters)
+                                .map(psiParameter -> psiParameter.getType().getPresentableText() + " " + psiParameter.getName())
+                                .collect(Collectors.joining(", "));
+
+                        String template = methodName + "(" + templateMethodParams + ")";
+                        if ("void".equals(returnTypeName)) {
+                            template += ";";
+                        }
+
+                        result.addElement(
+                                buidTemplateElement(
+                                        template,
+                                        psiMethod.getName() + "(" + presentableMethodParams + ")",
+                                        returnTypeName
+                                ));
                     }
 
-                    result.addElement(
-                        buidTemplateElement(
-                            propertyName,
-                            presentableName,
-                            returnTypeName
-                        )
-                    );
-                } else {
 
-                    PsiParameter[] methodParameters = psiMethod.getParameterList().getParameters();
-
-                    String templateMethodParams = Arrays
-                        .stream(methodParameters)
-                        .map(psiParameter -> "$" + psiParameter.getName() + "$")
-                        .collect(Collectors.joining(", "));
-
-                    String presentableMethodParams = Arrays
-                        .stream(methodParameters)
-                        .map(psiParameter -> psiParameter.getType().getPresentableText() + " " + psiParameter.getName())
-                        .collect(Collectors.joining(", "));
-
-                    String template = methodName + "(" + templateMethodParams + ")";
-                    if ("void".equals(returnTypeName)) {
-                        template += ";";
-                    }
-
-                    result.addElement(
-                        buidTemplateElement(
-                            template,
-                            psiMethod.getName() + "(" + presentableMethodParams + ")",
-                            returnTypeName
-                        ));
-                }
-
-
-            });
+                });
 
     }
 
@@ -181,14 +181,14 @@ public class BaseProcessorExtensionMethodsCompletionProvider implements JsComple
         }
 
         return lookupElement
-            .withIcon(Icons.AlfrescoLogo)
-            .withInsertHandler(insertHandler);
+                .withIcon(Icons.AlfrescoLogo)
+                .withInsertHandler(insertHandler);
     }
 
     @Override
     public ElementPattern<? extends PsiElement> getElementPattern() {
         return PlatformPatterns.psiElement()
-            .withParent(PlatformPatterns.psiElement(JSElementTypes.REFERENCE_EXPRESSION))
-            .and(PlatformPatterns.psiElement().afterLeaf(".", "?."));
+                .withParent(PlatformPatterns.psiElement(JSElementTypes.REFERENCE_EXPRESSION))
+                .and(PlatformPatterns.psiElement().afterLeaf(".", "?."));
     }
 }

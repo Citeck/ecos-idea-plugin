@@ -11,9 +11,9 @@
     </extensions>
 
     <extensions defaultExtensionNs="ru.citeck.ecos">
-        <ecosMavenArchetype displayName="Ecos Microservice" groupId="ru.citeck.ecos"
+        <ecosMavenArchetype displayName="ECOS Microservice" groupId="ru.citeck.ecos"
                             artifactId="ecos-webapp-archetype" version="LATEST" repository="" description=""/>
-        <ecosMavenArchetype displayName="Ecos Application" groupId="ru.citeck.ecos"
+        <ecosMavenArchetype displayName="ECOS Application" groupId="ru.citeck.ecos"
                             artifactId="ecos-application-archetype" version="LATEST" repository="" description=""/>
     </extensions>
 

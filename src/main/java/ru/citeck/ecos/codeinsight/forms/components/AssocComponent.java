@@ -7,8 +7,8 @@ import java.util.Set;
 public abstract class AssocComponent extends InputComponent {
 
     private static final Set<String> ARTIFACT_TYPES = Set.of(
-        AlfrescoModelIndexer.ASSOCIATION,
-        AlfrescoModelIndexer.CHILD_ASSOCIATION
+            AlfrescoModelIndexer.ASSOCIATION,
+            AlfrescoModelIndexer.CHILD_ASSOCIATION
     );
 
     @Override

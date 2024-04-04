@@ -1,8 +1,9 @@
-package ru.citeck.ecos.files;
+package ru.citeck.ecos.files.types.ecos;
 
 import com.intellij.json.psi.JsonPsiUtil;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
+import ru.citeck.ecos.files.FileType;
 
 import java.util.Collections;
 import java.util.List;

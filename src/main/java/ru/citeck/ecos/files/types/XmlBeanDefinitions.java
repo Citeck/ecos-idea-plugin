@@ -21,13 +21,13 @@ public class XmlBeanDefinitions implements FileType {
         }
 
         return Optional
-            .of(psiFile)
-            .filter(XmlFile.class::isInstance)
-            .map(XmlFile.class::cast)
-            .map(XmlFile::getRootTag)
-            .map(XmlTag::getName)
-            .map("beans"::equals)
-            .orElse(false);
+                .of(psiFile)
+                .filter(XmlFile.class::isInstance)
+                .map(XmlFile.class::cast)
+                .map(XmlFile::getRootTag)
+                .map(XmlTag::getName)
+                .map("beans"::equals)
+                .orElse(false);
 
     };
 

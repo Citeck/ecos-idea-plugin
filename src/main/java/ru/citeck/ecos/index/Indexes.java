@@ -24,11 +24,12 @@ public class Indexes extends HashMap<IndexKey, List<IndexValue>> {
         public FileIndexes addSearchEverywhere(String id, PsiElement psiElement, Map<String, String> properties) {
             return add(IndexKey.SEARCH_EVERYWHERE, id, psiElement, properties);
         }
+
         public FileIndexes addSearchEverywhere(String id, PsiElement psiElement) {
             return add(IndexKey.SEARCH_EVERYWHERE, id, psiElement, null);
         }
 
-        public FileIndexes addReference(String id, PsiElement psiElement,Map<String, String> properties) {
+        public FileIndexes addReference(String id, PsiElement psiElement, Map<String, String> properties) {
             return add(new IndexKey(IndexKey.REFERENCE_TYPE, id), id, psiElement, properties);
         }
 
