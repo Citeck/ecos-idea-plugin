@@ -117,17 +117,13 @@
         <searchScope name="Camel DSL" class="ru.citeck.ecos.files.types.ecos.CamelDsl"/>
         <searchScope name="Alfresco Model" class="ru.citeck.ecos.files.types.AlfrescoModel"/>
 
-        <fileDeployer implementation="ru.citeck.ecos.files.deployers.JsonEcosArtifactDeployer"/>
-        <fileDeployer implementation="ru.citeck.ecos.files.deployers.YamlEcosArtifactDeployer"/>
-        <fileDeployer implementation="ru.citeck.ecos.files.deployers.XmlEcosArtifactDeployer"/>
+        <fileDeployer implementation="ru.citeck.ecos.files.deployers.EcosArtifactDeployer"/>
         <fileDeployer implementation="ru.citeck.ecos.files.deployers.TomcatFileDeployer"/>
         <fileDeployer implementation="ru.citeck.ecos.files.deployers.TomcatFileClipboardDeployer"/>
         <fileDeployer implementation="ru.citeck.ecos.files.deployers.AlfrescoNodeDeployer"/>
         <fileDeployer implementation="ru.citeck.ecos.files.deployers.AlfrescoConfigDeployer"/>
 
-        <fileFetcher implementation="ru.citeck.ecos.files.fetchers.JsonEcosArtifactFetcher"/>
-        <fileFetcher implementation="ru.citeck.ecos.files.fetchers.YamlEcosArtifactFetcher"/>
-        <fileFetcher implementation="ru.citeck.ecos.files.fetchers.XmlEcosArtifactFetcher"/>
+        <fileFetcher implementation="ru.citeck.ecos.files.fetchers.EcosArtifactFetcher"/>
         <fileFetcher implementation="ru.citeck.ecos.files.fetchers.CmmnProcessDefinitionFetcher"/>
 
         <fileIndexer implementation="ru.citeck.ecos.index.indexers.EcosArtifactIndexer"/>

@@ -1,15 +1,49 @@
 package ru.citeck.ecos.files.types.ecos;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.intellij.json.psi.JsonObject;
 import com.intellij.json.psi.JsonProperty;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.impl.source.PsiFileImpl;
 import ru.citeck.ecos.files.types.filters.FileExtensionFilter;
+import ru.citeck.ecos.utils.JsonPrettyPrinter;
+
+import java.util.function.Function;
 
 public abstract class JsonEcosArtifact extends AbstractEcosArtifact {
     public JsonEcosArtifact(String path, String sourceId) {
         super(path, FileExtensionFilter.JSON, sourceId);
+    }
+
+    @Override
+    public String getMimeType() {
+        return "application/json";
+    }
+
+    @Override
+    public String getMutationAttribute() {
+        return "_self";
+    }
+
+    @Override
+    public String getContentAttribute() {
+        return ".json";
+    }
+
+    @Override
+    public Function<JsonNode, String> getContentPostprocessor() {
+        return jsonNode -> {
+            ObjectWriter objectWriter = new ObjectMapper().writer(new JsonPrettyPrinter());
+            try {
+                return objectWriter.writeValueAsString(jsonNode).replace("\r\n", "\n");
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
+        };
     }
 
     @Override

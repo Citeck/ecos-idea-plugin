@@ -9,11 +9,7 @@ import ru.citeck.ecos.files.FileType;
 import ru.citeck.ecos.files.types.ecos.EcosArtifact;
 import ru.citeck.ecos.rest.EcosRestApiService;
 
-public abstract class AbstractEcosArtifactDeployer implements FileDeployer {
-
-    protected abstract String getMimeType();
-    protected abstract Class<? extends EcosArtifact> getFileType();
-    protected abstract String getMutationAttribute();
+public class EcosArtifactDeployer implements FileDeployer {
 
     @Override
     public void deploy(PsiFile psiFile) throws Exception {
@@ -30,17 +26,17 @@ public abstract class AbstractEcosArtifactDeployer implements FileDeployer {
         ecosRestApiService.mutateRecord(
                 fileType.getSourceId(),
                 recordExists ? id : "",
-                getMimeType(),
+                fileType.getMimeType(),
                 vFile.getName(),
                 psiFile.getText().getBytes(vFile.getCharset()),
-                getMutationAttribute()
+                fileType.getMutationAttribute()
         );
 
     }
 
     @Override
     public boolean canDeploy(PsiFile psiFile, FileType fileType) {
-        if (!(getFileType().isInstance(fileType))) {
+        if (!(fileType instanceof EcosArtifact)) {
             return false;
         }
         String id = ((EcosArtifact) fileType).getId(psiFile);

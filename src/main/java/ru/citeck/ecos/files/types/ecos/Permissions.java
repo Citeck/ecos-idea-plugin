@@ -9,11 +9,21 @@ public interface Permissions extends EcosArtifact {
         public JSON() {
             super(PATH, SOURCE_ID);
         }
+
+        @Override
+        public String getContentAttribute() {
+            return "_self{id:.id|rxg('emodel/perms@(.+)'), typeRef?id, permissions?json}";
+        }
     }
 
     class YAML extends YamlEcosArtifact implements Permissions {
         public YAML() {
             super(PATH, SOURCE_ID);
+        }
+
+        @Override
+        public String getContentAttribute() {
+            return "_self{id:.id|rxg('emodel/perms@(.+)'), typeRef?id, permissions?json}|yaml()";
         }
     }
 

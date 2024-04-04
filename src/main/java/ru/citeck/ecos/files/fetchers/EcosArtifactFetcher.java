@@ -10,11 +10,7 @@ import ru.citeck.ecos.files.types.ecos.EcosArtifact;
 
 import java.util.List;
 
-public abstract class AbstractEcosArtifactFetcher implements FileFetcher {
-
-    protected abstract String getContentAttribute();
-    protected abstract String postprocessContent(JsonNode content) throws Exception;
-    protected abstract Class<? extends EcosArtifact> getFileType();
+public class EcosArtifactFetcher implements FileFetcher {
 
     @Override
     public String fetch(PsiFile psiFile) throws Exception {
@@ -24,17 +20,17 @@ public abstract class AbstractEcosArtifactFetcher implements FileFetcher {
 
         JsonNode json = ServiceRegistry
                 .getEcosRestApiService()
-                .queryRecord(fileType.getSourceId(), id, List.of(getContentAttribute()))
+                .queryRecord(fileType.getSourceId(), id, List.of(fileType.getContentAttribute(), "typeRef?id", ".id", "permissions"))
                 .get("attributes")
-                .get(getContentAttribute());
+                .get(fileType.getContentAttribute());
 
-        return postprocessContent(json);
+        return fileType.getContentPostprocessor().apply(json);
 
     }
 
     @Override
     public boolean canFetch(PsiFile psiFile, FileType fileType) {
-        if (!(getFileType().isInstance(fileType))) {
+        if (!(fileType instanceof EcosArtifact)) {
             return false;
         }
         String id = ((EcosArtifact) fileType).getId(psiFile);
