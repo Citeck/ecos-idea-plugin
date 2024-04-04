@@ -4,7 +4,7 @@ import ru.citeck.ecos.files.AbstractEcosArtifact;
 import ru.citeck.ecos.files.SearchScopeName;
 
 @SearchScopeName("Module patch")
-public class ModulePatch extends AbstractEcosArtifact implements BrowsableEcosArtifact {
+public class ModulePatch extends AbstractEcosArtifact {
 
     public static final String SOURCE_ID = "eapps/artifact-patch";
 

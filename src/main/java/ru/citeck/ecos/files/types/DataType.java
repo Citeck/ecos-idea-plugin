@@ -10,9 +10,10 @@ import java.util.List;
 public class DataType extends AbstractEcosArtifact {
 
     public static final String SOURCE_ID = "emodel/types-repo";
+    public static final String PATH = "/model/type/";
 
     public DataType() {
-        super("/model/type/");
+        super(PATH);
     }
 
     @Override

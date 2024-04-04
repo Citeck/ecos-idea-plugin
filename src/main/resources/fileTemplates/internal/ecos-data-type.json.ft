@@ -1,0 +1,9 @@
+{
+  "id": "${NAME}",
+  "storageType": "ECOS_MODEL",
+  "parentRef": "emodel/type@case",
+  "formRef": "uiserv/form@DEFAULT_FORM",
+  "journalRef": "uiserv/journal@DEFAULT_JOURNAL",
+  "inheritForm": false,
+  "defaultCreateVariant": true
+}

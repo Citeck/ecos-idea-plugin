@@ -1,0 +1,12 @@
+{
+  "id": "${NAME}",
+  "recordRef": "",
+  "inherit": true,
+  "version": null,
+  "settings": [
+    {
+      "authorities": [],
+      "permissions": []
+    }
+  ]
+}

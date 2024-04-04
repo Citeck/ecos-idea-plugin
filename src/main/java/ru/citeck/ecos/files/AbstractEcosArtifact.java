@@ -8,31 +8,40 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.impl.source.PsiFileImpl;
 import org.jetbrains.yaml.YAMLUtil;
 import org.jetbrains.yaml.psi.YAMLFile;
+import ru.citeck.ecos.files.types.BrowsableEcosArtifact;
 import ru.citeck.ecos.files.types.filters.*;
 
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 
-public abstract class AbstractEcosArtifact implements EcosArtifact {
+public abstract class AbstractEcosArtifact implements EcosArtifact, BrowsableEcosArtifact {
 
     private final FileFilter filter;
 
-    private final Map<Class<? extends PsiFile>, Function<PsiFile, PsiElement>> idProviders = Map.of(
+    private final Map<Class<? extends PsiFile>, Function<PsiFile, PsiElement>> defaultProviders = Map.of(
             JsonFile.class, this::getIdPsiElementJson,
             YAMLFile.class, this::getIdPsiElementYaml
     );
 
     public AbstractEcosArtifact(String folder) {
         filter = new FilterAnd(
-                new FilterOr(FileExtensionFilter.JSON, FileExtensionFilter.YAML),
+                new FilterOr(
+                        FileExtensionFilter.JSON,
+                        FileExtensionFilter.YAML,
+                        FileExtensionFilter.XML
+                ),
                 new FolderNamePatternsFilter(folder)
         );
     }
 
+    public Map<Class<? extends PsiFile>, Function<PsiFile, PsiElement>> getIdPsiElementProviders() {
+        return defaultProviders;
+    }
+
     @Override
     public PsiElement getIdPsiElement(PsiFile psiFile) {
-        return idProviders
+        return getIdPsiElementProviders()
                 .entrySet()
                 .stream()
                 .filter(entry -> entry.getKey().isInstance(psiFile))

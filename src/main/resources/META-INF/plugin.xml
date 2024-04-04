@@ -55,9 +55,6 @@
                         interface="ru.citeck.ecos.files.NavigateInFileItemsProvider"/>
         <extensionPoint name="psiElementValueResolver" interface="ru.citeck.ecos.references.PsiElementValueResolver"/>
         <extensionPoint name="completionProvider" interface="ru.citeck.ecos.completion.CompletionProvider"/>
-
-        <extensionPoint name="ecosArtifactTemplate" beanClass="ru.citeck.ecos.templates.files.EcosArtifactTemplate"/>
-
     </extensionPoints>
 
     <extensions defaultExtensionNs="ru.citeck.ecos">
@@ -68,6 +65,9 @@
         <fileType implementation="ru.citeck.ecos.files.types.Form"/>
         <fileType implementation="ru.citeck.ecos.files.types.Action"/>
         <fileType implementation="ru.citeck.ecos.files.types.DataType"/>
+        <fileType implementation="ru.citeck.ecos.files.types.Permissions"/>
+        <fileType implementation="ru.citeck.ecos.files.types.PermissionSettings"/>
+        <fileType implementation="ru.citeck.ecos.files.types.KanbanBoard"/>
         <fileType implementation="ru.citeck.ecos.files.types.Config"/>
         <fileType implementation="ru.citeck.ecos.files.types.ModulePatch"/>
         <fileType implementation="ru.citeck.ecos.files.types.CmmnProcessDefinition"/>
@@ -76,6 +76,9 @@
         <fileType implementation="ru.citeck.ecos.files.types.Localization"/>
         <fileType implementation="ru.citeck.ecos.files.types.Menu"/>
         <fileType implementation="ru.citeck.ecos.files.types.NumTemplate"/>
+        <fileType implementation="ru.citeck.ecos.files.types.Bpmn"/>
+        <fileType implementation="ru.citeck.ecos.files.types.Dmn"/>
+        <fileType implementation="ru.citeck.ecos.files.types.CamelDsl"/>
         <fileType implementation="ru.citeck.ecos.files.types.XmlBeanDefinitions"/>
         <fileType implementation="ru.citeck.ecos.files.types.Java"/>
         <fileType implementation="ru.citeck.ecos.files.types.JavaScript"/>
@@ -110,26 +113,53 @@
 
         <completionProvider implementation="ru.citeck.ecos.completion.java.providers.QNamesCompletionProvider"/>
 
-        <!-- Templates located resources/fileTemplates/internal -->
-        <ecosArtifactTemplate template="ecos-form" path="/ui/form" kind="Form"/>
-        <ecosArtifactTemplate template="ecos-journal" path="/ui/journal" kind="Journal"/>
-        <ecosArtifactTemplate template="ecos-i18n" path="/ui/i18n" kind="I18n"/>
-
     </extensions>
 
     <actions>
 
-        <action id="ru.citeck.ecos.templates.files.CreateEcosArtifactFromTemplateAction.YAML"
-                class="ru.citeck.ecos.templates.files.CreateEcosArtifactFromTemplateAction$YAML"
-                icon="Icons.CiteckLogo">
+        <group id="ru.citeck.ecos.CreateEcosArtifact" text="Ecos Artifact" popup="true" icon="Icons.CiteckLogo">
             <add-to-group group-id="NewGroup" anchor="first"/>
-        </action>
+            <action id="ru.citeck.ecos.templates.files.CreateFormAction"
+                    class="ru.citeck.ecos.templates.files.CreateFormAction"
+                    icon="Icons.CiteckLogo"/>
+            <action id="ru.citeck.ecos.templates.files.CreateJournalAction"
+                    class="ru.citeck.ecos.templates.files.CreateJournalAction"
+                    icon="Icons.CiteckLogo"/>
+            <action id="ru.citeck.ecos.templates.files.CreateDataTypeAction"
+                    class="ru.citeck.ecos.templates.files.CreateDataTypeAction"
+                    icon="Icons.CiteckLogo"/>
+            <action id="ru.citeck.ecos.templates.files.CreateNumberTemplateAction"
+                    class="ru.citeck.ecos.templates.files.CreateNumberTemplateAction"
+                    icon="Icons.CiteckLogo"/>
+            <action id="ru.citeck.ecos.templates.files.CreateDashboardAction"
+                    class="ru.citeck.ecos.templates.files.CreateDashboardAction"
+                    icon="Icons.CiteckLogo"/>
+            <action id="ru.citeck.ecos.templates.files.CreateMenuAction"
+                    class="ru.citeck.ecos.templates.files.CreateMenuAction"
+                    icon="Icons.CiteckLogo"/>
+            <action id="ru.citeck.ecos.templates.files.CreateLocalizationAction"
+                    class="ru.citeck.ecos.templates.files.CreateLocalizationAction"
+                    icon="Icons.CiteckLogo"/>
+            <action id="ru.citeck.ecos.templates.files.CreateKanbanBoardAction"
+                    class="ru.citeck.ecos.templates.files.CreateKanbanBoardAction"
+                    icon="Icons.CiteckLogo"/>
+            <action id="ru.citeck.ecos.templates.files.CreateBpmnAction"
+                    class="ru.citeck.ecos.templates.files.CreateBpmnAction"
+                    icon="Icons.CiteckLogo"/>
+            <action id="ru.citeck.ecos.templates.files.CreateDmnAction"
+                    class="ru.citeck.ecos.templates.files.CreateDmnAction"
+                    icon="Icons.CiteckLogo"/>
+            <action id="ru.citeck.ecos.templates.files.CreateCamelDslAction"
+                    class="ru.citeck.ecos.templates.files.CreateCamelDslAction"
+                    icon="Icons.CiteckLogo"/>
+            <action id="ru.citeck.ecos.templates.files.CreatePermissionsAction"
+                    class="ru.citeck.ecos.templates.files.CreatePermissionsAction"
+                    icon="Icons.CiteckLogo"/>
+            <action id="ru.citeck.ecos.templates.files.CreatePermissionSettingsAction"
+                    class="ru.citeck.ecos.templates.files.CreatePermissionSettingsAction"
+                    icon="Icons.CiteckLogo"/>
+        </group>
 
-        <action id="ru.citeck.ecos.templates.files.CreateEcosArtifactFromTemplateAction.JSON"
-                class="ru.citeck.ecos.templates.files.CreateEcosArtifactFromTemplateAction$JSON"
-                icon="Icons.CiteckLogo">
-            <add-to-group group-id="NewGroup" anchor="first"/>
-        </action>
 
         <action id="ru.citeck.ecos.actions.DeployFile" class="ru.citeck.ecos.actions.DeployFile"
                 text="Deploy File" description="Deploy file" icon="AllIcons.Actions.Uninstall">

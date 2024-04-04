@@ -7,9 +7,10 @@ import ru.citeck.ecos.files.SearchScopeName;
 public class Menu extends AbstractEcosArtifact {
 
     public static final String SOURCE_ID = "uiserv/menu";
+    public static final String PATH = "/ui/menu/";
 
     public Menu() {
-        super("/ui/menu/");
+        super(PATH);
     }
 
     @Override

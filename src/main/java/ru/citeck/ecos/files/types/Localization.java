@@ -7,9 +7,10 @@ import ru.citeck.ecos.files.SearchScopeName;
 public class Localization extends AbstractEcosArtifact {
 
     public static final String SOURCE_ID = "uiserv/i18n";
+    public static final String PATH = "/ui/i18n/";
 
     public Localization() {
-        super("/ui/i18n/");
+        super(PATH);
     }
 
     @Override

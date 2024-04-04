@@ -1,0 +1,14 @@
+---
+id: "${NAME}"
+typeRef: emodel/type@
+journalRef:
+cardFormRef:
+readOnly: true
+disableTitle: false
+name:
+  ru: Доска
+  en: Board
+actions:
+columns:
+  - id: ''
+    name: {}

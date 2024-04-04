@@ -10,12 +10,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @SearchScopeName("Journal")
-public class Journal extends AbstractEcosArtifact implements BrowsableEcosArtifact {
+public class Journal extends AbstractEcosArtifact {
 
     public static final String SOURCE_ID = "uiserv/journal";
+    public static final String PATH = "/ui/journal/";
 
     public Journal() {
-        super("/ui/journal/");
+        super(PATH);
     }
 
     @Override

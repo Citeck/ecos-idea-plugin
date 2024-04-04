@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<definitions xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/"
+             xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+             xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn"
+             xmlns:ecos="http://www.citeck.ru/ecos/dmn/1.0" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0"
+             xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" namespace="http://camunda.org/schema/1.0/dmn"
+             exporter="Camunda Modeler" exporterVersion="5.8.0" name="RDR" id="${NAME}" ecos:defId="${NAME}"
+             modeler:executionPlatform="Camunda Platform" ecos:name_ml="{}" modeler:executionPlatformVersion="7.17.0">
+    <decision name="Decision 1" id="Decision_RRGTWQ7">
+        <decisionTable id="DecisionTable_0nkijsr">
+            <input id="Input_1">
+                <inputExpression typeRef="string" id="InputExpression_1">
+                    <text></text>
+                </inputExpression>
+            </input>
+            <output typeRef="string" id="Output_1"/>
+        </decisionTable>
+    </decision>
+    <dmndi:DMNDI>
+        <dmndi:DMNDiagram>
+            <dmndi:DMNShape dmnElementRef="Decision_RRGTWQ7">
+                <dc:Bounds x="160.0" y="100.0" width="180.0" height="80.0"/>
+            </dmndi:DMNShape>
+        </dmndi:DMNDiagram>
+    </dmndi:DMNDI>
+</definitions>

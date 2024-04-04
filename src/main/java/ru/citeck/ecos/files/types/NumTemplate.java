@@ -7,9 +7,10 @@ import ru.citeck.ecos.files.SearchScopeName;
 public class NumTemplate extends AbstractEcosArtifact {
 
     public static final String SOURCE_ID = "emodel/num-template";
+    public static final String PATH = "/model/num-template/";
 
     public NumTemplate() {
-        super("/model/num-template/");
+        super(PATH);
     }
 
     @Override

@@ -13,12 +13,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @SearchScopeName("Form")
-public class Form extends AbstractEcosArtifact implements BrowsableEcosArtifact {
+public class Form extends AbstractEcosArtifact {
 
     public static final String SOURCE_ID = "uiserv/form";
+    public static final String PATH = "/ui/form/";
 
     public Form() {
-        super("/ui/form/");
+        super(PATH);
     }
 
     @Override

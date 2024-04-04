@@ -1,0 +1,21 @@
+{
+  "id": "${NAME}",
+  "name": null,
+  "typeRef": "",
+  "appliedToRef": "",
+  "authority": null,
+  "scope": "",
+  "priority": 0,
+  "config": {
+    "version": "v2",
+    "v2": {
+      "widgets": [
+      ],
+      "desktop": [
+      ],
+      "mobile": [
+      ]
+    }
+  },
+  "attributes": {}
+}

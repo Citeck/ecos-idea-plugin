@@ -1,0 +1,15 @@
+{
+  "id": "${NAME}",
+  "type": "LEFT_MENU",
+  "authorities": [
+    "GROUP_EVERYONE"
+  ],
+  "version": null,
+  "subMenu": {
+    "left": {
+      "config": {},
+      "items": [
+      ]
+    }
+  }
+}

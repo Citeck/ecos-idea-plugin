@@ -1,0 +1,5 @@
+---
+id: "${NAME}"
+type: YAML
+state: STOPPED
+content: 'content'
