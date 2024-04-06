@@ -1,15 +1,15 @@
 package ru.citeck.ecos.templates.project;
 
 import com.intellij.ide.util.projectWizard.ModuleWizardStep;
-import com.intellij.ui.components.JBLabel;
 import com.intellij.ui.components.JBList;
 import com.intellij.ui.components.JBPanel;
 import com.intellij.ui.components.JBTextField;
-import com.intellij.ui.components.panels.VerticalLayout;
+import com.intellij.util.ui.FormBuilder;
 import com.intellij.util.ui.JBUI;
 import icons.Icons;
 import org.jetbrains.idea.maven.model.MavenArchetype;
 import org.jetbrains.idea.maven.model.MavenId;
+import ru.citeck.ecos.ui.ListCellRendererWithIcon;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,66 +19,46 @@ public class EcosModuleWizardStep extends ModuleWizardStep {
 
     private final EcosModuleBuilder builder;
 
-    private final JBList<EcosMavenArchetype> archetypesList = new JBList<>(EcosMavenArchetype.EP_NAME.getExtensionList());
-    private final JBTextField groupId = new JBTextField();
-    private final JBTextField artifactId = new JBTextField();
-    private final JBTextField version = new JBTextField();
-    private final JBTextField port = new JBTextField();
+    private final JBList<EcosMavenArchetype> archetypesList = createArchetypesList();
+
+    private final JBTextField groupId = new JBTextField("org.example");
+    private final JBTextField artifactId = new JBTextField("untitled");
+    private final JBTextField version = new JBTextField("1.0-SNAPSHOT");
+    private final JBTextField port = new JBTextField("8686");
 
     public EcosModuleWizardStep(EcosModuleBuilder builder) {
         this.builder = builder;
-        groupId.setText("org.example");
-        artifactId.setText("untitled");
-        version.setText("1.0-SNAPSHOT");
-        port.setText("8686");
+    }
+
+    private JBList<EcosMavenArchetype> createArchetypesList() {
+        JBList<EcosMavenArchetype> archetypesList = new JBList<>(EcosMavenArchetype.EP_NAME.getExtensionList());
+        archetypesList.setCellRenderer(new ListCellRendererWithIcon(Icons.CiteckLogo));
+        if (!archetypesList.isEmpty()) {
+            archetypesList.setSelectedIndex(0);
+        }
+        archetypesList.setBorder(JBUI.Borders.empty(0, 4));
+        return archetypesList;
     }
 
     @Override
     public JComponent getComponent() {
 
-        JPanel root = new JBPanel<>(new GridLayout(2, 1));
+        JPanel panel = FormBuilder
+                .createFormBuilder()
+                .setFormLeftIndent(8)
+                .addLabeledComponentFillVertically("Project type:", archetypesList)
+                .addLabeledComponent("Group id", groupId, false)
+                .addLabeledComponent("Artifact id:", artifactId, false)
+                .addLabeledComponent("Version: ", version, false)
+                .addLabeledComponent("Port: ", port, false)
+                .getPanel();
 
-        archetypesList.setCellRenderer(new DefaultListCellRenderer() {
-            @Override
-            public Icon getIcon() {
-                return Icons.CiteckLogo;
-            }
+        JBPanel<?> wrapper = new JBPanel<>(new GridLayout(1, 1));
+        wrapper.setBorder(JBUI.Borders.empty(6));
+        wrapper.add(panel);
 
-            @Override
-            public int getIconTextGap() {
-                return 4;
-            }
+        return wrapper;
 
-        });
-        if (!archetypesList.isEmpty()) {
-            archetypesList.setSelectedIndex(0);
-        }
-        root.add(archetypesList);
-
-        JPanel artifactProperties = new JBPanel<>(new VerticalLayout(0));
-        JPanel panelLeft = new JBPanel<>(new GridLayout(1, 2));
-        panelLeft.add(artifactProperties);
-        panelLeft.add(new JBPanel<>());
-
-        root.add(panelLeft);
-
-        addComponentWithLabel("Group id:", artifactProperties, groupId);
-        addComponentWithLabel("Artifact id:", artifactProperties, artifactId);
-        addComponentWithLabel("Version: ", artifactProperties, version);
-        addComponentWithLabel("Port: ", artifactProperties, port);
-
-        return root;
-    }
-
-    private void addComponentWithLabel(String label, JPanel parent, Component component) {
-        JPanel panel = new JBPanel<>();
-        panel.setLayout(new VerticalLayout(0));
-
-        panel.add(new JBLabel(label));
-        panel.add(component);
-        panel.setBorder(JBUI.Borders.empty(10, 10, 0, 0));
-
-        parent.add(panel);
     }
 
     @Override
