@@ -3,7 +3,7 @@ package ru.citeck.ecos.index.indexers;
 import com.intellij.psi.xml.XmlFile;
 import com.intellij.psi.xml.XmlTag;
 import com.intellij.util.indexing.FileContent;
-import com.jgoodies.common.base.Strings;
+import com.intellij.openapi.util.text.Strings;
 import org.jetbrains.annotations.NotNull;
 import ru.citeck.ecos.files.FileType;
 import ru.citeck.ecos.files.types.XmlBeanDefinitions;

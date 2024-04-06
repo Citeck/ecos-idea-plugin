@@ -47,6 +47,20 @@
 
         <notificationGroup id="ECOS" displayType="BALLOON"/>
 
+        <projectConfigurable
+                parentId=""
+                instance="ru.citeck.ecos.settings.EcosRootSettings"
+                id="ru.citeck.ecos.settings.EcosRootSettings"
+                displayName="ECOS Settings"
+                nonDefaultProject="true"/>
+
+        <projectConfigurable
+                parentId="ru.citeck.ecos.settings.EcosRootSettings"
+                instance="ru.citeck.ecos.settings.EcosServersConfiguration"
+                id="ru.citeck.ecos.settings.EcosServersConfiguration"
+                displayName="Servers"
+                nonDefaultProject="true"/>
+
     </extensions>
 
     <extensionPoints>
