@@ -110,7 +110,6 @@
         <fileType implementation="ru.citeck.ecos.files.types.ecos.CamelDsl$JSON"/>
         <fileType implementation="ru.citeck.ecos.files.types.ecos.Bpmn"/>
         <fileType implementation="ru.citeck.ecos.files.types.ecos.Dmn"/>
-        <fileType implementation="ru.citeck.ecos.files.types.CmmnProcessDefinition"/>
         <fileType implementation="ru.citeck.ecos.files.types.XmlBeanDefinitions"/>
         <fileType implementation="ru.citeck.ecos.files.types.Java"/>
         <fileType implementation="ru.citeck.ecos.files.types.JavaScript"/>
@@ -138,10 +137,8 @@
         <fileDeployer implementation="ru.citeck.ecos.files.deployers.AlfrescoConfigDeployer"/>
 
         <fileFetcher implementation="ru.citeck.ecos.files.fetchers.EcosArtifactFetcher"/>
-        <fileFetcher implementation="ru.citeck.ecos.files.fetchers.CmmnProcessDefinitionFetcher"/>
 
         <fileIndexer implementation="ru.citeck.ecos.index.indexers.EcosArtifactIndexer"/>
-        <fileIndexer implementation="ru.citeck.ecos.index.indexers.CmmnIndexer"/>
         <fileIndexer implementation="ru.citeck.ecos.index.indexers.AlfrescoModelIndexer"/>
         <fileIndexer implementation="ru.citeck.ecos.index.indexers.AlfrescoContentNodesIndexer"/>
         <fileIndexer implementation="ru.citeck.ecos.index.indexers.XmlBeanDefinitionIndexer"/>
