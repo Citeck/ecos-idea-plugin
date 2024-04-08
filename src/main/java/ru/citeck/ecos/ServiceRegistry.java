@@ -5,7 +5,9 @@ import com.intellij.openapi.project.Project;
 import ru.citeck.ecos.files.FileTypeService;
 import ru.citeck.ecos.index.IndexesService;
 import ru.citeck.ecos.index.indexers.qname.QNameService;
+import ru.citeck.ecos.rest.AuthenticationService;
 import ru.citeck.ecos.rest.EcosRestApiService;
+import ru.citeck.ecos.settings.EcosServer;
 import ru.citeck.ecos.settings.EcosSettingsService;
 import ru.citeck.ecos.ui.AlfrescoJsConsoleService;
 
@@ -15,8 +17,8 @@ public class ServiceRegistry {
         return ApplicationManager.getApplication().getService(FileTypeService.class);
     }
 
-    public static EcosRestApiService getEcosRestApiService() {
-        return ApplicationManager.getApplication().getService(EcosRestApiService.class);
+    public static EcosRestApiService getEcosRestApiService(EcosServer ecosServer, Project project) {
+        return new EcosRestApiService(ecosServer, project);
     }
 
     public static IndexesService getIndexesService(Project project) {
@@ -34,5 +36,10 @@ public class ServiceRegistry {
     public static EcosSettingsService getEcosSettingsService() {
         return ApplicationManager.getApplication().getService(EcosSettingsService.class);
     }
+
+    public static AuthenticationService getAuthenticationService() {
+        return ApplicationManager.getApplication().getService(AuthenticationService.class);
+    }
+
 
 }

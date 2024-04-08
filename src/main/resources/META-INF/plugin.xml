@@ -15,7 +15,6 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <applicationService serviceImplementation="ru.citeck.ecos.files.FileTypeService"/>
-        <applicationService serviceImplementation="ru.citeck.ecos.rest.EcosRestApiService"/>
         <projectService serviceImplementation="ru.citeck.ecos.index.IndexesService"/>
         <projectService serviceImplementation="ru.citeck.ecos.ui.AlfrescoJsConsoleService"/>
         <projectService serviceImplementation="ru.citeck.ecos.index.indexers.qname.QNameService"/>

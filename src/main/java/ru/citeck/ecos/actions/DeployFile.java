@@ -11,6 +11,7 @@ import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.NotNull;
 import ru.citeck.ecos.files.FileDeployer;
 import ru.citeck.ecos.files.FileType;
+import ru.citeck.ecos.settings.EcosServer;
 import ru.citeck.ecos.utils.EcosMessages;
 
 import java.util.Collections;
@@ -46,38 +47,40 @@ public class DeployFile extends EcosAction {
 
         Editor editor = event.getData(PlatformDataKeys.EDITOR);
 
-        if (deployers.size() == 1) {
-            deploy(deployers.get(0), psiFile, project, editor);
-            return;
-        }
+        EcosServer.doWithServer(project, ecosServer -> {
+            if (deployers.size() == 1) {
+                deploy(ecosServer, deployers.get(0), psiFile, project, editor);
+                return;
+            }
 
-        List<FileDeployerWrapper> wrappers = deployers
-                .stream()
-                .map(fileDeployer -> new FileDeployerWrapper(
-                        fileDeployer.getDestinationName(psiFile),
-                        fileDeployer
-                ))
-                .collect(Collectors.toList());
+            List<FileDeployerWrapper> wrappers = deployers
+                    .stream()
+                    .map(fileDeployer -> new FileDeployerWrapper(
+                            fileDeployer.getDestinationName(ecosServer, psiFile),
+                            fileDeployer
+                    ))
+                    .collect(Collectors.toList());
 
-        JBPopupFactory
-                .getInstance()
-                .createPopupChooserBuilder(wrappers)
-                .setTitle("Deploy To:")
-                .setItemChosenCallback(chosenDeployer -> deploy(chosenDeployer.fileDeployer, psiFile, project, editor))
-                .setRequestFocus(true)
-                .createPopup()
-                .showInCenterOf(WindowManager.getInstance().getFrame(event.getProject()).getRootPane());
+            JBPopupFactory
+                    .getInstance()
+                    .createPopupChooserBuilder(wrappers)
+                    .setTitle("Deploy To:")
+                    .setItemChosenCallback(chosenDeployer -> deploy(ecosServer, chosenDeployer.fileDeployer, psiFile, project, editor))
+                    .setRequestFocus(true)
+                    .createPopup()
+                    .showInCenterOf(WindowManager.getInstance().getFrame(event.getProject()).getRootPane());
+        });
 
     }
 
-    private void deploy(FileDeployer deployer, @NotNull PsiFile psiFile, @NotNull Project project, Editor editor) {
+    private void deploy(EcosServer ecosServer, FileDeployer deployer, @NotNull PsiFile psiFile, @NotNull Project project, Editor editor) {
 
         Optional
                 .ofNullable(editor)
                 .map(Editor::getDocument)
                 .ifPresent(document -> PsiDocumentManager.getInstance(project).commitDocument(document));
 
-        String destinationName = deployer.getDestinationName(psiFile);
+        String destinationName = deployer.getDestinationName(ecosServer, psiFile);
         String fileName = psiFile.getVirtualFile().getName();
 
         if (!EcosMessages.confirm("Deploy file", String.format("Deploy %s to %s?", fileName, destinationName), project)) {
@@ -85,7 +88,7 @@ public class DeployFile extends EcosAction {
         }
 
         try {
-            deployer.deploy(psiFile);
+            deployer.deploy(ecosServer, psiFile);
             EcosMessages.info(
                     "File deployed",
                     String.format("File %s deployed to <b>%s</b>", fileName, destinationName),
@@ -94,6 +97,7 @@ public class DeployFile extends EcosAction {
         } catch (Exception e) {
             EcosMessages.error("File deploying error", e.getMessage(), project);
         }
+
     }
 
     @Override

@@ -8,11 +8,12 @@ import ru.citeck.ecos.files.FileDeployer;
 import ru.citeck.ecos.files.FileType;
 import ru.citeck.ecos.files.types.ecos.EcosArtifact;
 import ru.citeck.ecos.rest.EcosRestApiService;
+import ru.citeck.ecos.settings.EcosServer;
 
 public class EcosArtifactDeployer implements FileDeployer {
 
     @Override
-    public void deploy(PsiFile psiFile) throws Exception {
+    public void deploy(EcosServer ecosServer, PsiFile psiFile) throws Exception {
 
         EcosArtifact fileType = (EcosArtifact) ServiceRegistry.getFileTypeService().getFileType(psiFile);
         VirtualFile vFile = psiFile.getVirtualFile();
@@ -20,7 +21,7 @@ public class EcosArtifactDeployer implements FileDeployer {
         String sourceId = fileType.getSourceId();
         String id = fileType.getId(psiFile);
 
-        EcosRestApiService ecosRestApiService = ServiceRegistry.getEcosRestApiService();
+        EcosRestApiService ecosRestApiService = ServiceRegistry.getEcosRestApiService(ecosServer, psiFile.getProject());
         boolean recordExists = ecosRestApiService.recordExists(sourceId, id);
 
         ecosRestApiService.mutateRecord(
@@ -44,7 +45,7 @@ public class EcosArtifactDeployer implements FileDeployer {
     }
 
     @Override
-    public String getDestinationName(PsiFile psiFile) {
+    public String getDestinationName(EcosServer ecosServer, PsiFile psiFile) {
         EcosArtifact fileType = (EcosArtifact) ServiceRegistry.getFileTypeService().getFileType(psiFile);
         return String.format("%s@%s", fileType.getSourceId(), fileType.getId(psiFile));
     }

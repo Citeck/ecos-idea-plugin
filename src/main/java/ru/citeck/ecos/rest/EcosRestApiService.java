@@ -3,8 +3,10 @@ package ru.citeck.ecos.rest;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.NullNode;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.text.StringUtil;
-import lombok.Getter;
+import ru.citeck.ecos.ServiceRegistry;
+import ru.citeck.ecos.settings.EcosServer;
 
 import java.io.*;
 import java.net.HttpCookie;
@@ -18,38 +20,40 @@ import java.util.stream.Collectors;
 public class EcosRestApiService {
 
     private final static String JSESSIONID = "JSESSIONID";
-
+    private final static String AUTHENTICATION_PROXY_HEADER = "X-ECOS-User";
     private final static String MUTATE_RECORD_URL = "/gateway/api/records/mutate?k=recs_count_1_";
     private final static String QUERY_RECORD_URL = "/gateway/api/records/query?k=recs_count_1_";
     private final static String JS_CONSOLE_URL = "/share/proxy/alfresco/de/fme/jsconsole/execute";
     private final static String RESET_SHARE_INDEX = "/share/page/index?reset=on";
     private final static String SHARE_INDEX = "/share/page/index";
 
-    @Getter
-    private final String host = "http://localhost";
-    private final String userName = "admin";
-    private final String password = "admin";
-    private final String authenticationProxyHeader = "X-ECOS-User";
     private final ObjectMapper objectMapper = new ObjectMapper();
     private String jSessionId = "";
+    private final EcosServer ecosServer;
+    private final Authenticator authenticator;
 
-    public JsonNode execute(String url, byte[] body, Integer timeout) throws Exception {
-        return execute(url, body, timeout, JsonNode.class);
+    public EcosRestApiService(EcosServer ecosServer, Project project) {
+        this.ecosServer = ecosServer;
+        this.authenticator = ServiceRegistry.getAuthenticationService().getAuthenticator(ecosServer, project);
     }
 
-    public <T> T execute(String url, byte[] body, Integer timeout, Class<T> clazz) throws Exception {
+    public JsonNode execute(String url, byte[] body, Integer timeout) throws Exception {
+        return execute(url, body, timeout, JsonNode.class, false);
+    }
 
-        String auth = userName + ":" + password;
-        byte[] encodedAuth = Base64.getEncoder().encode(auth.getBytes());
+    public <T> T execute(String url, byte[] body, Integer timeout, Class<T> clazz, boolean updateCredentials) throws Exception {
+
+        String host = ecosServer.getHost();
 
         HttpURLConnection connection = (HttpURLConnection) new URL(host + url).openConnection();
+
         connection.setRequestMethod("POST");
         connection.setRequestProperty("Host", host);
-        connection.setRequestProperty("Authorization", "Basic " + new String(encodedAuth));
-        connection.setRequestProperty(authenticationProxyHeader, userName);
+        connection.setRequestProperty(AUTHENTICATION_PROXY_HEADER, ecosServer.getUserName());
         connection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
         connection.setRequestProperty("Accept", "application/json; charset=utf-8");
         connection.setRequestProperty("Origin", host);
+        authenticator.authenticate(connection, updateCredentials);
         connection.setConnectTimeout(3000);
 
         if (!StringUtil.isEmpty(jSessionId)) {
@@ -67,7 +71,10 @@ public class EcosRestApiService {
             outputStream.flush();
             outputStream.close();
         }
-        connection.getResponseCode();
+        int responseCode = connection.getResponseCode();
+        if (responseCode == 401) {
+            return execute(url, body, timeout, clazz, true);
+        }
 
         updateJSessionId(connection);
 
@@ -188,12 +195,12 @@ public class EcosRestApiService {
 
         //Do not remove, used for authentication on Alfresco Share
         try {
-            execute(SHARE_INDEX, "{}".getBytes(), 60000, String.class);
+            execute(SHARE_INDEX, "{}".getBytes(), 60000, String.class, false);
         } catch (Exception ignored) {
         }
 
         try {
-            execute(RESET_SHARE_INDEX, "{}".getBytes(), 60000, String.class);
+            execute(RESET_SHARE_INDEX, "{}".getBytes(), 60000, String.class, false);
         } catch (Exception ex) {
             try {
                 objectMapper.readValue(ex.getMessage(), String.class);

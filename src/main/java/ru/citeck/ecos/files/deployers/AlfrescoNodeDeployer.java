@@ -10,6 +10,7 @@ import ru.citeck.ecos.files.FileType;
 import ru.citeck.ecos.index.IndexKey;
 import ru.citeck.ecos.index.IndexValue;
 import ru.citeck.ecos.index.indexers.AlfrescoContentNodesIndexer;
+import ru.citeck.ecos.settings.EcosServer;
 
 import java.util.Base64;
 
@@ -27,7 +28,7 @@ public class AlfrescoNodeDeployer implements FileDeployer {
             """;
 
     @Override
-    public void deploy(PsiFile psiFile) throws Exception {
+    public void deploy(EcosServer ecosServer, PsiFile psiFile) throws Exception {
 
         IndexValue indexValue = getIndexValue(psiFile);
         VirtualFile virtualFile = psiFile.getVirtualFile();
@@ -47,7 +48,7 @@ public class AlfrescoNodeDeployer implements FileDeployer {
                 .replace("${MIME_TYPE}", indexValue.getProperty("mimetype"));
 
         ServiceRegistry
-                .getEcosRestApiService()
+                .getEcosRestApiService(ecosServer, psiFile.getProject())
                 .executeJS(deploymentScript);
 
     }
@@ -68,9 +69,9 @@ public class AlfrescoNodeDeployer implements FileDeployer {
     }
 
     @Override
-    public String getDestinationName(PsiFile psiFile) {
+    public String getDestinationName(EcosServer ecosServer, PsiFile psiFile) {
         IndexValue indexValue = getIndexValue(psiFile);
-        return ServiceRegistry.getEcosRestApiService().getHost() + "@workspace://SpacesStore/" + indexValue.getId();
+        return ecosServer.getHost() + "@workspace://SpacesStore/" + indexValue.getId();
     }
 
 

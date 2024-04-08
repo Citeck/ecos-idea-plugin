@@ -11,6 +11,7 @@ import ru.citeck.ecos.ServiceRegistry;
 import ru.citeck.ecos.files.FileDeployer;
 import ru.citeck.ecos.files.FileType;
 import ru.citeck.ecos.files.types.JavaScript;
+import ru.citeck.ecos.settings.EcosServer;
 
 import java.nio.charset.Charset;
 import java.util.Arrays;
@@ -40,9 +41,9 @@ public class TomcatFileDeployer implements FileDeployer {
             """;
 
     @Override
-    public void deploy(PsiFile psiFile) throws Exception {
+    public void deploy(EcosServer ecosServer, PsiFile psiFile) throws Exception {
         ServiceRegistry
-                .getEcosRestApiService()
+                .getEcosRestApiService(ecosServer, psiFile.getProject())
                 .executeJS(getDeploymentScript(psiFile));
     }
 
@@ -74,8 +75,8 @@ public class TomcatFileDeployer implements FileDeployer {
     }
 
     @Override
-    public String getDestinationName(PsiFile psiFile) {
-        return ServiceRegistry.getEcosRestApiService().getHost();
+    public String getDestinationName(EcosServer ecosServer, PsiFile psiFile) {
+        return ecosServer.getHost();
     }
 
     private Module getModule(PsiFile psiFile) {

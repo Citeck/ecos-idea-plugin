@@ -5,6 +5,7 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.NotNull;
 import ru.citeck.ecos.files.BrowsableArtifact;
+import ru.citeck.ecos.settings.EcosServer;
 
 import java.util.Optional;
 
@@ -19,7 +20,10 @@ public class OpenArtifactInBrowser extends EcosAction {
                 .ofNullable(resolveFileType(event))
                 .filter(BrowsableArtifact.class::isInstance)
                 .map(BrowsableArtifact.class::cast)
-                .ifPresent(browsableArtifact -> BrowserUtil.browse(browsableArtifact.getURL(psiFile)));
+                .ifPresent(browsableArtifact -> EcosServer.doWithServer(
+                        psiFile.getProject(),
+                        ecosServer -> BrowserUtil.browse(browsableArtifact.getURL(ecosServer, psiFile)))
+                );
     }
 
     @Override

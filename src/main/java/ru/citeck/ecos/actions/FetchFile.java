@@ -8,6 +8,7 @@ import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.NotNull;
 import ru.citeck.ecos.files.FileFetcher;
 import ru.citeck.ecos.files.FileType;
+import ru.citeck.ecos.settings.EcosServer;
 import ru.citeck.ecos.utils.EcosMessages;
 
 public class FetchFile extends EcosAction {
@@ -42,16 +43,16 @@ public class FetchFile extends EcosAction {
             return;
         }
 
-        runUndoTransparentAction(() -> {
+        EcosServer.doWithServer(project, ecosServer -> runUndoTransparentAction(() -> {
             try {
-                String result = fetcher.fetch(psiFile);
+                String result = fetcher.fetch(ecosServer, psiFile);
                 editor.getDocument().setText(result);
                 String message = String.format("File %s successfully fetched from %s", fileName, sourceName);
                 EcosMessages.info("File fetched", message, project);
             } catch (Exception e) {
                 EcosMessages.error("File fetching error", e.getMessage(), project);
             }
-        });
+        }));
 
     }
 

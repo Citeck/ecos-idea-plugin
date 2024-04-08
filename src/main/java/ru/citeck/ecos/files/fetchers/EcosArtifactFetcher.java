@@ -7,19 +7,20 @@ import ru.citeck.ecos.ServiceRegistry;
 import ru.citeck.ecos.files.FileFetcher;
 import ru.citeck.ecos.files.FileType;
 import ru.citeck.ecos.files.types.ecos.EcosArtifact;
+import ru.citeck.ecos.settings.EcosServer;
 
 import java.util.List;
 
 public class EcosArtifactFetcher implements FileFetcher {
 
     @Override
-    public String fetch(PsiFile psiFile) throws Exception {
+    public String fetch(EcosServer ecosServer, PsiFile psiFile) throws Exception {
 
         EcosArtifact fileType = (EcosArtifact) ServiceRegistry.getFileTypeService().getFileType(psiFile);
         String id = fileType.getId(psiFile);
 
         JsonNode json = ServiceRegistry
-                .getEcosRestApiService()
+                .getEcosRestApiService(ecosServer, psiFile.getProject())
                 .queryRecord(fileType.getSourceId(), id, List.of(fileType.getContentAttribute()))
                 .get("attributes")
                 .get(fileType.getContentAttribute());

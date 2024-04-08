@@ -7,6 +7,7 @@ import com.intellij.openapi.ui.popup.JBPopupFactory;
 import com.intellij.ui.awt.RelativePoint;
 import org.jetbrains.annotations.NotNull;
 import ru.citeck.ecos.ServiceRegistry;
+import ru.citeck.ecos.settings.EcosServer;
 
 import java.awt.*;
 import java.net.URLEncoder;
@@ -31,7 +32,11 @@ public class NodeRefHyperLinkInfo implements HyperlinkInfo {
 
     @Override
     public void navigate(@NotNull Project project) {
-        String host = ServiceRegistry.getEcosRestApiService().getHost();
+        EcosServer.doWithServer(project, this::navigate);
+    }
+
+    private void navigate(EcosServer ecosServer) {
+        String host = ecosServer.getHost();
         JBPopupFactory
                 .getInstance()
                 .createPopupChooserBuilder(List.of(
