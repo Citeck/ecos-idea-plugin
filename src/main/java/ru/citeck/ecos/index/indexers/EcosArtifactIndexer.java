@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import ru.citeck.ecos.files.FileType;
 import ru.citeck.ecos.files.types.ecos.EcosArtifact;
 import ru.citeck.ecos.index.EcosFileIndexer;
+import ru.citeck.ecos.index.IndexKey;
 import ru.citeck.ecos.index.Indexes;
 
 
@@ -37,6 +38,7 @@ public class EcosArtifactIndexer implements EcosFileIndexer {
         String fullId = fileType.getSourceId() + "@" + id;
 
         indexes
+                .add(new IndexKey(fileType.getSourceId()), indexes.createIndex(id, idPsiElement))
                 .addReference(fullId, idPsiElement)
                 .addReference(id, idPsiElement)
                 .addSearchEverywhere(fullId, idPsiElement);

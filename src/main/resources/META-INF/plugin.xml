@@ -27,12 +27,22 @@
         <localInspection implementationClass="ru.citeck.ecos.inspections.forms.DuplicateComponentKeyInspection"
                          language="JSON"
                          enabledByDefault="true" level="ERROR" displayName="ECOS form component duplicate key"
-                         groupName="JSON"/>
+                         groupName="ECOS"/>
+        <localInspection implementationClass="ru.citeck.ecos.inspections.JsonEcosArtifactTypeRefInspection"
+                         language="JSON"
+                         enabledByDefault="true" level="ERROR" displayName="ECOS typeRef inspection (json)"
+                         groupName="ECOS"/>
+        <localInspection implementationClass="ru.citeck.ecos.inspections.YamlEcosArtifactTypeRefInspection"
+                         language="yaml"
+                         enabledByDefault="true" level="ERROR" displayName="ECOS typeRef inspection (yaml)"
+                         groupName="ECOS"/>
 
         <completion.contributor implementationClass="ru.citeck.ecos.completion.java.JavaCompletionContributor"
                                 language="JAVA"/>
         <completion.contributor implementationClass="ru.citeck.ecos.completion.json.JsonCompletionContributor"
                                 language="JSON"/>
+        <completion.contributor implementationClass="ru.citeck.ecos.completion.json.YamlCompletionContributor"
+                                language="yaml"/>
 
         <liveTemplateMacro implementation="ru.citeck.ecos.livetemplates.functions.JavaQNameEnumMacro"/>
         <liveTemplateMacro implementation="ru.citeck.ecos.livetemplates.functions.alfresco.AlfrescoAnyEnumMacro"/>
@@ -160,6 +170,8 @@
         <psiElementValueResolver implementation="ru.citeck.ecos.references.resolvers.XmlTagValueResolver"/>
 
         <completionProvider implementation="ru.citeck.ecos.completion.java.providers.QNamesCompletionProvider"/>
+        <completionProvider implementation="ru.citeck.ecos.completion.json.JsonTypeRefCompletionProvider"/>
+        <completionProvider implementation="ru.citeck.ecos.completion.json.YamlTypeRefCompletionProvider"/>
 
     </extensions>
 

@@ -1,6 +1,6 @@
 ---
 id: "${NAME}"
-typeRef: emodel/type@
+typeRef:
 journalRef:
 cardFormRef:
 readOnly: true
