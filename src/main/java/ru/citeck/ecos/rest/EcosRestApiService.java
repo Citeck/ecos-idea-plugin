@@ -84,7 +84,13 @@ public class EcosRestApiService {
             String error = new BufferedReader(new InputStreamReader(errorStream))
                     .lines()
                     .collect(Collectors.joining("\n"));
+
+            try {
+                error = objectMapper.readValue(error, JsonNode.class).get("detail").asText();
+            } catch (Exception ignored) {
+            }
             throw new RuntimeException(error);
+
         } else {
             String response = new BufferedReader(
                     new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8)).lines().collect(Collectors.joining("\n")
