@@ -2,7 +2,9 @@ package ru.citeck.ecos.files.types.filters;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 public class FileExtensionFilter implements FileFilter {
 
     public static final FileFilter JS = new FileExtensionFilter("js");
@@ -15,12 +17,7 @@ public class FileExtensionFilter implements FileFilter {
             new FileExtensionFilter("yaml")
     );
 
-
     private final String extension;
-
-    public FileExtensionFilter(String extension) {
-        this.extension = extension.toLowerCase();
-    }
 
     @Override
     public boolean accept(VirtualFile file, Project project) {
@@ -28,6 +25,7 @@ public class FileExtensionFilter implements FileFilter {
         if (extension == null) {
             return false;
         }
-        return this.extension.equals(extension.toLowerCase());
+        return this.extension.equalsIgnoreCase(extension);
     }
+
 }

@@ -29,7 +29,7 @@ public class EcosArtifactDeployer implements FileDeployer {
                 recordExists ? id : "",
                 fileType.getMimeType(),
                 vFile.getName(),
-                psiFile.getText().getBytes(vFile.getCharset()),
+                fileType.getContent(psiFile),
                 fileType.getMutationAttribute()
         );
 
@@ -40,8 +40,7 @@ public class EcosArtifactDeployer implements FileDeployer {
         if (!(fileType instanceof EcosArtifact)) {
             return false;
         }
-        String id = ((EcosArtifact) fileType).getId(psiFile);
-        return Strings.isNotEmpty(id);
+        return ((EcosArtifact) fileType).canDeploy(psiFile);
     }
 
     @Override

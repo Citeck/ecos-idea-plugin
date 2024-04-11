@@ -15,7 +15,6 @@ import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
 import com.intellij.psi.impl.file.PsiFileImplUtil;
-import com.intellij.psi.util.PsiUtil;
 import com.intellij.psi.xml.XmlFile;
 import com.intellij.psi.xml.XmlTag;
 import com.intellij.psi.xml.XmlTagValue;
@@ -26,6 +25,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.citeck.ecos.utils.EcosMessages;
 import ru.citeck.ecos.utils.EcosVirtualFileUtils;
+import ru.citeck.ecos.utils.MavenUtils;
 
 import javax.swing.*;
 import java.io.File;
@@ -118,6 +118,7 @@ public abstract class AbstractCreateEcosArtifactAction extends CreateFileFromTem
 
     @Nullable
     private String getArtifactPath(PsiDirectory dir) {
+
         Module module = ModuleUtil.findModuleForPsiElement(dir);
         if (module == null) {
             return null;
@@ -129,10 +130,7 @@ public abstract class AbstractCreateEcosArtifactAction extends CreateFileFromTem
         }
 
         String path = Optional
-                .ofNullable(moduleDir.findChild("pom.xml"))
-                .map(vFile -> (PsiUtil.getPsiFile(dir.getProject(), vFile)))
-                .filter(XmlFile.class::isInstance)
-                .map(XmlFile.class::cast)
+                .ofNullable(MavenUtils.getPomFile(module))
                 .map(XmlFile::getRootTag)
                 .map(xmlTag -> xmlTag.findFirstSubTag("parent"))
                 .map(xmlTag -> xmlTag.findFirstSubTag("groupId"))

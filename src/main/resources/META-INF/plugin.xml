@@ -81,6 +81,8 @@
         <fileType implementation="ru.citeck.ecos.files.types.AlfrescoConfig"/>
         <fileType implementation="ru.citeck.ecos.files.types.ecos.Form$YAML"/>
         <fileType implementation="ru.citeck.ecos.files.types.ecos.Form$JSON"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.EcosApplication$YAML"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.EcosApplication$JSON"/>
         <fileType implementation="ru.citeck.ecos.files.types.ecos.Action$YAML"/>
         <fileType implementation="ru.citeck.ecos.files.types.ecos.Action$JSON"/>
         <fileType implementation="ru.citeck.ecos.files.types.ecos.DataType$YAML"/>
@@ -206,12 +208,18 @@
                     icon="Icons.CiteckLogo"/>
         </group>
 
+        <group id="ru.citeck.ecos.ProjectMenu" text="ECOS" popup="true" icon="Icons.CiteckLogo">
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
+            <action id="ru.citeck.ecos.actions.DeployApplication" class="ru.citeck.ecos.actions.DeployApplication"
+                    text="Deploy Application" description="Deploy application" icon="AllIcons.Actions.Uninstall">
+            </action>
+        </group>
 
         <action id="ru.citeck.ecos.actions.DeployFile" class="ru.citeck.ecos.actions.DeployFile"
                 text="Deploy File" description="Deploy file" icon="AllIcons.Actions.Uninstall">
             <keyboard-shortcut keymap="$default" first-keystroke="control alt E" second-keystroke="D"/>
             <add-to-group group-id="EditorContextBarMenu" anchor="last"/>
-            <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
+            <add-to-group group-id="ru.citeck.ecos.ProjectMenu" anchor="last"/>
         </action>
         <action id="ru.citeck.ecos.actions.FetchFile" class="ru.citeck.ecos.actions.FetchFile"
                 text="Fetch File" description="Fetch file" icon="AllIcons.Actions.Install">

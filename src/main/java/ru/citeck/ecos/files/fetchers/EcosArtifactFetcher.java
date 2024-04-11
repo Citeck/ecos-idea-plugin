@@ -34,8 +34,7 @@ public class EcosArtifactFetcher implements FileFetcher {
         if (!(fileType instanceof EcosArtifact)) {
             return false;
         }
-        String id = ((EcosArtifact) fileType).getId(psiFile);
-        return Strings.isNotEmpty(id);
+        return ((EcosArtifact) fileType).canFetch(psiFile);
     }
 
     @Override
