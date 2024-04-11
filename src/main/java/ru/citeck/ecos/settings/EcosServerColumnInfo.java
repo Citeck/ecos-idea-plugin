@@ -2,7 +2,7 @@ package ru.citeck.ecos.settings;
 
 import com.intellij.openapi.util.NlsContexts;
 import com.intellij.ui.components.JBTextField;
-import com.intellij.util.Function;
+import java.util.function.Function;
 import com.intellij.util.ui.ColumnInfo;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

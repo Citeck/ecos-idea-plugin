@@ -7,7 +7,7 @@ import com.intellij.openapi.module.ModuleUtil;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectUtil;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.openapi.vfs.VirtualFileUtil;
+import com.intellij.openapi.vfs.VirtualFileManager;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
@@ -43,7 +43,7 @@ public class DeployApplication extends DeployFile {
         FileTypeService fileTypeService = ServiceRegistry.getFileTypeService();
 
         return Optional
-                .ofNullable(VirtualFileUtil.findDirectory(moduleDir, "." + EcosApplication.PATH))
+                .ofNullable(VirtualFileManager.getInstance().findFileByUrl(moduleDir.getUrl() + EcosApplication.PATH))
                 .map(dir -> PsiManager.getInstance(project).findDirectory(dir))
                 .map(PsiDirectory::getFiles)
                 .stream()
