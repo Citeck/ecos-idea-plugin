@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>ru.citeck.ecos</id>
-    <name>ECOS Idea</name>
-    <vendor email="" url="http://citeck.ru">Citeck</vendor>
+    <name>Citeck ECOS DevKit</name>
+    <vendor email="" url="https://www.citeck.ru/">Citeck</vendor>
 
     <description><![CDATA[ECOS Idea Plugin]]></description>
 
