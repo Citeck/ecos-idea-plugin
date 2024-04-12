@@ -1,0 +1,7 @@
+---
+id: "${NAME}"
+name: {}
+target: ''
+type: json
+config:
+  operations: []

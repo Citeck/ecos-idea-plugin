@@ -105,8 +105,8 @@
         <fileType implementation="ru.citeck.ecos.files.types.ecos.KanbanBoard$JSON"/>
         <fileType implementation="ru.citeck.ecos.files.types.ecos.Config$YAML"/>
         <fileType implementation="ru.citeck.ecos.files.types.ecos.Config$JSON"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.ModulePatch$YAML"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.ModulePatch$JSON"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.ArtifactPatch$YAML"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.ArtifactPatch$JSON"/>
         <fileType implementation="ru.citeck.ecos.files.types.ecos.Dashboard$YAML"/>
         <fileType implementation="ru.citeck.ecos.files.types.ecos.Dashboard$JSON"/>
         <fileType implementation="ru.citeck.ecos.files.types.ecos.Journal$YAML"/>
@@ -132,7 +132,7 @@
         <searchScope name="Permission Settings" class="ru.citeck.ecos.files.types.ecos.PermissionSettings"/>
         <searchScope name="Kanban Board" class="ru.citeck.ecos.files.types.ecos.KanbanBoard"/>
         <searchScope name="Config" class="ru.citeck.ecos.files.types.ecos.Config"/>
-        <searchScope name="Module Patch" class="ru.citeck.ecos.files.types.ecos.ModulePatch"/>
+        <searchScope name="Artifact Patch" class="ru.citeck.ecos.files.types.ecos.ArtifactPatch"/>
         <searchScope name="Dashboard" class="ru.citeck.ecos.files.types.ecos.Dashboard"/>
         <searchScope name="Journal" class="ru.citeck.ecos.files.types.ecos.Journal"/>
         <searchScope name="Localization" class="ru.citeck.ecos.files.types.ecos.Localization"/>
@@ -217,6 +217,9 @@
                     icon="Icons.CiteckLogo"/>
             <action id="ru.citeck.ecos.templates.files.CreatePermissionSettingsAction"
                     class="ru.citeck.ecos.templates.files.CreatePermissionSettingsAction"
+                    icon="Icons.CiteckLogo"/>
+            <action id="ru.citeck.ecos.templates.files.CreateArtifactPatchAction"
+                    class="ru.citeck.ecos.templates.files.CreateArtifactPatchAction"
                     icon="Icons.CiteckLogo"/>
         </group>
 
