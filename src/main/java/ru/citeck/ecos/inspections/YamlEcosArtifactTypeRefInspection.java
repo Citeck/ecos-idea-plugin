@@ -12,6 +12,7 @@ import org.jetbrains.yaml.YAMLElementGenerator;
 import org.jetbrains.yaml.YAMLUtil;
 import org.jetbrains.yaml.psi.YAMLFile;
 import org.jetbrains.yaml.psi.YAMLKeyValue;
+import ru.citeck.ecos.files.types.ecos.DataType;
 
 import java.util.Optional;
 
@@ -63,7 +64,9 @@ public class YamlEcosArtifactTypeRefInspection extends LocalInspectionTool imple
                                 .filter(YAMLKeyValue.class::isInstance)
                                 .map(YAMLKeyValue.class::cast)
                                 .ifPresent(yamlKeyValue -> yamlKeyValue.replace(
-                                        YAMLElementGenerator.getInstance(project).createYamlKeyValue("typeRef", eType)
+                                        YAMLElementGenerator
+                                                .getInstance(project)
+                                                .createYamlKeyValue("typeRef", DataType.EMODEL_TYPE + eType)
                                 ))
                 )
         );
