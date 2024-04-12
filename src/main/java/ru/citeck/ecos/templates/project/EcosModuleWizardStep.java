@@ -23,7 +23,7 @@ public class EcosModuleWizardStep extends ModuleWizardStep {
 
     private final JBTextField groupId = new JBTextField("org.example");
     private final JBTextField artifactId = new JBTextField("untitled");
-    private final JBTextField version = new JBTextField("1.0-SNAPSHOT");
+    private final JBTextField version = new JBTextField("1.0.0-SNAPSHOT");
     private final JBTextField port = new JBTextField("8686");
 
     public EcosModuleWizardStep(EcosModuleBuilder builder) {

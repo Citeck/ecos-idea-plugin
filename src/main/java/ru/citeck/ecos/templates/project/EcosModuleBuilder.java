@@ -38,7 +38,8 @@ public class EcosModuleBuilder extends AbstractMavenModuleBuilder {
     }
 
     @Override
-    public ModuleWizardStep[] createWizardSteps(@NotNull WizardContext wizardContext, @NotNull ModulesProvider modulesProvider) {
+    public ModuleWizardStep[] createWizardSteps(@NotNull WizardContext wizardContext,
+                                                @NotNull ModulesProvider modulesProvider) {
         return new ModuleWizardStep[0];
     }
 
