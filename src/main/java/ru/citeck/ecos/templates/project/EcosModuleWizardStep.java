@@ -33,10 +33,13 @@ public class EcosModuleWizardStep extends ModuleWizardStep {
     private JBList<EcosMavenArchetype> createArchetypesList() {
         JBList<EcosMavenArchetype> archetypesList = new JBList<>(EcosMavenArchetype.EP_NAME.getExtensionList());
         archetypesList.setCellRenderer(new ListCellRendererWithIcon(Icons.CiteckLogo));
+        archetypesList.setBorder(JBUI.Borders.empty(0, 4));
+        archetypesList.addListSelectionListener(e -> port
+                .setEnabled(Boolean.TRUE.equals(archetypesList.getSelectedValue().isMicroservice))
+        );
         if (!archetypesList.isEmpty()) {
             archetypesList.setSelectedIndex(0);
         }
-        archetypesList.setBorder(JBUI.Borders.empty(0, 4));
         return archetypesList;
     }
 

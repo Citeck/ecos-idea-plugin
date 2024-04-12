@@ -21,14 +21,14 @@ public class EcosMavenArchetype {
     @Attribute("version")
     public String version;
 
-    @Attribute("repository")
-    public String repository;
-
     @Attribute("description")
     public String description;
 
+    @Attribute("isMicroservice")
+    public Boolean isMicroservice;
+
     public MavenArchetype getMavenArchetype() {
-        return new MavenArchetype(groupId, artifactId, version, repository, description);
+        return new MavenArchetype(groupId, artifactId, version, null, description);
     }
 
     @Override
