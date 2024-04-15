@@ -17,4 +17,9 @@ public interface Menu extends EcosArtifact {
         }
     }
 
+    @Override
+    default String getDocumentationUrl() {
+        return "https://citeck-ecos.readthedocs.io/ru/latest/settings_kb/interface/menu.html";
+    }
+
 }

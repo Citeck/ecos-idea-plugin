@@ -5,6 +5,7 @@ import com.intellij.json.psi.JsonObject;
 import com.intellij.json.psi.JsonProperty;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.util.PsiTreeUtil;
+import ru.citeck.ecos.files.HasDocumentation;
 
 import java.util.Arrays;
 import java.util.List;
@@ -41,4 +42,8 @@ public interface Form extends EcosArtifact {
         }
     }
 
+    @Override
+    default String getDocumentationUrl() {
+        return "https://citeck-ecos.readthedocs.io/ru/latest/settings_kb/interface/forms.html";
+    }
 }

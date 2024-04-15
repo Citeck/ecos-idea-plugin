@@ -17,4 +17,10 @@ public interface Localization extends EcosArtifact {
         }
     }
 
+    @Override
+    default String getDocumentationUrl() {
+        //TODO: Find documentation
+        return null;
+    }
+
 }

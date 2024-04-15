@@ -17,4 +17,9 @@ public interface KanbanBoard extends EcosArtifact {
         }
     }
 
+    @Override
+    default String getDocumentationUrl() {
+        return "https://citeck-ecos.readthedocs.io/ru/latest/settings_kb/interface/journals/kanban_board.html";
+    }
+
 }

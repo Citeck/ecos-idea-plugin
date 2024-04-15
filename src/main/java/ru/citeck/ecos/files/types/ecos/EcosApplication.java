@@ -148,4 +148,9 @@ public interface EcosApplication extends EcosArtifact {
                 .orElse(null);
     }
 
+    @Override
+    default String getDocumentationUrl() {
+        return "https://citeck-ecos.readthedocs.io/ru/latest/settings_kb/ecos_applications.html";
+    }
+
 }

@@ -17,4 +17,9 @@ public interface NumTemplate extends EcosArtifact {
         }
     }
 
+    @Override
+    default String getDocumentationUrl() {
+        return "https://citeck-ecos.readthedocs.io/ru/latest/settings_kb/number_template.html";
+    }
+
 }

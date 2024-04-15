@@ -38,5 +38,9 @@ public class Bpmn extends XmlEcosArtifact {
                 getId(psiFile)
         );
     }
+    @Override
+    public String getDocumentationUrl() {
+        return "https://citeck-ecos.readthedocs.io/ru/latest/settings_kb/processes/BPMN_ecos.html";
+    }
 
 }

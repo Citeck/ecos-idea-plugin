@@ -103,8 +103,6 @@
         <fileType implementation="ru.citeck.ecos.files.types.ecos.PermissionSettings$JSON"/>
         <fileType implementation="ru.citeck.ecos.files.types.ecos.KanbanBoard$YAML"/>
         <fileType implementation="ru.citeck.ecos.files.types.ecos.KanbanBoard$JSON"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.Config$YAML"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.Config$JSON"/>
         <fileType implementation="ru.citeck.ecos.files.types.ecos.ArtifactPatch$YAML"/>
         <fileType implementation="ru.citeck.ecos.files.types.ecos.ArtifactPatch$JSON"/>
         <fileType implementation="ru.citeck.ecos.files.types.ecos.Dashboard$YAML"/>
@@ -131,7 +129,6 @@
         <searchScope name="Permissions" class="ru.citeck.ecos.files.types.ecos.Permissions"/>
         <searchScope name="Permission Settings" class="ru.citeck.ecos.files.types.ecos.PermissionSettings"/>
         <searchScope name="Kanban Board" class="ru.citeck.ecos.files.types.ecos.KanbanBoard"/>
-        <searchScope name="Config" class="ru.citeck.ecos.files.types.ecos.Config"/>
         <searchScope name="Artifact Patch" class="ru.citeck.ecos.files.types.ecos.ArtifactPatch"/>
         <searchScope name="Dashboard" class="ru.citeck.ecos.files.types.ecos.Dashboard"/>
         <searchScope name="Journal" class="ru.citeck.ecos.files.types.ecos.Journal"/>
@@ -264,6 +261,12 @@
             <keyboard-shortcut keymap="$default" first-keystroke="control alt E" second-keystroke="B"/>
             <add-to-group group-id="EditorContextBarMenu" anchor="last"/>
             <add-to-group group-id="ru.citeck.ecos.ProjectMenu" anchor="last"/>
+        </action>
+        <action id="ru.citeck.ecos.actions.OpenDocumentationInBrowser"
+                class="ru.citeck.ecos.actions.OpenDocumentationInBrowser"
+                text="Open Documentation"
+                description="Open documentation" icon="com.intellij.icons.AllIcons.Actions.Help">
+            <add-to-group group-id="EditorContextBarMenu" anchor="last"/>
         </action>
 
         <action id="ru.citeck.ecos.actions.EcosSearchEveryWhereAction"

@@ -39,4 +39,8 @@ public class Dmn extends XmlEcosArtifact {
         );
     }
 
+    @Override
+    public String getDocumentationUrl() {
+        return "https://citeck-ecos.readthedocs.io/ru/latest/settings_kb/processes/DMN_ecos.html";
+    }
 }

@@ -17,4 +17,9 @@ public interface ArtifactPatch extends EcosArtifact {
         }
     }
 
+    @Override
+    default String getDocumentationUrl() {
+        return "https://citeck-ecos.readthedocs.io/ru/latest/settings_kb/ecos_artifacts.html#id8";
+    }
+
 }

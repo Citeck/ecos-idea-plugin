@@ -6,12 +6,13 @@ import com.intellij.openapi.util.text.Strings;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import ru.citeck.ecos.files.FileType;
+import ru.citeck.ecos.files.HasDocumentation;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
-public interface EcosArtifact extends FileType {
+public interface EcosArtifact extends FileType, HasDocumentation {
 
     String getSourceId();
 
