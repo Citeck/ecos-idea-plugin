@@ -1,0 +1,36 @@
+image: gradle:jdk17
+
+before_script:
+  - GRADLE_USER_HOME="$(pwd)/.gradle"
+  - export GRADLE_USER_HOME
+
+stages:
+  - build
+  - publish
+
+build:
+  tags:
+    - kuber-run-new
+  only:
+    - tags
+  stage: build
+  script:
+    - gradle buildPlugin
+  artifacts:
+    paths:
+      - build/distributions/*.zip
+    expire_in: 1 week
+
+publish:
+  tags:
+    - kuber-run-new
+  only:
+    - tags
+  stage: publish
+  image: curlimages/curl
+  script:
+    - >
+      curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file build/distributions/*.zip
+      "$CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/ecos-idea-plugin/$CI_COMMIT_TAG/ecos-idea-plugin-$CI_COMMIT_TAG.zip"
+  dependencies:
+    - build
