@@ -3,7 +3,7 @@
     <name>Citeck ECOS DevKit</name>
     <vendor email="" url="https://www.citeck.ru/">Citeck</vendor>
 
-    <description><![CDATA[ECOS Idea Plugin]]></description>
+    <description><![CDATA[Citeck ECOS DevKit]]></description>
 
     <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->
