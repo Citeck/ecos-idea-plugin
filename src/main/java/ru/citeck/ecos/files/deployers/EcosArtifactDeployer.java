@@ -1,6 +1,5 @@
 package ru.citeck.ecos.files.deployers;
 
-import com.intellij.openapi.util.text.Strings;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 import ru.citeck.ecos.ServiceRegistry;
@@ -44,9 +43,13 @@ public class EcosArtifactDeployer implements FileDeployer {
     }
 
     @Override
+    public String getArtifactName(PsiFile psiFile) {
+        return ((EcosArtifact) ServiceRegistry.getFileTypeService().getFileType(psiFile)).getFullId(psiFile);
+    }
+
+    @Override
     public String getDestinationName(EcosServer ecosServer, PsiFile psiFile) {
-        EcosArtifact fileType = (EcosArtifact) ServiceRegistry.getFileTypeService().getFileType(psiFile);
-        return String.format("%s@%s", fileType.getSourceId(), fileType.getId(psiFile));
+        return ecosServer.getHost();
     }
 
 }

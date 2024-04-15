@@ -13,6 +13,9 @@ public interface FileDeployer {
 
     boolean canDeploy(PsiFile psiFile, FileType fileType);
 
+
+    String getArtifactName(PsiFile psiFile);
+
     String getDestinationName(EcosServer ecosServer, PsiFile psiFile);
 
 }

@@ -75,6 +75,11 @@ public class TomcatFileDeployer implements FileDeployer {
     }
 
     @Override
+    public String getArtifactName(PsiFile psiFile) {
+        return psiFile.getName();
+    }
+
+    @Override
     public String getDestinationName(EcosServer ecosServer, PsiFile psiFile) {
         return ecosServer.getHost();
     }

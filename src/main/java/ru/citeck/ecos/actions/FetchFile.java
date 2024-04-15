@@ -36,23 +36,24 @@ public class FetchFile extends EcosAction {
             return;
         }
 
-        String fileName = psiFile.getVirtualFile().getName();
-        String sourceName = fetcher.getSourceName(psiFile);
-
-        if (!EcosMessages.confirm("Fetch file", String.format("Fetch %s from %s?", fileName, sourceName), project)) {
-            return;
-        }
-
         EcosServer.doWithServer(project, ecosServer -> {
+
+            String sourceName = fetcher.getSourceName(ecosServer, psiFile);
+
+            String artifactName = fetcher.getArtifactName(psiFile);
+            if (!EcosMessages.confirm("Fetch artifact", String.format("Fetch %s from %s?", artifactName, sourceName), project)) {
+                return;
+            }
+
             try {
                 String result = fetcher.fetch(ecosServer, psiFile);
                 runUndoTransparentAction(() -> {
                     editor.getDocument().setText(result);
-                    String message = String.format("File %s successfully fetched from %s", fileName, sourceName);
-                    EcosMessages.info("File fetched", message, project);
+                    String message = String.format("%s successfully fetched from %s", artifactName, sourceName);
+                    EcosMessages.info("Artifact fetched", message, project);
                 });
             } catch (Exception e) {
-                EcosMessages.error("File fetching error", e.getMessage(), project);
+                EcosMessages.error("Artifact fetching error", e.getMessage(), project);
             }
         });
 

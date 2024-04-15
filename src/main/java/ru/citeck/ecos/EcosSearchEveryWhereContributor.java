@@ -34,6 +34,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class EcosSearchEveryWhereContributor implements SearchEverywhereContributor<IndexValue> {
 
+    private static final String MODULE_NAME = "moduleName";
     private final Project project;
 
     private final ListCellRenderer<IndexValue> cellRenderer = new ColoredListCellRenderer<>() {
@@ -45,9 +46,10 @@ public class EcosSearchEveryWhereContributor implements SearchEverywhereContribu
             setFont(list.getFont());
             append(value.getId(), new SimpleTextAttributes(SimpleTextAttributes.STYLE_PLAIN, list.getForeground()), true);
 
-            getJarName(value).or(() -> getModuleName(value))
-                    .ifPresent(s -> append(" " + s, SimpleTextAttributes.GRAY_SMALL_ATTRIBUTES));
-
+            String moduleName = value.getProperty(MODULE_NAME);
+            if (moduleName != null) {
+                append(" " + moduleName, SimpleTextAttributes.GRAY_SMALL_ATTRIBUTES);
+            }
         }
 
     };
@@ -65,11 +67,13 @@ public class EcosSearchEveryWhereContributor implements SearchEverywhereContribu
                 .map(VirtualFile::getName);
     }
 
-    private Optional<String> getModuleName(IndexValue indexValue) {
+    private String getModuleName(IndexValue indexValue) {
         return Optional
                 .ofNullable(EcosVirtualFileUtils.getFileByPath(indexValue.getFile()))
                 .map(virtualFile -> ModuleUtil.findModuleForFile(virtualFile, project))
-                .map(Module::getName);
+                .map(Module::getName)
+                .or(() -> getJarName(indexValue))
+                .orElse(null);
     }
 
     @Override
@@ -132,6 +136,8 @@ public class EcosSearchEveryWhereContributor implements SearchEverywhereContribu
                             .getIndexesService(project)
                             .stream(IndexKey.SEARCH_EVERYWHERE)
                             .filter(indexValue -> matcher.matches(indexValue.getId()))
+                            .limit(100)
+                            .peek(indexValue -> indexValue.setProperty(MODULE_NAME, getModuleName(indexValue)))
                             .forEach(consumer::process);
                 });
     }

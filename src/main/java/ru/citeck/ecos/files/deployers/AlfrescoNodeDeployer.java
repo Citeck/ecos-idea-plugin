@@ -58,6 +58,11 @@ public class AlfrescoNodeDeployer implements FileDeployer {
         return getIndexValue(psiFile) != null;
     }
 
+    @Override
+    public String getArtifactName(PsiFile psiFile) {
+        return "workspace://SpacesStore/" + getIndexValue(psiFile).getId();
+    }
+
     private IndexValue getIndexValue(PsiFile psiFile) {
         Project project = psiFile.getProject();
         IndexKey key = new IndexKey(AlfrescoContentNodesIndexer.NODE_INDEX_KEY, psiFile.getVirtualFile().getPath());
@@ -70,8 +75,7 @@ public class AlfrescoNodeDeployer implements FileDeployer {
 
     @Override
     public String getDestinationName(EcosServer ecosServer, PsiFile psiFile) {
-        IndexValue indexValue = getIndexValue(psiFile);
-        return ecosServer.getHost() + "@workspace://SpacesStore/" + indexValue.getId();
+        return ecosServer.getHost();
     }
 
 

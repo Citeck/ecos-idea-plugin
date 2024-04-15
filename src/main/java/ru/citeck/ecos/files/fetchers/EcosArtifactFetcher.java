@@ -1,7 +1,6 @@
 package ru.citeck.ecos.files.fetchers;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.intellij.openapi.util.text.Strings;
 import com.intellij.psi.PsiFile;
 import ru.citeck.ecos.ServiceRegistry;
 import ru.citeck.ecos.files.FileFetcher;
@@ -38,9 +37,13 @@ public class EcosArtifactFetcher implements FileFetcher {
     }
 
     @Override
-    public String getSourceName(PsiFile psiFile) {
-        EcosArtifact fileType = (EcosArtifact) ServiceRegistry.getFileTypeService().getFileType(psiFile);
-        return String.format("%s@%s", fileType.getSourceId(), fileType.getId(psiFile));
+    public String getArtifactName(PsiFile psiFile) {
+        return ((EcosArtifact) ServiceRegistry.getFileTypeService().getFileType(psiFile)).getFullId(psiFile);
+    }
+
+    @Override
+    public String getSourceName(EcosServer ecosServer, PsiFile psiFile) {
+        return ecosServer.getHost();
     }
 
 }

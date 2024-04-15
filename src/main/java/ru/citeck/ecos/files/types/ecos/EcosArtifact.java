@@ -43,6 +43,10 @@ public interface EcosArtifact extends FileType {
                 .getBytes(psiFile.getVirtualFile().getCharset());
     }
 
+    default String getFullId(PsiFile psiFile) {
+        return getSourceId() + "@" + getId(psiFile);
+    }
+
     default boolean canDeploy(PsiFile psiFile) {
         return Strings.isNotEmpty(getId(psiFile));
     }

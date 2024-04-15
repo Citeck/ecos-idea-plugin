@@ -81,21 +81,21 @@ public class DeployFile extends EcosAction {
                 .ifPresent(document -> PsiDocumentManager.getInstance(project).commitDocument(document));
 
         String destinationName = deployer.getDestinationName(ecosServer, psiFile);
-        String fileName = psiFile.getVirtualFile().getName();
+        String artifactName = deployer.getArtifactName(psiFile);
 
-        if (!EcosMessages.confirm("Deploy file", String.format("Deploy %s to %s?", fileName, destinationName), project)) {
+        if (!EcosMessages.confirm("Deploy artifact", String.format("Deploy %s to %s?", artifactName, destinationName), project)) {
             return;
         }
 
         try {
             deployer.deploy(ecosServer, psiFile);
             EcosMessages.info(
-                    "File deployed",
-                    String.format("File %s deployed to <b>%s</b>", fileName, destinationName),
+                    "Artifact Deployed",
+                    String.format("%s deployed to <b>%s</b>", artifactName, destinationName),
                     project
             );
         } catch (Exception e) {
-            EcosMessages.error("File deploying error", e.getMessage(), project);
+            EcosMessages.error("Artifact deploying error", e.getMessage(), project);
         }
 
     }

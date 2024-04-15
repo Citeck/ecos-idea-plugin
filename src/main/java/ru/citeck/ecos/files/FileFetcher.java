@@ -13,6 +13,8 @@ public interface FileFetcher {
 
     boolean canFetch(PsiFile psiFile, FileType fileType);
 
-    String getSourceName(PsiFile psiFile);
+    String getArtifactName(PsiFile psiFile);
+
+    String getSourceName(EcosServer ecosServer, PsiFile psiFile);
 
 }

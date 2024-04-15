@@ -262,23 +262,20 @@
             <add-to-group group-id="EditorContextBarMenu" anchor="last"/>
         </action>
 
-        <group id="ru.citeck.ecos.MainMenu" text="ECOS" popup="true">
-            <add-to-group group-id="MainMenu" anchor="last"/>
-            <action id="ru.citeck.ecos.actions.EcosSearchEveryWhereAction"
-                    class="ru.citeck.ecos.actions.EcosSearchEveryWhereAction"
-                    text="Search Everywhere"
-                    description="Search everywhere">
-                <keyboard-shortcut keymap="$default" first-keystroke="control alt E" second-keystroke="N"/>
-            </action>
+        <action id="ru.citeck.ecos.actions.EcosSearchEveryWhereAction"
+                class="ru.citeck.ecos.actions.EcosSearchEveryWhereAction"
+                text="ECOS Search Everywhere"
+                description="Search everywhere">
+            <keyboard-shortcut keymap="$default" first-keystroke="control alt E" second-keystroke="S"/>
+        </action>
 
-            <action id="Ecos.ExecuteAlfrescoJsFromScratch"
-                    class="ru.citeck.ecos.actions.ExecuteAlfrescoJsFromScratch"
-                    text="Execute Afresco JS"
-                    description="Execute Afresco JS"
-                    icon="AllIcons.FileTypes.JavaScript">
-                <keyboard-shortcut keymap="$default" first-keystroke="control alt E" second-keystroke="J"/>
-            </action>
-        </group>
+        <action id="Ecos.ExecuteAlfrescoJsFromScratch"
+                class="ru.citeck.ecos.actions.ExecuteAlfrescoJsFromScratch"
+                text="Execute Afresco JS"
+                description="Execute Afresco JS"
+                icon="AllIcons.FileTypes.JavaScript">
+            <keyboard-shortcut keymap="$default" first-keystroke="control alt E" second-keystroke="J"/>
+        </action>
 
         <action id="GenerateEcosFormComponent" class="ru.citeck.ecos.actions.codeinsight.GenerateEcosFormComponent"
                 text="Component" icon="Icons.CiteckLogo">
