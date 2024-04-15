@@ -40,7 +40,7 @@ public class EcosServer implements Cloneable {
     private String grantType = "";
     private String clientId = "";
     private String clientSecret = "";
-    private String accessTokenUrl = "";
+    private String oauthProviderUrl = "";
 
     public EcosServer() {
     }
@@ -52,7 +52,7 @@ public class EcosServer implements Cloneable {
                       String grantType,
                       String clientId,
                       String clientSecret,
-                      String accessTokenUrl
+                      String oauthProviderUrl
     ) {
         this.name = name;
         this.host = host;
@@ -61,7 +61,7 @@ public class EcosServer implements Cloneable {
         this.grantType = grantType;
         this.clientId = clientId;
         this.clientSecret = clientSecret;
-        this.accessTokenUrl = accessTokenUrl;
+        this.oauthProviderUrl = oauthProviderUrl;
     }
 
     public void setHost(String host) {
@@ -77,7 +77,7 @@ public class EcosServer implements Cloneable {
             this.grantType = "";
             this.clientId = "";
             this.clientSecret = "";
-            this.accessTokenUrl = "";
+            this.oauthProviderUrl = "";
         }
     }
 
@@ -88,9 +88,16 @@ public class EcosServer implements Cloneable {
         }
     }
 
+    public void setOauthProviderUrl(String oauthProviderUrl) {
+        if (oauthProviderUrl.endsWith("/")) {
+            oauthProviderUrl = oauthProviderUrl.substring(0, oauthProviderUrl.length() - 1);
+        }
+        this.oauthProviderUrl = oauthProviderUrl;
+    }
+
     @Override
     public EcosServer clone() {
-        return new EcosServer(name, host, userName, authMethod, grantType, clientId, clientSecret, accessTokenUrl);
+        return new EcosServer(name, host, userName, authMethod, grantType, clientId, clientSecret, oauthProviderUrl);
     }
 
     public static void doWithServer(Project project, Consumer<EcosServer> consumer) {

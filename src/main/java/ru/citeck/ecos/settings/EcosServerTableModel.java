@@ -23,7 +23,7 @@ class EcosServerTableModel extends TableModelEditor<EcosServer> {
                     .withCellEditableEvaluator(ecosServer -> AuthenticationService.OAUTH2_METHOD.equals(ecosServer.getAuthMethod())),
             new EcosServerColumnInfo("Client Secret", EcosServer::getClientSecret, EcosServer::setClientSecret)
                     .withCellEditableEvaluator(ecosServer -> AuthenticationService.OAUTH2_METHOD.equals(ecosServer.getAuthMethod())),
-            new EcosServerColumnInfo("Access Token URL", EcosServer::getAccessTokenUrl, EcosServer::setAccessTokenUrl)
+            new EcosServerColumnInfo("OAuth Provider URL", EcosServer::getOauthProviderUrl, EcosServer::setOauthProviderUrl)
                     .withCellEditableEvaluator(ecosServer -> AuthenticationService.OAUTH2_METHOD.equals(ecosServer.getAuthMethod()))
     };
 
