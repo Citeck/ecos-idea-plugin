@@ -4,6 +4,7 @@ import com.intellij.icons.AllIcons;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vcs.VcsShowConfirmationOption;
 import com.intellij.util.ui.ConfirmationDialog;
@@ -36,11 +37,13 @@ public class EcosMessages {
     }
 
     private static void notify(String title, String content, Project project, NotificationType type, Icon icon) {
-        Notification notification = new Notification("ECOS", title, content == null ? "" : content, type);
-        if (icon != null) {
-            notification.setIcon(icon);
-        }
-        Notifications.Bus.notify(notification, project);
+        ApplicationManager.getApplication().invokeLater(() -> {
+            Notification notification = new Notification("ECOS", title, content == null ? "" : content, type);
+            if (icon != null) {
+                notification.setIcon(icon);
+            }
+            Notifications.Bus.notify(notification, project);
+        });
     }
 
 }

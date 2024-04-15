@@ -43,16 +43,18 @@ public class FetchFile extends EcosAction {
             return;
         }
 
-        EcosServer.doWithServer(project, ecosServer -> runUndoTransparentAction(() -> {
+        EcosServer.doWithServer(project, ecosServer -> {
             try {
                 String result = fetcher.fetch(ecosServer, psiFile);
-                editor.getDocument().setText(result);
-                String message = String.format("File %s successfully fetched from %s", fileName, sourceName);
-                EcosMessages.info("File fetched", message, project);
+                runUndoTransparentAction(() -> {
+                    editor.getDocument().setText(result);
+                    String message = String.format("File %s successfully fetched from %s", fileName, sourceName);
+                    EcosMessages.info("File fetched", message, project);
+                });
             } catch (Exception e) {
                 EcosMessages.error("File fetching error", e.getMessage(), project);
             }
-        }));
+        });
 
     }
 
