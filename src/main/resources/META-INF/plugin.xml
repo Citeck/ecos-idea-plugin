@@ -240,12 +240,14 @@
                 text="Fetch File" description="Fetch file" icon="AllIcons.Actions.Install">
             <keyboard-shortcut keymap="$default" first-keystroke="control alt E" second-keystroke="F"/>
             <add-to-group group-id="EditorContextBarMenu" anchor="last"/>
+            <add-to-group group-id="ru.citeck.ecos.ProjectMenu" anchor="last"/>
         </action>
         <action id="Ecos.ExecuteAlfrescoJs" class="ru.citeck.ecos.actions.ExecuteAlfrescoJs"
                 text="Execute Alfresco Js"
                 description="Execute alfresco js" icon="AllIcons.Actions.Execute">
             <keyboard-shortcut keymap="$default" first-keystroke="control alt E" second-keystroke="E"/>
             <add-to-group group-id="EditorContextBarMenu" anchor="last"/>
+            <add-to-group group-id="ru.citeck.ecos.ProjectMenu" anchor="last"/>
         </action>
         <action id="ru.citeck.ecos.actions.NavigateInFileAction"
                 class="ru.citeck.ecos.actions.NavigateInFileAction"
@@ -253,6 +255,7 @@
                 description="Navigate in File" icon="AllIcons.CodeWithMe.CwmJump">
             <keyboard-shortcut keymap="$default" first-keystroke="control alt E" second-keystroke="G"/>
             <add-to-group group-id="EditorContextBarMenu" anchor="last"/>
+            <add-to-group group-id="ru.citeck.ecos.ProjectMenu" anchor="last"/>
         </action>
         <action id="ru.citeck.ecos.actions.OpenArtifactInBrowser"
                 class="ru.citeck.ecos.actions.OpenArtifactInBrowser"
@@ -260,6 +263,7 @@
                 description="Open in Browser" icon="AllIcons.General.Web">
             <keyboard-shortcut keymap="$default" first-keystroke="control alt E" second-keystroke="B"/>
             <add-to-group group-id="EditorContextBarMenu" anchor="last"/>
+            <add-to-group group-id="ru.citeck.ecos.ProjectMenu" anchor="last"/>
         </action>
 
         <action id="ru.citeck.ecos.actions.EcosSearchEveryWhereAction"
