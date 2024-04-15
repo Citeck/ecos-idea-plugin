@@ -39,7 +39,7 @@ public class JsonEcosArtifactTypeRefInspection extends LocalInspectionTool imple
         JsonProperty typeRef = jsonObject.findProperty("typeRef");
         if (typeRef == null) {
             return new ProblemDescriptor[]{manager.createProblemDescriptor(
-                    psiFile,
+                    jsonObject,
                     "\"typeRef\" attribute is mandatory",
                     (LocalQuickFix) null,
                     ProblemHighlightType.ERROR, false)

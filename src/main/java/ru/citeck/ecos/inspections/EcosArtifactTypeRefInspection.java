@@ -28,9 +28,8 @@ public interface EcosArtifactTypeRefInspection {
 
     List<Class<? extends EcosArtifact>> TYPE_REF_REQUIRED = List.of(
             Dashboard.class,
-            Journal.class,
-            KanbanBoard.class,
-            Permissions.class
+            Permissions.class,
+            PermissionSettings.class
     );
 
     class QuickFix implements LocalQuickFix {

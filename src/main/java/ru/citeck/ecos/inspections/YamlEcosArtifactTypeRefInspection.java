@@ -24,8 +24,10 @@ public class YamlEcosArtifactTypeRefInspection extends LocalInspectionTool imple
             return null;
         }
 
+        YAMLFile yamlFile = (YAMLFile) psiFile;
+
         YAMLKeyValue typeRef = YAMLUtil
-                .getTopLevelKeys((YAMLFile) psiFile)
+                .getTopLevelKeys(yamlFile)
                 .stream()
                 .filter(yamlKeyValue -> "typeRef".equals(yamlKeyValue.getKeyText()))
                 .findFirst()
@@ -33,12 +35,19 @@ public class YamlEcosArtifactTypeRefInspection extends LocalInspectionTool imple
 
 
         if (typeRef == null) {
-            return new ProblemDescriptor[]{manager.createProblemDescriptor(
-                    psiFile,
-                    "\"typeRef\" attribute is mandatory",
-                    (LocalQuickFix) null,
-                    ProblemHighlightType.ERROR, false)
-            };
+            return Optional
+                    .of(yamlFile)
+                    .map(YAMLFile::getDocuments)
+                    .filter(yamlDocuments -> !yamlDocuments.isEmpty())
+                    .map(yamlDocuments -> yamlDocuments.get(0))
+                    .map(yamlDocument -> manager.createProblemDescriptor(
+                            yamlDocument,
+                            "\"typeRef\" attribute is mandatory",
+                            (LocalQuickFix) null,
+                            ProblemHighlightType.ERROR, false)
+                    )
+                    .map(problemDescriptor -> new ProblemDescriptor[]{problemDescriptor})
+                    .orElse(null);
         }
 
         if (!Strings.isEmpty(typeRef.getValueText())) {
