@@ -3,10 +3,10 @@ package ru.citeck.ecos.templates.project;
 import com.intellij.ide.util.projectWizard.ModuleWizardStep;
 import com.intellij.ide.util.projectWizard.WizardContext;
 import com.intellij.openapi.Disposable;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.DumbAwareRunnable;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.project.ProjectUtil;
 import com.intellij.openapi.roots.ui.configuration.ModulesProvider;
 import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -19,6 +19,7 @@ import org.jetbrains.idea.maven.model.MavenConstants;
 import org.jetbrains.idea.maven.utils.MavenUtil;
 import org.jetbrains.idea.maven.wizards.AbstractMavenModuleBuilder;
 import org.jetbrains.idea.maven.wizards.MavenOpenProjectProvider;
+import ru.citeck.ecos.utils.EcosVirtualFileUtils;
 
 import javax.swing.*;
 import java.io.File;
@@ -59,42 +60,48 @@ public class EcosModuleBuilder extends AbstractMavenModuleBuilder {
 
     @Override
     protected void setupModule(Module module) {
-
         Project project = module.getProject();
-
-        try {
-            File tmpDir = FileUtil.createTempDirectory("archetype", "tmp");
-            tmpDir.deleteOnExit();
-
-            MavenRunnerParameters mavenParams = new MavenRunnerParameters(
-                    false, tmpDir.getPath(), (String) null,
-                    List.of(MAVEN_PLUGIN_GENERATE_ARCHETYPE),
-                    Collections.emptyList());
-
-            MavenUtil.runWhenInitialized(project, (DumbAwareRunnable) () -> {
-                MavenRunner runner = MavenRunner.getInstance(project);
-                Map<String, String> mavenProperties = runner.getSettings().getMavenProperties();
-                mavenProperties.putAll(this.getPropertiesToCreateByArtifact());
-                mavenProperties.put("archetypeCatalog", REPOSITORY);
-                mavenProperties.put("interactiveMode", "false");
-                runner.run(mavenParams, runner.getState().clone(), () -> {
+        MavenUtil.runWhenInitialized(project, (DumbAwareRunnable) () ->
+                ApplicationManager.getApplication().invokeLater(() -> {
                     try {
-                        VirtualFile moduleDir = ProjectUtil.guessModuleDir(module);
-                        String artifactId = getPropertiesToCreateByArtifact().get("artifactId");
-                        FileUtil.copyDir(new File(tmpDir, artifactId), new File(moduleDir.getPath()));
-                        moduleDir.refresh(false, false);
-                        Optional
-                                .ofNullable(moduleDir.findChild(MavenConstants.POM_XML)                        )
-                                .ifPresent(pom -> new MavenOpenProjectProvider().linkToExistingProject(pom, project));
+                        generateMavenArchetype(module);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
-                });
-            });
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+                }));
+    }
 
+    private void generateMavenArchetype(Module module) throws IOException {
+
+        Project project = module.getProject();
+        VirtualFile moduleDir = EcosVirtualFileUtils.getFileByPath(getModuleFileDirectory());
+
+        File tmpDir = FileUtil.createTempDirectory("archetype", "tmp");
+        tmpDir.deleteOnExit();
+
+        MavenRunnerParameters mavenParams = new MavenRunnerParameters(
+                false, tmpDir.getPath(), (String) null,
+                List.of(MAVEN_PLUGIN_GENERATE_ARCHETYPE),
+                Collections.emptyList());
+
+        MavenRunner runner = MavenRunner.getInstance(project);
+        Map<String, String> mavenProperties = runner.getSettings().getMavenProperties();
+        mavenProperties.putAll(this.getPropertiesToCreateByArtifact());
+        mavenProperties.put("archetypeCatalog", REPOSITORY);
+        mavenProperties.put("interactiveMode", "false");
+
+        runner.run(mavenParams, runner.getState().clone(), () -> {
+            try {
+                String artifactId = getPropertiesToCreateByArtifact().get("artifactId");
+                FileUtil.copyDir(new File(tmpDir, artifactId), new File(moduleDir.getPath()));
+                moduleDir.refresh(false, false);
+                Optional
+                        .ofNullable(moduleDir.findChild(MavenConstants.POM_XML))
+                        .ifPresent(pom -> new MavenOpenProjectProvider().linkToExistingProject(pom, project));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     @Override

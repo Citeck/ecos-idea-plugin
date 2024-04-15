@@ -12,7 +12,7 @@ public interface Permissions extends EcosArtifact {
 
         @Override
         public String getContentAttribute() {
-            return "_self{id:.id|rxg('emodel/perms@(.+)'), typeRef?id, permissions?json}";
+            return "_self{id:.id|rxg('emodel/perms@(.+)'), typeRef?id, permissions?json, attributes?json}";
         }
     }
 
@@ -23,7 +23,7 @@ public interface Permissions extends EcosArtifact {
 
         @Override
         public String getContentAttribute() {
-            return "_self{id:.id|rxg('emodel/perms@(.+)'), typeRef?id, permissions?json}|yaml()";
+            return "_self{id:.id|rxg('emodel/perms@(.+)'), typeRef?id, permissions?json, attributes?json}|yaml()";
         }
     }
 

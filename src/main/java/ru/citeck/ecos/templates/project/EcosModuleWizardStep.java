@@ -19,12 +19,11 @@ public class EcosModuleWizardStep extends ModuleWizardStep {
 
     private final EcosModuleBuilder builder;
 
-    private final JBList<EcosMavenArchetype> archetypesList = createArchetypesList();
-
     private final JBTextField groupId = new JBTextField("org.example");
     private final JBTextField artifactId = new JBTextField("untitled");
     private final JBTextField version = new JBTextField("1.0.0-SNAPSHOT");
     private final JBTextField port = new JBTextField("8686");
+    private final JBList<EcosMavenArchetype> archetypesList = createArchetypesList();
 
     public EcosModuleWizardStep(EcosModuleBuilder builder) {
         this.builder = builder;

@@ -28,7 +28,6 @@ public interface EcosArtifactTypeRefInspection {
 
     List<Class<? extends EcosArtifact>> TYPE_REF_REQUIRED = List.of(
             Dashboard.class,
-            Form.class,
             Journal.class,
             KanbanBoard.class,
             Permissions.class

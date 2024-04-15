@@ -4,6 +4,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.xml.XmlAttribute;
 import com.intellij.psi.xml.XmlFile;
+import ru.citeck.ecos.settings.EcosServer;
 
 import java.util.Optional;
 
@@ -27,4 +28,15 @@ public class Bpmn extends XmlEcosArtifact {
                 .map(XmlAttribute::getValueElement)
                 .orElse(null);
     }
+
+    @Override
+    public String getURL(EcosServer ecosServer, PsiFile psiFile) {
+        return String.format(
+                "%s/v2/bpmn-editor?recordRef=%s@%s",
+                ecosServer.getHost(),
+                getSourceId(),
+                getId(psiFile)
+        );
+    }
+
 }
