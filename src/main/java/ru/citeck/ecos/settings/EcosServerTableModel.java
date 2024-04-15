@@ -1,7 +1,9 @@
 package ru.citeck.ecos.settings;
 
+import com.intellij.ui.components.JBPasswordField;
 import com.intellij.util.ui.table.TableModelEditor;
 import ru.citeck.ecos.rest.AuthenticationService;
+import ru.citeck.ecos.ui.PasswordCellRenderer;
 
 import javax.swing.*;
 import java.util.List;
@@ -22,6 +24,8 @@ class EcosServerTableModel extends TableModelEditor<EcosServer> {
             new EcosServerColumnInfo("Client ID", EcosServer::getClientId, EcosServer::setClientId)
                     .withCellEditableEvaluator(ecosServer -> AuthenticationService.OAUTH2_METHOD.equals(ecosServer.getAuthMethod())),
             new EcosServerColumnInfo("Client Secret", EcosServer::getClientSecret, EcosServer::setClientSecret)
+                    .withRenderer(new PasswordCellRenderer())
+                    .withEditor(new DefaultCellEditor(new JBPasswordField()))
                     .withCellEditableEvaluator(ecosServer -> AuthenticationService.OAUTH2_METHOD.equals(ecosServer.getAuthMethod())),
             new EcosServerColumnInfo("OAuth Provider URL", EcosServer::getOauthProviderUrl, EcosServer::setOauthProviderUrl)
                     .withCellEditableEvaluator(ecosServer -> AuthenticationService.OAUTH2_METHOD.equals(ecosServer.getAuthMethod()))

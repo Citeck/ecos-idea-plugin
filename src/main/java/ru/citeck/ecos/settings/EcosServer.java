@@ -1,5 +1,8 @@
 package ru.citeck.ecos.settings;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.intellij.credentialStore.CredentialAttributes;
+import com.intellij.ide.passwordSafe.PasswordSafe;
 import com.intellij.openapi.options.ShowSettingsUtil;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.popup.JBPopupFactory;
@@ -14,6 +17,7 @@ import ru.citeck.ecos.rest.AuthenticationService;
 
 import javax.swing.*;
 import java.util.List;
+import java.util.UUID;
 import java.util.function.Consumer;
 
 @Data
@@ -33,6 +37,7 @@ public class EcosServer implements Cloneable {
 
     }
 
+    private String id = UUID.randomUUID().toString();
     private String name = "";
     private String host = "";
     private String userName = "";
@@ -45,22 +50,23 @@ public class EcosServer implements Cloneable {
     public EcosServer() {
     }
 
-    public EcosServer(String name,
+    public EcosServer(
+            String id,
+            String name,
                       String host,
                       String userName,
                       String authMethod,
                       String grantType,
                       String clientId,
-                      String clientSecret,
                       String oauthProviderUrl
     ) {
+        this.id = id;
         this.name = name;
         this.host = host;
         this.userName = userName;
         this.authMethod = authMethod;
         this.grantType = grantType;
         this.clientId = clientId;
-        this.clientSecret = clientSecret;
         this.oauthProviderUrl = oauthProviderUrl;
     }
 
@@ -95,9 +101,23 @@ public class EcosServer implements Cloneable {
         this.oauthProviderUrl = oauthProviderUrl;
     }
 
+
+    private CredentialAttributes getClientSecretCredentialsAttribute() {
+        return new CredentialAttributes("ecos", "oauth2-client-secret-" + id);
+    }
+
+    @JsonIgnore
+    public String getClientSecret() {
+        return PasswordSafe.getInstance().getPassword(getClientSecretCredentialsAttribute());
+    }
+
+    public void setClientSecret(String clientSecret) {
+        PasswordSafe.getInstance().setPassword(getClientSecretCredentialsAttribute(), clientSecret);
+    }
+
     @Override
     public EcosServer clone() {
-        return new EcosServer(name, host, userName, authMethod, grantType, clientId, clientSecret, oauthProviderUrl);
+        return new EcosServer(id, name, host, userName, authMethod, grantType, clientId, oauthProviderUrl);
     }
 
     public static void doWithServer(Project project, Consumer<EcosServer> consumer) {

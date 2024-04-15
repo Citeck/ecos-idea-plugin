@@ -8,7 +8,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableCellRenderer;
 import java.util.function.BiConsumer;
 
 final class EcosServerColumnInfo extends ColumnInfo<EcosServer, String> {
@@ -17,6 +19,7 @@ final class EcosServerColumnInfo extends ColumnInfo<EcosServer, String> {
     private final BiConsumer<EcosServer, String> setter;
 
     private TableCellEditor editor = new DefaultCellEditor(new JBTextField());
+    private TableCellRenderer renderer = new DefaultTableCellRenderer();
     private Function<EcosServer, Boolean> cellEditableEvaluator = ecosServer -> true;
 
     public EcosServerColumnInfo(
@@ -31,6 +34,11 @@ final class EcosServerColumnInfo extends ColumnInfo<EcosServer, String> {
 
     public EcosServerColumnInfo withEditor(TableCellEditor editor) {
         this.editor = editor;
+        return this;
+    }
+
+    public EcosServerColumnInfo withRenderer(TableCellRenderer renderer) {
+        this.renderer = renderer;
         return this;
     }
 
@@ -57,6 +65,11 @@ final class EcosServerColumnInfo extends ColumnInfo<EcosServer, String> {
     @Override
     public void setValue(EcosServer ecosServer, String value) {
         setter.accept(ecosServer, value);
+    }
+
+    @Override
+    public @Nullable TableCellRenderer getRenderer(EcosServer ecosServer) {
+        return renderer;
     }
 
 }
