@@ -1,9 +1,10 @@
-package ru.citeck.ecos.files.types.ecos;
+package ru.citeck.ecos.files.types.ecos.process;
 
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.xml.XmlAttribute;
 import com.intellij.psi.xml.XmlFile;
+import ru.citeck.ecos.files.types.ecos.XmlEcosArtifact;
 import ru.citeck.ecos.settings.EcosServer;
 
 import java.util.Optional;

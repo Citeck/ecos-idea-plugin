@@ -1,9 +1,10 @@
-package ru.citeck.ecos.files.types.ecos;
+package ru.citeck.ecos.files.types.ecos.ui;
 
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.util.io.Compressor;
+import ru.citeck.ecos.files.types.ecos.JsonEcosArtifact;
 import ru.citeck.ecos.files.types.filters.FileFilter;
 import ru.citeck.ecos.files.types.filters.FileNameFilter;
 import ru.citeck.ecos.files.types.filters.FilterAnd;

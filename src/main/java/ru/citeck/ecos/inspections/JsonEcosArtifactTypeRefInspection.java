@@ -1,25 +1,17 @@
 package ru.citeck.ecos.inspections;
 
 import com.intellij.codeInspection.*;
-import com.intellij.codeInspection.util.IntentionFamilyName;
 import com.intellij.json.psi.*;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.command.CommandProcessor;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.popup.JBPopupFactory;
 import com.intellij.openapi.util.text.Strings;
-import com.intellij.openapi.wm.WindowManager;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.impl.source.PsiFileImpl;
-import icons.Icons;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.citeck.ecos.ServiceRegistry;
-import ru.citeck.ecos.files.FileTypeService;
-import ru.citeck.ecos.files.types.ecos.DataType;
-import ru.citeck.ecos.files.types.ecos.JsonEcosArtifact;
-import ru.citeck.ecos.ui.ListCellRendererWithIcon;
+import ru.citeck.ecos.files.types.ecos.model.DataType;
 
 import java.util.Optional;
 

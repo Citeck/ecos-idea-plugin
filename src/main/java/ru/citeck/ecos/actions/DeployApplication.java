@@ -14,7 +14,7 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
 import ru.citeck.ecos.ServiceRegistry;
 import ru.citeck.ecos.files.FileTypeService;
-import ru.citeck.ecos.files.types.ecos.EcosApplication;
+import ru.citeck.ecos.files.types.ecos.app.EcosApplication;
 
 import java.util.Arrays;
 import java.util.Optional;

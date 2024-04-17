@@ -1,6 +1,6 @@
 package ru.citeck.ecos.templates.files;
 
-import ru.citeck.ecos.files.types.ecos.DataType;
+import ru.citeck.ecos.files.types.ecos.model.DataType;
 
 import java.util.List;
 

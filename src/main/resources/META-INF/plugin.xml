@@ -91,57 +91,64 @@
         <fileType implementation="ru.citeck.ecos.files.types.AlfrescoModel"/>
         <fileType implementation="ru.citeck.ecos.files.types.AlfrescoViewRepository"/>
         <fileType implementation="ru.citeck.ecos.files.types.AlfrescoConfig"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.Form$YAML"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.Form$JSON"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.EcosApplication$YAML"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.EcosApplication$JSON"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.EcosConfiguration$YAML"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.EcosConfiguration$JSON"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.Action$YAML"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.Action$JSON"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.DataType$YAML"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.DataType$JSON"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.Permissions$YAML"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.Permissions$JSON"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.PermissionSettings$YAML"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.PermissionSettings$JSON"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.KanbanBoard$YAML"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.KanbanBoard$JSON"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.ArtifactPatch$YAML"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.ArtifactPatch$JSON"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.Dashboard$YAML"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.Dashboard$JSON"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.Journal$YAML"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.Journal$JSON"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.Localization$YAML"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.Localization$JSON"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.Menu$YAML"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.Menu$JSON"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.NumTemplate$YAML"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.NumTemplate$JSON"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.CamelDsl$YAML"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.CamelDsl$JSON"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.Bpmn"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.Dmn"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.NotificationTemplate"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.Theme"/>
         <fileType implementation="ru.citeck.ecos.files.types.XmlBeanDefinitions"/>
         <fileType implementation="ru.citeck.ecos.files.types.Java"/>
         <fileType implementation="ru.citeck.ecos.files.types.JavaScript"/>
 
-        <searchScope name="Form" class="ru.citeck.ecos.files.types.ecos.Form"/>
-        <searchScope name="Action" class="ru.citeck.ecos.files.types.ecos.Action"/>
-        <searchScope name="Data type" class="ru.citeck.ecos.files.types.ecos.DataType"/>
-        <searchScope name="Permissions" class="ru.citeck.ecos.files.types.ecos.Permissions"/>
-        <searchScope name="Permission Settings" class="ru.citeck.ecos.files.types.ecos.PermissionSettings"/>
-        <searchScope name="Kanban Board" class="ru.citeck.ecos.files.types.ecos.KanbanBoard"/>
-        <searchScope name="Artifact Patch" class="ru.citeck.ecos.files.types.ecos.ArtifactPatch"/>
-        <searchScope name="Dashboard" class="ru.citeck.ecos.files.types.ecos.Dashboard"/>
-        <searchScope name="Journal" class="ru.citeck.ecos.files.types.ecos.Journal"/>
-        <searchScope name="Localization" class="ru.citeck.ecos.files.types.ecos.Localization"/>
-        <searchScope name="Menu" class="ru.citeck.ecos.files.types.ecos.Menu"/>
-        <searchScope name="Number Template" class="ru.citeck.ecos.files.types.ecos.NumTemplate"/>
-        <searchScope name="Camel DSL" class="ru.citeck.ecos.files.types.ecos.CamelDsl"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.app.ArtifactPatch$YAML"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.app.ArtifactPatch$JSON"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.app.EcosApplication$YAML"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.app.EcosApplication$JSON"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.app.EcosConfiguration$YAML"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.app.EcosConfiguration$JSON"/>
+
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.model.DataType$YAML"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.model.DataType$JSON"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.model.Permissions$YAML"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.model.Permissions$JSON"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.model.PermissionSettings$YAML"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.model.PermissionSettings$JSON"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.model.NumTemplate$YAML"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.model.NumTemplate$JSON"/>
+
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.ui.Form$YAML"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.ui.Form$JSON"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.ui.Action$YAML"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.ui.Action$JSON"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.ui.KanbanBoard$YAML"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.ui.KanbanBoard$JSON"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.ui.Dashboard$YAML"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.ui.Dashboard$JSON"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.ui.Journal$YAML"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.ui.Journal$JSON"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.ui.Localization$YAML"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.ui.Localization$JSON"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.ui.Menu$YAML"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.ui.Menu$JSON"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.ui.Theme"/>
+
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.integration.CamelDsl$YAML"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.integration.CamelDsl$JSON"/>
+
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.process.Bpmn"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.process.Dmn"/>
+
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.notification.NotificationTemplate"/>
+
+
+        <searchScope name="Form" class="ru.citeck.ecos.files.types.ecos.ui.Form"/>
+        <searchScope name="Action" class="ru.citeck.ecos.files.types.ecos.ui.Action"/>
+        <searchScope name="Data type" class="ru.citeck.ecos.files.types.ecos.model.DataType"/>
+        <searchScope name="Permissions" class="ru.citeck.ecos.files.types.ecos.model.Permissions"/>
+        <searchScope name="Permission Settings" class="ru.citeck.ecos.files.types.ecos.model.PermissionSettings"/>
+        <searchScope name="Kanban Board" class="ru.citeck.ecos.files.types.ecos.ui.KanbanBoard"/>
+        <searchScope name="Artifact Patch" class="ru.citeck.ecos.files.types.ecos.app.ArtifactPatch"/>
+        <searchScope name="Dashboard" class="ru.citeck.ecos.files.types.ecos.ui.Dashboard"/>
+        <searchScope name="Journal" class="ru.citeck.ecos.files.types.ecos.ui.Journal"/>
+        <searchScope name="Localization" class="ru.citeck.ecos.files.types.ecos.ui.Localization"/>
+        <searchScope name="Menu" class="ru.citeck.ecos.files.types.ecos.ui.Menu"/>
+        <searchScope name="Number Template" class="ru.citeck.ecos.files.types.ecos.model.NumTemplate"/>
+        <searchScope name="Camel DSL" class="ru.citeck.ecos.files.types.ecos.integration.CamelDsl"/>
         <searchScope name="Alfresco Model" class="ru.citeck.ecos.files.types.AlfrescoModel"/>
 
         <fileDeployer implementation="ru.citeck.ecos.files.deployers.EcosArtifactDeployer"/>

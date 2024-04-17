@@ -17,7 +17,7 @@ import icons.Icons;
 import org.jetbrains.annotations.NotNull;
 import ru.citeck.ecos.ServiceRegistry;
 import ru.citeck.ecos.completion.js.JsCompletionProvider;
-import ru.citeck.ecos.files.types.ecos.Form;
+import ru.citeck.ecos.files.types.ecos.ui.Form;
 import ru.citeck.ecos.utils.EcosPsiUtils;
 
 import java.util.Map;

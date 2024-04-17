@@ -3,7 +3,7 @@ package ru.citeck.ecos.templates.files;
 import com.intellij.ide.fileTemplates.FileTemplate;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiFile;
-import ru.citeck.ecos.files.types.ecos.Theme;
+import ru.citeck.ecos.files.types.ecos.ui.Theme;
 
 import java.util.List;
 import java.util.Optional;

@@ -1,7 +1,10 @@
-package ru.citeck.ecos.files.types.ecos;
+package ru.citeck.ecos.files.types.ecos.ui;
 
 import com.intellij.json.psi.*;
 import com.intellij.psi.PsiFile;
+import ru.citeck.ecos.files.types.ecos.EcosArtifact;
+import ru.citeck.ecos.files.types.ecos.JsonEcosArtifact;
+import ru.citeck.ecos.files.types.ecos.YamlEcosArtifact;
 
 import java.util.Collections;
 import java.util.List;

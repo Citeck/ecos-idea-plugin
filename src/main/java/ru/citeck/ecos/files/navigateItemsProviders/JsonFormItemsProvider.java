@@ -6,7 +6,7 @@ import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.Nullable;
 import ru.citeck.ecos.files.NavigateInFileItem;
 import ru.citeck.ecos.files.NavigateInFileItemsProvider;
-import ru.citeck.ecos.files.types.ecos.Form;
+import ru.citeck.ecos.files.types.ecos.ui.Form;
 import ru.citeck.ecos.utils.EcosPsiUtils;
 
 import java.util.Collection;

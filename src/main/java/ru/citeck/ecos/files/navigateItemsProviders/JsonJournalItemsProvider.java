@@ -6,7 +6,7 @@ import org.jetbrains.annotations.Nullable;
 import ru.citeck.ecos.ServiceRegistry;
 import ru.citeck.ecos.files.NavigateInFileItem;
 import ru.citeck.ecos.files.NavigateInFileItemsProvider;
-import ru.citeck.ecos.files.types.ecos.Journal;
+import ru.citeck.ecos.files.types.ecos.ui.Journal;
 import ru.citeck.ecos.utils.EcosPsiUtils;
 
 import java.util.Collection;

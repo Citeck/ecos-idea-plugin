@@ -1,6 +1,6 @@
 package ru.citeck.ecos.templates.files;
 
-import ru.citeck.ecos.files.types.ecos.Dmn;
+import ru.citeck.ecos.files.types.ecos.process.Dmn;
 
 import java.util.List;
 

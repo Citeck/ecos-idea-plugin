@@ -1,4 +1,4 @@
-package ru.citeck.ecos.files.types.ecos;
+package ru.citeck.ecos.files.types.ecos.notification;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.intellij.openapi.util.io.FileUtil;
@@ -7,6 +7,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.util.io.Compressor;
 import com.intellij.util.io.Decompressor;
+import ru.citeck.ecos.files.types.ecos.YamlEcosArtifact;
 import ru.citeck.ecos.files.types.filters.FileFilter;
 import ru.citeck.ecos.files.types.filters.FilterAnd;
 import ru.citeck.ecos.files.types.filters.FolderNamePatternsFilter;

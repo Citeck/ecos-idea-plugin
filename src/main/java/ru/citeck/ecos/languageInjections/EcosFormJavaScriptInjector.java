@@ -13,7 +13,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiLanguageInjectionHost;
 import org.jetbrains.annotations.NotNull;
 import ru.citeck.ecos.ServiceRegistry;
-import ru.citeck.ecos.files.types.ecos.Form;
+import ru.citeck.ecos.files.types.ecos.ui.Form;
 
 import java.util.List;
 import java.util.Set;

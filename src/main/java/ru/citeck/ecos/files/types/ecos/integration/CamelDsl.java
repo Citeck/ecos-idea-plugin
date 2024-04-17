@@ -1,4 +1,8 @@
-package ru.citeck.ecos.files.types.ecos;
+package ru.citeck.ecos.files.types.ecos.integration;
+
+import ru.citeck.ecos.files.types.ecos.EcosArtifact;
+import ru.citeck.ecos.files.types.ecos.JsonEcosArtifact;
+import ru.citeck.ecos.files.types.ecos.YamlEcosArtifact;
 
 public interface CamelDsl extends EcosArtifact {
 

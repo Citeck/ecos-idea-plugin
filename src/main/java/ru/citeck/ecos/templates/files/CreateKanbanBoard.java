@@ -1,6 +1,6 @@
 package ru.citeck.ecos.templates.files;
 
-import ru.citeck.ecos.files.types.ecos.KanbanBoard;
+import ru.citeck.ecos.files.types.ecos.ui.KanbanBoard;
 
 import java.util.List;
 

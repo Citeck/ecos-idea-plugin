@@ -1,4 +1,4 @@
-package ru.citeck.ecos.files.types.ecos;
+package ru.citeck.ecos.files.types.ecos.app;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,6 +12,9 @@ import com.intellij.psi.xml.XmlTagValue;
 import com.intellij.util.io.Compressor;
 import lombok.Data;
 import org.jetbrains.annotations.Nullable;
+import ru.citeck.ecos.files.types.ecos.EcosArtifact;
+import ru.citeck.ecos.files.types.ecos.JsonEcosArtifact;
+import ru.citeck.ecos.files.types.ecos.YamlEcosArtifact;
 import ru.citeck.ecos.files.types.filters.FileFilter;
 import ru.citeck.ecos.files.types.filters.FileNameFilter;
 import ru.citeck.ecos.files.types.filters.FilterAnd;

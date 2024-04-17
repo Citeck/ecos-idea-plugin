@@ -1,6 +1,6 @@
 package ru.citeck.ecos.templates.files;
 
-import ru.citeck.ecos.files.types.ecos.EcosConfiguration;
+import ru.citeck.ecos.files.types.ecos.app.EcosConfiguration;
 
 import java.util.List;
 

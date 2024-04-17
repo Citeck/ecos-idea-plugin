@@ -4,7 +4,7 @@ import com.intellij.ide.fileTemplates.FileTemplate;
 import com.intellij.ide.fileTemplates.FileTemplateManager;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiFile;
-import ru.citeck.ecos.files.types.ecos.NotificationTemplate;
+import ru.citeck.ecos.files.types.ecos.notification.NotificationTemplate;
 
 import java.util.List;
 

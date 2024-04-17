@@ -15,7 +15,7 @@ import com.intellij.openapi.wm.WindowManager;
 import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.NotNull;
 import ru.citeck.ecos.ServiceRegistry;
-import ru.citeck.ecos.files.types.ecos.Form;
+import ru.citeck.ecos.files.types.ecos.ui.Form;
 import ru.citeck.ecos.utils.EcosMessages;
 import ru.citeck.ecos.utils.JsonPrettyPrinter;
 

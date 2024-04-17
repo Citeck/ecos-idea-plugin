@@ -21,7 +21,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
 import ru.citeck.ecos.ServiceRegistry;
 import ru.citeck.ecos.codeinsight.forms.components.*;
-import ru.citeck.ecos.files.types.ecos.Form;
+import ru.citeck.ecos.files.types.ecos.ui.Form;
 import ru.citeck.ecos.index.IndexKey;
 import ru.citeck.ecos.index.IndexValue;
 import ru.citeck.ecos.index.IndexesService;

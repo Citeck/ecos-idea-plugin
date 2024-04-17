@@ -1,6 +1,6 @@
 package ru.citeck.ecos.templates.files;
 
-import ru.citeck.ecos.files.types.ecos.PermissionSettings;
+import ru.citeck.ecos.files.types.ecos.model.PermissionSettings;
 
 import java.util.List;
 

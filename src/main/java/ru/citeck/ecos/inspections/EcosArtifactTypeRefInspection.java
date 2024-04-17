@@ -15,6 +15,10 @@ import org.jetbrains.annotations.NotNull;
 import ru.citeck.ecos.ServiceRegistry;
 import ru.citeck.ecos.files.FileTypeService;
 import ru.citeck.ecos.files.types.ecos.*;
+import ru.citeck.ecos.files.types.ecos.model.DataType;
+import ru.citeck.ecos.files.types.ecos.model.PermissionSettings;
+import ru.citeck.ecos.files.types.ecos.model.Permissions;
+import ru.citeck.ecos.files.types.ecos.ui.Dashboard;
 import ru.citeck.ecos.ui.ListCellRendererWithIcon;
 
 import java.util.List;

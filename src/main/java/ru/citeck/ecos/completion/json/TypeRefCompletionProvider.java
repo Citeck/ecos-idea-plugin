@@ -5,7 +5,7 @@ import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.openapi.project.Project;
 import icons.Icons;
 import org.jetbrains.annotations.NotNull;
-import ru.citeck.ecos.files.types.ecos.DataType;
+import ru.citeck.ecos.files.types.ecos.model.DataType;
 
 public interface TypeRefCompletionProvider {
 

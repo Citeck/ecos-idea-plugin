@@ -1,6 +1,6 @@
 package ru.citeck.ecos.templates.files;
 
-import ru.citeck.ecos.files.types.ecos.ArtifactPatch;
+import ru.citeck.ecos.files.types.ecos.app.ArtifactPatch;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
 package ru.citeck.ecos.templates.files;
 
-import ru.citeck.ecos.files.types.ecos.Action;
+import ru.citeck.ecos.files.types.ecos.ui.Action;
 
 import java.util.List;
 

@@ -1,7 +1,10 @@
-package ru.citeck.ecos.files.types.ecos;
+package ru.citeck.ecos.files.types.ecos.model;
 
 import com.intellij.openapi.project.Project;
 import ru.citeck.ecos.ServiceRegistry;
+import ru.citeck.ecos.files.types.ecos.EcosArtifact;
+import ru.citeck.ecos.files.types.ecos.JsonEcosArtifact;
+import ru.citeck.ecos.files.types.ecos.YamlEcosArtifact;
 import ru.citeck.ecos.index.IndexKey;
 import ru.citeck.ecos.index.IndexValue;
 
