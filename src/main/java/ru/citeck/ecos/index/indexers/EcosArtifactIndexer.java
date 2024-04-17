@@ -34,7 +34,7 @@ public class EcosArtifactIndexer implements EcosFileIndexer {
         if (idPsiElement == null) {
             return;
         }
-        String id = JsonPsiUtil.stripQuotes(idPsiElement.getText());
+        String id = fileType.getId(psiFile);
         if (Strings.isEmpty(id)) {
             return;
         }
