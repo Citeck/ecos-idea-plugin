@@ -183,7 +183,7 @@
         <group id="ru.citeck.ecos.CreateEcosArtifact" text="Ecos Artifact" popup="true" icon="Icons.CiteckLogo">
             <add-to-group group-id="NewGroup" anchor="first"/>
 
-            <group id="ru.citeck.ecos.CreateEcosArtifact.UI" text="UI Configuration" popup="true"
+            <group id="ru.citeck.ecos.CreateEcosArtifact.UI" text="User Interface" popup="true"
                    icon="Icons.CiteckLogo">
                 <action id="ru.citeck.ecos.templates.files.CreateAction"
                         class="ru.citeck.ecos.templates.files.CreateAction"
@@ -211,7 +211,7 @@
                         icon="Icons.CiteckLogo"/>
             </group>
 
-            <group id="ru.citeck.ecos.CreateEcosArtifact.Model" text="Model" popup="true" icon="Icons.CiteckLogo">
+            <group id="ru.citeck.ecos.CreateEcosArtifact.Model" text="Data Model" popup="true" icon="Icons.CiteckLogo">
                 <action id="ru.citeck.ecos.templates.files.CreateDataType"
                         class="ru.citeck.ecos.templates.files.CreateDataType"
                         icon="Icons.CiteckLogo"/>
@@ -226,7 +226,7 @@
                         icon="Icons.CiteckLogo"/>
             </group>
 
-            <group id="ru.citeck.ecos.CreateEcosArtifact.ProcessManagement" text="Process Management" popup="true"
+            <group id="ru.citeck.ecos.CreateEcosArtifact.ProcessManagement" text="Business Process" popup="true"
                    icon="Icons.CiteckLogo">
                 <action id="ru.citeck.ecos.templates.files.CreateBpmn"
                         class="ru.citeck.ecos.templates.files.CreateBpmn"
@@ -236,7 +236,7 @@
                         icon="Icons.CiteckLogo"/>
             </group>
 
-            <group id="ru.citeck.ecos.CreateEcosArtifact.SystemManagement" text="System Management" popup="true"
+            <group id="ru.citeck.ecos.CreateEcosArtifact.SystemManagement" text="App" popup="true"
                    icon="Icons.CiteckLogo">
                 <action id="ru.citeck.ecos.templates.files.CreateArtifactPatch"
                         class="ru.citeck.ecos.templates.files.CreateArtifactPatch"
@@ -253,7 +253,7 @@
                         icon="Icons.CiteckLogo"/>
             </group>
 
-            <group id="ru.citeck.ecos.CreateEcosArtifact.ConfiguringNotifications" text="Configuring Notifications" popup="true"
+            <group id="ru.citeck.ecos.CreateEcosArtifact.ConfiguringNotifications" text="Notification" popup="true"
                    icon="Icons.CiteckLogo">
                 <action id="ru.citeck.ecos.templates.files.CreateNotificationTemplate"
                         class="ru.citeck.ecos.templates.files.CreateNotificationTemplate"
