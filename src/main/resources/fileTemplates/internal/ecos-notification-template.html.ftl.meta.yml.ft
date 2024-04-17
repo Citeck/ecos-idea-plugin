@@ -1,0 +1,14 @@
+{
+  "id" : "${NAME}",
+  "name" : "${NAME}",
+  "notificationTitle" : {
+    "ru" : "#[[${subject!\"Тема отсутствует\"}]]#",
+    "en" : "#[[${subject!\"No Subject\"}]]#"
+  },
+  "tags" : [ ],
+  "model" : {
+    "documentId" : "?id",
+    "subject" : "$subject"
+  },
+  "multiTemplateConfig" : [ ]
+}

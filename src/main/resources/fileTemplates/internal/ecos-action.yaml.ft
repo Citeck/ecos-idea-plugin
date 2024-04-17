@@ -1,0 +1,21 @@
+---
+id: "${NAME}"
+name:
+  ru: ''
+  en: ''
+confirm:
+  title: {}
+  message: {}
+  formRef: ''
+  formAttributes: {}
+  attributesMapping: {}
+type: ''
+evaluator:
+  id:
+  type: group
+  inverse: false
+  config:
+    joinBy: AND
+    evaluators: []
+features:
+  execForQuery: false

@@ -11,7 +11,7 @@ public class FileNameFilter implements FileFilter {
 
     @Override
     public boolean accept(VirtualFile file, Project project) {
-        return file.getName().equalsIgnoreCase(fileName);
+        return file.getPath().endsWith(fileName);
     }
 
 }

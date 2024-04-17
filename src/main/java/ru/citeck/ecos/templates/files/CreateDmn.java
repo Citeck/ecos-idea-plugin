@@ -4,8 +4,8 @@ import ru.citeck.ecos.files.types.ecos.Dmn;
 
 import java.util.List;
 
-public class CreateDmnAction extends AbstractCreateEcosArtifactAction {
-    public CreateDmnAction() {
+public class CreateDmn extends AbstractCreateEcosArtifactAction {
+    public CreateDmn() {
         super("DMN", List.of("dmn.xml"), "ecos-dmn", Dmn.PATH);
     }
 }

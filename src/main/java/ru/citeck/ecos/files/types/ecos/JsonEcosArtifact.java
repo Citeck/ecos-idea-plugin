@@ -10,6 +10,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.impl.source.PsiFileImpl;
 import ru.citeck.ecos.files.types.filters.FileExtensionFilter;
+import ru.citeck.ecos.utils.EcosPsiUtils;
 import ru.citeck.ecos.utils.JsonPrettyPrinter;
 
 import java.util.function.Function;
@@ -35,18 +36,6 @@ public abstract class JsonEcosArtifact extends AbstractEcosArtifact {
     }
 
     @Override
-    public Function<JsonNode, String> getContentPostprocessor() {
-        return jsonNode -> {
-            ObjectWriter objectWriter = new ObjectMapper().writer(new JsonPrettyPrinter());
-            try {
-                return objectWriter.writeValueAsString(jsonNode).replace("\r\n", "\n");
-            } catch (JsonProcessingException e) {
-                throw new RuntimeException(e);
-            }
-        };
-    }
-
-    @Override
     public PsiElement getIdPsiElement(PsiFile psiFile) {
         if (!(psiFile instanceof PsiFileImpl)) {
             return null;
@@ -60,6 +49,13 @@ public abstract class JsonEcosArtifact extends AbstractEcosArtifact {
             return null;
         }
         return idProperty.getValue();
+    }
+
+    @Override
+    public void applyFetchedContent(PsiFile psiFile, JsonNode content) throws Exception {
+        ObjectWriter objectWriter = new ObjectMapper().writer(new JsonPrettyPrinter());
+        String formattedContent = objectWriter.writeValueAsString(content).replace("\r\n", "\n");
+        EcosPsiUtils.setContent(psiFile, formattedContent);
     }
 
 }

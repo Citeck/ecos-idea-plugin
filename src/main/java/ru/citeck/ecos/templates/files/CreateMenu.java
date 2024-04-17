@@ -4,8 +4,8 @@ import ru.citeck.ecos.files.types.ecos.Menu;
 
 import java.util.List;
 
-public class CreateMenuAction extends AbstractCreateEcosArtifactAction {
-    public CreateMenuAction() {
+public class CreateMenu extends AbstractCreateEcosArtifactAction {
+    public CreateMenu() {
         super("Menu", List.of("json"), "ecos-menu", Menu.PATH);
     }
 }

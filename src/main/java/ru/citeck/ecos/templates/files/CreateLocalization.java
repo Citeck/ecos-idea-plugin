@@ -4,8 +4,8 @@ import ru.citeck.ecos.files.types.ecos.Localization;
 
 import java.util.List;
 
-public class CreateLocalizationAction extends AbstractCreateEcosArtifactAction {
-    public CreateLocalizationAction() {
+public class CreateLocalization extends AbstractCreateEcosArtifactAction {
+    public CreateLocalization() {
         super("Localization", List.of("yaml", "json"), "ecos-i18n", Localization.PATH);
     }
 }

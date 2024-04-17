@@ -10,7 +10,6 @@ import ru.citeck.ecos.files.HasDocumentation;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Function;
 
 public interface EcosArtifact extends FileType, HasDocumentation {
 
@@ -23,8 +22,6 @@ public interface EcosArtifact extends FileType, HasDocumentation {
     String getMutationAttribute();
 
     String getContentAttribute();
-
-    Function<JsonNode, String> getContentPostprocessor();
 
     default List<String> getAdditionalReferences(String artifactId) {
         return Collections.emptyList();
@@ -55,5 +52,11 @@ public interface EcosArtifact extends FileType, HasDocumentation {
     default boolean canFetch(PsiFile psiFile) {
         return Strings.isNotEmpty(getId(psiFile));
     }
+
+    default boolean isIndexable(PsiFile psiFile) {
+        return true;
+    }
+
+    void applyFetchedContent(PsiFile psiFile, JsonNode content) throws Exception;
 
 }

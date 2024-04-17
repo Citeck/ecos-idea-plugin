@@ -4,8 +4,8 @@ import ru.citeck.ecos.files.types.ecos.PermissionSettings;
 
 import java.util.List;
 
-public class CreatePermissionSettingsAction extends AbstractCreateEcosArtifactAction {
-    public CreatePermissionSettingsAction() {
+public class CreatePermissionSettings extends AbstractCreateEcosArtifactAction {
+    public CreatePermissionSettings() {
         super("Permission settings", List.of("yaml", "json"), "ecos-permission-settings", PermissionSettings.PATH);
     }
 }

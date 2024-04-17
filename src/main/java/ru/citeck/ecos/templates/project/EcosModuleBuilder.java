@@ -94,6 +94,7 @@ public class EcosModuleBuilder extends AbstractMavenModuleBuilder {
             try {
                 String artifactId = getPropertiesToCreateByArtifact().get("artifactId");
                 FileUtil.copyDir(new File(tmpDir, artifactId), new File(moduleDir.getPath()));
+                FileUtil.delete(tmpDir);
                 moduleDir.refresh(false, false);
                 Optional
                         .ofNullable(moduleDir.findChild(MavenConstants.POM_XML))

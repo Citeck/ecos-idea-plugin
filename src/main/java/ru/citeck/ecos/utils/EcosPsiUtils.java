@@ -4,12 +4,15 @@ import com.intellij.json.psi.JsonObject;
 import com.intellij.json.psi.JsonProperty;
 import com.intellij.json.psi.JsonPsiUtil;
 import com.intellij.json.psi.JsonValue;
+import com.intellij.openapi.editor.Document;
+import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.xml.XmlFile;
 import com.intellij.psi.xml.XmlTag;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -50,6 +53,15 @@ public class EcosPsiUtils {
             return "";
         }
         return JsonPsiUtil.stripQuotes(value);
+    }
+
+    public static void setContent(PsiFile psiFile, String content) throws Exception {
+        Document document = PsiDocumentManager.getInstance(psiFile.getProject()).getDocument(psiFile);
+        if (document != null) {
+            document.setText(content);
+            return;
+        }
+        psiFile.getVirtualFile().setBinaryContent(content.getBytes(StandardCharsets.UTF_8));
     }
 
 }

@@ -42,7 +42,7 @@ public interface EcosApplication extends EcosArtifact {
 
         public JSON() {
             super(PATH, SOURCE_ID);
-            this.filter = new FilterAnd(super.getFilter(), new FileNameFilter("meta.json"));
+            this.filter = new FilterAnd(super.getFilter(), new FileNameFilter(PATH + "meta.json"));
         }
 
         @Override
@@ -64,8 +64,8 @@ public interface EcosApplication extends EcosArtifact {
         public YAML() {
             super(PATH, SOURCE_ID);
             this.filter = new FilterAnd(super.getFilter(), new FilterOr(
-                    new FileNameFilter("meta.yml"),
-                    new FileNameFilter("meta.yaml")
+                    new FileNameFilter(PATH + "meta.yml"),
+                    new FileNameFilter(PATH + "meta.yaml")
             ));
         }
 

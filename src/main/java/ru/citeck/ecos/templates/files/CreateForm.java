@@ -4,8 +4,8 @@ import ru.citeck.ecos.files.types.ecos.Form;
 
 import java.util.List;
 
-public class CreateFormAction extends AbstractCreateEcosArtifactAction {
-    public CreateFormAction() {
+public class CreateForm extends AbstractCreateEcosArtifactAction {
+    public CreateForm() {
         super("Form", List.of("yaml", "json"), "ecos-form", Form.PATH);
     }
 }

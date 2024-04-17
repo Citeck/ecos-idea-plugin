@@ -1,8 +1,8 @@
 package ru.citeck.ecos.actions;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.NullNode;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.CommonDataKeys;
-import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.NotNull;
@@ -31,11 +31,6 @@ public class FetchFile extends EcosAction {
             return;
         }
 
-        Editor editor = event.getData(CommonDataKeys.EDITOR);
-        if (editor == null) {
-            return;
-        }
-
         EcosServer.doWithServer(project, ecosServer -> {
 
             String sourceName = fetcher.getSourceName(ecosServer, psiFile);
@@ -44,17 +39,24 @@ public class FetchFile extends EcosAction {
             if (!EcosMessages.confirm("Fetch artifact", String.format("Fetch %s from %s?", artifactName, sourceName), project)) {
                 return;
             }
-
             try {
-                String result = fetcher.fetch(ecosServer, psiFile);
+                JsonNode content = fetcher.fetchContent(ecosServer, psiFile);
+                if (content == null || content instanceof NullNode) {
+                    throw new RuntimeException("Fetched content is empty");
+                }
                 runUndoTransparentAction(() -> {
-                    editor.getDocument().setText(result);
-                    String message = String.format("%s successfully fetched from %s", artifactName, sourceName);
-                    EcosMessages.info("Artifact fetched", message, project);
+                    try {
+                        fetcher.applyContent(psiFile, content);
+                        String message = String.format("%s successfully fetched from %s", artifactName, sourceName);
+                        EcosMessages.info("Artifact fetched", message, project);
+                    } catch (Exception e) {
+                        EcosMessages.error("Artifact fetching error", e.getMessage(), project);
+                    }
                 });
             } catch (Exception e) {
                 EcosMessages.error("Artifact fetching error", e.getMessage(), project);
             }
+
         });
 
     }

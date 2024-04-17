@@ -26,6 +26,10 @@ public class EcosArtifactIndexer implements EcosFileIndexer {
         PsiFile psiFile = inputData.getPsiFile();
         EcosArtifact fileType = (EcosArtifact) getFileType(inputData);
 
+        if (!fileType.isIndexable(psiFile)) {
+            return;
+        }
+
         PsiElement idPsiElement = fileType.getIdPsiElement(psiFile);
         if (idPsiElement == null) {
             return;

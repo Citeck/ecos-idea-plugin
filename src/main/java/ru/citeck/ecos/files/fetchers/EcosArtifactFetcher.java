@@ -13,19 +13,23 @@ import java.util.List;
 public class EcosArtifactFetcher implements FileFetcher {
 
     @Override
-    public String fetch(EcosServer ecosServer, PsiFile psiFile) throws Exception {
+    public JsonNode fetchContent(EcosServer ecosServer, PsiFile psiFile) throws Exception {
 
         EcosArtifact fileType = (EcosArtifact) ServiceRegistry.getFileTypeService().getFileType(psiFile);
         String id = fileType.getId(psiFile);
 
-        JsonNode json = ServiceRegistry
+        return ServiceRegistry
                 .getEcosRestApiService(ecosServer, psiFile.getProject())
                 .queryRecord(fileType.getSourceId(), id, List.of(fileType.getContentAttribute()))
                 .get("attributes")
                 .get(fileType.getContentAttribute());
 
-        return fileType.getContentPostprocessor().apply(json);
+    }
 
+    @Override
+    public void applyContent(PsiFile psiFile, JsonNode content) throws Exception {
+        EcosArtifact fileType = (EcosArtifact) ServiceRegistry.getFileTypeService().getFileType(psiFile);
+        fileType.applyFetchedContent(psiFile, content);
     }
 
     @Override

@@ -4,8 +4,8 @@ import ru.citeck.ecos.files.types.ecos.ArtifactPatch;
 
 import java.util.List;
 
-public class CreateArtifactPatchAction extends AbstractCreateEcosArtifactAction {
-    public CreateArtifactPatchAction() {
+public class CreateArtifactPatch extends AbstractCreateEcosArtifactAction {
+    public CreateArtifactPatch() {
         super("Artifact Patch", List.of("yaml", "json"), "ecos-artifact-patch", ArtifactPatch.PATH);
     }
 }

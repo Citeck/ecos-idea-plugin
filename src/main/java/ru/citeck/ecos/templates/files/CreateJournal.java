@@ -4,8 +4,8 @@ import ru.citeck.ecos.files.types.ecos.Journal;
 
 import java.util.List;
 
-public class CreateJournalAction extends AbstractCreateEcosArtifactAction {
-    public CreateJournalAction() {
+public class CreateJournal extends AbstractCreateEcosArtifactAction {
+    public CreateJournal() {
         super("Journal", List.of("yaml", "json"), "ecos-journal", Journal.PATH);
     }
 }

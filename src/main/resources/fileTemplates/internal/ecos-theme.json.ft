@@ -1,0 +1,13 @@
+{
+  "name": {
+    "ru": "",
+    "en": ""
+  },
+  "images": {
+    "logo": "/image/logo.png",
+    "favicon": "/image/favicon.ico",
+    "login-logo": "/image/login-logo.png",
+    "menu-left-logo-large": "/image/menu-left-logo-large.png",
+    "menu-left-logo-small": "/image/menu-left-logo-small.png"
+  }
+}
