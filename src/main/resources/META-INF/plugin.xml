@@ -176,48 +176,68 @@
 
         <group id="ru.citeck.ecos.CreateEcosArtifact" text="Ecos Artifact" popup="true" icon="Icons.CiteckLogo">
             <add-to-group group-id="NewGroup" anchor="first"/>
-            <action id="ru.citeck.ecos.templates.files.CreateFormAction"
-                    class="ru.citeck.ecos.templates.files.CreateFormAction"
-                    icon="Icons.CiteckLogo"/>
-            <action id="ru.citeck.ecos.templates.files.CreateJournalAction"
-                    class="ru.citeck.ecos.templates.files.CreateJournalAction"
-                    icon="Icons.CiteckLogo"/>
-            <action id="ru.citeck.ecos.templates.files.CreateDataTypeAction"
-                    class="ru.citeck.ecos.templates.files.CreateDataTypeAction"
-                    icon="Icons.CiteckLogo"/>
-            <action id="ru.citeck.ecos.templates.files.CreateNumberTemplateAction"
-                    class="ru.citeck.ecos.templates.files.CreateNumberTemplateAction"
-                    icon="Icons.CiteckLogo"/>
-            <action id="ru.citeck.ecos.templates.files.CreateDashboardAction"
-                    class="ru.citeck.ecos.templates.files.CreateDashboardAction"
-                    icon="Icons.CiteckLogo"/>
-            <action id="ru.citeck.ecos.templates.files.CreateMenuAction"
-                    class="ru.citeck.ecos.templates.files.CreateMenuAction"
-                    icon="Icons.CiteckLogo"/>
-            <action id="ru.citeck.ecos.templates.files.CreateLocalizationAction"
-                    class="ru.citeck.ecos.templates.files.CreateLocalizationAction"
-                    icon="Icons.CiteckLogo"/>
-            <action id="ru.citeck.ecos.templates.files.CreateKanbanBoardAction"
-                    class="ru.citeck.ecos.templates.files.CreateKanbanBoardAction"
-                    icon="Icons.CiteckLogo"/>
-            <action id="ru.citeck.ecos.templates.files.CreateBpmnAction"
-                    class="ru.citeck.ecos.templates.files.CreateBpmnAction"
-                    icon="Icons.CiteckLogo"/>
-            <action id="ru.citeck.ecos.templates.files.CreateDmnAction"
-                    class="ru.citeck.ecos.templates.files.CreateDmnAction"
-                    icon="Icons.CiteckLogo"/>
-            <action id="ru.citeck.ecos.templates.files.CreateCamelDslAction"
-                    class="ru.citeck.ecos.templates.files.CreateCamelDslAction"
-                    icon="Icons.CiteckLogo"/>
-            <action id="ru.citeck.ecos.templates.files.CreatePermissionsAction"
-                    class="ru.citeck.ecos.templates.files.CreatePermissionsAction"
-                    icon="Icons.CiteckLogo"/>
-            <action id="ru.citeck.ecos.templates.files.CreatePermissionSettingsAction"
-                    class="ru.citeck.ecos.templates.files.CreatePermissionSettingsAction"
-                    icon="Icons.CiteckLogo"/>
-            <action id="ru.citeck.ecos.templates.files.CreateArtifactPatchAction"
-                    class="ru.citeck.ecos.templates.files.CreateArtifactPatchAction"
-                    icon="Icons.CiteckLogo"/>
+
+            <group id="ru.citeck.ecos.CreateEcosArtifact.UI" text="UI Configuration" popup="true"
+                   icon="Icons.CiteckLogo">
+                <action id="ru.citeck.ecos.templates.files.CreateFormAction"
+                        class="ru.citeck.ecos.templates.files.CreateFormAction"
+                        icon="Icons.CiteckLogo"/>
+                <action id="ru.citeck.ecos.templates.files.CreateJournalAction"
+                        class="ru.citeck.ecos.templates.files.CreateJournalAction"
+                        icon="Icons.CiteckLogo"/>
+                <action id="ru.citeck.ecos.templates.files.CreateDashboardAction"
+                        class="ru.citeck.ecos.templates.files.CreateDashboardAction"
+                        icon="Icons.CiteckLogo"/>
+                <action id="ru.citeck.ecos.templates.files.CreateMenuAction"
+                        class="ru.citeck.ecos.templates.files.CreateMenuAction"
+                        icon="Icons.CiteckLogo"/>
+                <action id="ru.citeck.ecos.templates.files.CreateLocalizationAction"
+                        class="ru.citeck.ecos.templates.files.CreateLocalizationAction"
+                        icon="Icons.CiteckLogo"/>
+                <action id="ru.citeck.ecos.templates.files.CreateKanbanBoardAction"
+                        class="ru.citeck.ecos.templates.files.CreateKanbanBoardAction"
+                        icon="Icons.CiteckLogo"/>
+            </group>
+
+            <group id="ru.citeck.ecos.CreateEcosArtifact.Model" text="Model" popup="true" icon="Icons.CiteckLogo">
+                <action id="ru.citeck.ecos.templates.files.CreateDataTypeAction"
+                        class="ru.citeck.ecos.templates.files.CreateDataTypeAction"
+                        icon="Icons.CiteckLogo"/>
+                <action id="ru.citeck.ecos.templates.files.CreateNumberTemplateAction"
+                        class="ru.citeck.ecos.templates.files.CreateNumberTemplateAction"
+                        icon="Icons.CiteckLogo"/>
+                <action id="ru.citeck.ecos.templates.files.CreatePermissionsAction"
+                        class="ru.citeck.ecos.templates.files.CreatePermissionsAction"
+                        icon="Icons.CiteckLogo"/>
+                <action id="ru.citeck.ecos.templates.files.CreatePermissionSettingsAction"
+                        class="ru.citeck.ecos.templates.files.CreatePermissionSettingsAction"
+                        icon="Icons.CiteckLogo"/>
+            </group>
+
+            <group id="ru.citeck.ecos.CreateEcosArtifact.ProcessManagement" text="Process Management" popup="true"
+                   icon="Icons.CiteckLogo">
+                <action id="ru.citeck.ecos.templates.files.CreateBpmnAction"
+                        class="ru.citeck.ecos.templates.files.CreateBpmnAction"
+                        icon="Icons.CiteckLogo"/>
+                <action id="ru.citeck.ecos.templates.files.CreateDmnAction"
+                        class="ru.citeck.ecos.templates.files.CreateDmnAction"
+                        icon="Icons.CiteckLogo"/>
+            </group>
+
+            <group id="ru.citeck.ecos.CreateEcosArtifact.SystemManagement" text="System Management" popup="true"
+                   icon="Icons.CiteckLogo">
+                <action id="ru.citeck.ecos.templates.files.CreateArtifactPatchAction"
+                        class="ru.citeck.ecos.templates.files.CreateArtifactPatchAction"
+                        icon="Icons.CiteckLogo"/>
+            </group>
+
+            <group id="ru.citeck.ecos.CreateEcosArtifact.Integration" text="Integration" popup="true"
+                   icon="Icons.CiteckLogo">
+                <action id="ru.citeck.ecos.templates.files.CreateCamelDslAction"
+                        class="ru.citeck.ecos.templates.files.CreateCamelDslAction"
+                        icon="Icons.CiteckLogo"/>
+            </group>
+
         </group>
 
         <group id="ru.citeck.ecos.ProjectMenu" text="ECOS" popup="true" icon="Icons.CiteckLogo">
