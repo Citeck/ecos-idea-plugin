@@ -187,7 +187,7 @@
 
     <actions>
 
-        <group id="ru.citeck.ecos.CreateEcosArtifact" text="Ecos Artifact" popup="true" icon="Icons.CiteckLogo">
+        <group id="ru.citeck.ecos.CreateEcosArtifact" text="ECOS Artifact" popup="true" icon="Icons.CiteckLogo">
             <add-to-group group-id="NewGroup" anchor="first"/>
 
             <group id="ru.citeck.ecos.CreateEcosArtifact.UI" text="User Interface" popup="true"
