@@ -1,8 +1,8 @@
 <#escape x as x?html>
 <html>
    <head></head>
-   <body bgcolor="#dddddd">
-      ${documentId}
+   <body>
+      ${DS}{documentId}
    </body>
 </html>
 </#escape>
