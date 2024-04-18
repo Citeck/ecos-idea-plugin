@@ -4,6 +4,7 @@ import com.intellij.icons.AllIcons;
 import com.intellij.ide.actions.CreateFileFromTemplateAction;
 import com.intellij.ide.actions.CreateFileFromTemplateDialog;
 import com.intellij.ide.fileTemplates.FileTemplate;
+import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleUtil;
 import com.intellij.openapi.project.Project;
@@ -12,8 +13,10 @@ import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileManager;
 import com.intellij.psi.PsiDirectory;
+import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
+import com.intellij.psi.impl.file.PsiDirectoryFactory;
 import com.intellij.psi.impl.file.PsiFileImplUtil;
 import com.intellij.psi.xml.XmlFile;
 import com.intellij.psi.xml.XmlTag;
@@ -29,6 +32,7 @@ import ru.citeck.ecos.utils.MavenUtils;
 
 import javax.swing.*;
 import java.io.File;
+import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
@@ -92,11 +96,17 @@ public abstract class AbstractCreateEcosArtifactAction extends CreateFileFromTem
         PsiDirectory psiDirectory = Optional
                 .ofNullable(EcosVirtualFileUtils.getFileByPath(path))
                 .or(() -> {
-                    FileUtil.createDirectory(new File(path));
-                    VirtualFileManager.getInstance().syncRefresh();
-                    return Optional.ofNullable(EcosVirtualFileUtils.getFileByPath(path));
+                    File newDir = new File(path);
+                    FileUtil.createDirectory(newDir);
+                    VirtualFile virtualFile = VirtualFileManager
+                            .getInstance()
+                            .refreshAndFindFileByNioPath(newDir.toPath());
+                    return Optional.ofNullable(virtualFile);
                 })
-                .map(virtualFile -> PsiManager.getInstance(project).findDirectory(EcosVirtualFileUtils.getFileByPath(path)))
+                .map(virtualFile -> PsiManager
+                        .getInstance(project)
+                        .findDirectory(EcosVirtualFileUtils.getFileByPath(path))
+                )
                 .orElse(null);
 
         if (psiDirectory == null) {
