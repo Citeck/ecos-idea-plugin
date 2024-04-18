@@ -6,6 +6,6 @@ import java.util.List;
 
 public class CreateArtifactPatch extends AbstractCreateEcosArtifactAction {
     public CreateArtifactPatch() {
-        super("Artifact Patch", List.of("yaml", "json"), "ecos-artifact-patch", ArtifactPatch.PATH);
+        super("Artifact Patch", List.of("yml", "json"), "ecos-artifact-patch", ArtifactPatch.PATH);
     }
 }

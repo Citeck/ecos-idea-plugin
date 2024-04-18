@@ -6,6 +6,6 @@ import java.util.List;
 
 public class CreateJournal extends AbstractCreateEcosArtifactAction {
     public CreateJournal() {
-        super("Journal", List.of("yaml", "json"), "ecos-journal", Journal.PATH);
+        super("Journal", List.of("yml", "json"), "ecos-journal", Journal.PATH);
     }
 }

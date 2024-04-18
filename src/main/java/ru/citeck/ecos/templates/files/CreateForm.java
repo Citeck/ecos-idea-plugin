@@ -6,6 +6,6 @@ import java.util.List;
 
 public class CreateForm extends AbstractCreateEcosArtifactAction {
     public CreateForm() {
-        super("Form", List.of("yaml", "json"), "ecos-form", Form.PATH);
+        super("Form", List.of("yml", "json"), "ecos-form", Form.PATH);
     }
 }

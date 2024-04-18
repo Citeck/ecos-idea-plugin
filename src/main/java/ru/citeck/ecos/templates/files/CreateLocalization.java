@@ -6,6 +6,6 @@ import java.util.List;
 
 public class CreateLocalization extends AbstractCreateEcosArtifactAction {
     public CreateLocalization() {
-        super("Localization", List.of("yaml", "json"), "ecos-i18n", Localization.PATH);
+        super("Localization", List.of("yml", "json"), "ecos-i18n", Localization.PATH);
     }
 }

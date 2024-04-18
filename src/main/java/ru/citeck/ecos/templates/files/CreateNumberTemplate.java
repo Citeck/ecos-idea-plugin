@@ -6,6 +6,6 @@ import java.util.List;
 
 public class CreateNumberTemplate extends AbstractCreateEcosArtifactAction {
     public CreateNumberTemplate() {
-        super("Number template", List.of("yaml", "json"), "ecos-num-template", NumTemplate.PATH);
+        super("Number template", List.of("yml", "json"), "ecos-num-template", NumTemplate.PATH);
     }
 }

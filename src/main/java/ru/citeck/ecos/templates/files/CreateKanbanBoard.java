@@ -6,6 +6,6 @@ import java.util.List;
 
 public class CreateKanbanBoard extends AbstractCreateEcosArtifactAction {
     public CreateKanbanBoard() {
-        super("Kanban board", List.of("yaml", "json"), "ecos-kanban-board", KanbanBoard.PATH);
+        super("Kanban board", List.of("yml", "json"), "ecos-kanban-board", KanbanBoard.PATH);
     }
 }

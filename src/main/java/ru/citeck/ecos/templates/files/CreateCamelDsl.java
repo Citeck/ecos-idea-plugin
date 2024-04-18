@@ -6,6 +6,6 @@ import java.util.List;
 
 public class CreateCamelDsl extends AbstractCreateEcosArtifactAction {
     public CreateCamelDsl() {
-        super("Camel DSL", List.of("yaml", "json"), "ecos-camel-dsl", CamelDsl.PATH);
+        super("Camel DSL", List.of("yml", "json"), "ecos-camel-dsl", CamelDsl.PATH);
     }
 }

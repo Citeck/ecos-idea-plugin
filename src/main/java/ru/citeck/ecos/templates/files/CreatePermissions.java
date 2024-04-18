@@ -6,6 +6,6 @@ import java.util.List;
 
 public class CreatePermissions extends AbstractCreateEcosArtifactAction {
     public CreatePermissions() {
-        super("Permissions", List.of("yaml", "json"), "ecos-permission", Permissions.PATH);
+        super("Permissions", List.of("yml", "json"), "ecos-permission", Permissions.PATH);
     }
 }

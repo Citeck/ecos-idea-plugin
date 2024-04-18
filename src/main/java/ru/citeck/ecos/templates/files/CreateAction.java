@@ -6,6 +6,6 @@ import java.util.List;
 
 public class CreateAction extends AbstractCreateEcosArtifactAction {
     public CreateAction() {
-        super("Action", List.of("yaml", "json"), "ecos-action", Action.PATH);
+        super("Action", List.of("yml", "json"), "ecos-action", Action.PATH);
     }
 }

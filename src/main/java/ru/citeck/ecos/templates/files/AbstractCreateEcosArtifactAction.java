@@ -4,7 +4,6 @@ import com.intellij.icons.AllIcons;
 import com.intellij.ide.actions.CreateFileFromTemplateAction;
 import com.intellij.ide.actions.CreateFileFromTemplateDialog;
 import com.intellij.ide.fileTemplates.FileTemplate;
-import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleUtil;
 import com.intellij.openapi.project.Project;
@@ -13,10 +12,8 @@ import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileManager;
 import com.intellij.psi.PsiDirectory;
-import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
-import com.intellij.psi.impl.file.PsiDirectoryFactory;
 import com.intellij.psi.impl.file.PsiFileImplUtil;
 import com.intellij.psi.xml.XmlFile;
 import com.intellij.psi.xml.XmlTag;
@@ -32,10 +29,10 @@ import ru.citeck.ecos.utils.MavenUtils;
 
 import javax.swing.*;
 import java.io.File;
-import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 @Getter
 public abstract class AbstractCreateEcosArtifactAction extends CreateFileFromTemplateAction {
@@ -51,7 +48,7 @@ public abstract class AbstractCreateEcosArtifactAction extends CreateFileFromTem
 
     private static final Map<String, Icon> EXTENSIONS_ICONS = Map.of(
             "json", AllIcons.FileTypes.Json,
-            "yaml", AllIcons.FileTypes.Yaml
+            "yml", AllIcons.FileTypes.Yaml
     );
 
     private final String artifactName;
@@ -69,7 +66,7 @@ public abstract class AbstractCreateEcosArtifactAction extends CreateFileFromTem
 
     @Override
     protected void buildDialog(@NotNull Project project, @NotNull PsiDirectory directory, CreateFileFromTemplateDialog.@NotNull Builder builder) {
-        builder.setTitle("File Type:");
+        builder.setTitle("Artifact ID:");
         extensions.forEach(extension -> builder.addKind(
                 extension,
                 EXTENSIONS_ICONS.getOrDefault(extension, Icons.CiteckLogo),
@@ -86,6 +83,8 @@ public abstract class AbstractCreateEcosArtifactAction extends CreateFileFromTem
     protected PsiFile createFileFromTemplate(String name, FileTemplate template, PsiDirectory dir) {
 
         Project project = dir.getProject();
+
+        name = cleanExtension(name);
 
         String path = getArtifactPath(dir);
         if (path == null) {
@@ -124,6 +123,16 @@ public abstract class AbstractCreateEcosArtifactAction extends CreateFileFromTem
 
         return file;
 
+    }
+
+    private String cleanExtension(String name) {
+        boolean cleanExtension = Stream
+                .of(".yml", ".yaml", ".json", ".xml")
+                .anyMatch(extension -> name.toLowerCase().endsWith(extension));
+        if (cleanExtension) {
+            return name.substring(0, name.lastIndexOf("."));
+        }
+        return name;
     }
 
     @Nullable

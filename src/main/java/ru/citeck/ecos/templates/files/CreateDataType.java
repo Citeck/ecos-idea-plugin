@@ -6,6 +6,6 @@ import java.util.List;
 
 public class CreateDataType extends AbstractCreateEcosArtifactAction {
     public CreateDataType() {
-        super("Data type", List.of("yaml", "json"), "ecos-data-type", DataType.PATH);
+        super("Data type", List.of("yml", "json"), "ecos-data-type", DataType.PATH);
     }
 }
