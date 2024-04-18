@@ -7,7 +7,7 @@ import ru.citeck.ecos.files.types.ecos.YamlEcosArtifact;
 public interface ArtifactPatch extends EcosArtifact {
 
     String SOURCE_ID = "eapps/artifact-patch";
-    String PATH = "/app/module-patch/";
+    String PATH = "/app/artifact-patch/";
 
     class JSON extends JsonEcosArtifact implements ArtifactPatch {
         public JSON() {
