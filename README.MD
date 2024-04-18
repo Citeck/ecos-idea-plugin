@@ -31,7 +31,7 @@
 14. Language Injection (JavaScript) в формах ECOS
 
 ## Установка плагина в Idea
-Скачать дистрибутив плагина можно из [package registry](https://gitlab.citeck.ru/citeck-projects/ecos-idea-plugin/-/packages) или
+Скачать дистрибутив плагина можно из [release page](https://github.com/Citeck/ecos-idea-plugin/releases) или
 собрать из исходников самостоятельно.
 
 Далее установить плагин в Idea:\
