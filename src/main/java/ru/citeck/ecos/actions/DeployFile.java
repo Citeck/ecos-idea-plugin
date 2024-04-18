@@ -1,8 +1,7 @@
 package ru.citeck.ecos.actions;
 
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.PlatformDataKeys;
-import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.popup.JBPopupFactory;
 import com.intellij.openapi.wm.WindowManager;
@@ -16,7 +15,6 @@ import ru.citeck.ecos.utils.EcosMessages;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class DeployFile extends EcosAction {
@@ -45,11 +43,9 @@ public class DeployFile extends EcosAction {
             return;
         }
 
-        Editor editor = event.getData(PlatformDataKeys.EDITOR);
-
         EcosServer.doWithServer(project, ecosServer -> {
             if (deployers.size() == 1) {
-                deploy(ecosServer, deployers.get(0), psiFile, project, editor);
+                deploy(ecosServer, deployers.get(0), psiFile, project);
                 return;
             }
 
@@ -65,7 +61,7 @@ public class DeployFile extends EcosAction {
                     .getInstance()
                     .createPopupChooserBuilder(wrappers)
                     .setTitle("Deploy To:")
-                    .setItemChosenCallback(chosenDeployer -> deploy(ecosServer, chosenDeployer.fileDeployer, psiFile, project, editor))
+                    .setItemChosenCallback(chosenDeployer -> deploy(ecosServer, chosenDeployer.fileDeployer, psiFile, project))
                     .setRequestFocus(true)
                     .createPopup()
                     .showInCenterOf(WindowManager.getInstance().getFrame(event.getProject()).getRootPane());
@@ -73,12 +69,10 @@ public class DeployFile extends EcosAction {
 
     }
 
-    private void deploy(EcosServer ecosServer, FileDeployer deployer, @NotNull PsiFile psiFile, @NotNull Project project, Editor editor) {
+    private void deploy(EcosServer ecosServer, FileDeployer deployer, @NotNull PsiFile psiFile, @NotNull Project project) {
 
-        Optional
-                .ofNullable(editor)
-                .map(Editor::getDocument)
-                .ifPresent(document -> PsiDocumentManager.getInstance(project).commitDocument(document));
+        PsiDocumentManager.getInstance(project).commitAllDocuments();
+        FileDocumentManager.getInstance().saveAllDocuments();
 
         String destinationName = deployer.getDestinationName(ecosServer, psiFile);
         String artifactName = deployer.getArtifactName(psiFile);
