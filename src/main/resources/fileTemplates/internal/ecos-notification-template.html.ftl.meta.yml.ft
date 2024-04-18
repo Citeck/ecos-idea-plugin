@@ -7,7 +7,7 @@
   },
   "tags" : [ ],
   "model" : {
-    "documentId" : "?id",
+    "user" : "\$user",
     "subject" : "$subject"
   },
   "multiTemplateConfig" : [ ]
