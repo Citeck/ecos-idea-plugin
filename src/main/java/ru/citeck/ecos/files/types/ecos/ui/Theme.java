@@ -1,5 +1,6 @@
 package ru.citeck.ecos.files.types.ecos.ui;
 
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
@@ -48,9 +49,9 @@ public class Theme extends JsonEcosArtifact {
 
     @Override
     public String getId(PsiFile psiFile) {
-        return Optional
-                .ofNullable(psiFile.getParent())
-                .map(PsiDirectory::getName)
+        return Optional.ofNullable(psiFile.getVirtualFile())
+                .map(VirtualFile::getParent)
+                .map(VirtualFile::getName)
                 .orElse(null);
     }
 
