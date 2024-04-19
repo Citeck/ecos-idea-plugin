@@ -131,6 +131,7 @@ public class EcosServer implements Cloneable {
                     .getInstance()
                     .createPopupChooserBuilder(ecosServers)
                     .setTitle(SELECT_ECOS_SERVER_TITLE)
+                    .setNamerForFiltering(ecosServer -> ecosServer.getName() + "|" + ecosServer.getHost())
                     .setRenderer(new EcosServerColoredListCellRenderer())
                     .setItemChosenCallback(consumer::accept)
                     .setRequestFocus(true)
