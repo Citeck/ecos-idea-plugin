@@ -53,12 +53,12 @@ public class EcosServer implements Cloneable {
     public EcosServer(
             String id,
             String name,
-                      String host,
-                      String userName,
-                      String authMethod,
-                      String grantType,
-                      String clientId,
-                      String oauthProviderUrl
+            String host,
+            String userName,
+            String authMethod,
+            String grantType,
+            String clientId,
+            String oauthProviderUrl
     ) {
         this.id = id;
         this.name = name;
@@ -103,7 +103,7 @@ public class EcosServer implements Cloneable {
 
 
     private CredentialAttributes getClientSecretCredentialsAttribute() {
-        return new CredentialAttributes("ecos", "oauth2-client-secret-" + id);
+        return new CredentialAttributes("ecos-" + id, "oauth2-client-secret");
     }
 
     @JsonIgnore
