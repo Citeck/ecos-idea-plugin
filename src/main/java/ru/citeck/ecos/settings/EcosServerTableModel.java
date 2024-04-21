@@ -7,7 +7,6 @@ import ru.citeck.ecos.ui.PasswordCellRenderer;
 
 import javax.swing.*;
 import java.util.List;
-import java.util.stream.Collectors;
 
 class EcosServerTableModel extends TableModelEditor<EcosServer> {
 
@@ -32,7 +31,7 @@ class EcosServerTableModel extends TableModelEditor<EcosServer> {
     };
 
     public EcosServerTableModel(List<EcosServer> servers) {
-        super(List.of(), COLUMNS, new EcosServerCollectionItemEditor(), "No servers defined");
+        super(List.of(new EcosServer()), COLUMNS, new EcosServerCollectionItemEditor(), "No servers defined");
         helper.reset(servers);
     }
 
