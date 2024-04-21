@@ -10,7 +10,6 @@ import ru.citeck.ecos.ServiceRegistry;
 
 import javax.swing.*;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class EcosServersConfiguration implements Configurable {
 
@@ -26,7 +25,8 @@ public class EcosServersConfiguration implements Configurable {
     public @Nullable JComponent createComponent() {
 
         this.originalItems = ServiceRegistry.getEcosSettingsService().getServers();
-        this.ecosServerTableModel = new EcosServerTableModel(originalItems);
+        this.ecosServerTableModel = new EcosServerTableModel(cloneOriginalItems());
+
 
         return FormBuilder
                 .createFormBuilder()
@@ -41,7 +41,11 @@ public class EcosServersConfiguration implements Configurable {
 
     @Override
     public void reset() {
-        ecosServerTableModel.reset(originalItems.stream().map(EcosServer::clone).collect(Collectors.toList()));
+        ecosServerTableModel.reset(cloneOriginalItems());
+    }
+
+    private List<EcosServer> cloneOriginalItems() {
+        return originalItems.stream().map(EcosServer::clone).toList();
     }
 
     @Override

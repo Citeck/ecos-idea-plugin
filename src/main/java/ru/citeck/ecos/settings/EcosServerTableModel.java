@@ -32,8 +32,8 @@ class EcosServerTableModel extends TableModelEditor<EcosServer> {
     };
 
     public EcosServerTableModel(List<EcosServer> servers) {
-        super(servers, COLUMNS, new EcosServerCollectionItemEditor(), "No servers defined");
-        helper.reset(servers.stream().map(EcosServer::clone).collect(Collectors.toList()));
+        super(List.of(), COLUMNS, new EcosServerCollectionItemEditor(), "No servers defined");
+        helper.reset(servers);
     }
 
 }
