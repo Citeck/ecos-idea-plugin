@@ -116,26 +116,31 @@ public class EcosRestApiService {
                 .ifPresent(cookie -> jSessionId = cookie);
     }
 
-    public void mutateRecord(String sourceId, String id, String mimeType, String name, byte[] content, String mutationAttribute) throws Exception {
+    public void mutateRecord(String sourceId, String id, String mimeType, String name, byte[] content, String mutationAttribute, Map<String, Object> customAttributes) throws Exception {
+
+        Map<String, Object> attributes = new HashMap<>();
+        attributes.put(".att(n:\"" + mutationAttribute + "\"){as(n:\"content-data\"){json}}", List.of(
+                Map.of(
+                        "storage", "base64",
+                        "type", mimeType,
+                        "name", name,
+                        "originalName", name,
+                        "url", String.format(
+                                "data:%s;base64,%s",
+                                mimeType,
+                                Base64.getEncoder().encodeToString(content)
+                        )
+                )
+        ));
+
+        if (customAttributes != null) {
+            attributes.putAll(customAttributes);
+        }
 
         Map<String, Object> request = Map.of("records", List.of(
                 Map.of(
                         "id", sourceId + "@" + id,
-                        "attributes", Map.of(
-                                ".att(n:\"" + mutationAttribute + "\"){as(n:\"content-data\"){json}}", List.of(
-                                        Map.of(
-                                                "storage", "base64",
-                                                "type", mimeType,
-                                                "name", name,
-                                                "originalName", name,
-                                                "url", String.format(
-                                                        "data:%s;base64,%s",
-                                                        mimeType,
-                                                        Base64.getEncoder().encodeToString(content)
-                                                )
-                                        )
-                                )
-                        )
+                        "attributes", attributes
                 )
         ));
 
@@ -147,6 +152,10 @@ public class EcosRestApiService {
             throw new RuntimeException("Unable to mutate record " + sourceId + "@" + id + "<br>" + ex.getMessage());
         }
 
+    }
+
+    public void mutateRecord(String sourceId, String id, String mimeType, String name, byte[] content, String mutationAttribute) throws Exception {
+        mutateRecord(sourceId, id, mimeType, name, content, mutationAttribute, null);
     }
 
 

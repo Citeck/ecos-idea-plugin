@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<cmmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cmmndi="http://www.omg.org/spec/CMMN/20151109/CMMNDI" xmlns:di="http://www.omg.org/spec/CMMN/20151109/DI" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:cmmn="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:ecos="http://www.citeck.ru/ecos/cmmn/1.0" xmlns:dc="http://www.omg.org/spec/CMMN/20151109/DC" id="Definitions_0fet87u" name="${NAME}" targetNamespace="http://bpmn.io/schema/cmmn" ecos:processDefId="${NAME}" ecos:format="ecos-cmmn" ecos:ecosType="" ecos:name_ml="{&quot;en&quot;:&quot;${NAME}&quot;,&quot;ru&quot;:&quot;${NAME}&quot;}">
+    <cmmn:case id="Case_1bhr1sf" ecos:name_ml="{}">
+        <cmmn:casePlanModel name="A CasePlanModel" id="CasePlanModel_18oeh9b" ecos:name_ml="{&quot;en&quot;:&quot;A CasePlanModel&quot;}">
+            <cmmn:planItem definitionRef="HumanTask_0psu33s" id="PlanItem_1j0scah"/>
+            <cmmn:humanTask id="HumanTask_0psu33s" ecos:roles="[]" ecos:name_ml="{}"/>
+        </cmmn:casePlanModel>
+        <cmmn:caseRoles id="case-roles">
+            <cmmn:role id="role"/>
+        </cmmn:caseRoles>
+    </cmmn:case>
+    <cmmndi:CMMNDI>
+        <cmmndi:CMMNDiagram id="CMMNDiagram_1">
+            <cmmndi:Size width="500.0" height="500.0"/>
+            <cmmndi:CMMNShape cmmnElementRef="CasePlanModel_18oeh9b" id="DI_CasePlanModel_18oeh9b">
+                <dc:Bounds x="156.0" y="99.0" width="534.0" height="389.0"/>
+                <cmmndi:CMMNLabel/>
+            </cmmndi:CMMNShape>
+            <cmmndi:CMMNShape cmmnElementRef="PlanItem_1j0scah" id="PlanItem_1j0scah_di">
+                <dc:Bounds x="192.0" y="132.0" width="100.0" height="80.0"/>
+                <cmmndi:CMMNLabel/>
+            </cmmndi:CMMNShape>
+        </cmmndi:CMMNDiagram>
+    </cmmndi:CMMNDI>
+</cmmn:definitions>

@@ -131,9 +131,11 @@
         <fileType implementation="ru.citeck.ecos.files.types.ecos.integration.CamelDsl$JSON"/>
 
         <fileType implementation="ru.citeck.ecos.files.types.ecos.process.Bpmn"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.process.Cmmn"/>
         <fileType implementation="ru.citeck.ecos.files.types.ecos.process.Dmn"/>
 
         <fileType implementation="ru.citeck.ecos.files.types.ecos.notification.NotificationTemplate"/>
+        <fileType implementation="ru.citeck.ecos.files.types.ecos.transformation.DocumentTemplate"/>
 
 
         <searchScope name="Form" class="ru.citeck.ecos.files.types.ecos.ui.Form"/>
@@ -238,6 +240,9 @@
                 <action id="ru.citeck.ecos.templates.files.CreateBpmn"
                         class="ru.citeck.ecos.templates.files.CreateBpmn"
                         icon="Icons.CiteckLogo"/>
+                <action id="ru.citeck.ecos.templates.files.CreateCmmn"
+                        class="ru.citeck.ecos.templates.files.CreateCmmn"
+                        icon="Icons.CiteckLogo"/>
                 <action id="ru.citeck.ecos.templates.files.CreateDmn"
                         class="ru.citeck.ecos.templates.files.CreateDmn"
                         icon="Icons.CiteckLogo"/>
@@ -264,6 +269,13 @@
                    icon="Icons.CiteckLogo">
                 <action id="ru.citeck.ecos.templates.files.CreateNotificationTemplate"
                         class="ru.citeck.ecos.templates.files.CreateNotificationTemplate"
+                        icon="Icons.CiteckLogo"/>
+            </group>
+
+            <group id="ru.citeck.ecos.CreateEcosArtifact.Transformation" text="Transformation" popup="true"
+                   icon="Icons.CiteckLogo">
+                <action id="ru.citeck.ecos.templates.files.CreateDocumentTemplate"
+                        class="ru.citeck.ecos.templates.files.CreateDocumentTemplate"
                         icon="Icons.CiteckLogo"/>
             </group>
 

@@ -29,7 +29,8 @@ public class EcosArtifactDeployer implements FileDeployer {
                 fileType.getMimeType(),
                 vFile.getName(),
                 fileType.getContent(psiFile),
-                fileType.getMutationAttribute()
+                fileType.getMutationAttribute(),
+                fileType.getCustomMutationAttributes(psiFile)
         );
 
     }

@@ -60,7 +60,7 @@ public class EcosIndex extends FileBasedIndexExtension<IndexKey, List<IndexValue
 
     @Override
     public int getVersion() {
-        return 1;
+        return 2;
     }
 
     @Override

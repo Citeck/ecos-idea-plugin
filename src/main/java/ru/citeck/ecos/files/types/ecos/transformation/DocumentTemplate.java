@@ -1,13 +1,13 @@
-package ru.citeck.ecos.files.types.ecos.notification;
+package ru.citeck.ecos.files.types.ecos.transformation;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.util.io.Compressor;
+import org.jetbrains.annotations.Nullable;
 import ru.citeck.ecos.files.types.ecos.YamlEcosArtifact;
 import ru.citeck.ecos.files.types.filters.FileFilter;
-import ru.citeck.ecos.files.types.filters.FilterAnd;
 import ru.citeck.ecos.files.types.filters.FolderNamePatternsFilter;
 import ru.citeck.ecos.utils.EcosZipContentUtil;
 
@@ -16,20 +16,22 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.zip.Deflater;
 
-public class NotificationTemplate extends YamlEcosArtifact {
+public class DocumentTemplate extends YamlEcosArtifact {
 
-    public static final String SOURCE_ID = "notifications/template";
-    public static final String PATH = "/notification/template/";
-    public static final String HTML_FTL_META_YML = ".html.ftl.meta.yml";
-    public static final String FILE_NAME_PATTERN = "[\\w-_]*.html(|_[\\w][\\w]).ftl(|.meta.yml)";
+    public static final String SOURCE_ID = "transformations/template";
+    public static final String PATH = "/transformation/template/";
+    public static final String META_YML = ".meta.yml";
+    public static final Pattern TEMPLATE_NAME_PATTERN =
+            Pattern.compile("^[\\w_-]*(?=_[\\w][\\w]\\.[\\w]*)|^[\\w_-]*(?=\\.[\\w]*)");
 
-    private final FileFilter filter = new FilterAnd(
-            new FolderNamePatternsFilter(PATH),
-            (file, project) -> file.getName().matches(FILE_NAME_PATTERN)
-    );
+
+    private final FileFilter filter = new FolderNamePatternsFilter(PATH);
 
     @Override
     public PsiElement getIdPsiElement(PsiFile psiFile) {
@@ -39,7 +41,7 @@ public class NotificationTemplate extends YamlEcosArtifact {
     }
 
     private Optional<PsiFile> getMetaFile(PsiFile psiFile) {
-        if (psiFile.getName().endsWith(HTML_FTL_META_YML)) {
+        if (psiFile.getName().endsWith(META_YML)) {
             return Optional.of(psiFile);
         }
         PsiDirectory psiDirectory = psiFile.getParent();
@@ -48,19 +50,24 @@ public class NotificationTemplate extends YamlEcosArtifact {
         }
         return Optional
                 .of(psiFile.getName())
-                .map(fileName -> fileName.split("\\."))
-                .filter(fileNameParts -> fileNameParts.length > 0)
-                .map(parts -> parts[0] + HTML_FTL_META_YML)
-                .map(psiDirectory::findFile);
+                .map(TEMPLATE_NAME_PATTERN::matcher)
+                .filter(Matcher::find)
+                .map(Matcher::group)
+                .map(tName -> psiDirectory.findFile(tName + META_YML));
     }
 
-    public NotificationTemplate() {
+    public DocumentTemplate() {
         super(PATH, SOURCE_ID);
     }
 
     @Override
+    public String getMimeType() {
+        return "application/x-zip-compressed";
+    }
+
+    @Override
     public String getDocumentationUrl() {
-        return "https://citeck-ecos.readthedocs.io/ru/latest/settings_kb/notifications/notifications_template.html";
+        return "https://citeck-ecos.readthedocs.io/ru/latest/general/Transformations_microservice.html";
     }
 
     @Override
@@ -70,7 +77,12 @@ public class NotificationTemplate extends YamlEcosArtifact {
 
     @Override
     public String getMutationAttribute() {
-        return "_content";
+        return "content";
+    }
+
+    @Override
+    public @Nullable Map<String, Object> getCustomMutationAttributes(PsiFile psiFile) {
+        return Map.of("import?bool", true);
     }
 
     @Override
@@ -93,7 +105,7 @@ public class NotificationTemplate extends YamlEcosArtifact {
                     .Zip(byteArrayOutputStream)
                     .withLevel(Deflater.BEST_COMPRESSION);
 
-            String pattern = getId(psiFile) + ".html(|_[\\w][\\w]).ftl(|.meta.yml)";
+            String pattern = getId(psiFile) + "(|_[\\w][\\w]).([\\w]*|meta.yml)";
             List<PsiFile> bundle = Arrays
                     .stream(psiDirectory.getFiles())
                     .filter(child -> child.getName().matches(pattern))
@@ -115,7 +127,7 @@ public class NotificationTemplate extends YamlEcosArtifact {
 
     @Override
     public boolean isIndexable(PsiFile psiFile) {
-        return psiFile.getName().endsWith(HTML_FTL_META_YML);
+        return psiFile.getName().endsWith(META_YML);
     }
 
     @Override

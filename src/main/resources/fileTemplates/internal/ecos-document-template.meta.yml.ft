@@ -1,0 +1,10 @@
+---
+id: ${NAME}
+name:
+  en: ${NAME}
+mimeType: text/plain
+engine: freemarker
+model:
+  modelValue: ?disp
+computedAttributes: []
+tags: []

@@ -5,11 +5,13 @@ import com.intellij.json.psi.JsonPsiUtil;
 import com.intellij.openapi.util.text.Strings;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
+import org.jetbrains.annotations.Nullable;
 import ru.citeck.ecos.files.FileType;
 import ru.citeck.ecos.files.HasDocumentation;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public interface EcosArtifact extends FileType, HasDocumentation {
 
@@ -58,5 +60,9 @@ public interface EcosArtifact extends FileType, HasDocumentation {
     }
 
     void applyFetchedContent(PsiFile psiFile, JsonNode content) throws Exception;
+
+    default @Nullable Map<String, Object> getCustomMutationAttributes(PsiFile psiFile) {
+        return null;
+    }
 
 }
