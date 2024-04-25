@@ -26,6 +26,7 @@ public class EcosRestApiService {
     private final static String JS_CONSOLE_URL = "/share/proxy/alfresco/de/fme/jsconsole/execute";
     private final static String RESET_SHARE_INDEX = "/share/page/index?reset=on";
     private final static String SHARE_INDEX = "/share/page/index";
+    private final static String TOUCH = "/gateway/api/gateway/touch";
 
     private final ObjectMapper objectMapper = new ObjectMapper();
     private String jSessionId = "";
@@ -38,16 +39,20 @@ public class EcosRestApiService {
     }
 
     public JsonNode execute(String url, byte[] body, Integer timeout) throws Exception {
-        return execute(url, body, timeout, JsonNode.class, false);
+        return execute(url, body, timeout, JsonNode.class, false, "POST");
     }
 
     public <T> T execute(String url, byte[] body, Integer timeout, Class<T> clazz, boolean updateCredentials) throws Exception {
+        return execute(url, body, timeout, clazz, updateCredentials, "POST");
+    }
+
+    public <T> T execute(String url, byte[] body, Integer timeout, Class<T> clazz, boolean updateCredentials, String method) throws Exception {
 
         String host = ecosServer.getHost();
 
         HttpURLConnection connection = (HttpURLConnection) new URL(host + url).openConnection();
 
-        connection.setRequestMethod("POST");
+        connection.setRequestMethod(method);
         connection.setRequestProperty("Host", host);
         connection.setRequestProperty(AUTHENTICATION_PROXY_HEADER, ecosServer.getUserName());
         connection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
@@ -204,6 +209,10 @@ public class EcosRestApiService {
             }
         }
 
+    }
+
+    public void touch() throws Exception {
+        execute(TOUCH, null, 3000, String.class, false, "GET");
     }
 
     public void resetShareIndex() {

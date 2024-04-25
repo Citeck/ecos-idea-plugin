@@ -28,6 +28,8 @@ import java.util.regex.Pattern;
 
 public class ExecuteAlfrescoJs extends EcosAction {
 
+    public static final String ALFRESCO_JS_EXECUTION_ERROR = "Alfresco Js execution error:\n";
+
     @Override
     protected void perform(@NotNull AnActionEvent event) {
         Project project = event.getProject();
@@ -77,38 +79,51 @@ public class ExecuteAlfrescoJs extends EcosAction {
             parameters.forEach((key, value) -> ref.jsText = ref.jsText.replace("#{" + key + "}", value));
         }
 
-        ConsoleView consoleView = ServiceRegistry
-                .getAlfrescoJsConsoleService(project)
-                .getConsoleView();
-        consoleView.clear();
+        EcosServer.doWithServer(project, ecosServer -> {
 
-        consoleView.print("Executing script...\n", ConsoleViewContentType.LOG_INFO_OUTPUT);
+            ConsoleView consoleView = ServiceRegistry
+                    .getAlfrescoJsConsoleService(project)
+                    .getConsoleView();
+            consoleView.clear();
+            consoleView.print("Executing script...\n", ConsoleViewContentType.LOG_INFO_OUTPUT);
 
-        EcosServer.doWithServer(project, ecosServer -> ProgressManager
-                .getInstance()
-                .run(new Task.Backgroundable(project, "Executing Alfresco JS") {
-                    @Override
-                    public void run(@NotNull ProgressIndicator indicator) {
-                        try {
-                            JsonNode response = ServiceRegistry.getEcosRestApiService(ecosServer, project).executeJS(ref.jsText);
-                            if (response.has("message")) {
-                                consoleView.print(response.get("message").asText(), ConsoleViewContentType.ERROR_OUTPUT);
-                                return;
-                            }
-                            String scriptPerf = response.get("scriptPerf").asText();
-                            scriptPerf = "Script executed in " + scriptPerf + "ms.";
-                            EcosMessages.info("Alfresco JS executed", scriptPerf, project);
-                            consoleView.print(scriptPerf + "\n", ConsoleViewContentType.LOG_INFO_OUTPUT);
-                            ArrayNode printOutput = (ArrayNode) response.get("printOutput");
-                            printOutput.forEach(
-                                    jsonNode -> consoleView.print(jsonNode.asText() + "\n", ConsoleViewContentType.NORMAL_OUTPUT)
-                            );
-                        } catch (Exception ex) {
-                            consoleView.print("Alfresco Js execution error:\n\n", ConsoleViewContentType.LOG_ERROR_OUTPUT);
+            try {
+                ServiceRegistry.getEcosRestApiService(ecosServer, project).touch();
+            } catch (Exception ex) {
+                consoleView.print(ALFRESCO_JS_EXECUTION_ERROR + ex.getMessage(), ConsoleViewContentType.LOG_ERROR_OUTPUT);
+                return;
+            }
+
+            ProgressManager
+                    .getInstance()
+                    .run(new Task.Backgroundable(project, "Executing Alfresco JS") {
+                        @Override
+                        public void run(@NotNull ProgressIndicator indicator) {
+                            executeAlfrescoJs(ecosServer, project, ref.jsText, consoleView);
                         }
-                    }
-                }));
+                    });
+        });
 
+    }
+
+    private static void executeAlfrescoJs(EcosServer ecosServer, Project project, String js, ConsoleView consoleView) {
+        try {
+            JsonNode response = ServiceRegistry.getEcosRestApiService(ecosServer, project).executeJS(js);
+            if (response.has("message")) {
+                consoleView.print(response.get("message").asText(), ConsoleViewContentType.ERROR_OUTPUT);
+                return;
+            }
+            String scriptPerf = response.get("scriptPerf").asText();
+            scriptPerf = "Script executed in " + scriptPerf + "ms.";
+            EcosMessages.info("Alfresco JS executed", scriptPerf, project);
+            consoleView.print(scriptPerf + "\n", ConsoleViewContentType.LOG_INFO_OUTPUT);
+            ArrayNode printOutput = (ArrayNode) response.get("printOutput");
+            printOutput.forEach(
+                    jsonNode -> consoleView.print(jsonNode.asText() + "\n", ConsoleViewContentType.NORMAL_OUTPUT)
+            );
+        } catch (Exception ex) {
+            consoleView.print("Alfresco Js execution error:\n" + ex.getMessage(), ConsoleViewContentType.LOG_ERROR_OUTPUT);
+        }
     }
 
 }
