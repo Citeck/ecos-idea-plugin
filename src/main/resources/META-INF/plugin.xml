@@ -163,6 +163,8 @@
         <fileFetcher implementation="ru.citeck.ecos.files.fetchers.EcosArtifactFetcher"/>
 
         <fileIndexer implementation="ru.citeck.ecos.index.indexers.EcosArtifactIndexer"/>
+        <fileIndexer implementation="ru.citeck.ecos.index.indexers.EcosDataTypeIndexer$JSON"/>
+        <fileIndexer implementation="ru.citeck.ecos.index.indexers.EcosDataTypeIndexer$YAML"/>
         <fileIndexer implementation="ru.citeck.ecos.index.indexers.AlfrescoModelIndexer"/>
         <fileIndexer implementation="ru.citeck.ecos.index.indexers.AlfrescoContentNodesIndexer"/>
         <fileIndexer implementation="ru.citeck.ecos.index.indexers.XmlBeanDefinitionIndexer"/>
@@ -174,6 +176,8 @@
                 implementation="ru.citeck.ecos.files.navigateItemsProviders.JsonJournalItemsProvider"/>
         <navigateInFileItemsProvider
                 implementation="ru.citeck.ecos.files.navigateItemsProviders.AlfrescoModelItemsProvider"/>
+        <navigateInFileItemsProvider
+                implementation="ru.citeck.ecos.files.navigateItemsProviders.DataTypeFileItemsProvider"/>
 
         <psiElementValueResolver
                 implementation="ru.citeck.ecos.references.resolvers.PsiLiteralExpressionValueResolver"/>

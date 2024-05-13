@@ -31,6 +31,9 @@ public class EcosIndex extends FileBasedIndexExtension<IndexKey, List<IndexValue
     private @NotNull Map<IndexKey, List<IndexValue>> map(@NotNull FileContent inputData) {
 
         Indexes indexes = new Indexes();
+        if (inputData.getFile().getFileType().isBinary()) {
+            return indexes;
+        }
 
         EcosFileIndexer.EP_NAME
                 .getExtensionsIfPointIsRegistered()
@@ -60,7 +63,7 @@ public class EcosIndex extends FileBasedIndexExtension<IndexKey, List<IndexValue
 
     @Override
     public int getVersion() {
-        return 2;
+        return 3;
     }
 
     @Override

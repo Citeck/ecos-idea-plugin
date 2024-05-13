@@ -23,10 +23,6 @@ public class EcosArtifactIndexer implements EcosFileIndexer {
     @Override
     public void map(@NotNull FileContent inputData, Indexes.FileIndexes indexes) {
 
-        if (inputData.getFile().getFileType().isBinary()) {
-            return;
-        }
-
         PsiFile psiFile = inputData.getPsiFile();
         EcosArtifact fileType = (EcosArtifact) getFileType(inputData);
 
