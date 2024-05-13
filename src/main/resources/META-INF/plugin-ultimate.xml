@@ -1,6 +1,6 @@
 <idea-plugin>
     <extensions defaultExtensionNs="com.intellij">
-        <multiHostInjector implementation="ru.citeck.ecos.languageInjections.EcosFormJavaScriptInjector"/>
+        <multiHostInjector implementation="ru.citeck.ecos.languageInjections.EcosFormLanguageInjector"/>
         <completion.contributor implementationClass="ru.citeck.ecos.completion.js.JsCompletionContributor"
                                 language="JavaScript" order="first"/>
     </extensions>
@@ -15,6 +15,21 @@
                 implementation="ru.citeck.ecos.completion.js.providers.BaseProcessorExtensionsCompletionProvider"/>
         <completionProvider
                 implementation="ru.citeck.ecos.completion.js.providers.BaseProcessorExtensionMethodsCompletionProvider"/>
+
+        <ecosFormLanguageInjection componentType="*" path="calculateValue"/>
+        <ecosFormLanguageInjection componentType="*" path="customDefaultValue"/>
+        <ecosFormLanguageInjection componentType="*" path="customConditional"/>
+        <ecosFormLanguageInjection componentType="*" path="validate/custom"/>
+        <ecosFormLanguageInjection componentType="*" path="javascript"/>
+        <ecosFormLanguageInjection componentType="asyncData" path="executionCondition"/>
+        <ecosFormLanguageInjection componentType="asyncData" path="source/ajax/data"/>
+        <ecosFormLanguageInjection componentType="asyncData" path="source/ajax/mapping"/>
+        <ecosFormLanguageInjection componentType="ecosSelect" path="dataPreProcessingCode"/>
+        <ecosFormLanguageInjection componentType="ecosSelect" path="data/custom"/>
+        <ecosFormLanguageInjection componentType="button" path="custom"/>
+        <ecosFormLanguageInjection componentType="tableForm" path="displayElementsJS"/>
+        <ecosFormLanguageInjection componentType="selectJournal" path="customPredicateJs"/>
+
     </extensions>
 
 </idea-plugin>

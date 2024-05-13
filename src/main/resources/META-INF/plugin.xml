@@ -75,15 +75,16 @@
     </extensions>
 
     <extensionPoints>
-        <extensionPoint name="fileType" interface="ru.citeck.ecos.files.FileType"/>
-        <extensionPoint name="fileDeployer" interface="ru.citeck.ecos.files.FileDeployer"/>
-        <extensionPoint name="fileFetcher" interface="ru.citeck.ecos.files.FileFetcher"/>
-        <extensionPoint name="fileIndexer" interface="ru.citeck.ecos.index.EcosFileIndexer"/>
-        <extensionPoint name="navigateInFileItemsProvider"
+        <extensionPoint dynamic="true" name="fileType" interface="ru.citeck.ecos.files.FileType"/>
+        <extensionPoint dynamic="true" name="fileDeployer" interface="ru.citeck.ecos.files.FileDeployer"/>
+        <extensionPoint dynamic="true" name="fileFetcher" interface="ru.citeck.ecos.files.FileFetcher"/>
+        <extensionPoint dynamic="true" name="fileIndexer" interface="ru.citeck.ecos.index.EcosFileIndexer"/>
+        <extensionPoint dynamic="true" name="navigateInFileItemsProvider"
                         interface="ru.citeck.ecos.files.NavigateInFileItemsProvider"/>
-        <extensionPoint name="psiElementValueResolver" interface="ru.citeck.ecos.references.PsiElementValueResolver"/>
-        <extensionPoint name="completionProvider" interface="ru.citeck.ecos.completion.CompletionProvider"/>
-        <extensionPoint name="searchScope" beanClass="ru.citeck.ecos.files.scopes.EcosSearchScope"/>
+        <extensionPoint dynamic="true" name="psiElementValueResolver" interface="ru.citeck.ecos.references.PsiElementValueResolver"/>
+        <extensionPoint dynamic="true" name="completionProvider" interface="ru.citeck.ecos.completion.CompletionProvider"/>
+        <extensionPoint dynamic="true" name="searchScope" beanClass="ru.citeck.ecos.files.scopes.EcosSearchScope"/>
+        <extensionPoint dynamic="true" name="ecosFormLanguageInjection" beanClass="ru.citeck.ecos.languageInjections.EcosFormLanguageInjection"/>
     </extensionPoints>
 
     <extensions defaultExtensionNs="ru.citeck.ecos">
