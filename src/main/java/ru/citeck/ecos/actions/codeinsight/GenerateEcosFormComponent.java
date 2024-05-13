@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.intellij.codeInsight.actions.SimpleCodeInsightAction;
 import com.intellij.ide.actions.QualifiedNameProviderUtil;
 import com.intellij.json.psi.JsonArray;
+import com.intellij.json.psi.JsonFile;
+import com.intellij.json.psi.JsonObject;
 import com.intellij.json.psi.JsonProperty;
 import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.application.ApplicationManager;
@@ -25,13 +27,13 @@ import ru.citeck.ecos.files.types.ecos.ui.Form;
 import ru.citeck.ecos.index.IndexKey;
 import ru.citeck.ecos.index.IndexValue;
 import ru.citeck.ecos.index.IndexesService;
+import ru.citeck.ecos.index.indexers.EcosDataTypeIndexer;
+import ru.citeck.ecos.utils.CommonUtils;
 import ru.citeck.ecos.utils.EcosMessages;
+import ru.citeck.ecos.utils.EcosPsiUtils;
 import ru.citeck.ecos.utils.JsonPrettyPrinter;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -67,7 +69,7 @@ public class GenerateEcosFormComponent extends SimpleCodeInsightAction {
                 .setTitle("Select Component Type:")
                 .setNamerForFiltering(Object::toString)
                 .setRequestFocus(true)
-                .setItemChosenCallback(componentType -> onComponentTypeSelected(editor, (String) componentType, insertionPosition))
+                .setItemChosenCallback(componentType -> onComponentTypeSelected(editor, psiFile, (String) componentType, insertionPosition))
                 .createPopup()
                 .showInCenterOf(WindowManager.getInstance().getFrame(project).getRootPane());
 
@@ -114,14 +116,14 @@ public class GenerateEcosFormComponent extends SimpleCodeInsightAction {
 
     }
 
-    private void onComponentTypeSelected(Editor editor, String componentType, InsertionPosition insertionPosition) {
+    private void onComponentTypeSelected(Editor editor,@NotNull PsiFile psiFile, String componentType, InsertionPosition insertionPosition) {
 
         Component component = COMPONENTS.get(componentType).get();
 
         if (component instanceof InputComponent) {
             JBPopupFactory
                     .getInstance()
-                    .createPopupChooserBuilder(getAttributes(editor.getProject(), (InputComponent) component))
+                    .createPopupChooserBuilder(getAttributes(psiFile, editor.getProject(), (InputComponent) component))
                     .setTitle("Select Attribute:")
                     .setNamerForFiltering(Object::toString)
                     .setRequestFocus(true)
@@ -180,9 +182,27 @@ public class GenerateEcosFormComponent extends SimpleCodeInsightAction {
 
     }
 
-    private List<String> getAttributes(Project project, InputComponent component) {
+    private List<String> getAttributes(@NotNull PsiFile psiFile, Project project, InputComponent component) {
 
         IndexesService indexesService = ServiceRegistry.getIndexesService(project);
+
+        List<String> typeRefAttributes = Optional
+                .of(psiFile)
+                .map(CommonUtils.filterAndCast(JsonFile.class))
+                .map(JsonFile::getTopLevelValue)
+                .map(CommonUtils.filterAndCast(JsonObject.class))
+                .map(jsonObject -> EcosPsiUtils.getProperty(jsonObject, "typeRef"))
+                .map(typeRef -> typeRef.replace("emodel/type", "emodel/types-repo"))
+                .map(typeRef -> ServiceRegistry
+                        .getIndexesService(project)
+                        .stream(new IndexKey(typeRef, EcosDataTypeIndexer.ATTRIBUTE))
+                        .map(IndexValue::getId)
+                        .toList())
+                .orElse(null);
+
+        if (typeRefAttributes != null && !typeRefAttributes.isEmpty()) {
+            return typeRefAttributes;
+        }
 
         return component
                 .getSupportedArtifactTypes()
@@ -190,13 +210,13 @@ public class GenerateEcosFormComponent extends SimpleCodeInsightAction {
                 .map(IndexKey::new)
                 .flatMap(indexesService::stream)
                 .map(IndexValue::getId)
-                .collect(Collectors.toList());
+                .collect(Collectors.toCollection(ArrayList::new));
 
     }
 
     @Override
     protected void update(@NotNull Presentation presentation, @NotNull Project project, @NotNull Editor editor, @NotNull PsiFile psiFile) {
-        boolean isForm = ServiceRegistry.getFileTypeService().isInstance(psiFile, Form.class);
+        boolean isForm = ServiceRegistry.getFileTypeService().isInstance(psiFile, Form.JSON.class);
         presentation.setVisible(isForm && getInsertionPath(editor, psiFile) != null);
     }
 
