@@ -16,7 +16,6 @@ import ru.citeck.ecos.ServiceRegistry;
 import ru.citeck.ecos.files.FileTypeService;
 import ru.citeck.ecos.files.types.ecos.*;
 import ru.citeck.ecos.files.types.ecos.model.DataType;
-import ru.citeck.ecos.files.types.ecos.model.PermissionSettings;
 import ru.citeck.ecos.files.types.ecos.model.Permissions;
 import ru.citeck.ecos.files.types.ecos.ui.Dashboard;
 import ru.citeck.ecos.ui.ListCellRendererWithIcon;
@@ -32,8 +31,7 @@ public interface EcosArtifactTypeRefInspection {
 
     List<Class<? extends EcosArtifact>> TYPE_REF_REQUIRED = List.of(
             Dashboard.class,
-            Permissions.class,
-            PermissionSettings.class
+            Permissions.class
     );
 
     class QuickFix implements LocalQuickFix {
