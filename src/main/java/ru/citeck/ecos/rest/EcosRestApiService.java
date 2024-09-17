@@ -168,7 +168,8 @@ public class EcosRestApiService {
 
         Map<Object, Object> request = Map.of(
                 "records", List.of(sourceId != null ? sourceId + "@" + id : id),
-                "attributes", attributes
+                "attributes", attributes,
+                "version", 1
         );
         String json = objectMapper.writeValueAsString(request);
 
@@ -177,7 +178,7 @@ public class EcosRestApiService {
                     .get("records")
                     .get(0);
         } catch (Exception ex) {
-            throw new RuntimeException("Unable to get record " + sourceId + "@" + id + "<br>" + ex.getMessage());
+            throw new RuntimeException("Unable to get record " + sourceId + "@" + id + "<br>" + ex.getMessage(), ex);
         }
 
     }
