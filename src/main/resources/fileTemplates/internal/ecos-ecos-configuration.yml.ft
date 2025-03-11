@@ -1,5 +1,0 @@
-id: ${NAME}
-name:
-  ru: ${NAME}
-  en: ${NAME}
-value: #[[$value$]]#

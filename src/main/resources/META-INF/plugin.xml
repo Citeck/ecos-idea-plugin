@@ -1,9 +1,9 @@
 <idea-plugin>
-    <id>ru.citeck.ecos</id>
-    <name>Citeck ECOS DevKit</name>
+    <id>ru.citeck.idea</id>
+    <name>Citeck DevKit</name>
     <vendor email="" url="https://www.citeck.ru/">Citeck</vendor>
 
-    <description><![CDATA[<p><b>Citeck ECOS DevKit</b></p>
+    <description><![CDATA[<p><b>Citeck DevKit</b></p>
 <p>Visit <a href="https://citeck-ecos.readthedocs.io/ru/develop/general/IDEA_plugin.html">citeck-ecos.readthedocs.io</a> for plugin documentation.</p>
         ]]></description>
 
@@ -12,350 +12,213 @@
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.java</depends>
     <depends>org.jetbrains.plugins.yaml</depends>
+    <depends>org.jetbrains.kotlin</depends>
+
     <depends optional="true" config-file="plugin-maven.xml">org.jetbrains.idea.maven</depends>
     <depends optional="true" config-file="plugin-ultimate.xml">JavaScript</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceImplementation="ru.citeck.ecos.files.FileTypeService"/>
-        <projectService serviceImplementation="ru.citeck.ecos.index.IndexesService"/>
-        <projectService serviceImplementation="ru.citeck.ecos.ui.AlfrescoJsConsoleService"/>
-        <projectService serviceImplementation="ru.citeck.ecos.index.indexers.qname.QNameService"/>
-        <searchScopesProvider implementation="ru.citeck.ecos.files.scopes.SearchScopeProvider"/>
-        <fileBasedIndex implementation="ru.citeck.ecos.index.EcosIndex"/>
-        <consoleFilterProvider implementation="ru.citeck.ecos.console.NodeRefConsoleFilterProvider"/>
-        <searchEverywhereContributor implementation="ru.citeck.ecos.EcosSearchEveryWhereContributor$Factory"/>
-        <psi.referenceContributor implementation="ru.citeck.ecos.references.EcosReferenceProvider$Contributor"
-                                  language=""/>
-        <localInspection implementationClass="ru.citeck.ecos.inspections.forms.DuplicateComponentKeyInspection"
-                         language="JSON"
-                         enabledByDefault="true" level="ERROR" displayName="ECOS form component duplicate key"
-                         groupName="ECOS"/>
-        <localInspection implementationClass="ru.citeck.ecos.inspections.JsonEcosArtifactTypeRefInspection"
-                         language="JSON"
-                         enabledByDefault="true" level="ERROR" displayName="ECOS typeRef inspection (json)"
-                         groupName="ECOS"/>
-        <localInspection implementationClass="ru.citeck.ecos.inspections.YamlEcosArtifactTypeRefInspection"
-                         language="yaml"
-                         enabledByDefault="true" level="ERROR" displayName="ECOS typeRef inspection (yaml)"
-                         groupName="ECOS"/>
 
-        <completion.contributor implementationClass="ru.citeck.ecos.completion.java.JavaCompletionContributor"
+        <postStartupActivity implementation="ru.citeck.idea.CiteckPluginProjectInitializer"/>
+
+        <applicationService serviceImplementation="ru.citeck.idea.files.FileTypeService"/>
+        <projectService serviceImplementation="ru.citeck.idea.index.IndexesService"/>
+        <searchScopesProvider implementation="ru.citeck.idea.files.scopes.SearchScopeProvider"/>
+        <fileBasedIndex implementation="ru.citeck.idea.index.CiteckIndex"/>
+        <searchEverywhereContributor implementation="ru.citeck.idea.CiteckSearchEveryWhereContributor$Factory"/>
+        <psi.referenceContributor implementation="ru.citeck.idea.references.CiteckReferenceProvider$Contributor"
+                                  language=""/>
+
+        <localInspection implementationClass="ru.citeck.idea.inspections.forms.DuplicateComponentKeyInspection"
+                         language="JSON"
+                         enabledByDefault="true" level="ERROR" displayName="Citeck form component duplicate key"
+                         groupName="Citeck"/>
+        <localInspection implementationClass="ru.citeck.idea.inspections.JsonCiteckArtifactTypeRefInspection"
+                         language="JSON"
+                         enabledByDefault="true" level="ERROR" displayName="Citeck typeRef inspection (json)"
+                         groupName="Citeck"/>
+        <localInspection implementationClass="ru.citeck.idea.inspections.YamlCiteckArtifactTypeRefInspection"
+                         language="yaml"
+                         enabledByDefault="true" level="ERROR" displayName="Citeck typeRef inspection (yaml)"
+                         groupName="Citeck"/>
+
+        <completion.contributor implementationClass="ru.citeck.idea.completion.java.JavaCompletionContributor"
                                 language="JAVA"/>
-        <completion.contributor implementationClass="ru.citeck.ecos.completion.json.JsonCompletionContributor"
+        <completion.contributor implementationClass="ru.citeck.idea.completion.json.JsonCompletionContributor"
                                 language="JSON"/>
-        <completion.contributor implementationClass="ru.citeck.ecos.completion.json.YamlCompletionContributor"
+        <completion.contributor implementationClass="ru.citeck.idea.completion.json.YamlCompletionContributor"
                                 language="yaml"/>
 
-        <liveTemplateMacro implementation="ru.citeck.ecos.livetemplates.functions.JavaQNameEnumMacro"/>
-        <liveTemplateMacro implementation="ru.citeck.ecos.livetemplates.functions.alfresco.AlfrescoAnyEnumMacro"/>
-        <liveTemplateMacro implementation="ru.citeck.ecos.livetemplates.functions.alfresco.AlfrescoTypeEnumMacro"/>
-        <liveTemplateMacro implementation="ru.citeck.ecos.livetemplates.functions.alfresco.AlfrescoPropertyEnumMacro"/>
-        <liveTemplateMacro implementation="ru.citeck.ecos.livetemplates.functions.alfresco.AlfrescoAspectEnumMacro"/>
-        <liveTemplateMacro
-                implementation="ru.citeck.ecos.livetemplates.functions.alfresco.AlfrescoAssociationEnumMacro"/>
-        <liveTemplateMacro
-                implementation="ru.citeck.ecos.livetemplates.functions.alfresco.AlfrescoChildAssociationEnumMacro"/>
-
-        <notificationGroup id="ECOS" displayType="BALLOON"/>
+        <notificationGroup id="Citeck" displayType="BALLOON"/>
 
         <projectConfigurable
                 parentId=""
-                instance="ru.citeck.ecos.settings.EcosRootSettings"
-                id="ru.citeck.ecos.settings.EcosRootSettings"
-                displayName="ECOS Settings"
+                instance="ru.citeck.idea.settings.CiteckRootSettings"
+                id="ru.citeck.idea.settings.CiteckRootSettings"
+                displayName="Citeck"
                 nonDefaultProject="true"/>
 
         <projectConfigurable
-                parentId="ru.citeck.ecos.settings.EcosRootSettings"
-                instance="ru.citeck.ecos.settings.EcosServersConfiguration"
-                id="ru.citeck.ecos.settings.EcosServersConfiguration"
+                parentId="ru.citeck.idea.settings.CiteckRootSettings"
+                instance="ru.citeck.idea.settings.servers.CiteckServersConfiguration"
+                id="ru.citeck.idea.settings.servers.CiteckServersConfiguration"
                 displayName="Servers"
                 nonDefaultProject="true"/>
 
     </extensions>
 
     <extensionPoints>
-        <extensionPoint dynamic="true" name="fileType" interface="ru.citeck.ecos.files.FileType"/>
-        <extensionPoint dynamic="true" name="fileDeployer" interface="ru.citeck.ecos.files.FileDeployer"/>
-        <extensionPoint dynamic="true" name="fileFetcher" interface="ru.citeck.ecos.files.FileFetcher"/>
-        <extensionPoint dynamic="true" name="fileIndexer" interface="ru.citeck.ecos.index.EcosFileIndexer"/>
+        <extensionPoint dynamic="true" name="fileType" interface="ru.citeck.idea.files.FileType"/>
+        <extensionPoint dynamic="true" name="fileIndexer" interface="ru.citeck.idea.index.EcosFileIndexer"/>
         <extensionPoint dynamic="true" name="navigateInFileItemsProvider"
-                        interface="ru.citeck.ecos.files.NavigateInFileItemsProvider"/>
-        <extensionPoint dynamic="true" name="psiElementValueResolver" interface="ru.citeck.ecos.references.PsiElementValueResolver"/>
-        <extensionPoint dynamic="true" name="completionProvider" interface="ru.citeck.ecos.completion.CompletionProvider"/>
-        <extensionPoint dynamic="true" name="searchScope" beanClass="ru.citeck.ecos.files.scopes.EcosSearchScope"/>
-        <extensionPoint dynamic="true" name="ecosFormLanguageInjection" beanClass="ru.citeck.ecos.languageInjections.EcosFormLanguageInjection"/>
+                        interface="ru.citeck.idea.files.NavigateInFileItemsProvider"/>
+        <extensionPoint dynamic="true" name="psiElementValueResolver" interface="ru.citeck.idea.references.PsiElementValueResolver"/>
+        <extensionPoint dynamic="true" name="completionProvider" interface="ru.citeck.idea.completion.CompletionProvider"/>
+        <extensionPoint dynamic="true" name="searchScope" beanClass="ru.citeck.idea.files.scopes.EcosSearchScope"/>
+        <extensionPoint dynamic="true" name="citeckFormLanguageInjection" beanClass="ru.citeck.idea.languageInjections.CiteckFormLanguageInjection"/>
     </extensionPoints>
 
-    <extensions defaultExtensionNs="ru.citeck.ecos">
+    <extensions defaultExtensionNs="ru.citeck.idea">
 
-        <fileType implementation="ru.citeck.ecos.files.types.AlfrescoModel"/>
-        <fileType implementation="ru.citeck.ecos.files.types.AlfrescoViewRepository"/>
-        <fileType implementation="ru.citeck.ecos.files.types.AlfrescoConfig"/>
-        <fileType implementation="ru.citeck.ecos.files.types.XmlBeanDefinitions"/>
-        <fileType implementation="ru.citeck.ecos.files.types.Java"/>
-        <fileType implementation="ru.citeck.ecos.files.types.JavaScript"/>
+        <fileType implementation="ru.citeck.idea.files.types.Java"/>
+        <fileType implementation="ru.citeck.idea.files.types.JavaScript"/>
 
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.app.ArtifactPatch$YAML"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.app.ArtifactPatch$JSON"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.app.EcosApplication$YAML"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.app.EcosApplication$JSON"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.app.EcosConfiguration$YAML"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.app.EcosConfiguration$JSON"/>
+        <fileType implementation="ru.citeck.idea.files.types.citeck.app.ArtifactPatch$YAML"/>
+        <fileType implementation="ru.citeck.idea.files.types.citeck.app.ArtifactPatch$JSON"/>
+        <fileType implementation="ru.citeck.idea.files.types.citeck.app.EcosApplication$YAML"/>
+        <fileType implementation="ru.citeck.idea.files.types.citeck.app.EcosApplication$JSON"/>
+        <fileType implementation="ru.citeck.idea.files.types.citeck.app.EcosConfiguration$YAML"/>
+        <fileType implementation="ru.citeck.idea.files.types.citeck.app.EcosConfiguration$JSON"/>
 
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.model.DataType$YAML"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.model.DataType$JSON"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.model.Permissions$YAML"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.model.Permissions$JSON"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.model.PermissionSettings$YAML"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.model.PermissionSettings$JSON"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.model.NumTemplate$YAML"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.model.NumTemplate$JSON"/>
+        <fileType implementation="ru.citeck.idea.files.types.citeck.model.DataType$YAML"/>
+        <fileType implementation="ru.citeck.idea.files.types.citeck.model.DataType$JSON"/>
+        <fileType implementation="ru.citeck.idea.files.types.citeck.model.Permissions$YAML"/>
+        <fileType implementation="ru.citeck.idea.files.types.citeck.model.Permissions$JSON"/>
+        <fileType implementation="ru.citeck.idea.files.types.citeck.model.PermissionSettings$YAML"/>
+        <fileType implementation="ru.citeck.idea.files.types.citeck.model.PermissionSettings$JSON"/>
+        <fileType implementation="ru.citeck.idea.files.types.citeck.model.NumTemplate$YAML"/>
+        <fileType implementation="ru.citeck.idea.files.types.citeck.model.NumTemplate$JSON"/>
 
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.ui.Form$YAML"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.ui.Form$JSON"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.ui.Action$YAML"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.ui.Action$JSON"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.ui.KanbanBoard$YAML"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.ui.KanbanBoard$JSON"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.ui.Dashboard$YAML"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.ui.Dashboard$JSON"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.ui.Journal$YAML"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.ui.Journal$JSON"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.ui.Localization$YAML"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.ui.Localization$JSON"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.ui.Menu$YAML"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.ui.Menu$JSON"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.ui.Theme"/>
+        <fileType implementation="ru.citeck.idea.files.types.citeck.ui.Form$YAML"/>
+        <fileType implementation="ru.citeck.idea.files.types.citeck.ui.Form$JSON"/>
+        <fileType implementation="ru.citeck.idea.files.types.citeck.ui.Action$YAML"/>
+        <fileType implementation="ru.citeck.idea.files.types.citeck.ui.Action$JSON"/>
+        <fileType implementation="ru.citeck.idea.files.types.citeck.ui.KanbanBoard$YAML"/>
+        <fileType implementation="ru.citeck.idea.files.types.citeck.ui.KanbanBoard$JSON"/>
+        <fileType implementation="ru.citeck.idea.files.types.citeck.ui.Dashboard$YAML"/>
+        <fileType implementation="ru.citeck.idea.files.types.citeck.ui.Dashboard$JSON"/>
+        <fileType implementation="ru.citeck.idea.files.types.citeck.ui.Journal$YAML"/>
+        <fileType implementation="ru.citeck.idea.files.types.citeck.ui.Journal$JSON"/>
+        <fileType implementation="ru.citeck.idea.files.types.citeck.ui.Localization$YAML"/>
+        <fileType implementation="ru.citeck.idea.files.types.citeck.ui.Localization$JSON"/>
+        <fileType implementation="ru.citeck.idea.files.types.citeck.ui.Menu$YAML"/>
+        <fileType implementation="ru.citeck.idea.files.types.citeck.ui.Menu$JSON"/>
+        <fileType implementation="ru.citeck.idea.files.types.citeck.ui.Theme"/>
 
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.integration.CamelDsl$YAML"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.integration.CamelDsl$JSON"/>
+        <fileType implementation="ru.citeck.idea.files.types.citeck.integration.CamelDsl$YAML"/>
+        <fileType implementation="ru.citeck.idea.files.types.citeck.integration.CamelDsl$JSON"/>
 
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.process.Bpmn"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.process.Cmmn"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.process.Dmn"/>
+        <fileType implementation="ru.citeck.idea.files.types.citeck.transformation.DocumentTemplate"/>
 
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.notification.NotificationTemplate"/>
-        <fileType implementation="ru.citeck.ecos.files.types.ecos.transformation.DocumentTemplate"/>
+        <searchScope name="Form" class="ru.citeck.idea.files.types.citeck.ui.Form"/>
+        <searchScope name="Action" class="ru.citeck.idea.files.types.citeck.ui.Action"/>
+        <searchScope name="Data type" class="ru.citeck.idea.files.types.citeck.model.DataType"/>
+        <searchScope name="Permissions" class="ru.citeck.idea.files.types.citeck.model.Permissions"/>
+        <searchScope name="Permission Settings" class="ru.citeck.idea.files.types.citeck.model.PermissionSettings"/>
+        <searchScope name="Kanban Board" class="ru.citeck.idea.files.types.citeck.ui.KanbanBoard"/>
+        <searchScope name="Artifact Patch" class="ru.citeck.idea.files.types.citeck.app.ArtifactPatch"/>
+        <searchScope name="Dashboard" class="ru.citeck.idea.files.types.citeck.ui.Dashboard"/>
+        <searchScope name="Journal" class="ru.citeck.idea.files.types.citeck.ui.Journal"/>
+        <searchScope name="Localization" class="ru.citeck.idea.files.types.citeck.ui.Localization"/>
+        <searchScope name="Menu" class="ru.citeck.idea.files.types.citeck.ui.Menu"/>
+        <searchScope name="Number Template" class="ru.citeck.idea.files.types.citeck.model.NumTemplate"/>
+        <searchScope name="Camel DSL" class="ru.citeck.idea.files.types.citeck.integration.CamelDsl"/>
 
-
-        <searchScope name="Form" class="ru.citeck.ecos.files.types.ecos.ui.Form"/>
-        <searchScope name="Action" class="ru.citeck.ecos.files.types.ecos.ui.Action"/>
-        <searchScope name="Data type" class="ru.citeck.ecos.files.types.ecos.model.DataType"/>
-        <searchScope name="Permissions" class="ru.citeck.ecos.files.types.ecos.model.Permissions"/>
-        <searchScope name="Permission Settings" class="ru.citeck.ecos.files.types.ecos.model.PermissionSettings"/>
-        <searchScope name="Kanban Board" class="ru.citeck.ecos.files.types.ecos.ui.KanbanBoard"/>
-        <searchScope name="Artifact Patch" class="ru.citeck.ecos.files.types.ecos.app.ArtifactPatch"/>
-        <searchScope name="Dashboard" class="ru.citeck.ecos.files.types.ecos.ui.Dashboard"/>
-        <searchScope name="Journal" class="ru.citeck.ecos.files.types.ecos.ui.Journal"/>
-        <searchScope name="Localization" class="ru.citeck.ecos.files.types.ecos.ui.Localization"/>
-        <searchScope name="Menu" class="ru.citeck.ecos.files.types.ecos.ui.Menu"/>
-        <searchScope name="Number Template" class="ru.citeck.ecos.files.types.ecos.model.NumTemplate"/>
-        <searchScope name="Camel DSL" class="ru.citeck.ecos.files.types.ecos.integration.CamelDsl"/>
-        <searchScope name="Alfresco Model" class="ru.citeck.ecos.files.types.AlfrescoModel"/>
-
-        <fileDeployer implementation="ru.citeck.ecos.files.deployers.EcosArtifactDeployer"/>
-        <fileDeployer implementation="ru.citeck.ecos.files.deployers.TomcatFileDeployer"/>
-        <fileDeployer implementation="ru.citeck.ecos.files.deployers.TomcatFileClipboardDeployer"/>
-        <fileDeployer implementation="ru.citeck.ecos.files.deployers.AlfrescoNodeDeployer"/>
-        <fileDeployer implementation="ru.citeck.ecos.files.deployers.AlfrescoConfigDeployer"/>
-
-        <fileFetcher implementation="ru.citeck.ecos.files.fetchers.EcosArtifactFetcher"/>
-
-        <fileIndexer implementation="ru.citeck.ecos.index.indexers.EcosArtifactIndexer"/>
-        <fileIndexer implementation="ru.citeck.ecos.index.indexers.EcosDataTypeIndexer$JSON"/>
-        <fileIndexer implementation="ru.citeck.ecos.index.indexers.EcosDataTypeIndexer$YAML"/>
-        <fileIndexer implementation="ru.citeck.ecos.index.indexers.AlfrescoModelIndexer"/>
-        <fileIndexer implementation="ru.citeck.ecos.index.indexers.AlfrescoContentNodesIndexer"/>
-        <fileIndexer implementation="ru.citeck.ecos.index.indexers.XmlBeanDefinitionIndexer"/>
-        <fileIndexer implementation="ru.citeck.ecos.index.indexers.qname.AlfrescoQNameIndexer"/>
+        <fileIndexer implementation="ru.citeck.idea.index.indexers.EcosArtifactIndexer"/>
+        <fileIndexer implementation="ru.citeck.idea.index.indexers.EcosDataTypeIndexer$JSON"/>
+        <fileIndexer implementation="ru.citeck.idea.index.indexers.EcosDataTypeIndexer$YAML"/>
 
         <navigateInFileItemsProvider
-                implementation="ru.citeck.ecos.files.navigateItemsProviders.JsonFormItemsProvider"/>
+                implementation="ru.citeck.idea.files.navigateItemsProviders.JsonFormItemsProvider"/>
         <navigateInFileItemsProvider
-                implementation="ru.citeck.ecos.files.navigateItemsProviders.JsonJournalItemsProvider"/>
+                implementation="ru.citeck.idea.files.navigateItemsProviders.JsonJournalItemsProvider"/>
         <navigateInFileItemsProvider
-                implementation="ru.citeck.ecos.files.navigateItemsProviders.AlfrescoModelItemsProvider"/>
-        <navigateInFileItemsProvider
-                implementation="ru.citeck.ecos.files.navigateItemsProviders.DataTypeFileItemsProvider"/>
+                implementation="ru.citeck.idea.files.navigateItemsProviders.DataTypeFileItemsProvider"/>
 
         <psiElementValueResolver
-                implementation="ru.citeck.ecos.references.resolvers.PsiLiteralExpressionValueResolver"/>
-        <psiElementValueResolver implementation="ru.citeck.ecos.references.resolvers.JsonStringLiteralValueResolver"/>
-        <psiElementValueResolver implementation="ru.citeck.ecos.references.resolvers.YAMLScalarValueResolver"/>
-        <psiElementValueResolver implementation="ru.citeck.ecos.references.resolvers.XmlAttributeValueValueResolver"/>
-        <psiElementValueResolver implementation="ru.citeck.ecos.references.resolvers.XmlTagValueResolver"/>
+                implementation="ru.citeck.idea.references.resolvers.PsiLiteralExpressionValueResolver"/>
+        <psiElementValueResolver implementation="ru.citeck.idea.references.resolvers.JsonStringLiteralValueResolver"/>
+        <psiElementValueResolver implementation="ru.citeck.idea.references.resolvers.YAMLScalarValueResolver"/>
+        <psiElementValueResolver implementation="ru.citeck.idea.references.resolvers.XmlAttributeValueValueResolver"/>
+        <psiElementValueResolver implementation="ru.citeck.idea.references.resolvers.XmlTagValueResolver"/>
 
-        <completionProvider implementation="ru.citeck.ecos.completion.java.providers.QNamesCompletionProvider"/>
-        <completionProvider implementation="ru.citeck.ecos.completion.json.JsonTypeRefCompletionProvider"/>
-        <completionProvider implementation="ru.citeck.ecos.completion.json.YamlTypeRefCompletionProvider"/>
+        <completionProvider implementation="ru.citeck.idea.completion.json.JsonTypeRefCompletionProvider"/>
+        <completionProvider implementation="ru.citeck.idea.completion.json.YamlTypeRefCompletionProvider"/>
 
     </extensions>
 
     <actions>
 
-        <group id="ru.citeck.ecos.CreateEcosArtifact" text="ECOS Artifact" popup="true" icon="Icons.CiteckLogo">
-            <add-to-group group-id="NewGroup" anchor="first"/>
-
-            <group id="ru.citeck.ecos.CreateEcosArtifact.UI" text="User Interface" popup="true"
-                   icon="Icons.CiteckLogo">
-                <action id="ru.citeck.ecos.templates.files.CreateAction"
-                        class="ru.citeck.ecos.templates.files.CreateAction"
-                        icon="Icons.CiteckLogo"/>
-                <action id="ru.citeck.ecos.templates.files.CreateForm"
-                        class="ru.citeck.ecos.templates.files.CreateForm"
-                        icon="Icons.CiteckLogo"/>
-                <action id="ru.citeck.ecos.templates.files.CreateJournal"
-                        class="ru.citeck.ecos.templates.files.CreateJournal"
-                        icon="Icons.CiteckLogo"/>
-                <action id="ru.citeck.ecos.templates.files.CreateDashboard"
-                        class="ru.citeck.ecos.templates.files.CreateDashboard"
-                        icon="Icons.CiteckLogo"/>
-                <action id="ru.citeck.ecos.templates.files.CreateMenu"
-                        class="ru.citeck.ecos.templates.files.CreateMenu"
-                        icon="Icons.CiteckLogo"/>
-                <action id="ru.citeck.ecos.templates.files.CreateLocalization"
-                        class="ru.citeck.ecos.templates.files.CreateLocalization"
-                        icon="Icons.CiteckLogo"/>
-                <action id="ru.citeck.ecos.templates.files.CreateKanbanBoard"
-                        class="ru.citeck.ecos.templates.files.CreateKanbanBoard"
-                        icon="Icons.CiteckLogo"/>
-                <action id="ru.citeck.ecos.templates.files.CreateTheme"
-                        class="ru.citeck.ecos.templates.files.CreateTheme"
-                        icon="Icons.CiteckLogo"/>
-            </group>
-
-            <group id="ru.citeck.ecos.CreateEcosArtifact.Model" text="Data Model" popup="true" icon="Icons.CiteckLogo">
-                <action id="ru.citeck.ecos.templates.files.CreateDataType"
-                        class="ru.citeck.ecos.templates.files.CreateDataType"
-                        icon="Icons.CiteckLogo"/>
-                <action id="ru.citeck.ecos.templates.files.CreateNumberTemplate"
-                        class="ru.citeck.ecos.templates.files.CreateNumberTemplate"
-                        icon="Icons.CiteckLogo"/>
-                <action id="ru.citeck.ecos.templates.files.CreatePermissions"
-                        class="ru.citeck.ecos.templates.files.CreatePermissions"
-                        icon="Icons.CiteckLogo"/>
-                <action id="ru.citeck.ecos.templates.files.CreatePermissionSettings"
-                        class="ru.citeck.ecos.templates.files.CreatePermissionSettings"
-                        icon="Icons.CiteckLogo"/>
-            </group>
-
-            <group id="ru.citeck.ecos.CreateEcosArtifact.ProcessManagement" text="Business Process" popup="true"
-                   icon="Icons.CiteckLogo">
-                <action id="ru.citeck.ecos.templates.files.CreateBpmn"
-                        class="ru.citeck.ecos.templates.files.CreateBpmn"
-                        icon="Icons.CiteckLogo"/>
-                <action id="ru.citeck.ecos.templates.files.CreateCmmn"
-                        class="ru.citeck.ecos.templates.files.CreateCmmn"
-                        icon="Icons.CiteckLogo"/>
-                <action id="ru.citeck.ecos.templates.files.CreateDmn"
-                        class="ru.citeck.ecos.templates.files.CreateDmn"
-                        icon="Icons.CiteckLogo"/>
-            </group>
-
-            <group id="ru.citeck.ecos.CreateEcosArtifact.SystemManagement" text="App" popup="true"
-                   icon="Icons.CiteckLogo">
-                <action id="ru.citeck.ecos.templates.files.CreateArtifactPatch"
-                        class="ru.citeck.ecos.templates.files.CreateArtifactPatch"
-                        icon="Icons.CiteckLogo"/>
-                <action id="ru.citeck.ecos.templates.files.CreateEcosConfiguration"
-                        class="ru.citeck.ecos.templates.files.CreateEcosConfiguration"
-                        icon="Icons.CiteckLogo"/>
-            </group>
-
-            <group id="ru.citeck.ecos.CreateEcosArtifact.Integration" text="Integration" popup="true"
-                   icon="Icons.CiteckLogo">
-                <action id="ru.citeck.ecos.templates.files.CreateCamelDsl"
-                        class="ru.citeck.ecos.templates.files.CreateCamelDsl"
-                        icon="Icons.CiteckLogo"/>
-            </group>
-
-            <group id="ru.citeck.ecos.CreateEcosArtifact.ConfiguringNotifications" text="Notification" popup="true"
-                   icon="Icons.CiteckLogo">
-                <action id="ru.citeck.ecos.templates.files.CreateNotificationTemplate"
-                        class="ru.citeck.ecos.templates.files.CreateNotificationTemplate"
-                        icon="Icons.CiteckLogo"/>
-            </group>
-
-            <group id="ru.citeck.ecos.CreateEcosArtifact.Transformation" text="Transformation" popup="true"
-                   icon="Icons.CiteckLogo">
-                <action id="ru.citeck.ecos.templates.files.CreateDocumentTemplate"
-                        class="ru.citeck.ecos.templates.files.CreateDocumentTemplate"
-                        icon="Icons.CiteckLogo"/>
-            </group>
-
-        </group>
-
-        <group id="ru.citeck.ecos.ProjectMenu" text="ECOS" popup="true" icon="Icons.CiteckLogo">
+        <group id="ru.citeck.ProjectMenu" text="Citeck" popup="true" icon="Icons.CiteckLogo">
             <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
-            <action id="ru.citeck.ecos.actions.DeployApplication" class="ru.citeck.ecos.actions.DeployApplication"
+            <action id="ru.citeck.idea.actions.DeployApplication" class="ru.citeck.idea.actions.DeployApplication"
                     text="Deploy Application" description="Deploy application" icon="AllIcons.Actions.Uninstall">
             </action>
         </group>
 
-        <action id="ru.citeck.ecos.actions.DeployFile" class="ru.citeck.ecos.actions.DeployFile"
+        <action id="ru.citeck.idea.actions.file.artifact.DeployArtifact" class="ru.citeck.idea.actions.file.artifact.DeployArtifact"
                 text="Deploy File" description="Deploy file" icon="AllIcons.Actions.Uninstall">
             <keyboard-shortcut keymap="$default" first-keystroke="control alt E" second-keystroke="D"/>
             <add-to-group group-id="EditorContextBarMenu" anchor="last"/>
-            <add-to-group group-id="ru.citeck.ecos.ProjectMenu" anchor="last"/>
+            <add-to-group group-id="ru.citeck.ProjectMenu" anchor="last"/>
         </action>
-        <action id="ru.citeck.ecos.actions.FetchFile" class="ru.citeck.ecos.actions.FetchFile"
+
+        <action id="ru.citeck.idea.actions.file.artifact.FetchArtifact" class="ru.citeck.idea.actions.file.artifact.FetchArtifact"
                 text="Fetch File" description="Fetch file" icon="AllIcons.Actions.Install">
             <keyboard-shortcut keymap="$default" first-keystroke="control alt E" second-keystroke="F"/>
             <add-to-group group-id="EditorContextBarMenu" anchor="last"/>
-            <add-to-group group-id="ru.citeck.ecos.ProjectMenu" anchor="last"/>
+            <add-to-group group-id="ru.citeck.ProjectMenu" anchor="last"/>
         </action>
-        <action id="Ecos.ExecuteAlfrescoJs" class="ru.citeck.ecos.actions.ExecuteAlfrescoJs"
-                text="Execute Alfresco Js"
-                description="Execute alfresco js" icon="AllIcons.Actions.Execute">
-            <keyboard-shortcut keymap="$default" first-keystroke="control alt E" second-keystroke="E"/>
-            <add-to-group group-id="EditorContextBarMenu" anchor="last"/>
-            <add-to-group group-id="ru.citeck.ecos.ProjectMenu" anchor="last"/>
-        </action>
-        <action id="ru.citeck.ecos.actions.NavigateInFileAction"
-                class="ru.citeck.ecos.actions.NavigateInFileAction"
+
+        <action id="ru.citeck.idea.actions.file.NavigateInFileAction"
+                class="ru.citeck.idea.actions.file.NavigateInFileAction"
                 text="Navigate in File"
                 description="Navigate in File" icon="AllIcons.CodeWithMe.CwmJump">
             <keyboard-shortcut keymap="$default" first-keystroke="control alt E" second-keystroke="G"/>
             <add-to-group group-id="EditorContextBarMenu" anchor="last"/>
-            <add-to-group group-id="ru.citeck.ecos.ProjectMenu" anchor="last"/>
+            <add-to-group group-id="ru.citeck.ProjectMenu" anchor="last"/>
         </action>
-        <action id="ru.citeck.ecos.actions.OpenArtifactInBrowser"
-                class="ru.citeck.ecos.actions.OpenArtifactInBrowser"
+
+        <action id="ru.citeck.idea.actions.file.artifact.OpenArtifactInBrowser"
+                class="ru.citeck.idea.actions.file.artifact.OpenArtifactInBrowser"
                 text="Open in Browser"
                 description="Open in Browser" icon="AllIcons.General.Web">
             <keyboard-shortcut keymap="$default" first-keystroke="control alt E" second-keystroke="B"/>
             <add-to-group group-id="EditorContextBarMenu" anchor="last"/>
-            <add-to-group group-id="ru.citeck.ecos.ProjectMenu" anchor="last"/>
+            <add-to-group group-id="ru.citeck.ProjectMenu" anchor="last"/>
         </action>
-        <action id="ru.citeck.ecos.actions.OpenDocumentationInBrowser"
-                class="ru.citeck.ecos.actions.OpenDocumentationInBrowser"
+
+        <action id="ru.citeck.idea.actions.file.artifact.OpenArtifactDocsInBrowser"
+                class="ru.citeck.idea.actions.file.artifact.OpenArtifactDocsInBrowser"
                 text="Open Documentation"
                 description="Open documentation" icon="com.intellij.icons.AllIcons.Actions.Help">
             <add-to-group group-id="EditorContextBarMenu" anchor="last"/>
         </action>
 
-        <action id="ru.citeck.ecos.actions.EcosSearchEveryWhereAction"
-                class="ru.citeck.ecos.actions.EcosSearchEveryWhereAction"
+        <action id="ru.citeck.idea.actions.CiteckSearchEverywhereAction"
+                class="ru.citeck.idea.actions.CiteckSearchEverywhereAction"
                 text="ECOS Search Everywhere"
                 description="Search everywhere">
             <keyboard-shortcut keymap="$default" first-keystroke="control alt E" second-keystroke="S"/>
         </action>
 
-        <action id="Ecos.ExecuteAlfrescoJsFromScratch"
-                class="ru.citeck.ecos.actions.ExecuteAlfrescoJsFromScratch"
-                text="Execute Afresco JS"
-                description="Execute Afresco JS"
-                icon="AllIcons.FileTypes.JavaScript">
-            <keyboard-shortcut keymap="$default" first-keystroke="control alt E" second-keystroke="J"/>
-        </action>
-
-        <action id="GenerateEcosFormComponent" class="ru.citeck.ecos.actions.codeinsight.GenerateEcosFormComponent"
+        <action id="GenerateEcosFormComponent" class="ru.citeck.idea.actions.codeinsight.GenerateEcosFormComponent"
                 text="Component" icon="Icons.CiteckLogo">
             <add-to-group group-id="GenerateGroup"/>
         </action>
+
         <action id="GenerateEcosFormLocalization"
-                class="ru.citeck.ecos.actions.codeinsight.GenerateEcosFormLocalization" text="Localization"
+                class="ru.citeck.idea.actions.codeinsight.GenerateEcosFormLocalization" text="Localization"
                 icon="Icons.CiteckLogo">
             <add-to-group group-id="GenerateGroup"/>
         </action>

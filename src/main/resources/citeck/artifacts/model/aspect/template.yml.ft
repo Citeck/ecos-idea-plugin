@@ -1,0 +1,8 @@
+---
+id: ${NAME}
+name:
+  ru: ${NAME}
+  en: ${NAME}
+prefix: ''
+configFormRef: ''
+attributes: []

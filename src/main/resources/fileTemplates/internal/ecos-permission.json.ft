@@ -1,9 +1,0 @@
-{
-  "id": "${NAME}",
-  "typeRef": "",
-  "permissions": {
-    "matrix": {
-    }
-  },
-  "attributes": {}
-}

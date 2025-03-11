@@ -1,3 +1,5 @@
 /.gradle/
 /.idea/
 /build/
+.intellijPlatform
+/citeck-plugin-deps/build

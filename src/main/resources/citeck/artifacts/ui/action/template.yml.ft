@@ -1,0 +1,15 @@
+---
+id: "${NAME}"
+name:
+  en: '${NAME}'
+type: ''
+confirm:
+  title: {}
+  message: {}
+  formRef: ''
+  formAttributes: {}
+  attributesMapping: {}
+features:
+  execForRecord: true
+  execForQuery: false
+  execForRecords: false

@@ -1,0 +1,8 @@
+---
+id: "${NAME}"
+name:
+  en: "${NAME}"
+target: ''
+type: json
+config:
+  operations: []

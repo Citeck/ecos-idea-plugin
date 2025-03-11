@@ -1,0 +1,6 @@
+{
+  "name": "Notification Template",
+  "type": "NOTIFICATION_TEMPLATE",
+  "sourceId": "notifications/template",
+  "docsUrl": "https://citeck-ecos.readthedocs.io/ru/latest/settings_kb/notifications/notifications_template.html"
+}

@@ -1,0 +1,6 @@
+{
+  "name": "BPMN",
+  "type": "BPMN",
+  "sourceId": "eproc/bpmn-def",
+  "docsUrl": "https://citeck-ecos.readthedocs.io/ru/latest/settings_kb/processes/BPMN_ecos.html"
+}

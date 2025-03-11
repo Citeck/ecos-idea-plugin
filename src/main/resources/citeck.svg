@@ -1,21 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 22.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="Слой_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 250 250" style="enable-background:new 0 0 250 250;" xml:space="preserve">
-<style type="text/css">
-	.st0{fill:#FAC300;}
-	.st1{fill:#7396CD;}
-</style>
-<g>
-	<g>
-		<g>
-			
-				<ellipse transform="matrix(0.3801 -0.9249 0.9249 0.3801 -38.1312 193.1043)" class="st0" cx="125" cy="125" rx="33.3" ry="33.3"/>
-		</g>
-	</g>
-	<path class="st1" d="M153.1,189.3c-10.1,4.4-21.4,6.5-33.3,5.7c-34.6-2.5-62.6-30.7-64.8-65.4c-2.6-40.9,29.7-74.8,70-74.8
-		c10.1,0,19.7,2.1,28.4,6c11,4.9,23.9,2,31.6-7.2h0c11.5-13.7,6.6-34.7-9.8-41.9C157.9,3.9,138.5,0.1,118,1.2
-		C52.9,4.8,1.2,59.4,1,124.6C0.8,193.2,56.4,249,125,249c17.9,0,34.8-3.8,50.2-10.6c16.4-7.3,21.4-28.1,9.9-41.8l-0.1-0.2
-		C177.1,187.1,164.2,184.5,153.1,189.3z"/>
-</g>
+<?xml version="1.0"?>
+<svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs>
+  <symbol id="svg_1" viewBox="0 0 34 34" xmlns="http://www.w3.org/2000/svg">
+   <path clip-rule="evenodd" d="m27.6,13.15l-2.64,0c-0.57,0 -1.12,-0.23 -1.52,-0.63l-6.31,-6.28c-1.22,-1.21 -3.18,-1.21 -4.4,0l-6.63,6.6c-1.23,1.22 -1.23,3.2 0,4.42l6.63,6.6c1.22,1.21 3.18,1.21 4.4,0l6.31,-6.27c0.4,-0.41 0.95,-0.63 1.52,-0.63l2.62,0c-0.94,6.03 -6.19,10.64 -12.51,10.64c-7,0 -12.67,-5.64 -12.67,-12.6c0,-6.96 5.67,-12.6 12.67,-12.6c6.36,0 11.63,4.67 12.53,10.75z" fill="#7396CD" fill-rule="evenodd" id="svg_3"/>
+   <rect fill="#7396CD" height="7.3" width="7.3" id="svg_4" rx="0.86" transform="matrix(0.709001, 0.705207, -0.709011, 0.705217, 15.0547, 10.0)" />
+  </symbol>
+ </defs>
+ <g class="layer" display="inline">
+  <use id="svg_2" transform="matrix(1.17318 0 0 1.17318 0 0)" xlink:href="#svg_1"/>
+ </g>
 </svg>

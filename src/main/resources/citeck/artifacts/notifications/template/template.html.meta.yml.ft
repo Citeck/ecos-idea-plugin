@@ -1,0 +1,11 @@
+---
+id: ${NAME}
+name: ${NAME}
+notificationTitle:
+  ru: #[[${subject!"Тема отсутствует"}]]#
+  en: #[[${subject!"No Subject"}]]#
+tags: []
+model:
+  user: \$user
+  subject: \$subject
+multiTemplateConfig: []

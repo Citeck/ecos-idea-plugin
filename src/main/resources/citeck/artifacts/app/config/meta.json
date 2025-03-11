@@ -1,0 +1,9 @@
+{
+  "name": "Config",
+  "type": "YAML",
+  "sourceId": "eapps/config",
+  "docsUrl": "https://citeck-ecos.readthedocs.io/ru/latest/admin/configuration.html",
+  "disabledActions": [
+    "fetch", "deploy"
+  ]
+}

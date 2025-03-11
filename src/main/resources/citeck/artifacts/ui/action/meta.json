@@ -1,0 +1,6 @@
+{
+  "name": "Action",
+  "type": "YAML",
+  "sourceId": "uiserv/action",
+  "docsUrl": "https://citeck-ecos.readthedocs.io/ru/latest/settings_kb/ui_actions.html"
+}

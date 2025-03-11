@@ -1,44 +1,116 @@
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import org.jetbrains.intellij.platform.gradle.IntelliJPlatformType
+import java.net.URI
+
 plugins {
-    id("org.jetbrains.intellij") version "1.17.2"
-    java
+    id("org.jetbrains.intellij.platform") version "2.3.0"
+    id("com.gradleup.shadow") version "8.3.6"
+    kotlin("jvm") version "1.8.0"
+    id("java")
 }
 
-group = "ru.citeck.ecos"
-version = "2.0.20"
+group = "ru.citeck.idea"
+version = "3.0.0"
+
+kotlin {
+    jvmToolchain(17)
+}
+
+subprojects {
+
+    group = parent!!.group
+    version = parent!!.version
+
+}
 
 repositories {
     mavenCentral()
+    mavenLocal()
+
+    intellijPlatform {
+        localPlatformArtifacts()
+        jetbrainsRuntime()
+
+        repositories.ivy {
+            this.name = "JetBrains IDE Installers"
+            this.url = URI("https://download-cf.jetbrains.com")
+            patternLayout {
+                listOf(
+                    "[organization]/[module]-[revision](-[classifier]).[ext]",
+                    "[organization]/[module]-[revision](.[classifier]).[ext]",
+                    "[organization]/[revision]/[module]-[revision](-[classifier]).[ext]",
+                    "[organization]/[revision]/[module]-[revision](.[classifier]).[ext]",
+                ).forEach { artifact(it) }
+            }
+            metadataSources { artifact() }
+            content {
+                IntelliJPlatformType.values()
+                    .filter { it != IntelliJPlatformType.AndroidStudio }
+                    .mapNotNull { it.installer }
+                    .forEach {
+                        includeModule(it.groupId, it.artifactId)
+                    }
+            }
+        }
+        releases()
+        snapshots()
+        intellijDependencies()
+        marketplace()
+    }
 }
 
 dependencies {
-    compileOnly("org.projectlombok:lombok:1.18.28")
-    annotationProcessor("org.projectlombok:lombok:1.18.28")
+    implementation(project(":citeck-plugin-deps", configuration = "archives"))
+
+    compileOnly("org.projectlombok:lombok:1.18.36")
+    annotationProcessor("org.projectlombok:lombok:1.18.36")
+
+    intellijPlatform {
+        intellijIdeaUltimate("2023.3.8")
+
+        bundledPlugins(
+            "com.intellij.java",
+            "JavaScript",
+            "org.jetbrains.plugins.yaml",
+            "org.jetbrains.idea.maven",
+            "org.jetbrains.kotlin"
+        )
+    }
 }
 
-// See https://github.com/JetBrains/gradle-intellij-plugin/
-intellij {
-    version.set("2024.1")
-//    version.set("2023.3.6")
-//    version.set("2022.2.5")
-    type.set("IU") // Target IDE Platform
-    plugins.set(listOf("com.intellij.java", "JavaScript", "org.jetbrains.plugins.yaml", "org.jetbrains.idea.maven"))
+tasks.register("generateArtifactsIndex") {
+    val dirToScan = file("src/main/resources/citeck/artifacts")
+    val indexFile = file("build/resources/main/citeck/artifacts/index.json")
+    doLast {
+        val types = dirToScan.walkTopDown()
+            .filter { it.isFile && it.name == "meta.json" }
+            .map { it.relativeTo(dirToScan).invariantSeparatorsPath }
+            .toList()
+        indexFile.parentFile.mkdirs()
+        indexFile.writeText(Json.encodeToString(types))
+    }
 }
-
 
 tasks {
-    // Set the JVM compatibility versions
+
     withType<JavaCompile> {
         sourceCompatibility = "17"
         targetCompatibility = "17"
     }
 
     patchPluginXml {
-        sinceBuild.set("222")
+        sinceBuild.set("231.9423.9")
         untilBuild.set("250.*")
     }
 
-    runIde {
-        jvmArgs("-Xmx2G")
+    processResources {
+        dependsOn("generateArtifactsIndex")
     }
 
+    runIde {
+        jvmArgs(
+            "-Xmx2G",
+        )
+    }
 }
