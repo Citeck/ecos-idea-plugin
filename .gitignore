@@ -3,3 +3,5 @@
 /build/
 .intellijPlatform
 /citeck-plugin-deps/build
+
+.DS_Store
