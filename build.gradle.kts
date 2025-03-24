@@ -4,14 +4,14 @@ import org.jetbrains.intellij.platform.gradle.IntelliJPlatformType
 import java.net.URI
 
 plugins {
-    id("org.jetbrains.intellij.platform") version "2.3.0"
+    id("org.jetbrains.intellij.platform") version "2.4.0"
     id("com.gradleup.shadow") version "8.3.6"
     kotlin("jvm") version "2.0.21"
     id("java")
 }
 
 group = "ru.citeck.idea"
-version = "3.0.1"
+version = "3.0.2"
 
 kotlin {
     jvmToolchain(17)
@@ -83,6 +83,8 @@ dependencies {
 tasks.register("generateArtifactsIndex") {
     val dirToScan = file("src/main/resources/citeck/artifacts")
     val indexFile = file("build/resources/main/citeck/artifacts/index.json")
+    println("Dir to scan: " + dirToScan.absolutePath)
+    println("Index file: " + indexFile.absolutePath)
     doLast {
         val types = dirToScan.walkTopDown()
             .filter { it.isFile && it.name == "meta.json" }
@@ -90,6 +92,7 @@ tasks.register("generateArtifactsIndex") {
             .toList()
         indexFile.parentFile.mkdirs()
         indexFile.writeText(Json.encodeToString(types))
+        println("Artifacts index content: " + Json.encodeToString(types))
     }
 }
 
