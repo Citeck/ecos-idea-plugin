@@ -1,10 +1,11 @@
 package ru.citeck.idea.artifacts
 
 import com.intellij.openapi.actionSystem.*
+import com.intellij.openapi.project.DumbAware
 import icons.Icons
 import ru.citeck.idea.project.CiteckProject
 
-class CreateArtifactsGroup : DefaultActionGroup("Citeck Artifact", "", Icons.CiteckLogo) {
+class CreateArtifactsGroup : DefaultActionGroup("Citeck Artifact", "", Icons.CiteckLogo), DumbAware {
 
     init {
         isPopup = true

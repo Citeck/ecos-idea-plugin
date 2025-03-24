@@ -1,0 +1,8 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+<p>Hello \${user}, welcome to <a href="\${meta.getWebUrl()}">Citeck</a> Notification Template! You can use html + freemarker
+    syntax here.</p>
+<p>Document link: <a href="\${link.getRecordLink(docRef)}" target="_blank">\${docDisp}</a></p>
+</body>
+</html>

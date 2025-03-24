@@ -6,6 +6,7 @@ import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.PlatformDataKeys
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.module.ModuleUtil
+import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiFile
 import org.apache.commons.lang3.exception.ExceptionUtils
@@ -15,7 +16,7 @@ import ru.citeck.idea.files.FileTypeService
 import ru.citeck.idea.project.CiteckProject
 import ru.citeck.idea.utils.EcosMessages
 
-abstract class CiteckFileAction : AnAction() {
+abstract class CiteckFileAction : AnAction(), DumbAware {
 
     companion object {
         private val EXCEPTIONS_WITHOUT_TYPE_IN_ERROR_MESSAGE: Set<Class<*>> = setOf(

@@ -1,7 +1,0 @@
-<!DOCTYPE html>
-<html lang="en">
-<body>
-<p>Hello \${user}, welcome to <a href="${meta.getWebUrl()}">Ecos</a> Notification Template! You can use html + freemarker
-    syntax here.</p>
-</body>
-</html>

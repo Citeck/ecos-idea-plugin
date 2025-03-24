@@ -8,4 +8,6 @@ tags: []
 model:
   user: \$user
   subject: \$subject
+  docRef: ?id
+  docDisp: ?disp!id
 multiTemplateConfig: []

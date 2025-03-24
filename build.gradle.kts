@@ -67,8 +67,8 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok:1.18.36")
 
     intellijPlatform {
-        intellijIdeaUltimate("2023.3.8")
-        //intellijIdeaUltimate("2024.3.3")
+        // intellijIdeaUltimate("2023.3.8")
+        intellijIdeaUltimate("2024.3.5")
 
         bundledPlugins(
             "com.intellij.java",
