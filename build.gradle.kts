@@ -11,7 +11,7 @@ plugins {
 }
 
 group = "ru.citeck.idea"
-version = "3.0.2"
+version = "3.0.3"
 
 kotlin {
     jvmToolchain(17)
@@ -80,20 +80,30 @@ dependencies {
     }
 }
 
-tasks.register("generateArtifactsIndex") {
+val generatedResources by lazy {
+    val resourcesDir = layout.buildDirectory.file("generated-resources").get().asFile
+    if (!resourcesDir.exists()) {
+        resourcesDir.mkdir()
+    }
+    resourcesDir
+}
+
+val generateArtifactsIndex by tasks.registering {
     val dirToScan = file("src/main/resources/citeck/artifacts")
-    val indexFile = file("build/resources/main/citeck/artifacts/index.json")
-    println("Dir to scan: " + dirToScan.absolutePath)
-    println("Index file: " + indexFile.absolutePath)
+    val outputFile = generatedResources.resolve("citeck/artifacts/index.json")
+    outputs.file(outputFile)
     doLast {
         val types = dirToScan.walkTopDown()
             .filter { it.isFile && it.name == "meta.json" }
             .map { it.relativeTo(dirToScan).invariantSeparatorsPath }
             .toList()
-        indexFile.parentFile.mkdirs()
-        indexFile.writeText(Json.encodeToString(types))
-        println("Artifacts index content: " + Json.encodeToString(types))
+        outputFile.parentFile.mkdirs()
+        outputFile.writeText(Json.encodeToString(types))
     }
+}
+
+sourceSets.main {
+    resources.srcDir(generatedResources)
 }
 
 tasks {
