@@ -6,12 +6,12 @@ import java.net.URI
 plugins {
     id("org.jetbrains.intellij.platform") version "2.3.0"
     id("com.gradleup.shadow") version "8.3.6"
-    kotlin("jvm") version "1.8.0"
+    kotlin("jvm") version "2.0.21"
     id("java")
 }
 
 group = "ru.citeck.idea"
-version = "3.0.0"
+version = "3.0.1"
 
 kotlin {
     jvmToolchain(17)
@@ -68,6 +68,7 @@ dependencies {
 
     intellijPlatform {
         intellijIdeaUltimate("2023.3.8")
+        //intellijIdeaUltimate("2024.3.3")
 
         bundledPlugins(
             "com.intellij.java",
