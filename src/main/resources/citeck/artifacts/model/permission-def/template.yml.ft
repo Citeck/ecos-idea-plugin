@@ -1,0 +1,7 @@
+---
+id: ${NAME}
+name:
+  en: ${NAME}
+
+appliesToTypes:
+  - emodel/type@case

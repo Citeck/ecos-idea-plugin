@@ -1,0 +1,14 @@
+---
+id: "${NAME}"
+date: "${DATE}T${TIME}Z"
+targetApp: emodel
+# type: mutate
+# config:
+#  records:
+#    - id: emodel/authority-group@
+#      attributes:
+#        id: auditor
+#        name:
+#          ru: Auditor
+#        authorityGroups:
+#          - emodel/authority-group@_orgstruct_home_

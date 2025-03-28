@@ -1,0 +1,10 @@
+---
+id: "${NAME}"
+name: "${NAME}"
+enabled: true
+condition: {}
+notificationType: EMAIL_NOTIFICATION
+order: 1000
+senderType: default
+templates: []
+senderConfig: {}

@@ -37,11 +37,6 @@ public interface EcosApplication extends EcosArtifact {
     String PATH = "/src/main/resources/app/";
 
     @Override
-    default boolean canFetch(PsiFile psiFile) {
-        return false;
-    }
-
-    @Override
     default byte[] getContent(PsiFile psiFile) {
 
         try {
@@ -127,12 +122,6 @@ public interface EcosApplication extends EcosArtifact {
         public FileFilter getFilter() {
             return filter;
         }
-
-        @Override
-        public String getMutationAttribute() {
-            return "_content";
-        }
-
     }
 
     class YAML extends YamlEcosArtifact implements EcosApplication {
@@ -151,12 +140,6 @@ public interface EcosApplication extends EcosArtifact {
         public FileFilter getFilter() {
             return filter;
         }
-
-        @Override
-        public String getMutationAttribute() {
-            return "_content";
-        }
-
     }
 
 }

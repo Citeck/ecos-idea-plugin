@@ -1,0 +1,14 @@
+---
+id: "${NAME}"
+name:
+  en: "${NAME}"
+enabled: true
+reminderType: CERTIFICATE_EXPIRATION
+certificates:
+  - emodel/secret@custom-certificate
+notificationTemplate: notifications/template@default-certificate-expiration-template
+recipients:
+  - emodel/person@admin
+reminderThresholdDurations:
+  - '2d'
+  - '1h'

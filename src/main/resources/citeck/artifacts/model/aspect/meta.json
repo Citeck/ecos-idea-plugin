@@ -1,5 +1,6 @@
 {
   "name": "Aspect",
   "type": "YAML",
-  "sourceId": "emodel/aspect"
+  "sourceId": "emodel/aspect",
+  "docsUrl": "https://citeck-ecos.readthedocs.io/ru/latest/general/Aspects.html"
 }

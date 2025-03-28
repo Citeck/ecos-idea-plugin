@@ -1,0 +1,14 @@
+---
+id: ${NAME}
+name:
+  en: ${NAME}
+
+visibility: PUBLIC
+
+workspaceMembers:
+  - id: managers
+    authority: emodel/authority-group@ECOS_ADMINISTRATORS
+    memberRole: MANAGER
+  - id: users
+    authority: emodel/authority-group@EVERYONE
+    memberRole: USER

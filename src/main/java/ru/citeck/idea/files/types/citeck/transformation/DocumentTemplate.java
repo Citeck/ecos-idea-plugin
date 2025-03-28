@@ -1,22 +1,18 @@
 package ru.citeck.idea.files.types.citeck.transformation;
 
-import ecos.com.fasterxml.jackson210.databind.JsonNode;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.util.io.Compressor;
-import org.jetbrains.annotations.Nullable;
 import ru.citeck.idea.files.types.citeck.YamlEcosArtifact;
 import ru.citeck.idea.files.types.filters.FileFilter;
 import ru.citeck.idea.files.types.filters.FolderNamePatternsFilter;
-import ru.citeck.idea.utils.CiteckZipContentUtil;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -59,17 +55,20 @@ public class DocumentTemplate extends YamlEcosArtifact {
             .map(Matcher::group)
             .map(tName -> psiDirectory.findFile(tName + META_YML));
     }
+/*
 
     @Override
     public String getMimeType() {
         return "application/x-zip-compressed";
     }
+*/
 
     @Override
     public FileFilter getFilter() {
         return filter;
     }
 
+/*
     @Override
     public String getMutationAttribute() {
         return "content";
@@ -84,6 +83,7 @@ public class DocumentTemplate extends YamlEcosArtifact {
     public String getContentAttribute() {
         return "data";
     }
+*/
 
     @Override
     public byte[] getContent(PsiFile psiFile) {
@@ -125,12 +125,12 @@ public class DocumentTemplate extends YamlEcosArtifact {
         return psiFile.getName().endsWith(META_YML);
     }
 
-    @Override
+/*    @Override
     public void applyFetchedContent(PsiFile psiFile, JsonNode content) throws Exception {
         if (psiFile.getParent() == null) {
             throw new RuntimeException("Unable to get parent directory");
         }
         CiteckZipContentUtil.applyBase64ZipContentToDirectory(psiFile.getParent(), content.asText());
-    }
+    }*/
 
 }

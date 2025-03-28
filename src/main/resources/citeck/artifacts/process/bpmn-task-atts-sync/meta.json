@@ -1,0 +1,6 @@
+{
+  "name": "BPMN Task Attributes Sync",
+  "type": "YAML",
+  "sourceId": "eproc/bpmn-task-atts-sync",
+  "docsUrl": "https://citeck-ecos.readthedocs.io/ru/latest/settings_kb/interface/journals/attribute_synchro.html"
+}

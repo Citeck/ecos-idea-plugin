@@ -1,0 +1,49 @@
+---
+id: ${NAME}
+extensionFor: emodel/working-calendar@RU
+from: ${YEAR}-01-01T00:00:00Z
+until: ${YEAR}-12-31T00:00:00Z
+enabled: true
+dates:
+  - date: 2025-01-01
+    type: HOLIDAY
+    until: 2025-01-08
+
+  - date: 2025-03-07
+    type: SHORTDAY
+
+  - date: 2025-04-30
+    type: SHORTDAY
+
+  - date: 2025-05-01
+    type: HOLIDAY
+
+  - date: 2025-05-02
+    type: HOLIDAY
+
+  - date: 2025-05-08
+    type: HOLIDAY
+
+  - date: 2025-05-09
+    type: HOLIDAY
+
+  - date: 2025-06-11
+    type: SHORTDAY
+
+  - date: 2025-06-12
+    type: HOLIDAY
+
+  - date: 2025-06-13
+    type: HOLIDAY
+
+  - date: 2025-11-01
+    type: SHORTDAY
+
+  - date: 2025-11-03
+    type: HOLIDAY
+
+  - date: 2025-11-04
+    type: HOLIDAY
+
+  - date: 2025-12-31
+    type: HOLIDAY

@@ -1,0 +1,8 @@
+---
+id: ${NAME}
+name:
+  en: ${NAME}
+
+url: http://localhost:12345
+
+# credentials: emodel/secret@credentials-ref

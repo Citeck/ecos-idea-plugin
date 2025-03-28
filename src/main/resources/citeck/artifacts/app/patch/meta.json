@@ -1,0 +1,6 @@
+{
+  "name": "Patch",
+  "type": "YAML",
+  "sourceId": "eapps/ecos-patch",
+  "docsUrl": "https://citeck-ecos.readthedocs.io/ru/latest/architecture/patches.html"
+}

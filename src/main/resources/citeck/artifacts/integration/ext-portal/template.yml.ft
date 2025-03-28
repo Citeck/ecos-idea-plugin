@@ -1,0 +1,26 @@
+---
+id: "${NAME}"
+syncEnabled: false
+name:
+  en: "${NAME}"
+exportConfig:
+  endpoint:
+    type: rabbitmq
+    config:
+      queue: export-from-main-portal
+      dataSource: main-rabbitmq
+  defaultInitDate: 2023-08-01T00:00:00Z
+  typesToSync:
+    - typeRef: emodel/type@ecos-contract
+      initDate: null
+      queryPredicate: '{}'
+      filterPredicate: '{}'
+      attributesToSync:
+        - _status
+      customAttributes: {}
+importConfig:
+  endpoint:
+    type: rabbitmq
+    config:
+      queue: export-from-external-portal
+      dataSource: ext-instance-rmq

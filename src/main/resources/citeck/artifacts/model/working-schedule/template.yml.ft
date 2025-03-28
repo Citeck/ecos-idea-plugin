@@ -1,0 +1,16 @@
+---
+id: ${NAME}
+name:
+  en: ${NAME}
+type: weekly
+config:
+  workingDayStart: 09:00
+  workingDayEnd: 17:00
+  workingDayTimeZone: '+03:00'
+  workingDays:
+    - MONDAY
+    - TUESDAY
+    - WEDNESDAY
+    - THURSDAY
+    - FRIDAY
+  workingCalendar: emodel/working-calendar@RU

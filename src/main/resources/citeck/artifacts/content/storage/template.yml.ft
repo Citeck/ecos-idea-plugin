@@ -1,0 +1,8 @@
+---
+id: "${NAME}"
+name:
+  en: "${NAME}"
+type: S3
+config:
+  endpoint: emodel/endpoint@content-storage-s3-endpoint
+  bucketName: "citeck-content"

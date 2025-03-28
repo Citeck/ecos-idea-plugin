@@ -15,16 +15,6 @@ public interface EcosConfiguration extends EcosArtifact {
         return "app/eapps$" + EcosArtifact.super.getId(psiFile);
     }
 
-    @Override
-    default boolean canDeploy(PsiFile psiFile) {
-        return false;
-    }
-
-    @Override
-    default boolean canFetch(PsiFile psiFile) {
-        return false;
-    }
-
     class JSON extends JsonEcosArtifact implements EcosConfiguration {
         public JSON() {
             super(PATH, SOURCE_ID);

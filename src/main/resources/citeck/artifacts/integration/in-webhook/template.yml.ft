@@ -1,0 +1,8 @@
+---
+id: "${NAME}"
+
+actionType: toEvent
+authParameter: auth[application_token]
+
+# token: emodel/secret@webhook-token
+

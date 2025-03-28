@@ -1,0 +1,13 @@
+---
+id: ${NAME}
+enabled: true
+name: ${NAME}
+source: RECORD
+
+attributesSync: []
+#  - id: number
+#    type: NUMBER
+#    ecosTypes:
+#      - typeRef: emodel/type@ecos-contract
+#        attribute: amount
+#        recordExpressionAttribute: ''

@@ -27,7 +27,7 @@ public class Theme extends JsonEcosArtifact {
         this.filter = new FilterAnd(super.getFilter(), new FileNameFilter("meta.json"));
     }
 
-    @Override
+/*    @Override
     public String getContentAttribute() {
         return "data";
     }
@@ -35,7 +35,7 @@ public class Theme extends JsonEcosArtifact {
     @Override
     public String getMutationAttribute() {
         return "_content";
-    }
+    }*/
 
     @Override
     public FileFilter getFilter() {
@@ -77,10 +77,9 @@ public class Theme extends JsonEcosArtifact {
         return byteArrayOutputStream.toByteArray();
     }
 
-    @Override
+/*    @Override
     public boolean canFetch(PsiFile psiFile) {
         return false;
-    }
-
+    }*/
 }
 

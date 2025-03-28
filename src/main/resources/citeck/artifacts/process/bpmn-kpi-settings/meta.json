@@ -1,0 +1,6 @@
+{
+  "name": "BPMN KPI Settings",
+  "type": "YAML",
+  "sourceId": "eproc/bpmn-kpi-settings",
+  "docsUrl": "https://citeck-ecos.readthedocs.io/ru/latest/settings_kb/processes/ecos_bpmn/ecos_bpmn_kpi.html"
+}
