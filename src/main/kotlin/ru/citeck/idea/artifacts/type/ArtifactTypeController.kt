@@ -6,6 +6,8 @@ import ru.citeck.ecos.webapp.api.entity.EntityRef
 
 interface ArtifactTypeController {
 
+    //fun getArtifacts(directory: PsiFile):
+
     fun getArtifactUrl(ref: EntityRef): String {
         return "/v2/dashboard?recordRef=$ref&ws=admin\$workspace"
     }

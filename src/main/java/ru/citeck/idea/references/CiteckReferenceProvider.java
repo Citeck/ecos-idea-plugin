@@ -6,8 +6,8 @@ import com.intellij.util.ProcessingContext;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 
-import ru.citeck.idea.index.IndexKey;
-import ru.citeck.idea.index.IndexesService;
+import ru.citeck.idea.search.index.IndexKey;
+import ru.citeck.idea.search.index.IndexesService;
 
 @RequiredArgsConstructor
 public class CiteckReferenceProvider extends PsiReferenceProvider {

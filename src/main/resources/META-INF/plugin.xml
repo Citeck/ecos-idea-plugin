@@ -19,13 +19,13 @@
 
     <extensions defaultExtensionNs="com.intellij">
 
-        <postStartupActivity implementation="ru.citeck.idea.CiteckPluginProjectInitializer"/>
+        <postStartupActivity implementation="ru.citeck.idea.CiteckPlugin$Initializer"/>
 
         <applicationService serviceImplementation="ru.citeck.idea.files.FileTypeService"/>
-        <projectService serviceImplementation="ru.citeck.idea.index.IndexesService"/>
         <searchScopesProvider implementation="ru.citeck.idea.files.scopes.SearchScopeProvider"/>
-        <fileBasedIndex implementation="ru.citeck.idea.index.CiteckIndex"/>
-        <searchEverywhereContributor implementation="ru.citeck.idea.CiteckSearchEveryWhereContributor$Factory"/>
+        <fileBasedIndex implementation="ru.citeck.idea.search.index.CiteckIndex"/>
+        <searchEverywhereContributor implementation="ru.citeck.idea.search.CiteckSearchEveryWhereContributor$Factory"/>
+
         <psi.referenceContributor implementation="ru.citeck.idea.references.CiteckReferenceProvider$Contributor"
                                   language=""/>
 
@@ -69,7 +69,7 @@
 
     <extensionPoints>
         <extensionPoint dynamic="true" name="fileType" interface="ru.citeck.idea.files.FileType"/>
-        <extensionPoint dynamic="true" name="fileIndexer" interface="ru.citeck.idea.index.EcosFileIndexer"/>
+        <extensionPoint dynamic="true" name="fileIndexer" interface="ru.citeck.idea.search.index.EcosFileIndexer"/>
         <extensionPoint dynamic="true" name="navigateInFileItemsProvider"
                         interface="ru.citeck.idea.files.NavigateInFileItemsProvider"/>
         <extensionPoint dynamic="true" name="psiElementValueResolver" interface="ru.citeck.idea.references.PsiElementValueResolver"/>
@@ -134,9 +134,9 @@
         <searchScope name="Number Template" class="ru.citeck.idea.files.types.citeck.model.NumTemplate"/>
         <searchScope name="Camel DSL" class="ru.citeck.idea.files.types.citeck.integration.CamelDsl"/>
 
-        <fileIndexer implementation="ru.citeck.idea.index.indexers.EcosArtifactIndexer"/>
-        <fileIndexer implementation="ru.citeck.idea.index.indexers.EcosDataTypeIndexer$JSON"/>
-        <fileIndexer implementation="ru.citeck.idea.index.indexers.EcosDataTypeIndexer$YAML"/>
+        <fileIndexer implementation="ru.citeck.idea.search.index.indexers.EcosArtifactIndexer"/>
+        <fileIndexer implementation="ru.citeck.idea.search.index.indexers.EcosDataTypeIndexer$JSON"/>
+        <fileIndexer implementation="ru.citeck.idea.search.index.indexers.EcosDataTypeIndexer$YAML"/>
 
         <navigateInFileItemsProvider
                 implementation="ru.citeck.idea.files.navigateItemsProviders.JsonFormItemsProvider"/>

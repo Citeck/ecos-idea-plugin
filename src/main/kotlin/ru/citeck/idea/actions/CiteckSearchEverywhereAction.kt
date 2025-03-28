@@ -3,7 +3,7 @@ package ru.citeck.idea.actions
 import com.intellij.ide.actions.SearchEverywhereBaseAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.project.DumbService
-import ru.citeck.idea.CiteckSearchEveryWhereContributor
+import ru.citeck.idea.search.CiteckSearchEveryWhereContributor
 
 class CiteckSearchEverywhereAction : SearchEverywhereBaseAction() {
 

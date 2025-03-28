@@ -80,9 +80,11 @@ class CreateArtifactAction(
                 Optional.ofNullable(virtualFile)
             }
             .map { _: VirtualFile? ->
-                PsiManager
-                    .getInstance(project)
-                    .findDirectory(CiteckVirtualFileUtils.getFileByPath(path))
+                CiteckVirtualFileUtils.getFileByPath(path)?.let {
+                    PsiManager
+                        .getInstance(project)
+                        .findDirectory(it)
+                }
             }
             .orElse(null)
 

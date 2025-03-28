@@ -4,7 +4,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReferenceBase;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.citeck.idea.index.IndexValue;
+import ru.citeck.idea.search.index.IndexValue;
 
 public class EcosReference extends PsiReferenceBase<PsiElement> {
 

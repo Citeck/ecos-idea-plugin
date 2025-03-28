@@ -5,9 +5,9 @@ import com.intellij.openapi.project.Project;
 import ru.citeck.idea.files.types.citeck.EcosArtifact;
 import ru.citeck.idea.files.types.citeck.JsonEcosArtifact;
 import ru.citeck.idea.files.types.citeck.YamlEcosArtifact;
-import ru.citeck.idea.index.IndexKey;
-import ru.citeck.idea.index.IndexValue;
-import ru.citeck.idea.index.IndexesService;
+import ru.citeck.idea.search.index.IndexKey;
+import ru.citeck.idea.search.index.IndexValue;
+import ru.citeck.idea.search.index.IndexesService;
 
 import java.util.Collections;
 import java.util.List;

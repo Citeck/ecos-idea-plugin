@@ -18,10 +18,8 @@ kotlin {
 }
 
 subprojects {
-
     group = parent!!.group
     version = parent!!.version
-
 }
 
 repositories {

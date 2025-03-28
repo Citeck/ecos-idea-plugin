@@ -8,8 +8,8 @@ import com.intellij.codeInsight.template.macro.EnumMacro;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 
-import ru.citeck.idea.index.IndexKey;
-import ru.citeck.idea.index.IndexesService;
+import ru.citeck.idea.search.index.IndexKey;
+import ru.citeck.idea.search.index.IndexesService;
 
 import java.util.List;
 
