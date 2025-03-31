@@ -157,7 +157,7 @@
               ],
               "default": "values",
               "description": "Source of values",
-              "x-intellij-html-description": "<p>Source of values for OPTIONS type</p>\n<ul>\n    <li>Can be:</li>\n    <ul>\n        <li>Static list</li>\n    </ul>\n</ul>",
+              "x-intellij-html-description": "<p>(OPTIONS) Source of values</p>\n<ul>\n    <li>Can be:</li>\n    <ul>\n        <li>Static list</li>\n    </ul>\n</ul>",
               "x-intellij-enum-metadata": {
                 "values": {
                   "description": "Static list of values"
@@ -168,7 +168,7 @@
               "type": "array",
               "description": "List of values (for OPTIONS)",
               "minItems": 1,
-              "x-intellij-html-description": "<p>List of predefined values (for OPTIONS)</p>\n<ul>\n    <li>Structure:</li>\n    <ul>\n        <li>value - Internal value</li>\n        <li>label - Display name</li>\n    </ul>\n</ul>",
+              "x-intellij-html-description": "<p>(OPTIONS) List of predefined values</p>\n<ul>\n    <li>Structure:</li>\n    <ul>\n        <li>value - Internal value</li>\n        <li>label - Display name</li>\n    </ul>\n</ul>",
               "items": {
                 "type": "object",
                 "required": [
@@ -179,7 +179,7 @@
                     "type": "string",
                     "pattern": "^[\\w$/-_]+\\w",
                     "description": "Value (for OPTIONS)",
-                    "x-intellij-html-description": "<p>Internal value stored in database (for OPTIONS)</p>\n<ul>\n    <li>Best practices:</li>\n    <ul>\n        <li>Use meaningful IDs</li>\n        <li>Keep consistent format</li>\n        <li>Avoid special chars</li>\n    </ul>\n</ul>"
+                    "x-intellij-html-description": "<p>(OPTIONS) Internal value stored in database</p>\n<ul>\n    <li>Best practices:</li>\n    <ul>\n        <li>Use meaningful IDs</li>\n        <li>Keep consistent format</li>\n        <li>Avoid special chars</li>\n    </ul>\n</ul>"
                   },
                   "label": {
                     "$ref": "#/definitions/nameMlText"
@@ -190,17 +190,17 @@
             "typeRef": {
               "type": "string",
               "description": "Target type reference for ASSOC type (for ASSOC)",
-              "x-intellij-html-description": "<p>Target type reference for association (for ASSOC)</p>\n<ul>\n    <li>References another data type</li>\n    <li>Must be a valid type ref</li>\n</ul>"
+              "x-intellij-html-description": "<p>(ASSOC) Target type reference for association</p>\n<ul>\n    <li>References another data type</li>\n    <li>Must be a valid type ref</li>\n</ul>"
             },
             "child": {
               "type": "boolean",
               "description": "Whether this is a child association (for ASSOC)",
-              "x-intellij-html-description": "<p>Whether this is a child association (for ASSOC)</p>\n<ul>\n    <li>Effects:</li>\n    <ul>\n        <li>true - Creates parent-child relationship</li>\n        <li>false - Regular association</li>\n    </ul>\n    <li>Features:</li>\n    <ul>\n        <li>Child gets automatic _parent association</li>\n        <li>Parent deletion cascades to children</li>\n        <li>Permission inheritance from parent</li>\n    </ul>\n</ul>"
+              "x-intellij-html-description": "<p>(ASSOC) Whether this is a child association</p>\n<ul>\n    <li>Effects:</li>\n    <ul>\n        <li>true - Creates parent-child relationship</li>\n        <li>false - Regular association</li>\n    </ul>\n    <li>Features:</li>\n    <ul>\n        <li>Child gets automatic _parent association</li>\n        <li>Parent deletion cascades to children</li>\n        <li>Permission inheritance from parent</li>\n    </ul>\n</ul>"
             },
             "unique": {
               "type": "boolean",
               "description": "Whether the attribute value must be unique (for TEXT)",
-              "x-intellij-html-description": "<p>Whether the attribute value must be unique (for TEXT)</p>\n<ul>\n    <li>Effects:</li>\n    <ul>\n        <li>true - Enforces uniqueness</li>\n        <li>false - No uniqueness constraint</li>\n    </ul>\n</ul>"
+              "x-intellij-html-description": "<p>(TEXT) Whether the attribute value must be unique</p>\n<ul>\n    <li>Effects:</li>\n    <ul>\n        <li>true - Enforces uniqueness</li>\n        <li>false - No uniqueness constraint</li>\n    </ul>\n</ul>"
             }
           }
         },
@@ -254,12 +254,12 @@
                 "attribute": {
                   "type": "string",
                   "description": "Attribute to compute from (for ATTRIBUTE)",
-                  "x-intellij-html-description": "<p>Source attribute for computation (for ATTRIBUTE)</p>\n\n<p>You can create an alias for a deeply nested attribute. For example: counterparty.idocs:fullOrganizationName?str</p>"
+                  "x-intellij-html-description": "<p>(ATTRIBUTE) Source attribute for computation</p>\n\n<p>You can create an alias for a deeply nested attribute. For example: counterparty.idocs:fullOrganizationName?str</p>"
                 },
                 "fn": {
                   "type": "string",
                   "description": "Function to compute value (for SCRIPT)",
-                  "x-intellij-html-description": "<p>JavaScript function for computation (for SCRIPT)</p>\n<ul>\n    <li>Available objects:</li>\n    <ul>\n        <li>Records - Records service adapted</li>\n        <li>value - Current record</li>\n        <li>log - Logger</li>\n    </ul>\n</ul>",
+                  "x-intellij-html-description": "<p>(SCRIPT) JavaScript function for computation</p>\n<ul>\n    <li>Available objects:</li>\n    <ul>\n        <li>Records - Records service adapted</li>\n        <li>value - Current record</li>\n        <li>log - Logger</li>\n    </ul>\n</ul>",
                   "x-intellij-language-injection": {
                     "language": "JavaScript"
                   }
@@ -267,17 +267,17 @@
                 "value": {
                   "type": "string",
                   "description": "Constant value (for VALUE)",
-                  "x-intellij-html-description": "<p>Constant value for VALUE type computation</p>"
+                  "x-intellij-html-description": "<p>(VALUE) Constant value</p>"
                 },
                 "template": {
                   "type": "string",
                   "description": "Template string with placeholders (for TEMPLATE)",
-                  "x-intellij-html-description": "<p>Template string with ${...} placeholders (for TEMPLATE)</p>\n<ul>\n    <li>Example: ${firstName} ${lastName}</li>\n    <li>Placeholders are replaced with attribute values</li>\n</ul>"
+                  "x-intellij-html-description": "<p>(TEMPLATE) Template string with ${...} placeholders</p>\n<ul>\n    <li>Example: ${firstName} ${lastName}</li>\n    <li>Placeholders are replaced with attribute values</li>\n</ul>"
                 },
                 "numTemplateRef": {
                   "type": "string",
                   "description": "Number template reference (for COUNTER)",
-                  "x-intellij-html-description": "<p>Template reference for the counter (for COUNTER)</p>\n\n<ul>\n    <li>Storing type should be \"ON_CREATE\" for counters</li>\n</ul>"
+                  "x-intellij-html-description": "<p>(COUNTER) Template reference for the counter</p>\n\n<ul>\n    <li>Storing type should be \"ON_CREATE\" for counters</li>\n</ul>"
                 }
               }
             },
@@ -315,11 +315,7 @@
     "id": {
       "type": "string",
       "description": "Unique identifier for the type.",
-      "pattern": "^[\\w$/.-]+\\w$",
-      "examples": [
-        "hr-offices-type",
-        "contract-type"
-      ]
+      "pattern": "^[\\w$/.-]+\\w$"
     },
     "name": {
       "$ref": "#/definitions/nameMlText"
@@ -842,12 +838,12 @@
                       "attribute": {
                         "type": "string",
                         "description": "Attribute path to compute from (for ATTRIBUTE type)",
-                        "x-intellij-html-description": "<p>Attribute path for computation (for ATTRIBUTE type)</p>\n<ul>\n    <li>Example: client.managers[]?str</li>\n</ul>"
+                        "x-intellij-html-description": "<p>(ATTRIBUTE) Attribute path for computation</p>\n<ul>\n    <li>Example: client.managers[]?str</li>\n</ul>"
                       },
                       "fn": {
                         "type": "string",
                         "description": "Function to compute role members (for SCRIPT type)",
-                        "x-intellij-html-description": "<p>JavaScript function for computation (for SCRIPT type)</p>\n<ul>\n    <li>Should return array of:</li>\n    <ul>\n        <li>User IDs or recordRef</li>\n        <li>Group IDs or recordRef</li>\n    </ul>\n    <li>Available objects:</li>\n    <ul>\n        <li>Records - Records API</li>\n        <li>value - Current record</li>\n        <li>log - Logger</li>\n    </ul>\n</ul>",
+                        "x-intellij-html-description": "<p>(SCRIPT) JavaScript function for computation</p>\n<ul>\n    <li>Should return array of:</li>\n    <ul>\n        <li>User IDs or recordRef</li>\n        <li>Group IDs or recordRef</li>\n    </ul>\n    <li>Available objects:</li>\n    <ul>\n        <li>Records - Records API</li>\n        <li>value - Current record</li>\n        <li>log - Logger</li>\n    </ul>\n</ul>",
                         "x-intellij-language-injection": {
                           "language": "JavaScript"
                         }
@@ -855,12 +851,12 @@
                       "value": {
                         "type": "string",
                         "description": "Constant value for the role (for VALUE type)",
-                        "x-intellij-html-description": "<p>Constant value for the role (for VALUE type)</p>\n<ul>\n    <li>Example:</li>\n    <ul>\n        <li>GROUP_administrators</li>\n        <li>ivan.petrov</li>\n    </ul>\n</ul>"
+                        "x-intellij-html-description": "<p>(VALUE) Constant value for the role</p>\n<ul>\n    <li>Example:</li>\n    <ul>\n        <li>GROUP_administrators</li>\n        <li>ivan.petrov</li>\n    </ul>\n</ul>"
                       },
                       "decisionRef": {
                         "type": "string",
                         "description": "Reference to DMN table (for DMN type)",
-                        "x-intellij-html-description": "<p>Reference to DMN table (for DMN type)</p>\n<ul>\n    <li>Example:</li>\n    <ul>\n        <li>eproc/dmn-decision-latest@Decision_awesomeDecision</li>\n    </ul>\n</ul>"
+                        "x-intellij-html-description": "<p>(DMN) Reference to DMN table</p>\n<ul>\n    <li>Example:</li>\n    <ul>\n        <li>eproc/dmn-decision-latest@Decision_awesomeDecision</li>\n    </ul>\n</ul>"
                       }
                     }
                   }
