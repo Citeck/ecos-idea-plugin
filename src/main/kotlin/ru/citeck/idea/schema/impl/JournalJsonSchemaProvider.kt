@@ -16,7 +16,7 @@ class JournalJsonSchemaProvider(private val project: Project) : JsonSchemaFilePr
         return meta.id == "ui/journal"
     }
 
-    override fun getName(): String = "ECOS Journal Schema"
+    override fun getName(): String = "Citeck Journal Schema"
 
     override fun getSchemaFile(): VirtualFile? {
         return JsonSchemaProviderFactory.getResourceFile(
@@ -28,4 +28,4 @@ class JournalJsonSchemaProvider(private val project: Project) : JsonSchemaFilePr
     override fun getSchemaType(): SchemaType = SchemaType.schema
 
     override fun getSchemaVersion(): JsonSchemaVersion = JsonSchemaVersion.SCHEMA_7
-} 
+}

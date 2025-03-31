@@ -16,7 +16,7 @@ class ModelTypeJsonSchemaProvider(private val project: Project) : JsonSchemaFile
         return meta.id == "model/type"
     }
 
-    override fun getName(): String = "ECOS Model Type Schema"
+    override fun getName(): String = "Citeck Model Type Schema"
 
     override fun getSchemaFile(): VirtualFile? {
         return JsonSchemaProviderFactory.getResourceFile(
