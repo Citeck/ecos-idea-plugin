@@ -1,0 +1,977 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ECOS Model Type Schema",
+  "description": "Schema for ECOS model/type YAML files",
+  "x-intellij-html-description": "<p>Schema for Citeck model/type files</p>\n<ul>\n    <li>Used to define data types in Citeck</li>\n    <li>Supports inheritance from parent types</li>\n    <li>Configures forms, journals, roles, statuses and more</li>\n</ul>",
+  "type": "object",
+  "required": [
+    "id"
+  ],
+  "definitions": {
+    "nameMlText": {
+      "oneOf": [
+        {
+          "type": "string",
+          "description": "Name"
+        },
+        {
+          "type": "object",
+          "description": "Multilingual name",
+          "minProperties": 1,
+          "properties": {
+            "ru": {
+              "type": "string",
+              "description": "Russian name"
+            },
+            "en": {
+              "type": "string",
+              "description": "English name"
+            }
+          }
+        }
+      ]
+    },
+    "descriptionMlText": {
+      "oneOf": [
+        {
+          "type": "string",
+          "description": "Description"
+        },
+        {
+          "type": "object",
+          "description": "Multilingual description",
+          "minProperties": 1,
+          "properties": {
+            "ru": {
+              "type": "string",
+              "description": "Russian description"
+            },
+            "en": {
+              "type": "string",
+              "description": "English description"
+            }
+          }
+        }
+      ]
+    },
+    "modelAttributesItems": {
+      "type": "object",
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Attribute identifier (camelCase)",
+          "x-intellij-html-description": "<p>Attribute identifier (camelCase).</p>\n<ul>\n    <li>Rules:</li>\n    <ul>\n        <li>Start with lowercase</li>\n        <li>Use camelCase for multi-word names</li>\n        <li>No special chars</li>\n    </ul>\n    <li>Examples:</li>\n    <ul>\n        <li>firstName</li>\n        <li>documentNumber</li>\n        <li>creationDate</li>\n    </ul>\n</ul>",
+          "pattern": "^[\\w$/_-]+\\w$"
+        },
+        "name": {
+          "$ref": "#/definitions/nameMlText"
+        },
+        "type": {
+          "type": "string",
+          "description": "Attribute type",
+          "enum": [
+            "TEXT",
+            "MLTEXT",
+            "NUMBER",
+            "BOOLEAN",
+            "DATE",
+            "DATETIME",
+            "CONTENT",
+            "JSON",
+            "BINARY",
+            "ASSOC",
+            "PERSON",
+            "AUTHORITY",
+            "AUTHORITY_GROUP",
+            "OPTIONS",
+            "GROUP"
+          ],
+          "x-intellij-html-description": "<p>Attribute type</p>\n<ul>\n    <li>Basic types:</li>\n    <ul>\n        <li><b>TEXT</b> - Plain text value</li>\n        <li><b>MLTEXT</b> - Multilingual text value</li>\n        <li><b>NUMBER</b> - Numeric value</li>\n        <li><b>BOOLEAN</b> - Boolean value (true/false)</li>\n    </ul>\n    <li>Date/Time:</li>\n    <ul>\n        <li><b>DATE</b> - Date without time</li>\n        <li><b>DATETIME</b> - Date and time</li>\n    </ul>\n    <li>Complex types:</li>\n    <ul>\n        <li><b>CONTENT</b> - Files and content</li>\n        <li><b>JSON</b> - Structured data</li>\n        <li><b>BINARY</b> - Binary data</li>\n    </ul>\n    <li>References:</li>\n    <ul>\n        <li><b>ASSOC</b> - Entity associations</li>\n        <li><b>PERSON</b> - Person references</li>\n        <li><b>AUTHORITY</b> - Users and groups</li>\n        <li><b>AUTHORITY_GROUP</b> - Groups only</li>\n    </ul>\n    <li>Special:</li>\n    <ul>\n        <li><b>OPTIONS</b> - Predefined values</li>\n    </ul>\n</ul>",
+          "x-intellij-enum-metadata": {
+            "TEXT": {
+              "description": "Text"
+            },
+            "MLTEXT": {
+              "description": "Multilingual text. Content changes depending on the selected localization."
+            },
+            "NUMBER": {
+              "description": "Number"
+            },
+            "BOOLEAN": {
+              "description": "Boolean value yes/no"
+            },
+            "DATE": {
+              "description": "Date"
+            },
+            "DATETIME": {
+              "description": "Date with time"
+            },
+            "CONTENT": {
+              "description": "Content. Fields of this type are typically used for storing large volumes of data. For example - document content."
+            },
+            "JSON": {
+              "description": "Text-based, structured data format."
+            },
+            "BINARY": {
+              "description": "Byte array. Similar to content, but much simpler. Not recommended to store more than 1MB of data here."
+            },
+            "ASSOC": {
+              "description": "Association with another entity."
+            },
+            "PERSON": {
+              "description": "User from organization structure"
+            },
+            "AUTHORITY": {
+              "description": "User or group. This is essentially the base type for both users and groups"
+            },
+            "AUTHORITY_GROUP": {
+              "description": "Groups only"
+            },
+            "OPTIONS": {
+              "description": "Ability to configure attribute constraints as a list of possible values."
+            }
+          }
+        },
+        "multiple": {
+          "type": "boolean",
+          "description": "Whether the attribute can have multiple values",
+          "x-intellij-html-description": "<p>Whether the attribute can have multiple values</p>\n<ul>\n    <li>Effects:</li>\n    <ul>\n        <li>true - Allows multiple selections</li>\n        <li>false - Single value only</li>\n    </ul>\n</ul>"
+        },
+        "mandatory": {
+          "type": "boolean",
+          "description": "Whether the attribute is mandatory",
+          "x-intellij-html-description": "<p>Whether the attribute is mandatory</p>\n<ul>\n    <li>Effects:</li>\n    <ul>\n        <li>true - Value required</li>\n        <li>false - Optional field</li>\n    </ul>\n</ul>"
+        },
+        "config": {
+          "type": "object",
+          "description": "Attribute configuration",
+          "x-intellij-html-description": "<p>Attribute configuration</p>\n<ul>\n    <li>Options type:</li>\n    <ul>\n        <li>source - Values source</li>\n        <li>values - Predefined list</li>\n        <li>labels - Display names</li>\n    </ul>\n    <li>Association type:</li>\n    <ul>\n        <li>typeRef - Target type</li>\n        <li>child - Child association</li>\n    </ul>\n</ul>",
+          "properties": {
+            "source": {
+              "type": "string",
+              "enum": [
+                "values"
+              ],
+              "default": "values",
+              "description": "Source of values",
+              "x-intellij-html-description": "<p>Source of values for OPTIONS type</p>\n<ul>\n    <li>Can be:</li>\n    <ul>\n        <li>Static list</li>\n    </ul>\n</ul>",
+              "x-intellij-enum-metadata": {
+                "values": {
+                  "description": "Static list of values"
+                }
+              }
+            },
+            "values": {
+              "type": "array",
+              "description": "List of values (for OPTIONS)",
+              "minItems": 1,
+              "x-intellij-html-description": "<p>List of predefined values (for OPTIONS)</p>\n<ul>\n    <li>Structure:</li>\n    <ul>\n        <li>value - Internal value</li>\n        <li>label - Display name</li>\n    </ul>\n</ul>",
+              "items": {
+                "type": "object",
+                "required": [
+                  "value"
+                ],
+                "properties": {
+                  "value": {
+                    "type": "string",
+                    "pattern": "^[\\w$/-_]+\\w",
+                    "description": "Value (for OPTIONS)",
+                    "x-intellij-html-description": "<p>Internal value stored in database (for OPTIONS)</p>\n<ul>\n    <li>Best practices:</li>\n    <ul>\n        <li>Use meaningful IDs</li>\n        <li>Keep consistent format</li>\n        <li>Avoid special chars</li>\n    </ul>\n</ul>"
+                  },
+                  "label": {
+                    "$ref": "#/definitions/nameMlText"
+                  }
+                }
+              }
+            },
+            "typeRef": {
+              "type": "string",
+              "description": "Target type reference for ASSOC type (for ASSOC)",
+              "x-intellij-html-description": "<p>Target type reference for association (for ASSOC)</p>\n<ul>\n    <li>References another data type</li>\n    <li>Must be a valid type ref</li>\n</ul>"
+            },
+            "child": {
+              "type": "boolean",
+              "description": "Whether this is a child association (for ASSOC)",
+              "x-intellij-html-description": "<p>Whether this is a child association (for ASSOC)</p>\n<ul>\n    <li>Effects:</li>\n    <ul>\n        <li>true - Creates parent-child relationship</li>\n        <li>false - Regular association</li>\n    </ul>\n    <li>Features:</li>\n    <ul>\n        <li>Child gets automatic _parent association</li>\n        <li>Parent deletion cascades to children</li>\n        <li>Permission inheritance from parent</li>\n    </ul>\n</ul>"
+            },
+            "unique": {
+              "type": "boolean",
+              "description": "Whether the attribute value must be unique (for TEXT)",
+              "x-intellij-html-description": "<p>Whether the attribute value must be unique (for TEXT)</p>\n<ul>\n    <li>Effects:</li>\n    <ul>\n        <li>true - Enforces uniqueness</li>\n        <li>false - No uniqueness constraint</li>\n    </ul>\n</ul>"
+            }
+          }
+        },
+        "computed": {
+          "type": "object",
+          "required": [
+            "type",
+            "config"
+          ],
+          "description": "Computed attribute configuration",
+          "x-intellij-html-description": "<p>Computed attribute configuration</p>\n<ul>\n    <li>Types:</li>\n    <ul>\n        <li>NONE - Not computed</li>\n        <li>ATTRIBUTE - From other field</li>\n        <li>SCRIPT - JavaScript logic</li>\n        <li>VALUE - Constant value</li>\n        <li>COUNTER - Generated value from counter</li>\n        <li>TEMPLATE - Template string with placeholders</li>\n    </ul>\n    <li>Storage:</li>\n    <ul>\n        <li>NONE - Calculate on read</li>\n        <li>ON_CREATE - Store on create</li>\n        <li>ON_EMPTY - Store only if saved value is absent</li>\n        <li>ON_MUTATE - Store on each mutation</li>\n    </ul>\n</ul>",
+          "properties": {
+            "type": {
+              "type": "string",
+              "description": "Type of computation",
+              "enum": [
+                "NONE",
+                "ATTRIBUTE",
+                "SCRIPT",
+                "VALUE",
+                "COUNTER",
+                "TEMPLATE"
+              ],
+              "x-intellij-html-description": "<p>Type of computation</p>\n<ul>\n    <li>Available types:</li>\n    <ul>\n        <li><b>NONE</b> - Not computed</li>\n        <li><b>ATTRIBUTE</b> - Copy from other field</li>\n        <li><b>SCRIPT</b> - JavaScript computation</li>\n        <li><b>VALUE</b> - Constant value</li>\n        <li><b>COUNTER</b> - Generated value from counter. Storing type should be \"ON_CREATE\" for counters</li>\n        <li><b>TEMPLATE</b> - Template string with placeholders</li>\n    </ul>\n</ul>",
+              "x-intellij-enum-metadata": {
+                "NONE": {
+                  "description": "Not computed attribute"
+                },
+                "ATTRIBUTE": {
+                  "description": "Computing attribute based on another attribute. You can create an alias for a deeply nested attribute. For example: counterparty.idocs:fullOrganizationName?str"
+                },
+                "SCRIPT": {
+                  "description": "Computing attribute based on javascript"
+                },
+                "VALUE": {
+                  "description": "Constant value"
+                },
+                "COUNTER": {
+                  "description": "Value is generated by counter when document is created"
+                },
+                "TEMPLATE": {
+                  "description": "Template string with support for attribute insertions ${...}"
+                }
+              }
+            },
+            "config": {
+              "type": "object",
+              "description": "Computation configuration",
+              "x-intellij-html-description": "<p>Configuration for computed value</p>\n<ul>\n    <li>For ATTRIBUTE:</li>\n    <ul>\n        <li>attribute - Source field</li>\n    </ul>\n    <li>For SCRIPT:</li>\n    <ul>\n        <li>fn - JavaScript function</li>\n        <li>Available context</li>\n        <li>Helper methods</li>\n    </ul>\n    <li>For VALUE:</li>\n    <ul>\n        <li>value - Constant value</li>\n    </ul>\n    <li>For TEMPLATE:</li>\n    <ul>\n        <li>template - Template string with ${...} placeholders</li>\n    </ul>\n    <li>For COUNTER:</li>\n    <ul>\n        <li>numTemplateRef - Template reference for the counter</li>\n    </ul>\n</ul>",
+              "properties": {
+                "attribute": {
+                  "type": "string",
+                  "description": "Attribute to compute from (for ATTRIBUTE)",
+                  "x-intellij-html-description": "<p>Source attribute for computation (for ATTRIBUTE)</p>\n\n<p>You can create an alias for a deeply nested attribute. For example: counterparty.idocs:fullOrganizationName?str</p>"
+                },
+                "fn": {
+                  "type": "string",
+                  "description": "Function to compute value (for SCRIPT)",
+                  "x-intellij-html-description": "<p>JavaScript function for computation (for SCRIPT)</p>\n<ul>\n    <li>Available objects:</li>\n    <ul>\n        <li>Records - Records service adapted</li>\n        <li>value - Current record</li>\n        <li>log - Logger</li>\n    </ul>\n</ul>",
+                  "x-intellij-language-injection": {
+                    "language": "JavaScript"
+                  }
+                },
+                "value": {
+                  "type": "string",
+                  "description": "Constant value (for VALUE)",
+                  "x-intellij-html-description": "<p>Constant value for VALUE type computation</p>"
+                },
+                "template": {
+                  "type": "string",
+                  "description": "Template string with placeholders (for TEMPLATE)",
+                  "x-intellij-html-description": "<p>Template string with ${...} placeholders (for TEMPLATE)</p>\n<ul>\n    <li>Example: ${firstName} ${lastName}</li>\n    <li>Placeholders are replaced with attribute values</li>\n</ul>"
+                },
+                "numTemplateRef": {
+                  "type": "string",
+                  "description": "Number template reference (for COUNTER)",
+                  "x-intellij-html-description": "<p>Template reference for the counter (for COUNTER)</p>\n\n<ul>\n    <li>Storing type should be \"ON_CREATE\" for counters</li>\n</ul>"
+                }
+              }
+            },
+            "storingType": {
+              "type": "string",
+              "description": "Type of storing",
+              "enum": [
+                "NONE",
+                "ON_CREATE",
+                "ON_EMPTY",
+                "ON_MUTATE"
+              ],
+              "x-intellij-html-description": "<p>When to store computed value</p>\n<ul>\n    <li>Options:</li>\n    <ul>\n        <li><b>NONE</b> - Calculate on each read</li>\n        <li><b>ON_CREATE</b> - Calculate and store on creation</li>\n        <li><b>ON_EMPTY</b> - Store only if saved value is absent</li>\n        <li><b>ON_MUTATE</b> - Store on each mutation</li>\n    </ul>\n</ul>",
+              "x-intellij-enum-metadata": {
+                "NONE": {
+                  "description": "No storage needed. Value is recalculated on each access"
+                },
+                "ON_EMPTY": {
+                  "description": "Store calculated value only if the saved value is absent"
+                },
+                "ON_CREATE": {
+                  "description": "Store calculated value only after creation"
+                },
+                "ON_MUTATE": {
+                  "description": "Store calculated value on each mutation"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the type.",
+      "pattern": "^[\\w$/.-]+\\w$",
+      "examples": [
+        "hr-offices-type",
+        "contract-type"
+      ]
+    },
+    "name": {
+      "$ref": "#/definitions/nameMlText"
+    },
+    "description": {
+      "$ref": "#/definitions/descriptionMlText"
+    },
+    "system": {
+      "type": "boolean",
+      "description": "Whether this is a system type",
+      "default": false,
+      "x-intellij-html-description": "<p>Whether this is a system type</p>\n<ul>\n    <li>Default: false</li>\n    <li>System types are hidden by default in the admin journal</li>\n    <li>System types are used for core platform functionality</li>\n</ul>"
+    },
+    "sourceId": {
+      "type": "string",
+      "pattern": "^[\\w$/.-]+\\w$",
+      "description": "Identifier of the data source",
+      "x-intellij-html-description": "<p>Identifier of the data source. Determined by the following rules:</p>\n<ul>\n    <li>If explicitly set - used as is</li>\n    <li>If not set:</li>\n    <ul>\n        <li>For DEFAULT storage: inherits parent type's sourceId</li>\n        <li>For ECOS_MODEL: calculated from type identifier</li>\n        <li>For ALFRESCO: prefixed with 'alfresco/'</li>\n    </ul>\n    <li>Examples:</li>\n    <ul>\n        <li>alfresco/ - for Alfresco storage</li>\n        <li>hr-offices - for custom storage</li>\n    </ul>\n</ul>"
+    },
+    "storageType": {
+      "type": "string",
+      "description": "Type of storage",
+      "enum": [
+        "DEFAULT",
+        "ECOS_MODEL",
+        "ALFRESCO"
+      ],
+      "default": "DEFAULT",
+      "x-intellij-html-description": "<p>Type of storage</p>\n<ul>\n    <li><b>DEFAULT</b> - Use parent type's storage configuration</li>\n    <li><b>ECOS_MODEL</b> - Store in ECOS Model database</li>\n    <li><b>ALFRESCO</b> - Store in Alfresco repository</li>\n</ul>   ",
+      "x-intellij-enum-metadata": {
+        "DEFAULT": {
+          "description": "Use parent type's storage configuration"
+        },
+        "ECOS_MODEL": {
+          "description": "Store in ECOS Model database"
+        },
+        "ALFRESCO": {
+          "description": "Store in Alfresco repository"
+        }
+      }
+    },
+    "parentRef": {
+      "type": "string",
+      "description": "Reference to parent type",
+      "examples": [
+        "emodel/type@custom-parent-type"
+      ],
+      "anyOf": [
+        {
+          "enum": [
+            "emodel/type@case",
+            "emodel/type@data-list",
+            "emodel/type@document",
+            "emodel/type@doclib-file",
+            "emodel/type@publication"
+          ]
+        },
+        {
+          "pattern": ".*"
+        }
+      ],
+      "x-intellij-html-description": "<p>Reference to parent type. Not inherited.</p>\n<ul>\n    <li>Base types:</li>\n    <ul>\n        <li>emodel/type@case - Case management</li>\n        <li>emodel/type@data-list - Simple data lists</li>\n        <li>emodel/type@document - Document type</li>\n        <li>emodel/type@doclib-file\" - Document library file</li>\n        <lI>emodel/type@publication - Publication type</li>\n    </ul>\n    <li>Inheritance includes:</li>\n    <ul>\n        <li>Attributes</li>\n        <li>Roles</li>\n        <li>Statuses</li>\n        <li>Actions (if inheritActions=true)</li>\n        <li>Form (if inheritForm=true)</li>\n        <li>other...</li>\n    </ul>\n</ul>"
+    },
+    "formRef": {
+      "type": "string",
+      "description": "Reference to form",
+      "default": "uiserv/form@DEFAULT_FORM",
+      "examples": [
+        "uiserv/form@hr-offices-form",
+        "uiserv/form@DEFAULT_FORM"
+      ],
+      "x-intellij-html-description": "<p>Reference to form. Inherited if inheritForm=true.</p>\n<ul>\n    <li>Special values:</li>\n    <ul>\n        <li>uiserv/form@DEFAULT_FORM - Auto-generated form</li>\n        <li>Empty - Inherit from parent if inheritForm=true</li>\n    </ul>\n    <li>Auto-generation:</li>\n    <ul>\n        <li>If DEFAULT_FORM used, becomes 'uiserv/form@type$' + type id</li>\n        <li>Generated form includes all type attributes</li>\n    </ul>\n</ul>"
+    },
+    "journalRef": {
+      "type": "string",
+      "description": "Reference to journal",
+      "default": "uiserv/journal@DEFAULT_JOURNAL",
+      "examples": [
+        "uiserv/journal@hr-offices-journal",
+        "uiserv/journal@DEFAULT_JOURNAL"
+      ],
+      "x-intellij-html-description": "<p>Reference to journal.</p>\n<ul>\n    <li>Special values:</li>\n    <ul>\n        <li>uiserv/journal@DEFAULT_JOURNAL - Auto-generated journal</li>\n    </ul>\n    <li>Auto-generation:</li>\n    <ul>\n        <li>If DEFAULT_JOURNAL used, becomes 'uiserv/journal@type$' + type id</li>\n        <li>Generated journal includes all type attributes</li>\n    </ul>\n    <li>Examples:</li>\n    <ul>\n        <li>uiserv/journal@hr-offices-journal - Custom journal</li>\n        <li>uiserv/journal@DEFAULT_JOURNAL - Auto-generated</li>\n    </ul>\n</ul>"
+    },
+    "boardRef": {
+      "type": "string",
+      "description": "Reference to kanban board",
+      "examples": [
+        "uiserv/board@hr-offices-board"
+      ],
+      "x-intellij-html-description": "<p>Reference to kanban board.</p>\n<ul>\n    <li>Used for board view of records</li>\n    <li>Example: uiserv/board@hr-offices-board</li>\n</ul>"
+    },
+    "dashboardType": {
+      "type": "string",
+      "description": "Type of dashboard",
+      "anyOf": [
+        {
+          "enum": [
+            "case-details",
+            "profile-details",
+            "site-details",
+            "publication-details",
+            "wiki"
+          ]
+        },
+        {
+          "pattern": ".*"
+        }
+      ],
+      "x-intellij-html-description": "<p>Type of dashboard</p>\n<ul>\n    <li>Common values:</li>\n    <ul>\n        <li>case-details - For case types</li>\n        <li>profile-details - User profile</li>\n        <li>site-details</li>\n        <li>publication-details</li>\n        <li>wiki</li>\n    </ul>\n    <li>Determines:</li>\n    <ul>\n        <li>Layout of record page</li>\n        <li>Available widgets</li>\n        <li>Default widget configuration</li>\n    </ul>\n</ul>"
+    },
+    "defaultStatus": {
+      "type": "string",
+      "description": "Default status for the type",
+      "x-intellij-html-description": "<p>Default status for the type</p>\n<p>Record will be created with this status</p>"
+    },
+    "dispNameTemplate": {
+      "oneOf": [
+        {
+          "type": "string",
+          "description": "Display name template as a string",
+          "examples": [
+            "${counter} - ${title}"
+          ],
+          "x-intellij-html-description": "<p>Display name template as a string.</p>\n<ul>\n    <li>You can use record attributes by record expressions like ${attribute}</li>\n    <li>Examples:</li>\n    <ul>\n        <li>${counter} - ${title} - Number and title</li>\n        <li>Contract #${number} - Contract with number</li>\n    </ul>\n</ul>"
+        },
+        {
+          "type": "object",
+          "description": "Multilingual display name template",
+          "minProperties": 1,
+          "properties": {
+            "ru": {
+              "type": "string",
+              "description": "Russian display name template",
+              "examples": [
+                "${counter} - ${title}"
+              ],
+              "x-intellij-html-description": "<p>Russian display name template</p><ul><li>Supports expressions using record data</li><li>Example: Договор №${number} от ${date}</li></ul>"
+            },
+            "en": {
+              "type": "string",
+              "description": "English display name template",
+              "examples": [
+                "${counter} - ${title}"
+              ],
+              "x-intellij-html-description": "<p>English display name template</p><ul><li>Supports expressions using record data</li><li>Example: Contract #${number} dated ${date}</li></ul>"
+            }
+          }
+        }
+      ],
+      "description": "Template for display name",
+      "x-intellij-html-description": "<p>Template for display name.</p>\n<ul>\n    <li>You can use record attributes by record expressions like ${attribute}.</li>\n    <li>Can be:</li>\n    <ul>\n        <li>Single string template</li>\n        <li>Multilingual object with templates</li>\n    </ul>\n</ul>"
+    },
+    "inheritForm": {
+      "type": "boolean",
+      "description": "Whether to inherit form from parent type",
+      "x-intellij-html-description": "<p>Whether to inherit form from parent type.</p>\n<ul>\n    <li>Effects:</li>\n    <ul>\n        <li>If true and formRef is empty - use parent's form</li>\n        <li>If false - must specify own form</li>\n    </ul>\n    <li>Use cases:</li>\n    <ul>\n        <li>True - Reuse parent form</li>\n        <li>False - Create custom form</li>\n    </ul>\n</ul>"
+    },
+    "inheritActions": {
+      "type": "boolean",
+      "description": "Whether to inherit actions from parent type",
+      "x-intellij-html-description": "<p>Whether to inherit actions from parent type.</p>\n<ul>\n    <li>Effects:</li>\n    <ul>\n        <li>If true - merge with parent actions</li>\n        <li>If false - use only own actions</li>\n    </ul>\n</ul>"
+    },
+    "inheritNumTemplate": {
+      "type": "boolean",
+      "description": "Whether to inherit number template from parent type",
+      "x-intellij-html-description": "<p>Whether to inherit number template from parent type.</p>\n<ul>\n    <li>Effects:</li>\n    <ul>\n        <li>If true and numTemplateRef is empty - use parent's template</li>\n        <li>If false - must specify own template</li>\n    </ul>\n    <li>Use cases:</li>\n    <ul>\n        <li>True - Reuse parent numbering</li>\n        <li>False - Custom numbering scheme</li>\n    </ul>\n</ul>"
+    },
+    "numTemplateRef": {
+      "type": "string",
+      "description": "Reference to number template",
+      "examples": [
+        "uiserv/number-template@hr-offices-template"
+      ],
+      "x-intellij-html-description": "<p>Reference to number template. Inherited if empty AND inheritNumTemplate=true.</p><ul><li>Configures:</li><ul><li>Number format</li><li>Counter rules</li><li>Prefix/suffix</li></ul><li>Examples:</li><ul><li>HR-{counter} - HR documents</li><li>CONTRACT-{yyyy}-{counter} - Contracts with year</li></ul></ul>"
+    },
+    "defaultCreateVariant": {
+      "type": [
+        "boolean"
+      ],
+      "description": "Whether to generate default create variant"
+    },
+    "createVariantsForChildTypes": {
+      "type": "boolean",
+      "description": "Whether to add child types' create variants",
+      "x-intellij-html-description": "<p>Whether to add child types' create variants. Not inherited.</p>\n<ul>\n    <li>Default: false</li>\n    <li>When true:</li>\n    <ul>\n        <li>Includes all child type variants</li>\n        <li>Allows creating child records</li>\n        <li>Useful for hierarchical types</li>\n    </ul>\n</ul>"
+    },
+    "queryPermsPolicy": {
+      "type": "string",
+      "description": "Permission policy for queries. Inherited from parent if current value is DEFAULT.",
+      "enum": [
+        "PUBLIC",
+        "OWN",
+        "PARENT",
+        "NONE",
+        "DEFAULT"
+      ],
+      "default": "DEFAULT",
+      "x-intellij-html-description": "<p>Permission policy for queries</p>\n<ul>\n    <li>Inherited from parent if current value is DEFAULT</li>\n    <li><b>PUBLIC</b> - Don't check permissions during search</li>\n    <li><b>OWN</b> - Check record's own permissions</li>\n    <li><b>PARENT</b> - Check parent record's permissions</li>\n    <li><b>NONE</b> - Query is disabled</li>\n    <li><b>DEFAULT</b> - Inherit from parent or data source</li>\n</ul>",
+      "x-intellij-enum-metadata": {
+        "PUBLIC": {
+          "description": "Don't check permissions during search"
+        },
+        "OWN": {
+          "description": "Check record's own permissions"
+        },
+        "PARENT": {
+          "description": "Check parent record's permissions"
+        },
+        "NONE": {
+          "description": "Query is disabled"
+        },
+        "DEFAULT": {
+          "description": "Inherit from parent or data source"
+        }
+      }
+    },
+    "workspaceScope": {
+      "type": "string",
+      "description": "Workspace visibility",
+      "enum": [
+        "PUBLIC",
+        "PRIVATE",
+        "DEFAULT"
+      ],
+      "x-intellij-html-description": "<p>Workspace visibility</p>\n<ul>\n    <li><b>PUBLIC</b> - Visible in public workspace. Users can join the workspace. Data type instances with this visibility are available to all users according to their permissions, regardless of the workspace in which they were created. That is, users can see and interact with these objects in any open workspace.</li>\n    <li><b>PRIVATE</b> - Visible in private workspace. Managers can add users to the workspace. Objects with private visibility are only accessible within the specific workspace in which they were created. This provides data isolation between different workspaces.</li>\n    <li><b>DEFAULT</b> - Use default workspace visibility. This is a space that is created automatically when the system is deployed. It is selected as the main workspace and contains the functional modules available to the user.</li>\n</ul>",
+      "x-intellij-enum-metadata": {
+        "PUBLIC": {
+          "description": "Visible in public workspace"
+        },
+        "PRIVATE": {
+          "description": "Visible in private workspace"
+        },
+        "DEFAULT": {
+          "description": "Use default workspace visibility"
+        }
+      }
+    },
+    "defaultWorkspace": {
+      "type": "string",
+      "description": "Default workspace for the type",
+      "x-intellij-html-description": "<p>Default workspace for the type</p>\n<ul>\n    <li>Specifies which workspace will be used by default when creating a new record of this type</li>\n</ul>"
+    },
+    "postCreateActionRef": {
+      "type": "string",
+      "description": "Reference to action after creation",
+      "anyOf": [
+        {
+          "enum": [
+            "uiserv/action@none"
+          ]
+        },
+        {
+          "pattern": ".*"
+        }
+      ],
+      "x-intellij-html-description": "<p>Reference to action after creation</p>\n<li>\n    You can set <i>uiserv/action@none</i> to prevent redirection to the created record\n</li>"
+    },
+    "configFormRef": {
+      "type": "string",
+      "description": "Reference for additional configuration form"
+    },
+    "actions": {
+      "type": "array",
+      "description": "List of actions. Inherited from parent if not specified AND inheritActions=true.",
+      "items": {
+        "type": "string",
+        "anyOf": [
+          {
+            "enum": [
+              "uiserv/action@view-dashboard",
+              "uiserv/action@view-dashboard-in-background",
+              "uiserv/action@edit",
+              "uiserv/action@edit-in-onlyoffice-tfm",
+              "uiserv/action@edit-json",
+              "uiserv/action@delete",
+              "uiserv/action@upload-new-version",
+              "uiserv/action@content-download",
+              "uiserv/action@download-text-yml",
+              "uiserv/action@tasks-actions",
+              "uiserv/action@print"
+            ]
+          },
+          {
+            "pattern": ".*"
+          }
+        ]
+      },
+      "x-intellij-html-description": "<p>List of actions</p>\n<ul>\n    <li>Inherited if empty AND inheritActions=true</li>\n    <li>Available in widget and journal</li>\n</ul>"
+    },
+    "assignablePerms": {
+      "type": "array",
+      "description": "List of assignable permissions. Merged with parent type's assignable permissions.",
+      "items": {
+        "type": "string"
+      }
+    },
+    "createVariants": {
+      "type": "array",
+      "description": "List of create variants. If defaultCreateVariant=true, a variant with id DEFAULT is added. If createVariantsForChildTypes=true, child types' create variants are added.",
+      "items": {
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Variant identifier",
+            "pattern": "^[\\w$/.-]+\\w$"
+          },
+          "name": {
+            "$ref": "#/definitions/nameMlText"
+          },
+          "formRef": {
+            "type": "string",
+            "description": "Reference to form for this variant"
+          },
+          "allowedFor": {
+            "type": "array",
+            "description": "List of authorities allowed to use this variant",
+            "x-intellij-html-description": "<p>List of authorities allowed to use this variant</p>\nFor example:\n<ul>\n    <li>GROUP_company</li>\n    <li>ivan.petrov</li>\n</ul>",
+            "items": {
+              "type": "string"
+            }
+          },
+          "attributes": {
+            "type": "object",
+            "description": "Additional attributes for the create  mutation",
+            "x-intellij-html-description": "<p>Additional attributes for the create mutation</p>\n<ul>\n    <li>\n        If the attribute is present on the creation form, it will be filled with the specified value\n    </li>\n    <li>\n        If the attribute is not present on the form, it will be sent in the mutate request\n    </li>\n</ul>\n\n<p>Example:</p>\n<pre><code>type: S3</code></pre>\n    "
+          },
+          "formOptions": {
+            "type": "object",
+            "description": "Additional options for the create form"
+          },
+          "postActionRef": {
+            "type": "string",
+            "description": "Reference to action after creation with this variant",
+            "anyOf": [
+              {
+                "enum": [
+                  "uiserv/action@none"
+                ]
+              },
+              {
+                "pattern": ".*"
+              }
+            ],
+            "x-intellij-html-description": "<p>Reference to action after creation</p>\n<li>\n    You can set <i>uiserv/action@none</i> to prevent redirection to the created record\n</li>"
+          },
+          "sourceId": {
+            "type": "string",
+            "description": "Source ID for the variant",
+            "pattern": "^[\\w$/.-]+\\w$"
+          }
+        }
+      }
+    },
+    "associations": {
+      "type": "array",
+      "description": "List of associations. Merged with parent type's associations. If association ids match, current type's association overrides parent's.",
+      "items": {
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Association identifier",
+            "pattern": "^[\\w$/.-]+\\w$"
+          },
+          "name": {
+            "$ref": "#/definitions/nameMlText"
+          },
+          "attribute": {
+            "type": "string",
+            "description": "Attribute where new associations will be added and loaded from",
+            "x-intellij-html-description": "<p>Attribute where new associations will be added and loaded from.</p>\n<ul>\n    <li>Usually references an association from the Model.</li>\n    <li>If not specified, the value from the 'id' field will be used.</li>\n</ul>",
+            "pattern": "^[\\w$/:-]+\\w$"
+          },
+          "target": {
+            "type": "string",
+            "description": "Target type reference",
+            "x-intellij-html-description": "<p>Reference to the entity type that can be linked with this document.</p>\n<ul>\n    <li>Specifies what types of entities can be associated</li>\n</ul>"
+          },
+          "journalsFromTarget": {
+            "type": "boolean",
+            "description": "Whether to use journals from target"
+          },
+          "journals": {
+            "type": "array",
+            "description": "List of journals to use when creating new associations",
+            "x-intellij-html-description": "<p>List of journals to use when creating new associations.</p>\n<ul>\n    <li>Used when you need to create associations with multiple entity types</li>\n    <li>Allows selection of records from specified journals</li>\n</ul>",
+            "items": {
+              "type": "string"
+            }
+          },
+          "direction": {
+            "type": "string",
+            "description": "Association direction, determines how associations are displayed",
+            "enum": [
+              "BOTH",
+              "TARGET",
+              "SOURCE"
+            ],
+            "x-intellij-html-description": "<p>Association direction, determines which associations to display in the associations widget.</p>\n<ul>\n    <li>All associations follow the principle SOURCE -> TARGET</li>\n    <li><b>SOURCE</b> - Reverse association to TARGET. When opening TARGET card, we'll see our association. When opening\n        SOURCE card, we won't see anything.\n    </li>\n    <li><b>TARGET</b> - Association displayed only for the document we want to link. When opening TARGET card, we won't\n        see anything. When opening SOURCE card, we'll see our association.\n    </li>\n    <li><b>BOTH</b> - Bidirectional association. We'll see our association both on SOURCE and TARGET cards.</li>\n</ul>",
+            "x-intellij-enum-metadata": {
+              "BOTH": {
+                "description": "Bidirectional association"
+              },
+              "TARGET": {
+                "description": "Association displayed only for the document we want to link"
+              },
+              "SOURCE": {
+                "description": "Reverse association to TARGET"
+              }
+            }
+          }
+        }
+      }
+    },
+    "model": {
+      "type": "object",
+      "description": "Model definition",
+      "x-intellij-html-description": "<p>Model definition. Inherited with specific rules for each sub-property.</p><ul><li>Components:</li><ul><li>Attributes - Record fields</li><li>Roles - Access control</li><li>Statuses - Lifecycle states</li><li>Stages - Process phases</li></ul><li>Inheritance:</li><ul><li>Attributes merge with parent</li><li>Roles merge with parent</li><li>Statuses merge with parent</li><li>Stages do not inherit</li></ul></ul>",
+      "properties": {
+        "attributes": {
+          "type": "array",
+          "description": "List of attributes",
+          "x-intellij-html-description": "<p>List of attributes. Merged with parent type's attributes.</p>\n<ul>\n    <li>Inheritance:</li>\n    <ul>\n        <li>Parent attributes included</li>\n        <li>Same ID overrides parent</li>\n        <li>New attributes added</li>\n    </ul>\n</ul>",
+          "items": {
+            "$ref": "#/definitions/modelAttributesItems"
+          }
+        },
+        "systemAttributes": {
+          "type": "array",
+          "description": "List of system attributes. Merged with parent type's system attributes. If attribute ids match, current type's attribute overrides parent's.",
+          "items": {
+            "$ref": "#/definitions/modelAttributesItems"
+          }
+        },
+        "roles": {
+          "type": "array",
+          "description": "List of roles. Merged with parent type's roles. If role ids match, current type's role overrides parent's.",
+          "items": {
+            "type": "object",
+            "required": [
+              "id"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "Unique role identifier (camelCase)",
+                "pattern": "^[\\w$/_-]+\\w$",
+                "x-intellij-html-description": "<p>Unique role identifier in camelCase.</p>\n<ul>\n    <li>Rules:</li>\n    <ul>\n        <li>Start with lowercase</li>\n        <li>Use camelCase</li>\n        <li>No special chars</li>\n    </ul>\n    <li>Examples:</li>\n    <ul>\n        <li>initiator</li>\n        <li>projectManager</li>\n        <li>techSupport</li>\n    </ul>\n</ul>"
+              },
+              "name": {
+                "$ref": "#/definitions/nameMlText",
+                "description": "Role name"
+              },
+              "assignees": {
+                "type": "array",
+                "description": "Static role assignments - List of users and groups assigned to the role",
+                "x-intellij-html-description": "<p>Static role assignments - list of users and groups assigned to the role</p>\n<ul>\n    <li>Can include:</li>\n    <ul>\n        <li>User IDs</li>\n        <li>Group IDs prefixed with GROUP_</li>\n    </ul>\n    <li>Examples:</li>\n    <ul>\n        <li>john.doe</li>\n        <li>GROUP_administrators</li>\n        <li>jane.smith</li>\n    </ul>\n</ul>",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "attributes": {
+                "type": "array",
+                "description": "Dynamic role assignments - List of attributes that contain users or groups assigned to the role",
+                "x-intellij-html-description": "<p>Dynamic role assignments - list of attributes that contain users or groups assigned to the role</p>\n<ul>\n    <li>Referenced attributes must be:</li>\n    <ul>\n        <li>PERSON type</li>\n        <li>AUTHORITY type</li>\n        <li>AUTHORITY_GROUP type</li>\n    </ul>\n</ul>",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "computed": {
+                "type": "object",
+                "description": "Computed dynamic role configuration",
+                "x-intellij-html-description": "<p>Computed dynamic role configuration</p>\n<ul>\n    <li>Types:</li>\n    <ul>\n        <li>NONE - Not computed</li>\n        <li>SCRIPT - JavaScript logic. Return simple value or array of user, groups</li>\n        <li>ATTRIBUTE - Complex attribute lookup. Records expression can be used: counterparty.director?str</li>\n        <li>VALUE - Constant value, Users IDs, Group IDs prefixed with GROUP_</li>\n        <li>DMN - Calculate role members based on DMN table</li>\n    </ul>\n</ul>",
+                "required": [
+                  "type",
+                  "config"
+                ],
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "description": "Type of computation",
+                    "enum": [
+                      "NONE",
+                      "SCRIPT",
+                      "ATTRIBUTE",
+                      "VALUE",
+                      "DMN"
+                    ],
+                    "x-intellij-html-description": "<p>Type of computation</p>\n<ul>\n    <li>Available types:</li>\n    <ul>\n        <li><b>NONE</b> - Not a computed role</li>\n        <li><b>SCRIPT</b> - Role computed using JavaScript</li>\n        <li><b>ATTRIBUTE</b> - Role computed from complex attribute path</li>\n        <li><b>VALUE</b - Constant value></li>\n        <li><b>DMN</b> - Role computed using DMN</li>\n    </ul>\n</ul>",
+                    "x-intellij-enum-metadata": {
+                      "NONE": {
+                        "description": "Not computed"
+                      },
+                      "SCRIPT": {
+                        "description": "JavaScript logic. Return simple value or array of user, groups"
+                      },
+                      "ATTRIBUTE": {
+                        "description": "Complex attribute lookup. Records expression can be used: counterparty.director?str"
+                      },
+                      "VALUE": {
+                        "description": "Constant value, Users IDs, Group IDs prefixed with GROUP_"
+                      },
+                      "DMN": {
+                        "description": "Calculate role members based on DMN table"
+                      }
+                    }
+                  },
+                  "config": {
+                    "type": "object",
+                    "description": "Computation configuration",
+                    "x-intellij-html-description": "<p>Configuration for computed role</p>\n<ul>\n    <li>For SCRIPT:</li>\n    <ul>\n        <li>fn - JavaScript function</li>\n        <li>Available context:</li>\n        <ul>\n            <li>Records - Records API</li>\n            <li>value - Current record</li>\n            <li>log - Logger</li>\n        </ul>\n    </ul>\n    <li>For ATTRIBUTE:</li>\n    <ul>\n        <li>attribute - Complex attribute lookup. Records expression can be used: counterparty.director?str</li>\n    </ul>\n    <li>for VALUE:</li>\n    <ul>\n        <li>value - Constant value, Users IDs, Group IDs prefixed with GROUP_</li>\n    </ul>\n    <li>For DMN:</li>\n    <ul>\n        <li>decisionRef - Reference to BPMN table</li>\n    </ul>\n</ul>",
+                    "properties": {
+                      "attribute": {
+                        "type": "string",
+                        "description": "Attribute path to compute from (for ATTRIBUTE type)",
+                        "x-intellij-html-description": "<p>Attribute path for computation (for ATTRIBUTE type)</p>\n<ul>\n    <li>Example: client.managers[]?str</li>\n</ul>"
+                      },
+                      "fn": {
+                        "type": "string",
+                        "description": "Function to compute role members (for SCRIPT type)",
+                        "x-intellij-html-description": "<p>JavaScript function for computation (for SCRIPT type)</p>\n<ul>\n    <li>Should return array of:</li>\n    <ul>\n        <li>User IDs or recordRef</li>\n        <li>Group IDs or recordRef</li>\n    </ul>\n    <li>Available objects:</li>\n    <ul>\n        <li>Records - Records API</li>\n        <li>value - Current record</li>\n        <li>log - Logger</li>\n    </ul>\n</ul>",
+                        "x-intellij-language-injection": {
+                          "language": "JavaScript"
+                        }
+                      },
+                      "value": {
+                        "type": "string",
+                        "description": "Constant value for the role (for VALUE type)",
+                        "x-intellij-html-description": "<p>Constant value for the role (for VALUE type)</p>\n<ul>\n    <li>Example:</li>\n    <ul>\n        <li>GROUP_administrators</li>\n        <li>ivan.petrov</li>\n    </ul>\n</ul>"
+                      },
+                      "decisionRef": {
+                        "type": "string",
+                        "description": "Reference to DMN table (for DMN type)",
+                        "x-intellij-html-description": "<p>Reference to DMN table (for DMN type)</p>\n<ul>\n    <li>Example:</li>\n    <ul>\n        <li>eproc/dmn-decision-latest@Decision_awesomeDecision</li>\n    </ul>\n</ul>"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "statuses": {
+          "type": "array",
+          "description": "List of statuses. Merged with parent type's statuses. If status ids match, current type's status overrides parent's.",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "name"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "Status identifier",
+                "pattern": "^[\\w$/_-]+\\w$"
+              },
+              "name": {
+                "$ref": "#/definitions/nameMlText"
+              }
+            }
+          }
+        },
+        "stages": {
+          "type": "array",
+          "description": "List of stages.",
+          "items": {
+            "type": "object",
+            "required": [
+              "name",
+              "statuses"
+            ],
+            "properties": {
+              "name": {
+                "$ref": "#/definitions/nameMlText"
+              },
+              "statuses": {
+                "type": "array",
+                "description": "List of statuses for the stage",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[\\w$/_-]+\\w$"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "config": {
+      "type": "object",
+      "description": "Additional configuration. Configured via configFormRef on ui"
+    },
+    "docLib": {
+      "type": "object",
+      "description": "Document library configuration. Not inherited."
+    },
+    "contentConfig": {
+      "type": "object",
+      "description": "Content configuration. Inherited.",
+      "properties": {
+        "path": {
+          "type": "string",
+          "description": "Path to the attribute with main document content. Inherited from parent if not specified."
+        },
+        "previewPath": {
+          "type": "string",
+          "description": "Path to the attribute with main content for preview. Inherited from parent if not specified. If not specified in parent, path value is used."
+        },
+        "storageRef": {
+          "type": "string",
+          "description": "Reference to content storage. Inherited from parent if not specified."
+        },
+        "storageConfig": {
+          "type": "object",
+          "description": "Content storage configuration. Inherited from parent if storageRef is not specified."
+        }
+      }
+    },
+    "aspects": {
+      "type": "array",
+      "description": "List of aspects. Merged with parent type's aspects. If aspect refs match, current type's aspect overrides parent's.",
+      "items": {
+        "type": "object",
+        "required": [
+          "ref"
+        ],
+        "properties": {
+          "ref": {
+            "type": "string",
+            "description": "Aspect reference",
+            "x-intellij-html-description": "<p>Reference to the aspect</p><ul><li>Example: emodel/aspect@listview</li></ul>"
+          },
+          "config": {
+            "type": "object",
+            "description": "Aspect-specific configuration",
+            "x-intellij-html-description": "<p>Aspect-specific configuration</p>\n<ul>\n    <li>Configuration options depend on the specific aspect</li>\n</ul>",
+          },
+          "inheritConfig": {
+            "type": "boolean",
+            "description": "Whether to inherit aspect configuration from parent type",
+            "x-intellij-html-description": "<p>Whether to inherit aspect configuration from parent type</p><ul><li>Default: true</li><li>If true, uses parent's config</li><li>If false, must specify own config</li></ul>"
+          }
+        }
+      }
+    }
+  }
+}

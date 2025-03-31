@@ -2,6 +2,7 @@
 /.idea/
 /build/
 .intellijPlatform
+.kotlin
 /citeck-plugin-deps/build
 
 .DS_Store
