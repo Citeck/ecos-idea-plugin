@@ -29,12 +29,3 @@ class ModelTypeJsonSchemaProvider(private val project: Project) : JsonSchemaFile
 
     override fun getSchemaVersion(): JsonSchemaVersion = JsonSchemaVersion.SCHEMA_7
 }
-
-class CiteckJsonSchemaProviderFactory : JsonSchemaProviderFactory {
-    override fun getProviders(project: Project): List<JsonSchemaFileProvider> {
-        return listOf(
-            ModelTypeJsonSchemaProvider(project),
-            JournalJsonSchemaProvider(project)
-        )
-    }
-}

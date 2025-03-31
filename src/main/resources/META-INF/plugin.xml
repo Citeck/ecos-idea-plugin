@@ -158,7 +158,7 @@
     </extensions>
 
     <extensions defaultExtensionNs="JavaScript">
-        <JsonSchema.ProviderFactory implementation="ru.citeck.idea.schema.impl.CiteckJsonSchemaProviderFactory"/>
+        <JsonSchema.ProviderFactory implementation="ru.citeck.idea.schema.CiteckJsonSchemaProviderFactory"/>
     </extensions>
 
     <actions>
