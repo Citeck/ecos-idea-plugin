@@ -8,19 +8,19 @@ import com.jetbrains.jsonSchema.extension.SchemaType
 import com.jetbrains.jsonSchema.impl.JsonSchemaVersion
 import ru.citeck.idea.artifacts.ArtifactsService
 
-class ModelTypeJsonSchemaProvider(private val project: Project) : JsonSchemaFileProvider {
+class EndpointJsonSchemaProvider(private val project: Project) : JsonSchemaFileProvider {
 
     override fun isAvailable(file: VirtualFile): Boolean {
         val meta = ArtifactsService.getInstance().getArtifactInfo(file, project) ?: return false
-        return meta.getTypeId() == "model/type"
+        return meta.getTypeId() == "model/endpoint"
     }
 
-    override fun getName(): String = "Citeck Model Type Schema"
+    override fun getName(): String = "Citeck Endpoint Schema"
 
     override fun getSchemaFile(): VirtualFile? {
         return JsonSchemaProviderFactory.getResourceFile(
-            ModelTypeJsonSchemaProvider::class.java,
-            "/citeck/artifacts/model/type/model-type-schema.json"
+            EndpointJsonSchemaProvider::class.java,
+            "/citeck/artifacts/model/endpoint/endpoint-schema.json"
         )
     }
 

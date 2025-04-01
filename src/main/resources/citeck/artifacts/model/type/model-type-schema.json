@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "ECOS Model Type Schema",
-  "description": "Schema for ECOS model/type YAML files",
+  "title": "Citeck Model Type Schema",
+  "description": "Schema for Citeck model/type YAML files",
   "x-intellij-html-description": "<p>Schema for Citeck model/type files</p>\n<ul>\n    <li>Used to define data types in Citeck</li>\n    <li>Supports inheritance from parent types</li>\n    <li>Configures forms, journals, roles, statuses and more</li>\n</ul>",
   "type": "object",
   "required": [
@@ -315,7 +315,7 @@
     "id": {
       "type": "string",
       "description": "Unique identifier for the type.",
-      "pattern": "^[\\w$/.-]+\\w$"
+      "pattern": "^[a-zA-Z][a-zA-Z0-9_-]*$"
     },
     "name": {
       "$ref": "#/definitions/nameMlText"
@@ -331,7 +331,7 @@
     },
     "sourceId": {
       "type": "string",
-      "pattern": "^[\\w$/.-]+\\w$",
+      "pattern": "^[a-zA-Z][a-zA-Z0-9_-]*$",
       "description": "Identifier of the data source",
       "x-intellij-html-description": "<p>Identifier of the data source. Determined by the following rules:</p>\n<ul>\n    <li>If explicitly set - used as is</li>\n    <li>If not set:</li>\n    <ul>\n        <li>For DEFAULT storage: inherits parent type's sourceId</li>\n        <li>For ECOS_MODEL: calculated from type identifier</li>\n        <li>For ALFRESCO: prefixed with 'alfresco/'</li>\n    </ul>\n    <li>Examples:</li>\n    <ul>\n        <li>alfresco/ - for Alfresco storage</li>\n        <li>hr-offices - for custom storage</li>\n    </ul>\n</ul>"
     },
@@ -959,7 +959,7 @@
           "config": {
             "type": "object",
             "description": "Aspect-specific configuration",
-            "x-intellij-html-description": "<p>Aspect-specific configuration</p>\n<ul>\n    <li>Configuration options depend on the specific aspect</li>\n</ul>",
+            "x-intellij-html-description": "<p>Aspect-specific configuration</p>\n<ul>\n    <li>Configuration options depend on the specific aspect</li>\n</ul>"
           },
           "inheritConfig": {
             "type": "boolean",

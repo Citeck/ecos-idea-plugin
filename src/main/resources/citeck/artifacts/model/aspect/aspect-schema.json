@@ -41,7 +41,7 @@
           "type": "string",
           "description": "Attribute identifier (camelCase)",
           "x-intellij-html-description": "<p>Attribute identifier (camelCase).</p>\n<ul>\n    <li>Rules:</li>\n    <ul>\n        <li>Start with lowercase</li>\n        <li>Use camelCase for multi-word names</li>\n        <li>No special chars</li>\n    </ul>\n    <li>Examples:</li>\n    <ul>\n        <li>firstName</li>\n        <li>documentNumber</li>\n        <li>creationDate</li>\n    </ul>\n</ul>",
-          "pattern": "^[\\w$/_-]+\\w$"
+          "pattern": "^[a-zA-Z][a-zA-Z0-9_-]*$"
         },
         "name": {
           "$ref": "#/definitions/nameMlText"
@@ -292,7 +292,7 @@
     "id": {
       "type": "string",
       "description": "Unique identifier for the aspect",
-      "pattern": "^[\\w$/.-]+\\w$",
+      "pattern": "^[a-zA-Z][a-zA-Z0-9_-]*$",
       "x-intellij-html-description": "<p>Unique identifier for the aspect</p>\n<ul>\n    <li>Must be unique within the system</li>\n    <li>Use hyphen-case or camelCase naming convention</li>\n</ul>"
     },
     "name": {
@@ -301,7 +301,7 @@
     },
     "prefix": {
       "type": "string",
-      "pattern": "^[\\w$/_-]+\\w$",
+      "pattern": "^[a-zA-Z][a-zA-Z0-9_-]*$",
       "description": "Prefix for aspect attributes",
       "x-intellij-html-description": "<p>Prefix for all attributes of this aspect</p>\n<ul>\n    <li>Will be added to all attribute IDs to form their full IDs</li>\n    <li>If not specified, aspect ID will be used as prefix</li>\n    <li>Example: With prefix 'doc', attribute 'status' becomes 'doc:status'</li>\n</ul>"
     },

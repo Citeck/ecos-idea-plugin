@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "ECOS Journal Schema",
-  "description": "Schema for ECOS journal YAML files",
+  "title": "Citeck Journal Schema",
+  "description": "Schema for Citeck journal YAML files",
   "x-intellij-html-description": "<p>Schema for Citeck journal files</p>\n<ul>\n    <li>Used to define journals in Citeck</li>\n    <li>Configures columns, actions, and other journal settings</li>\n</ul>",
   "type": "object",
   "required": [
