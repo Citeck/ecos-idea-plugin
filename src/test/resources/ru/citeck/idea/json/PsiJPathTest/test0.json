@@ -1,0 +1,36 @@
+{
+  "source": {
+    "id": "some-id",
+    "model": {
+      "attributes": [
+        {
+          "id": "att-id-0"
+        },
+        {
+          "id": "att-id-1"
+        }
+      ]
+    }
+  },
+  "tests": [
+    {
+      "jpath": "$.model.attributes[:].id",
+      "expected": [
+        "att-id-0",
+        "att-id-1"
+      ]
+    },
+    {
+      "jpath": "$.model.attributes[:1].id",
+      "expected": [
+        "att-id-0"
+      ]
+    },
+    {
+      "jpath": "$.model.attributes[1:].id",
+      "expected": [
+        "att-id-1"
+      ]
+    }
+  ]
+}

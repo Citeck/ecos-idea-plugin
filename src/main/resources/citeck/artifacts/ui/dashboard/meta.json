@@ -1,6 +1,6 @@
 {
   "name": "Dashboard",
-  "type": "JSON",
+  "kind": "JSON",
   "sourceId": "uiserv/dashboard",
   "docsRef": "https://citeck-ecos.readthedocs.io/ru/latest/settings_kb/interface/dashboards.html"
 }

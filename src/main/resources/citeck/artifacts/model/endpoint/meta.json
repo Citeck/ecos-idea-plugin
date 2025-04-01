@@ -1,6 +1,6 @@
 {
   "name": "Endpoint",
-  "type": "YAML",
+  "kind": "YAML",
   "sourceId": "emodel/endpoint",
   "docsUrl": "https://citeck-ecos.readthedocs.io/ru/latest/integration/Camel_DSL/endpoints.html"
 }

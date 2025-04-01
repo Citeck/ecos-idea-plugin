@@ -1,6 +1,7 @@
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.jetbrains.intellij.platform.gradle.IntelliJPlatformType
+import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 import java.net.URI
 
 plugins {
@@ -75,7 +76,11 @@ dependencies {
             "org.jetbrains.idea.maven",
             "org.jetbrains.kotlin"
         )
+
+        testFramework(TestFrameworkType.Platform)
     }
+
+    testImplementation("junit:junit:4.13.2")
 }
 
 val generatedResources by lazy {

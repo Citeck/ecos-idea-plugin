@@ -12,4 +12,8 @@ class CiteckModuleInfo(
             groupId = ""
         )
     }
+
+    fun isNone(): Boolean {
+        return type == CiteckModuleType.NONE
+    }
 }

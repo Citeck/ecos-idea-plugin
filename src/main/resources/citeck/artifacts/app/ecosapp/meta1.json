@@ -1,6 +1,6 @@
 {
   "name": "ECOS App",
-  "type": "ECOS_APP",
+  "kind": "ECOS_APP",
   "sourceId": "eapps/ecosapp",
   "docsUrl": "https://citeck-ecos.readthedocs.io/ru/latest/settings_kb/ecos_applications.html",
   "disabledActions": [

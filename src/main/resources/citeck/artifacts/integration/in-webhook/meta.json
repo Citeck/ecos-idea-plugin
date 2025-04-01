@@ -1,6 +1,6 @@
 {
   "name": "Incoming Webhook",
-  "type": "YAML",
+  "kind": "YAML",
   "sourceId": "integrations/in-webhook",
   "docsUrl": "https://citeck-ecos.readthedocs.io/ru/latest/integration/webhooks.html"
 }

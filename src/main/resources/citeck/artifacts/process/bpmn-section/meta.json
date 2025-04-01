@@ -1,5 +1,5 @@
 {
   "name": "BPMN Section",
-  "type": "YAML",
+  "kind": "YAML",
   "sourceId": "eproc/bpmn-section"
 }

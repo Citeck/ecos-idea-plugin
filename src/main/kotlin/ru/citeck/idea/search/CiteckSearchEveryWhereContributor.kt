@@ -52,7 +52,7 @@ class CiteckSearchEveryWhereContributor(
     }
 
     private fun getJarName(indexValue: IndexValue): String? {
-        val fileName = indexValue.file ?: return null
+        val fileName = indexValue.file
         if (!fileName.contains("!")) {
             return null
         }
@@ -119,8 +119,7 @@ class CiteckSearchEveryWhereContributor(
         ApplicationManager
             .getApplication()
             .runReadAction {
-                val matcher =
-                    NameUtil.buildMatcher("*$pattern").build()
+                val matcher = NameUtil.buildMatcher("*$pattern").build()
                 IndexesService.getInstance(project)
                     .stream(IndexKey.SEARCH_EVERYWHERE)
                     .filter { indexValue: IndexValue -> matcher.matches(indexValue.id) }

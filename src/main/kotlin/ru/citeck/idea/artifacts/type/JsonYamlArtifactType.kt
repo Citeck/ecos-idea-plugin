@@ -1,14 +1,10 @@
 package ru.citeck.idea.artifacts.type
 
 import com.intellij.json.psi.JsonObject
-import com.intellij.json.psi.JsonProperty
 import com.intellij.json.psi.JsonPsiUtil
-import com.intellij.json.psi.JsonValue
-import com.intellij.openapi.util.Pair
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.impl.source.PsiFileImpl
-import org.apache.commons.lang3.StringUtils
 import org.jetbrains.yaml.YAMLUtil
 import org.jetbrains.yaml.psi.YAMLFile
 import ru.citeck.ecos.commons.data.DataValue
@@ -45,13 +41,12 @@ class JsonYamlArtifactType : ArtifactTypeController {
         return atts
     }
 
-    override fun getArtifactId(file: PsiFile): String {
-        val result = if (file is YAMLFile) {
+    override fun getArtifactIdPsiElement(file: PsiFile): PsiElement? {
+        return if (file is YAMLFile) {
             getArtifactIdFromYaml(file)
         } else {
             getArtifactIdFromJson(file)
         }
-        return JsonPsiUtil.stripQuotes(StringUtils.defaultIfBlank(result, "")!!)
     }
 
     override fun writeFetchedData(file: PsiFile, value: ObjectData) {
@@ -98,27 +93,21 @@ class JsonYamlArtifactType : ArtifactTypeController {
         CiteckPsiUtils.setContent(file, formattedContent)
     }
 
-    private fun getArtifactIdFromJson(file: PsiFile): String? {
-        if (file !is PsiFileImpl) {
-            return ""
-        }
-        val jsonObject = file.findChildByClass(
-            JsonObject::class.java
-        )
-        if (jsonObject == null) {
-            return null
-        }
-        val idProperty = jsonObject.findProperty("id")
-        return Optional.ofNullable(idProperty)
-            .map { obj: JsonProperty -> obj.value }
-            .map { obj: JsonValue? -> obj!!.text }
-            .orElse("")
+    override fun isIndexable(file: PsiFile): Boolean {
+        return true
     }
 
-    private fun getArtifactIdFromYaml(file: YAMLFile): String {
-        return Optional
-            .ofNullable(YAMLUtil.getValue(file, "id"))
-            .map { it: Pair<PsiElement, String?>? -> it!!.getFirst().text }
-            .orElse("")
+    private fun getArtifactIdFromJson(file: PsiFile): PsiElement? {
+        if (file !is PsiFileImpl) {
+            return null
+        }
+        val jsonObject = file.findChildByClass(JsonObject::class.java) ?: return null
+        val idProperty = jsonObject.findProperty("id") ?: return null
+
+        return idProperty.value
+    }
+
+    private fun getArtifactIdFromYaml(file: YAMLFile): PsiElement? {
+        return YAMLUtil.getValue(file, "id")?.first
     }
 }

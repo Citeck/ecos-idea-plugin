@@ -2,7 +2,7 @@ package ru.citeck.idea.settings.servers
 
 import com.intellij.ui.components.JBPasswordField
 import com.intellij.util.ui.table.TableModelEditor
-import ru.citeck.idea.ui.table.PasswordCellRenderer
+import ru.citeck.idea.view.table.PasswordCellRenderer
 import javax.swing.DefaultCellEditor
 
 internal class EcosServerTableModel(servers: List<CiteckServer.Builder>) : TableModelEditor<CiteckServer.Builder>(

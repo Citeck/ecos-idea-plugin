@@ -1,6 +1,6 @@
 <idea-plugin>
     <extensions defaultExtensionNs="com.intellij">
-        <multiHostInjector implementation="ru.citeck.idea.languageInjections.EcosFormLanguageInjector"/>
+        <multiHostInjector implementation="ru.citeck.idea.languageInjections.CiteckFormLanguageInjector"/>
         <completion.contributor implementationClass="ru.citeck.idea.completion.js.JsCompletionContributor"
                                 language="JavaScript" order="first"/>
     </extensions>

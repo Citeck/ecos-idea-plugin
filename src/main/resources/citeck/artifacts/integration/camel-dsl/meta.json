@@ -1,6 +1,6 @@
 {
   "name": "Camel DSL",
-  "type": "YAML",
+  "kind": "YAML",
   "sourceId": "integrations/camel-dsl",
   "docsUrl": "https://citeck-ecos.readthedocs.io/ru/latest/integration/Camel_DSL.html"
 }

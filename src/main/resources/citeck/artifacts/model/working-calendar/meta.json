@@ -1,6 +1,6 @@
 {
   "name": "Working Calendar",
-  "type": "YAML",
+  "kind": "YAML",
   "sourceId": "emodel/working-calendar",
   "docsUrl": "https://citeck-ecos.readthedocs.io/ru/latest/general/business_calendar.html#id6"
 }

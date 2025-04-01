@@ -1,6 +1,6 @@
 {
   "name": "Number template",
-  "type": "YAML",
+  "kind": "YAML",
   "sourceId": "emodel/num-template",
   "docsUrl": "https://citeck-ecos.readthedocs.io/ru/latest/settings_kb/number_template.html"
 }

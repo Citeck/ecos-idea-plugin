@@ -1,6 +1,6 @@
 {
   "name": "External Portal",
-  "type": "YAML",
+  "kind": "YAML",
   "sourceId": "integrations/ext-portal",
   "docsUrl": "https://citeck-ecos.readthedocs.io/ru/latest/general/external_portal.html"
 }

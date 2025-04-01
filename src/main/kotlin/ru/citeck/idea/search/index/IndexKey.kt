@@ -12,6 +12,7 @@ data class IndexKey(
     companion object {
         const val SEARCH_EVERYWHERE_TYPE: String = "search-everywhere"
         const val REFERENCE_TYPE: String = "reference"
+        const val ARTIFACT_TYPE: String = "artifact-type"
         const val ALL: String = "*"
         val SEARCH_EVERYWHERE: IndexKey = IndexKey(SEARCH_EVERYWHERE_TYPE, ALL)
     }

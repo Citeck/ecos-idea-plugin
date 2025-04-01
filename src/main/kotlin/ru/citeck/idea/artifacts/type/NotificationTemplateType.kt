@@ -1,6 +1,7 @@
 package ru.citeck.idea.artifacts.type
 
 import com.intellij.psi.PsiDirectory
+import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.util.io.Compressor
 import ru.citeck.ecos.commons.data.DataValue
@@ -34,9 +35,9 @@ class NotificationTemplateType : ArtifactTypeController {
         ))
     }
 
-    override fun getArtifactId(file: PsiFile): String {
-        val metaFile = getMetaFile(file) ?: return ""
-        return yamlType.getArtifactId(metaFile)
+    override fun getArtifactIdPsiElement(file: PsiFile): PsiElement? {
+        val metaFile = getMetaFile(file) ?: return null
+        return yamlType.getArtifactIdPsiElement(metaFile)
     }
 
     override fun getFetchAtts(file: PsiFile): Map<String, String> {
@@ -46,6 +47,10 @@ class NotificationTemplateType : ArtifactTypeController {
     override fun writeFetchedData(file: PsiFile, value: ObjectData) {
         val parent = file.parent ?: error("Unable to get parent directory")
         CiteckZipContentUtil.applyBase64ZipContentToDirectory(parent, value["content"].asText())
+    }
+
+    override fun isIndexable(file: PsiFile): Boolean {
+        return file.name.endsWith(META_YML_SUFFIX)
     }
 
     private fun getTemplateContent(file: PsiFile): ByteArray {

@@ -1,6 +1,6 @@
 package ru.citeck.idea.artifacts.type
 
-import com.intellij.json.psi.JsonPsiUtil
+import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.xml.XmlFile
 import ru.citeck.ecos.commons.data.DataValue
@@ -34,19 +34,17 @@ class ProcXmlArtifactType(
         ))
     }
 
-    override fun getArtifactId(file: PsiFile): String {
+    override fun getArtifactIdPsiElement(file: PsiFile): PsiElement? {
         if (file !is XmlFile) {
-            return ""
+            return null
         }
         val (attId, attNs) = when (subType) {
             SubType.BPMN -> "processDefId" to "http://www.citeck.ru/ecos/bpmn/1.0"
             SubType.DMN -> "defId" to "http://www.citeck.ru/ecos/dmn/1.0"
         }
-        val result = file.rootTag
+        return file.rootTag
             ?.getAttribute(attId, attNs)
             ?.valueElement
-            ?.text ?: ""
-        return JsonPsiUtil.stripQuotes(result)
     }
 
     override fun getFetchAtts(file: PsiFile): Map<String, String> {
@@ -57,9 +55,13 @@ class ProcXmlArtifactType(
         val contentBase64 = value["content"].asText()
 
         val decodedContent = String(Base64.getDecoder().decode(contentBase64), Charsets.UTF_8)
-            .replace("\r\n", "\n");
+            .replace("\r\n", "\n")
 
         CiteckPsiUtils.setContent(file, decodedContent);
+    }
+
+    override fun isIndexable(file: PsiFile): Boolean {
+        return true
     }
 
     enum class SubType {

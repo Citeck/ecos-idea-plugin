@@ -4,5 +4,5 @@ import com.intellij.util.indexing.ID
 
 object CiteckIndexConstants {
 
-    val INDEX_NAME: ID<IndexKey, List<IndexValue>> = ID.create("ru.citeck.indexes.EcosIndexExtension")
+    val INDEX_NAME: ID<IndexKey, List<IndexValue>> = ID.create("ru.citeck.indexes.CiteckIndexExtension")
 }

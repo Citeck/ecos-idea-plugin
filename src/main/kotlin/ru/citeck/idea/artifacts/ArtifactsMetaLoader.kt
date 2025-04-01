@@ -64,7 +64,7 @@ class ArtifactsMetaLoader : Disposable {
 
         for (artifactMetaPath in artifactsList) {
             val meta = readArtifactMeta(artifactMetaPath) ?: continue
-            val groupId = meta.id.substring(0, meta.id.indexOf('/'))
+            val groupId = meta.typeId.substring(0, meta.typeId.indexOf('/'))
             val actionGroup = groups.computeIfAbsent(groupId) { id: String ->
                 val groupMeta = readArtifactsGroupMeta(id)
                 val newGroup = DefaultActionGroup(
@@ -75,7 +75,7 @@ class ArtifactsMetaLoader : Disposable {
                 newGroup
             }
 
-            val actionId = NEW_ARTIFACT_ACTION_ID_PREFIX + meta.id.replace("/", "_")
+            val actionId = NEW_ARTIFACT_ACTION_ID_PREFIX + meta.typeId.replace("/", "_")
 
             val action = CreateArtifactAction.Builder()
                 .withText(meta.name)
@@ -103,12 +103,12 @@ class ArtifactsMetaLoader : Disposable {
 
     private fun readTemplate(meta: ArtifactTypeMeta, metaPath: String): List<FileTemplate> {
         val basePath = metaPath.substring(0, metaPath.lastIndexOf('/') + 1)
-        val templateNames = when (meta.type) {
-            ArtifactType.JSON -> listOf("template.json.ft")
-            ArtifactType.YAML -> listOf("template.yml.ft")
-            ArtifactType.BPMN -> listOf("template.bpmn.xml.ft")
-            ArtifactType.DMN -> listOf("template.dmn.xml.ft")
-            ArtifactType.NOTIFICATION_TEMPLATE -> listOf(
+        val templateNames = when (meta.kind) {
+            ArtifactKind.JSON -> listOf("template.json.ft")
+            ArtifactKind.YAML -> listOf("template.yml.ft")
+            ArtifactKind.BPMN -> listOf("template.bpmn.xml.ft")
+            ArtifactKind.DMN -> listOf("template.dmn.xml.ft")
+            ArtifactKind.NOTIFICATION_TEMPLATE -> listOf(
                 "template.html_en.ftl.ft",
                 "template.html.meta.yml.ft"
             )
@@ -134,10 +134,10 @@ class ArtifactsMetaLoader : Disposable {
         val meta = ArtifactTypeMeta.create()
         mapper.applyData(meta, metaRaw)
 
-        meta.withId(path.substring(0, path.lastIndexOf("/")))
+        meta.withTypeId(path.substring(0, path.lastIndexOf("/")))
 
         if (StringUtils.isBlank(meta.name)) {
-            meta.withName(meta.id)
+            meta.withName(meta.typeId)
         }
         return meta.build()
     }

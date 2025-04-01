@@ -17,7 +17,7 @@ import com.intellij.psi.impl.file.PsiFileImplUtil
 import org.jetbrains.annotations.NonNls
 import ru.citeck.idea.project.CiteckProject
 import ru.citeck.idea.utils.CiteckVirtualFileUtils
-import ru.citeck.idea.utils.EcosMessages
+import ru.citeck.idea.utils.CiteckMessages
 import java.io.File
 import java.util.*
 import java.util.stream.Stream
@@ -46,9 +46,9 @@ class CreateArtifactAction(
     ) {
         builder.setTitle("Artifact ID:")
         builder.addKind(
-            meta.type.extension,
-            meta.type.icon,
-            "custom-template-" + meta.id
+            meta.kind.extension,
+            meta.kind.icon,
+            "custom-template-" + meta.typeId
         )
     }
 
@@ -61,7 +61,7 @@ class CreateArtifactAction(
 
         val path = getArtifactPath(dir)
         if (path == null) {
-            EcosMessages.error(
+            CiteckMessages.error(
                 "Error",
                 "Cannot determine artifact path",
                 project
@@ -89,11 +89,11 @@ class CreateArtifactAction(
             .orElse(null)
 
         if (psiDirectory == null) {
-            EcosMessages.error("Error", "Cannot get file directory", project)
+            CiteckMessages.error("Error", "Cannot get file directory", project)
             return null
         }
 
-        val templates = ArtifactsService.getInstance().getTemplates(meta.id)
+        val templates = ArtifactsService.getInstance().getTemplates(meta.typeId)
 
         if (templates.size > 1) {
             psiDirectory = psiDirectory.createSubdirectory(targetName)
@@ -110,7 +110,7 @@ class CreateArtifactAction(
             }
             file
 
-        }.firstOrNull() ?: error("Template files doesn't found for ${meta.id}")
+        }.firstOrNull() ?: error("Template files doesn't found for ${meta.typeId}")
     }
 
     private fun cleanExtension(name: String): String {
@@ -127,7 +127,7 @@ class CreateArtifactAction(
         val module = ModuleUtil.findModuleForPsiElement(dir) ?: return null
 
         val moduleInfo = CiteckProject.getInstance(module.project).getModuleInfo(module)
-        return moduleInfo.artifactsRootPath + "/" + meta.id + "/"
+        return moduleInfo.artifactsRootPath + "/" + meta.typeId + "/"
     }
 
     class Builder {

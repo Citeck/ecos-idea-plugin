@@ -1,6 +1,6 @@
 {
   "name": "Sender",
-  "type": "YAML",
+  "kind": "YAML",
   "sourceId": "notifications/sender",
   "docsUrl": "https://citeck-ecos.readthedocs.io/ru/latest/settings_kb/notifications/senders.html"
 }

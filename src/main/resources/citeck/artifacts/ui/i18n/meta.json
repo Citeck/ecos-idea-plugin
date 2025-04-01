@@ -1,5 +1,5 @@
 {
   "name": "I18n",
-  "type": "YAML",
+  "kind": "YAML",
   "sourceId": "uiserv/i18n"
 }

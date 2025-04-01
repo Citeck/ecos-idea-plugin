@@ -1,6 +1,6 @@
 {
   "name": "Storage",
-  "type": "YAML",
+  "kind": "YAML",
   "sourceId": "content/storage",
   "docsUrl": "https://citeck-ecos.readthedocs.io/ru/latest/general/Content_microservice/new_configuration.html"
 }

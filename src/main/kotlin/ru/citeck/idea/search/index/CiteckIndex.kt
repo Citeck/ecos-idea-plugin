@@ -3,7 +3,8 @@ package ru.citeck.idea.search.index
 import com.intellij.util.indexing.*
 import com.intellij.util.io.DataExternalizer
 import com.intellij.util.io.KeyDescriptor
-import ru.citeck.idea.files.FileTypeService
+import ru.citeck.idea.artifacts.ArtifactsService
+import ru.citeck.idea.search.index.indexers.CiteckFileIndexer
 
 class CiteckIndex : FileBasedIndexExtension<IndexKey, List<IndexValue>>() {
 
@@ -24,15 +25,17 @@ class CiteckIndex : FileBasedIndexExtension<IndexKey, List<IndexValue>>() {
             return indexes
         }
 
-        EcosFileIndexer.EP_NAME
+        val artifactsService = ArtifactsService.getInstance()
+        val artifactInfo = artifactsService.getArtifactInfo(inputData.file, inputData.project) ?: return indexes
+        if (!artifactInfo.getController().isIndexable(inputData.psiFile)) {
+            return indexes
+        }
+
+        CiteckFileIndexer.EP_NAME
             .extensionsIfPointIsRegistered
             .stream()
-            .filter { indexer ->
-                val fileType = FileTypeService.getInstance()
-                    .getFileType(inputData.file, inputData.project)
-                fileType != null && indexer.accept(fileType)
-            }
-            .forEach { ecosDataIndexer -> ecosDataIndexer.map(inputData, indexes.withFileContent(inputData)) }
+            .filter { it.accept(artifactInfo) }
+            .forEach { it.map(inputData, artifactInfo, indexes.withFileContent(inputData)) }
 
         return indexes
     }
@@ -46,7 +49,7 @@ class CiteckIndex : FileBasedIndexExtension<IndexKey, List<IndexValue>>() {
     }
 
     override fun getVersion(): Int {
-        return 3
+        return 4
     }
 
     override fun getInputFilter(): FileBasedIndex.InputFilter {

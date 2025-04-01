@@ -21,33 +21,18 @@
 
         <postStartupActivity implementation="ru.citeck.idea.CiteckPlugin$Initializer"/>
 
-        <applicationService serviceImplementation="ru.citeck.idea.files.FileTypeService"/>
-        <searchScopesProvider implementation="ru.citeck.idea.files.scopes.SearchScopeProvider"/>
+        <searchScopesProvider implementation="ru.citeck.idea.search.scope.SearchScopeProvider"/>
         <fileBasedIndex implementation="ru.citeck.idea.search.index.CiteckIndex"/>
         <searchEverywhereContributor implementation="ru.citeck.idea.search.CiteckSearchEveryWhereContributor$Factory"/>
 
         <psi.referenceContributor implementation="ru.citeck.idea.references.CiteckReferenceProvider$Contributor"
                                   language=""/>
 
-        <localInspection implementationClass="ru.citeck.idea.inspections.forms.DuplicateComponentKeyInspection"
-                         language="JSON"
-                         enabledByDefault="true" level="ERROR" displayName="Citeck form component duplicate key"
-                         groupName="Citeck"/>
-        <localInspection implementationClass="ru.citeck.idea.inspections.JsonCiteckArtifactTypeRefInspection"
-                         language="JSON"
-                         enabledByDefault="true" level="ERROR" displayName="Citeck typeRef inspection (json)"
-                         groupName="Citeck"/>
-        <localInspection implementationClass="ru.citeck.idea.inspections.YamlCiteckArtifactTypeRefInspection"
-                         language="yaml"
-                         enabledByDefault="true" level="ERROR" displayName="Citeck typeRef inspection (yaml)"
-                         groupName="Citeck"/>
+<!--        <completion.contributor implementationClass="ru.citeck.idea.completion.json.JsonCompletionContributor" language="JSON"/>
+        <completion.contributor implementationClass="ru.citeck.idea.completion.json.YamlCompletionContributor" language="yaml"/>-->
 
-        <completion.contributor implementationClass="ru.citeck.idea.completion.java.JavaCompletionContributor"
-                                language="JAVA"/>
-        <completion.contributor implementationClass="ru.citeck.idea.completion.json.JsonCompletionContributor"
-                                language="JSON"/>
-        <completion.contributor implementationClass="ru.citeck.idea.completion.json.YamlCompletionContributor"
-                                language="yaml"/>
+        <completion.contributor implementationClass="ru.citeck.idea.completion.CiteckJsonYamlCompletionContributor" language="JSON"/>
+        <completion.contributor implementationClass="ru.citeck.idea.completion.CiteckJsonYamlCompletionContributor" language="yaml"/>
 
         <notificationGroup id="Citeck" displayType="BALLOON"/>
 
@@ -68,82 +53,25 @@
     </extensions>
 
     <extensionPoints>
-        <extensionPoint dynamic="true" name="fileType" interface="ru.citeck.idea.files.FileType"/>
-        <extensionPoint dynamic="true" name="fileIndexer" interface="ru.citeck.idea.search.index.EcosFileIndexer"/>
+        <extensionPoint dynamic="true" name="fileIndexer" interface="ru.citeck.idea.search.index.indexers.CiteckFileIndexer"/>
         <extensionPoint dynamic="true" name="navigateInFileItemsProvider"
-                        interface="ru.citeck.idea.files.NavigateInFileItemsProvider"/>
-        <extensionPoint dynamic="true" name="psiElementValueResolver" interface="ru.citeck.idea.references.PsiElementValueResolver"/>
-        <extensionPoint dynamic="true" name="completionProvider" interface="ru.citeck.idea.completion.CompletionProvider"/>
-        <extensionPoint dynamic="true" name="searchScope" beanClass="ru.citeck.idea.files.scopes.EcosSearchScope"/>
+                        interface="ru.citeck.idea.artifacts.action.navigate.providers.NavigateInFileItemsProvider"/>
+        <extensionPoint dynamic="true" name="psiElementValueResolver" interface="ru.citeck.idea.references.PsiElementValueResolver"/><!--
+        <extensionPoint dynamic="true" name="completionProvider" interface="ru.citeck.idea.completion.contributor.CompletionProvider"/>-->
         <extensionPoint dynamic="true" name="citeckFormLanguageInjection" beanClass="ru.citeck.idea.languageInjections.CiteckFormLanguageInjection"/>
     </extensionPoints>
 
     <extensions defaultExtensionNs="ru.citeck.idea">
 
-        <fileType implementation="ru.citeck.idea.files.types.Java"/>
-        <fileType implementation="ru.citeck.idea.files.types.JavaScript"/>
-
-        <fileType implementation="ru.citeck.idea.files.types.citeck.app.ArtifactPatch$YAML"/>
-        <fileType implementation="ru.citeck.idea.files.types.citeck.app.ArtifactPatch$JSON"/>
-        <fileType implementation="ru.citeck.idea.files.types.citeck.app.EcosApplication$YAML"/>
-        <fileType implementation="ru.citeck.idea.files.types.citeck.app.EcosApplication$JSON"/>
-        <fileType implementation="ru.citeck.idea.files.types.citeck.app.EcosConfiguration$YAML"/>
-        <fileType implementation="ru.citeck.idea.files.types.citeck.app.EcosConfiguration$JSON"/>
-
-        <fileType implementation="ru.citeck.idea.files.types.citeck.model.DataType$YAML"/>
-        <fileType implementation="ru.citeck.idea.files.types.citeck.model.DataType$JSON"/>
-        <fileType implementation="ru.citeck.idea.files.types.citeck.model.Permissions$YAML"/>
-        <fileType implementation="ru.citeck.idea.files.types.citeck.model.Permissions$JSON"/>
-        <fileType implementation="ru.citeck.idea.files.types.citeck.model.PermissionSettings$YAML"/>
-        <fileType implementation="ru.citeck.idea.files.types.citeck.model.PermissionSettings$JSON"/>
-        <fileType implementation="ru.citeck.idea.files.types.citeck.model.NumTemplate$YAML"/>
-        <fileType implementation="ru.citeck.idea.files.types.citeck.model.NumTemplate$JSON"/>
-
-        <fileType implementation="ru.citeck.idea.files.types.citeck.ui.Form$YAML"/>
-        <fileType implementation="ru.citeck.idea.files.types.citeck.ui.Form$JSON"/>
-        <fileType implementation="ru.citeck.idea.files.types.citeck.ui.Action$YAML"/>
-        <fileType implementation="ru.citeck.idea.files.types.citeck.ui.Action$JSON"/>
-        <fileType implementation="ru.citeck.idea.files.types.citeck.ui.KanbanBoard$YAML"/>
-        <fileType implementation="ru.citeck.idea.files.types.citeck.ui.KanbanBoard$JSON"/>
-        <fileType implementation="ru.citeck.idea.files.types.citeck.ui.Dashboard$YAML"/>
-        <fileType implementation="ru.citeck.idea.files.types.citeck.ui.Dashboard$JSON"/>
-        <fileType implementation="ru.citeck.idea.files.types.citeck.ui.Journal$YAML"/>
-        <fileType implementation="ru.citeck.idea.files.types.citeck.ui.Journal$JSON"/>
-        <fileType implementation="ru.citeck.idea.files.types.citeck.ui.Localization$YAML"/>
-        <fileType implementation="ru.citeck.idea.files.types.citeck.ui.Localization$JSON"/>
-        <fileType implementation="ru.citeck.idea.files.types.citeck.ui.Menu$YAML"/>
-        <fileType implementation="ru.citeck.idea.files.types.citeck.ui.Menu$JSON"/>
-        <fileType implementation="ru.citeck.idea.files.types.citeck.ui.Theme"/>
-
-        <fileType implementation="ru.citeck.idea.files.types.citeck.integration.CamelDsl$YAML"/>
-        <fileType implementation="ru.citeck.idea.files.types.citeck.integration.CamelDsl$JSON"/>
-
-        <fileType implementation="ru.citeck.idea.files.types.citeck.transformation.DocumentTemplate"/>
-
-        <searchScope name="Form" class="ru.citeck.idea.files.types.citeck.ui.Form"/>
-        <searchScope name="Action" class="ru.citeck.idea.files.types.citeck.ui.Action"/>
-        <searchScope name="Data type" class="ru.citeck.idea.files.types.citeck.model.DataType"/>
-        <searchScope name="Permissions" class="ru.citeck.idea.files.types.citeck.model.Permissions"/>
-        <searchScope name="Permission Settings" class="ru.citeck.idea.files.types.citeck.model.PermissionSettings"/>
-        <searchScope name="Kanban Board" class="ru.citeck.idea.files.types.citeck.ui.KanbanBoard"/>
-        <searchScope name="Artifact Patch" class="ru.citeck.idea.files.types.citeck.app.ArtifactPatch"/>
-        <searchScope name="Dashboard" class="ru.citeck.idea.files.types.citeck.ui.Dashboard"/>
-        <searchScope name="Journal" class="ru.citeck.idea.files.types.citeck.ui.Journal"/>
-        <searchScope name="Localization" class="ru.citeck.idea.files.types.citeck.ui.Localization"/>
-        <searchScope name="Menu" class="ru.citeck.idea.files.types.citeck.ui.Menu"/>
-        <searchScope name="Number Template" class="ru.citeck.idea.files.types.citeck.model.NumTemplate"/>
-        <searchScope name="Camel DSL" class="ru.citeck.idea.files.types.citeck.integration.CamelDsl"/>
-
-        <fileIndexer implementation="ru.citeck.idea.search.index.indexers.EcosArtifactIndexer"/>
-        <fileIndexer implementation="ru.citeck.idea.search.index.indexers.EcosDataTypeIndexer$JSON"/>
-        <fileIndexer implementation="ru.citeck.idea.search.index.indexers.EcosDataTypeIndexer$YAML"/>
+        <fileIndexer implementation="ru.citeck.idea.search.index.indexers.CiteckArtifactIndexer"/>
+        <!--<fileIndexer implementation="ru.citeck.idea.search.index.indexers.CiteckDataTypeIndexer"/>-->
 
         <navigateInFileItemsProvider
-                implementation="ru.citeck.idea.files.navigateItemsProviders.JsonFormItemsProvider"/>
+                implementation="ru.citeck.idea.artifacts.action.navigate.providers.JsonFormItemsProvider"/>
         <navigateInFileItemsProvider
-                implementation="ru.citeck.idea.files.navigateItemsProviders.JsonJournalItemsProvider"/>
+                implementation="ru.citeck.idea.artifacts.action.navigate.providers.JsonJournalItemsProvider"/>
         <navigateInFileItemsProvider
-                implementation="ru.citeck.idea.files.navigateItemsProviders.DataTypeFileItemsProvider"/>
+                implementation="ru.citeck.idea.artifacts.action.navigate.providers.DataTypeFileItemsProvider"/>
 
         <psiElementValueResolver
                 implementation="ru.citeck.idea.references.resolvers.PsiLiteralExpressionValueResolver"/>
@@ -152,8 +80,8 @@
         <psiElementValueResolver implementation="ru.citeck.idea.references.resolvers.XmlAttributeValueValueResolver"/>
         <psiElementValueResolver implementation="ru.citeck.idea.references.resolvers.XmlTagValueResolver"/>
 
-        <completionProvider implementation="ru.citeck.idea.completion.json.JsonTypeRefCompletionProvider"/>
-        <completionProvider implementation="ru.citeck.idea.completion.json.YamlTypeRefCompletionProvider"/>
+<!--        <completionProvider implementation="ru.citeck.idea.completion.json.JsonTypeRefCompletionProvider"/>
+        <completionProvider implementation="ru.citeck.idea.completion.json.YamlTypeRefCompletionProvider"/>-->
 
     </extensions>
 
@@ -161,27 +89,27 @@
 
         <group id="ru.citeck.ProjectMenu" text="Citeck" popup="true" icon="Icons.CiteckLogo">
             <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
-            <action id="ru.citeck.idea.actions.DeployApplication" class="ru.citeck.idea.actions.DeployApplication"
+<!--            <action id="ru.citeck.idea.artifacts.action.DeployApplication" class="ru.citeck.idea.artifacts.action.DeployApplication"
                     text="Deploy Application" description="Deploy application" icon="AllIcons.Actions.Uninstall">
-            </action>
+            </action>-->
         </group>
 
-        <action id="ru.citeck.idea.actions.file.artifact.DeployArtifact" class="ru.citeck.idea.actions.file.artifact.DeployArtifact"
+        <action id="ru.citeck.idea.artifacts.action.editor.DeployArtifact" class="ru.citeck.idea.artifacts.action.editor.DeployArtifact"
                 text="Deploy File" description="Deploy file" icon="AllIcons.Actions.Uninstall">
             <keyboard-shortcut keymap="$default" first-keystroke="control alt E" second-keystroke="D"/>
             <add-to-group group-id="EditorContextBarMenu" anchor="last"/>
             <add-to-group group-id="ru.citeck.ProjectMenu" anchor="last"/>
         </action>
 
-        <action id="ru.citeck.idea.actions.file.artifact.FetchArtifact" class="ru.citeck.idea.actions.file.artifact.FetchArtifact"
+        <action id="ru.citeck.idea.artifacts.action.editor.FetchArtifact" class="ru.citeck.idea.artifacts.action.editor.FetchArtifact"
                 text="Fetch File" description="Fetch file" icon="AllIcons.Actions.Install">
             <keyboard-shortcut keymap="$default" first-keystroke="control alt E" second-keystroke="F"/>
             <add-to-group group-id="EditorContextBarMenu" anchor="last"/>
             <add-to-group group-id="ru.citeck.ProjectMenu" anchor="last"/>
         </action>
 
-        <action id="ru.citeck.idea.actions.file.NavigateInFileAction"
-                class="ru.citeck.idea.actions.file.NavigateInFileAction"
+        <action id="ru.citeck.idea.artifacts.action.navigate.NavigateInFileAction"
+                class="ru.citeck.idea.artifacts.action.navigate.NavigateInFileAction"
                 text="Navigate in File"
                 description="Navigate in File" icon="AllIcons.CodeWithMe.CwmJump">
             <keyboard-shortcut keymap="$default" first-keystroke="control alt E" second-keystroke="G"/>
@@ -189,8 +117,8 @@
             <add-to-group group-id="ru.citeck.ProjectMenu" anchor="last"/>
         </action>
 
-        <action id="ru.citeck.idea.actions.file.artifact.OpenArtifactInBrowser"
-                class="ru.citeck.idea.actions.file.artifact.OpenArtifactInBrowser"
+        <action id="ru.citeck.idea.artifacts.action.editor.OpenArtifactInBrowser"
+                class="ru.citeck.idea.artifacts.action.editor.OpenArtifactInBrowser"
                 text="Open in Browser"
                 description="Open in Browser" icon="AllIcons.General.Web">
             <keyboard-shortcut keymap="$default" first-keystroke="control alt E" second-keystroke="B"/>
@@ -198,27 +126,27 @@
             <add-to-group group-id="ru.citeck.ProjectMenu" anchor="last"/>
         </action>
 
-        <action id="ru.citeck.idea.actions.file.artifact.OpenArtifactDocsInBrowser"
-                class="ru.citeck.idea.actions.file.artifact.OpenArtifactDocsInBrowser"
+        <action id="ru.citeck.idea.artifacts.action.editor.OpenArtifactDocsInBrowser"
+                class="ru.citeck.idea.artifacts.action.editor.OpenArtifactDocsInBrowser"
                 text="Open Documentation"
                 description="Open documentation" icon="com.intellij.icons.AllIcons.Actions.Help">
             <add-to-group group-id="EditorContextBarMenu" anchor="last"/>
         </action>
 
-        <action id="ru.citeck.idea.actions.CiteckSearchEverywhereAction"
-                class="ru.citeck.idea.actions.CiteckSearchEverywhereAction"
+        <action id="ru.citeck.idea.search.CiteckSearchEverywhereAction"
+                class="ru.citeck.idea.search.CiteckSearchEverywhereAction"
                 text="ECOS Search Everywhere"
                 description="Search everywhere">
             <keyboard-shortcut keymap="$default" first-keystroke="control alt E" second-keystroke="S"/>
         </action>
 
-        <action id="GenerateEcosFormComponent" class="ru.citeck.idea.actions.codeinsight.GenerateEcosFormComponent"
+        <action id="GenerateEcosFormComponent" class="ru.citeck.idea.artifacts.action.codeinsight.GenerateEcosFormComponent"
                 text="Component" icon="Icons.CiteckLogo">
             <add-to-group group-id="GenerateGroup"/>
         </action>
 
         <action id="GenerateEcosFormLocalization"
-                class="ru.citeck.idea.actions.codeinsight.GenerateEcosFormLocalization" text="Localization"
+                class="ru.citeck.idea.artifacts.action.codeinsight.GenerateEcosFormLocalization" text="Localization"
                 icon="Icons.CiteckLogo">
             <add-to-group group-id="GenerateGroup"/>
         </action>

@@ -1,6 +1,9 @@
 package ru.citeck.idea.artifacts.type
 
+import com.intellij.json.psi.JsonPsiUtil
+import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
+import org.jetbrains.kotlin.idea.projectConfiguration.getJvmStdlibArtifactId
 import ru.citeck.ecos.commons.data.ObjectData
 import ru.citeck.ecos.webapp.api.entity.EntityRef
 
@@ -14,9 +17,15 @@ interface ArtifactTypeController {
 
     fun prepareDeployAtts(file: PsiFile): ObjectData
 
-    fun getArtifactId(file: PsiFile): String
+    fun getArtifactId(file: PsiFile): String {
+        return JsonPsiUtil.stripQuotes(getArtifactIdPsiElement(file)?.text ?: "")
+    }
+
+    fun getArtifactIdPsiElement(file: PsiFile): PsiElement?
 
     fun getFetchAtts(file: PsiFile): Map<String, String>
 
     fun writeFetchedData(file: PsiFile, value: ObjectData)
+
+    fun isIndexable(file: PsiFile): Boolean
 }

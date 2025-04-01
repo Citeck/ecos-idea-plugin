@@ -1,5 +1,5 @@
 {
   "name": "Permission Definition",
-  "type": "YAML",
+  "kind": "YAML",
   "sourceId": "emodel/permission-def"
 }

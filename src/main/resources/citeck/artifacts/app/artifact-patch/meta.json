@@ -1,6 +1,6 @@
 {
   "name": "Artifact Patch",
-  "type": "YAML",
+  "kind": "YAML",
   "sourceId": "eapps/artifact-patch",
   "docsUrl": "https://citeck-ecos.readthedocs.io/ru/latest/settings_kb/ecos_artifacts.html#id8"
 }

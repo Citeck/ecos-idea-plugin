@@ -1,6 +1,6 @@
 {
   "name": "DMN",
-  "type": "XML",
+  "kind": "XML",
   "sourceId": "transformations/template",
   "docsUrl": "https://citeck-ecos.readthedocs.io/ru/latest/general/Transformations_microservice.html"
 }

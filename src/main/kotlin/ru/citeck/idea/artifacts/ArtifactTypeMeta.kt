@@ -6,13 +6,56 @@ import ru.citeck.ecos.commons.data.ObjectData
 
 @JsonDeserialize(builder = ArtifactTypeMeta.Builder::class)
 class ArtifactTypeMeta(
-    val id: String,
+
+    /**
+     * Unique identifier of the artifact type.
+     * Consists of two parts separated by '/'.
+     *
+     * Example: "model/type", "ui/menu"
+     */
+    val typeId: String,
+
+    /**
+     * Source identifier used for opening in a browser, performing mutations,
+     * and downloading data from the server.
+     */
     val sourceId: String,
+
+    /**
+     * Public reference source identifier.
+     * Defaults to `sourceId` unless explicitly set.
+     */
+    val publicSourceId: String,
+
+    /**
+     * Human-readable name of the artifact type.
+     */
     val name: String,
+
+    /**
+     * Description of the artifact type.
+     */
     val description: String,
-    val type: ArtifactType,
+
+    /**
+     * Defines how artifacts of this type should be processed.
+     * Determines which controller will handle them.
+     */
+    val kind: ArtifactKind,
+
+    /**
+     * Configuration settings for the associated controller.
+     */
     val controller: ObjectData,
+
+    /**
+     * Set of actions that are disabled for artifacts of this type.
+     */
     val disabledActions: Set<String>,
+
+    /**
+     * URL pointing to the documentation for this artifact type.
+     */
     val docsUrl: String
 ) {
     companion object {
@@ -28,18 +71,20 @@ class ArtifactTypeMeta(
     @JsonPOJOBuilder
     class Builder() {
 
-        var id: String = ""
+        var typeId: String = ""
         var sourceId: String = ""
+        var publicSourceId: String = ""
         var name: String = ""
         var description: String = ""
-        var type: ArtifactType = ArtifactType.YAML
+        var type: ArtifactKind = ArtifactKind.YAML
         var controller: ObjectData = ObjectData.create()
         var disabledActions: Set<String> = emptySet()
         var docsUrl: String = ""
 
         constructor(base: ArtifactTypeMeta) : this() {
-            this.id = base.id
+            this.typeId = base.typeId
             this.sourceId = base.sourceId
+            this.publicSourceId = base.publicSourceId
             this.name = base.name
             this.description = base.description
             this.controller = base.controller.deepCopy()
@@ -47,13 +92,18 @@ class ArtifactTypeMeta(
             this.docsUrl = base.docsUrl
         }
 
-        fun withId(id: String): Builder {
-            this.id = id
+        fun withTypeId(typeId: String): Builder {
+            this.typeId = typeId
             return this
         }
 
-        fun withSourceId(id: String): Builder {
-            this.sourceId = id
+        fun withSourceId(sourceId: String): Builder {
+            this.sourceId = sourceId
+            return this
+        }
+
+        fun withPublicSourceId(publicSourceId: String): Builder {
+            this.publicSourceId = publicSourceId
             return this
         }
 
@@ -67,7 +117,7 @@ class ArtifactTypeMeta(
             return this
         }
 
-        fun withType(type: ArtifactType): Builder {
+        fun withType(type: ArtifactKind): Builder {
             this.type = type
             return this
         }
@@ -83,12 +133,16 @@ class ArtifactTypeMeta(
         }
 
         fun build(): ArtifactTypeMeta {
+            if (publicSourceId.isBlank()) {
+                withPublicSourceId(sourceId)
+            }
             return ArtifactTypeMeta(
-                id = id,
+                typeId = typeId,
                 sourceId = sourceId,
+                publicSourceId = publicSourceId,
                 name = name,
                 description = description,
-                type = type,
+                kind = type,
                 controller = controller,
                 disabledActions = disabledActions,
                 docsUrl = docsUrl

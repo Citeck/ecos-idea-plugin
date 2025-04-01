@@ -1,12 +1,17 @@
 package ru.citeck.idea.artifacts
 
 import com.intellij.ide.fileTemplates.FileTemplate
+import com.intellij.json.psi.JsonPsiUtil
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.command.CommandProcessor
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.module.ModuleUtil
+import com.intellij.openapi.project.Project
+import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import lombok.extern.slf4j.Slf4j
+import org.jetbrains.kotlin.idea.core.util.toPsiFile
 import ru.citeck.ecos.webapp.api.entity.EntityRef
 import ru.citeck.ecos.webapp.api.promise.Promise
 import ru.citeck.idea.artifacts.type.ArtifactTypeController
@@ -30,22 +35,34 @@ class ArtifactsService {
         }
     }
 
-    private val artifacts: MutableMap<String, ArtifactTypeInfo> = ConcurrentHashMap()
+    private val artifactTypes: MutableMap<String, ArtifactTypeInfo> = ConcurrentHashMap()
+
+    fun getArtifactTypes(): Set<String> {
+        return artifactTypes.keys
+    }
 
     fun getArtifactTypeMeta(file: PsiFile?): ArtifactTypeMeta? {
-        return getArtifactInfoForFile(file)?.meta
+        return getArtifactInfoForFile(file)?.getMeta()
+    }
+
+    fun getArtifactInfo(file: VirtualFile, project: Project): ArtifactInfo? {
+        return getArtifactInfoForFile(file, project)
+    }
+
+    fun getArtifactInfo(file: PsiFile): ArtifactInfo? {
+        return getArtifactInfoForFile(file)
     }
 
     fun isActionAllowed(file: PsiFile?, actionId: String): Boolean {
         file ?: return false
         val info = getArtifactInfoForFile(file) ?: return false
-        return !info.meta.disabledActions.contains(actionId)
+        return !info.getMeta().disabledActions.contains(actionId)
     }
 
     fun getArtifactUrl(file: PsiFile): Promise<String> {
 
         val info = getNotNullArtifactInfoForFile(file)
-        val artifactUrl = info.controller.getArtifactUrl(info.getRef(file))
+        val artifactUrl = info.getController().getArtifactUrl(info.getRef(file))
 
         return CiteckServerSelector.getServer(file.project).then { it.host + artifactUrl }
     }
@@ -61,7 +78,7 @@ class ArtifactsService {
         require(artifactRef.getLocalId().isNotBlank()) { "Artifact id is blank" }
 
         val recordsApi = ServerRecordsApi.getInstance(file.project)
-        val atts = typeInfo.controller.prepareDeployAtts(file)
+        val atts = typeInfo.getController().prepareDeployAtts(file)
 
         if (!recordsApi.isExists(artifactRef).get()) {
             atts["id"] = artifactRef.getLocalId()
@@ -73,13 +90,13 @@ class ArtifactsService {
 
     fun fetchArtifact(file: PsiFile) {
 
-        val typeInfo = getNotNullArtifactInfoForFile(file)
+        val artifactInfo = getNotNullArtifactInfoForFile(file)
 
-        val ref = typeInfo.getRef(file)
+        val ref = artifactInfo.getRef(file)
 
         val fetchAtts = mutableMapOf<String, String>()
         fetchAtts[NOT_EXISTS_ATT] = NOT_EXISTS_ATT
-        fetchAtts.putAll(typeInfo.controller.getFetchAtts(file))
+        fetchAtts.putAll(artifactInfo.getController().getFetchAtts(file))
 
         val newContent = ServerRecordsApi.getInstance(file.project)
             .loadAtts(ref, fetchAtts)
@@ -92,21 +109,37 @@ class ArtifactsService {
             throw RuntimeException("Artifact '${ref.getLocalId()}' does not exist on the server")
         }
         runUndoTransparentAction {
-            typeInfo.controller.writeFetchedData(file, newContent)
+            artifactInfo.getController().writeFetchedData(file, newContent)
         }
     }
 
-    private fun getNotNullArtifactInfoForFile(file: PsiFile): ArtifactTypeInfo {
-        return getArtifactInfoForFile(file) ?: error("File is not an artifact: ${file.virtualFile.path}")
+    private fun getNotNullArtifactInfoForFile(file: PsiFile): ArtifactInfo {
+        return getArtifactInfoForFile(file.virtualFile, file.project)
+            ?: error("File is not an artifact: ${file.virtualFile?.path}")
     }
 
-    private fun getArtifactInfoForFile(file: PsiFile?): ArtifactTypeInfo? {
+    private fun getNotNullArtifactInfoForFile(file: VirtualFile, project: Project): ArtifactInfo {
+        return getArtifactInfoForFile(file, project)
+            ?: error("File is not an artifact: ${file.path}")
+    }
+
+    private fun getArtifactInfoForFile(file: PsiFile?): ArtifactInfo? {
+        file ?: return null
+        return getArtifactInfoForFile(file.virtualFile, file.project)
+    }
+
+    private fun getArtifactInfoForFile(file: VirtualFile?, project: Project?): ArtifactInfo? {
 
         file ?: return null
-        val module = ModuleUtil.findModuleForPsiElement(file) ?: return null
-        val moduleInfo = CiteckProject.getInstance(file.project).getModuleInfo(module)
+        project ?: return null
 
-        var filePath = file.virtualFile.path
+        val module = ModuleUtil.findModuleForFile(file, project) ?: return null
+        val moduleInfo = CiteckProject.getInstance(project).getModuleInfo(module)
+        if (moduleInfo.isNone()) {
+            return null
+        }
+
+        var filePath = file.path
         val artifactsRoot = moduleInfo.type.artifactsRoot
         val artifactsRootIdx = filePath.indexOf(artifactsRoot)
         if (artifactsRootIdx == -1) {
@@ -117,21 +150,26 @@ class ArtifactsService {
         if (typeIdDelimIdx == -1) {
             return null
         }
-        return artifacts[filePath.substring(1, typeIdDelimIdx)]
+
+        val typeInfo = artifactTypes[filePath.substring(1, typeIdDelimIdx)] ?: return null
+
+        val psiFile = file.toPsiFile(project) ?: return null
+
+        return ArtifactInfoImpl(psiFile, typeInfo)
     }
 
     fun getTemplates(artifactTypeId: String): List<FileTemplate> {
-        return artifacts[artifactTypeId]?.template ?: error("Artifact '$artifactTypeId' not found")
+        return artifactTypes[artifactTypeId]?.template ?: error("Artifact '$artifactTypeId' not found")
     }
 
     fun register(artifactTypeMeta: ArtifactTypeMeta, template: List<FileTemplate>) {
-        val controller: ArtifactTypeController = when (artifactTypeMeta.type) {
-            ArtifactType.JSON, ArtifactType.YAML -> JsonYamlArtifactType()
-            ArtifactType.BPMN -> ProcXmlArtifactType(ProcXmlArtifactType.SubType.BPMN)
-            ArtifactType.DMN -> ProcXmlArtifactType(ProcXmlArtifactType.SubType.DMN)
-            ArtifactType.NOTIFICATION_TEMPLATE -> NotificationTemplateType()
+        val controller: ArtifactTypeController = when (artifactTypeMeta.kind) {
+            ArtifactKind.JSON, ArtifactKind.YAML -> JsonYamlArtifactType()
+            ArtifactKind.BPMN -> ProcXmlArtifactType(ProcXmlArtifactType.SubType.BPMN)
+            ArtifactKind.DMN -> ProcXmlArtifactType(ProcXmlArtifactType.SubType.DMN)
+            ArtifactKind.NOTIFICATION_TEMPLATE -> NotificationTemplateType()
         }
-        artifacts[artifactTypeMeta.id] = ArtifactTypeInfo(artifactTypeMeta, template, controller)
+        artifactTypes[artifactTypeMeta.typeId] = ArtifactTypeInfo(artifactTypeMeta, template, controller)
     }
 
     private fun runUndoTransparentAction(action: Runnable) {
@@ -140,13 +178,44 @@ class ArtifactsService {
         }
     }
 
+    private class ArtifactInfoImpl(
+        val file: PsiFile,
+        val typeInfo: ArtifactTypeInfo
+    ) : ArtifactInfo {
+
+        private val idPsiElement by lazy {
+            typeInfo.controller.getArtifactIdPsiElement(file)
+        }
+
+        override fun getTypeId(): String {
+            return typeInfo.meta.typeId
+        }
+
+        override fun getArtifactIdPsiElement(): PsiElement? {
+            return idPsiElement
+        }
+
+        override fun getArtifactId(): String {
+            val idElement = getArtifactIdPsiElement()
+            return JsonPsiUtil.stripQuotes(idElement?.text ?: "")
+        }
+
+        override fun getRef(file: PsiFile): EntityRef {
+            return EntityRef.create(typeInfo.meta.sourceId, getArtifactId())
+        }
+
+        override fun getController(): ArtifactTypeController {
+            return typeInfo.controller
+        }
+
+        override fun getMeta(): ArtifactTypeMeta {
+            return typeInfo.meta
+        }
+    }
+
     private class ArtifactTypeInfo(
         val meta: ArtifactTypeMeta,
         val template: List<FileTemplate>,
         val controller: ArtifactTypeController
-    ) {
-        fun getRef(file: PsiFile): EntityRef {
-            return EntityRef.create(meta.sourceId, controller.getArtifactId(file))
-        }
-    }
+    )
 }
