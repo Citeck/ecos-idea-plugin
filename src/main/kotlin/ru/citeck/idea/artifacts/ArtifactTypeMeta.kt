@@ -76,7 +76,7 @@ class ArtifactTypeMeta(
         var publicSourceId: String = ""
         var name: String = ""
         var description: String = ""
-        var type: ArtifactKind = ArtifactKind.YAML
+        var kind: ArtifactKind = ArtifactKind.YAML
         var controller: ObjectData = ObjectData.create()
         var disabledActions: Set<String> = emptySet()
         var docsUrl: String = ""
@@ -87,6 +87,7 @@ class ArtifactTypeMeta(
             this.publicSourceId = base.publicSourceId
             this.name = base.name
             this.description = base.description
+            this.kind = base.kind
             this.controller = base.controller.deepCopy()
             this.disabledActions = base.disabledActions
             this.docsUrl = base.docsUrl
@@ -117,8 +118,8 @@ class ArtifactTypeMeta(
             return this
         }
 
-        fun withType(type: ArtifactKind): Builder {
-            this.type = type
+        fun withKind(kind: ArtifactKind): Builder {
+            this.kind = kind
             return this
         }
 
@@ -142,7 +143,7 @@ class ArtifactTypeMeta(
                 publicSourceId = publicSourceId,
                 name = name,
                 description = description,
-                kind = type,
+                kind = kind,
                 controller = controller,
                 disabledActions = disabledActions,
                 docsUrl = docsUrl

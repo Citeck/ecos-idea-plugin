@@ -4,6 +4,7 @@ import com.intellij.json.psi.JsonFile
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.command.CommandProcessor
+import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiFile
 import org.apache.commons.io.FilenameUtils
@@ -20,6 +21,7 @@ open class CiteckConvertToAction(
 
     override fun perform(event: AnActionEvent) {
 
+        val project = event.project ?: return
         val psiFile = getPsiFile(event) ?: return
         val parent = psiFile.parent ?: error("File parent is null. File name: ${psiFile.name}")
 
@@ -39,6 +41,7 @@ open class CiteckConvertToAction(
             CommandProcessor.getInstance().runUndoTransparentAction {
                 val targetFile = parent.createFile(nameWithoutExt + "." + type.toExt)
                 CiteckPsiUtils.setContent(targetFile, targetContent)
+                FileEditorManager.getInstance(project).openFile(targetFile.virtualFile, true)
                 psiFile.delete()
             }
         }
