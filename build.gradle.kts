@@ -12,7 +12,7 @@ plugins {
 }
 
 group = "ru.citeck.idea"
-version = "3.0.4"
+version = "3.0.5"
 
 kotlin {
     jvmToolchain(17)
@@ -128,6 +128,9 @@ tasks {
     runIde {
         jvmArgs(
             "-Xmx2G",
+            "-javaagent:/home/spk/programs/jebra/ja-netfilter.jar=jetbrains",
+            "--add-opens=java.base/jdk.internal.org.objectweb.asm=ALL-UNNAMED",
+            "--add-opens=java.base/jdk.internal.org.objectweb.asm.tree=ALL-UNNAMED"
         )
     }
 }
