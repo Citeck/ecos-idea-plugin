@@ -144,6 +144,18 @@
             <add-to-group group-id="GenerateGroup"/>
         </action>
 
+        <action id="CiteckArtifactConvertYamlToJson"
+                class="ru.citeck.idea.artifacts.action.CiteckConvertToAction$YamlToJson" text="Convert to JSON"
+                icon="Icons.CiteckLogo">
+            <add-to-group group-id="RefactoringMenu"/>
+        </action>
+
+        <action id="CiteckArtifactConvertJsonToYaml"
+                class="ru.citeck.idea.artifacts.action.CiteckConvertToAction$JsonToYaml" text="Convert to YAML"
+                icon="Icons.CiteckLogo">
+            <add-to-group group-id="RefactoringMenu"/>
+        </action>
+
     </actions>
 
 </idea-plugin>
