@@ -78,6 +78,10 @@
 
     </extensions>
 
+    <extensions defaultExtensionNs="JavaScript">
+        <JsonSchema.ProviderFactory implementation="ru.citeck.idea.schema.CiteckJsonSchemaProviderFactory"/>
+    </extensions>
+
     <actions>
 
         <group id="ru.citeck.ProjectMenu" text="Citeck" popup="true" icon="Icons.CiteckLogo">
