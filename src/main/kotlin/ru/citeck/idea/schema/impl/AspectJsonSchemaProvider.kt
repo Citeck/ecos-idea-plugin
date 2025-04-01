@@ -6,14 +6,13 @@ import com.jetbrains.jsonSchema.extension.JsonSchemaFileProvider
 import com.jetbrains.jsonSchema.extension.JsonSchemaProviderFactory
 import com.jetbrains.jsonSchema.extension.SchemaType
 import com.jetbrains.jsonSchema.impl.JsonSchemaVersion
-import org.jetbrains.kotlin.idea.core.util.toPsiFile
 import ru.citeck.idea.artifacts.ArtifactsService
 
 class AspectJsonSchemaProvider(private val project: Project) : JsonSchemaFileProvider {
 
     override fun isAvailable(file: VirtualFile): Boolean {
-        val meta = ArtifactsService.getInstance().getArtifactTypeMeta(file.toPsiFile(project)) ?: return false
-        return meta.id == "model/aspect"
+        val meta = ArtifactsService.getInstance().getArtifactInfo(file, project) ?: return false
+        return meta.getTypeId() == "model/aspect"
     }
 
     override fun getName(): String = "Citeck Aspect Schema"

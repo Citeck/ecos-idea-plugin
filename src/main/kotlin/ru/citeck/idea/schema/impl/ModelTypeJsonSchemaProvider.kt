@@ -12,8 +12,8 @@ import ru.citeck.idea.artifacts.ArtifactsService
 class ModelTypeJsonSchemaProvider(private val project: Project) : JsonSchemaFileProvider {
 
     override fun isAvailable(file: VirtualFile): Boolean {
-        val meta = ArtifactsService.getInstance().getArtifactTypeMeta(file.toPsiFile(project)) ?: return false
-        return meta.id == "model/type"
+        val meta = ArtifactsService.getInstance().getArtifactInfo(file, project) ?: return false
+        return meta.getTypeId() == "model/type"
     }
 
     override fun getName(): String = "Citeck Model Type Schema"

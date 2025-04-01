@@ -6,14 +6,13 @@ import com.jetbrains.jsonSchema.extension.JsonSchemaFileProvider
 import com.jetbrains.jsonSchema.extension.JsonSchemaProviderFactory
 import com.jetbrains.jsonSchema.extension.SchemaType
 import com.jetbrains.jsonSchema.impl.JsonSchemaVersion
-import org.jetbrains.kotlin.idea.core.util.toPsiFile
 import ru.citeck.idea.artifacts.ArtifactsService
 
 class JournalJsonSchemaProvider(private val project: Project) : JsonSchemaFileProvider {
 
     override fun isAvailable(file: VirtualFile): Boolean {
-        val meta = ArtifactsService.getInstance().getArtifactTypeMeta(file.toPsiFile(project)) ?: return false
-        return meta.id == "ui/journal"
+        val meta = ArtifactsService.getInstance().getArtifactInfo(file, project) ?: return false
+        return meta.getTypeId() == "ui/journal"
     }
 
     override fun getName(): String = "Citeck Journal Schema"
