@@ -1,8 +1,8 @@
 ---
 id: ${NAME}
 extensionFor: emodel/working-calendar@RU
-from: ${YEAR}-01-01T00:00:00Z
-until: ${YEAR}-12-31T00:00:00Z
+from: ${YEAR}-01-01
+until: ${YEAR}-12-31
 enabled: true
 dates:
   - date: 2025-01-01

@@ -11,6 +11,7 @@ import ru.citeck.idea.schema.impl.NumberTemplateJsonSchemaProvider
 import ru.citeck.idea.schema.impl.PermissionDefJsonSchemaProvider
 import ru.citeck.idea.schema.impl.PermissionsJsonSchemaProvider
 import ru.citeck.idea.schema.impl.SecretJsonSchemaProvider
+import ru.citeck.idea.schema.impl.WorkingCalendarJsonSchemaProvider
 
 class CiteckJsonSchemaProviderFactory : JsonSchemaProviderFactory {
     override fun getProviders(project: Project): List<JsonSchemaFileProvider> {
@@ -22,7 +23,8 @@ class CiteckJsonSchemaProviderFactory : JsonSchemaProviderFactory {
             NumberTemplateJsonSchemaProvider(project),
             PermissionDefJsonSchemaProvider(project),
             PermissionsJsonSchemaProvider(project),
-            SecretJsonSchemaProvider(project)
+            SecretJsonSchemaProvider(project),
+            WorkingCalendarJsonSchemaProvider(project)
         )
     }
 }
