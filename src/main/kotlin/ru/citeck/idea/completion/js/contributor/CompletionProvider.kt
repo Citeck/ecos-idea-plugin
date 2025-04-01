@@ -1,4 +1,4 @@
-package ru.citeck.idea.completion.contributor
+package ru.citeck.idea.completion.js.contributor
 
 import com.intellij.codeInsight.completion.CompletionParameters
 import com.intellij.codeInsight.completion.CompletionResultSet

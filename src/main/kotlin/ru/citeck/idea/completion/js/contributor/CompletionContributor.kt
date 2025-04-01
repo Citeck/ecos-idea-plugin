@@ -1,4 +1,4 @@
-package ru.citeck.idea.completion.contributor
+package ru.citeck.idea.completion.js.contributor
 
 import com.intellij.codeInsight.completion.CompletionContributor
 import com.intellij.codeInsight.completion.CompletionParameters
@@ -9,7 +9,7 @@ import com.intellij.util.ProcessingContext
 
 abstract class CompletionContributor : CompletionContributor() {
 
-/*    companion object {
+    companion object {
         val EP_NAME: ExtensionPointName<CompletionProvider> =
             ExtensionPointName.create("ru.citeck.idea.completionProvider")
     }
@@ -32,7 +32,7 @@ abstract class CompletionContributor : CompletionContributor() {
                         }
                     })
             }
-    }*/
+    }
 
     abstract fun getLanguage(): Language
 }

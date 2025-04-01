@@ -28,9 +28,6 @@
         <psi.referenceContributor implementation="ru.citeck.idea.references.CiteckReferenceProvider$Contributor"
                                   language=""/>
 
-<!--        <completion.contributor implementationClass="ru.citeck.idea.completion.json.JsonCompletionContributor" language="JSON"/>
-        <completion.contributor implementationClass="ru.citeck.idea.completion.json.YamlCompletionContributor" language="yaml"/>-->
-
         <completion.contributor implementationClass="ru.citeck.idea.completion.CiteckJsonYamlCompletionContributor" language="JSON"/>
         <completion.contributor implementationClass="ru.citeck.idea.completion.CiteckJsonYamlCompletionContributor" language="yaml"/>
 
@@ -56,15 +53,14 @@
         <extensionPoint dynamic="true" name="fileIndexer" interface="ru.citeck.idea.search.index.indexers.CiteckFileIndexer"/>
         <extensionPoint dynamic="true" name="navigateInFileItemsProvider"
                         interface="ru.citeck.idea.artifacts.action.navigate.providers.NavigateInFileItemsProvider"/>
-        <extensionPoint dynamic="true" name="psiElementValueResolver" interface="ru.citeck.idea.references.PsiElementValueResolver"/><!--
-        <extensionPoint dynamic="true" name="completionProvider" interface="ru.citeck.idea.completion.contributor.CompletionProvider"/>-->
+        <extensionPoint dynamic="true" name="psiElementValueResolver" interface="ru.citeck.idea.references.PsiElementValueResolver"/>
+        <extensionPoint dynamic="true" name="completionProvider" interface="ru.citeck.idea.completion.js.contributor.CompletionProvider"/>
         <extensionPoint dynamic="true" name="citeckFormLanguageInjection" beanClass="ru.citeck.idea.languageInjections.CiteckFormLanguageInjection"/>
     </extensionPoints>
 
     <extensions defaultExtensionNs="ru.citeck.idea">
 
         <fileIndexer implementation="ru.citeck.idea.search.index.indexers.CiteckArtifactIndexer"/>
-        <!--<fileIndexer implementation="ru.citeck.idea.search.index.indexers.CiteckDataTypeIndexer"/>-->
 
         <navigateInFileItemsProvider
                 implementation="ru.citeck.idea.artifacts.action.navigate.providers.JsonFormItemsProvider"/>
@@ -79,9 +75,6 @@
         <psiElementValueResolver implementation="ru.citeck.idea.references.resolvers.YAMLScalarValueResolver"/>
         <psiElementValueResolver implementation="ru.citeck.idea.references.resolvers.XmlAttributeValueValueResolver"/>
         <psiElementValueResolver implementation="ru.citeck.idea.references.resolvers.XmlTagValueResolver"/>
-
-<!--        <completionProvider implementation="ru.citeck.idea.completion.json.JsonTypeRefCompletionProvider"/>
-        <completionProvider implementation="ru.citeck.idea.completion.json.YamlTypeRefCompletionProvider"/>-->
 
     </extensions>
 
