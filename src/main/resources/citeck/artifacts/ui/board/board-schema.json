@@ -1,0 +1,139 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Citeck Board Schema",
+  "description": "Schema for Citeck kanban board YAML files",
+  "x-intellij-html-description": "<p>Schema for Citeck kanban board files</p>\n<ul>\n    <li>Kanban boards provide a visual representation of data in columns based on status</li>\n    <li>Can be used to visualize and manage workflows by moving items between statuses</li>\n</ul>",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "typeRef",
+    "columns"
+  ],
+  "definitions": {
+    "mlText": {
+      "oneOf": [
+        {
+          "type": "string",
+          "description": "Text value"
+        },
+        {
+          "type": "object",
+          "description": "Multilingual text",
+          "minProperties": 1,
+          "properties": {
+            "ru": {
+              "type": "string",
+              "description": "Russian text"
+            },
+            "en": {
+              "type": "string",
+              "description": "English text"
+            }
+          }
+        }
+      ]
+    },
+    "boardColumn": {
+      "type": "object",
+      "required": [
+        "id",
+        "name"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Column identifier (status ID)",
+          "x-intellij-html-description": "<p>Column identifier corresponding to status ID in the data type</p>\n<ul>\n    <li>Must match a valid status in the selected data type</li>\n</ul>"
+        },
+        "name": {
+          "$ref": "#/definitions/mlText",
+          "description": "Column display name",
+          "x-intellij-html-description": "<p>Name to display in column header</p>\n<ul>\n    <li>Can override the default status name for better readability</li>\n</ul>"
+        },
+        "hideOldItems": {
+          "type": "boolean",
+          "description": "Whether to hide old items in this column",
+          "default": false,
+          "x-intellij-html-description": "<p>Whether to hide items older than specified duration</p>\n<ul>\n    <li>When true, items older than hideItemsOlderThan will be hidden</li>\n</ul>"
+        },
+        "hideItemsOlderThan": {
+          "type": "integer",
+          "description": "Duration (in days) after which items are hidden",
+          "x-intellij-html-description": "<p>Duration in days after which items are hidden</p>\n<ul>\n    <li>Only applicable when hideOldItems is true</li>\n    <li>Items with a status transition date older than this duration will be hidden</li>\n</ul>"
+        }
+      }
+    }
+  },
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the board",
+      "pattern": "^[a-zA-Z][a-zA-Z0-9_-]*$",
+      "x-intellij-html-description": "<p>Unique identifier for the board</p>\n<ul>\n    <li>Must be unique within the system</li>\n    <li>Use hyphen-case or camelCase naming convention</li>\n</ul>"
+    },
+    "typeRef": {
+      "type": "string",
+      "description": "Reference to data type",
+      "x-intellij-html-description": "<p>Reference to data type to display on the board</p>\n<ul>\n    <li>Format: emodel/type@[type-id]</li>\n    <li>The board will display records of this type</li>\n    <li>Columns are based on statuses defined in this type</li>\n</ul>"
+    },
+    "journalRef": {
+      "type": "string",
+      "description": "Reference to journal",
+      "x-intellij-html-description": "<p>Reference to journal for this board</p>\n<ul>\n    <li>Format: uiserv/journal@[journal-id]</li>\n    <li>The board will be an alternative view for this journal</li>\n    <li>Journal filters apply to the board view</li>\n</ul>"
+    },
+    "cardFormRef": {
+      "type": "string",
+      "description": "Reference to card form",
+      "x-intellij-html-description": "<p>Reference to form used for record cards</p>\n<ul>\n    <li>Format: uiserv/form@[form-id]</li>\n    <li>Defines which fields appear on cards in the board</li>\n    <li>If not specified, default representation will be used</li>\n</ul>"
+    },
+    "cardFieldsLabelLayout": {
+      "type": "string",
+      "description": "Position of field labels on cards",
+      "enum": ["LEFT", "TOP"],
+      "default": "TOP",
+      "x-intellij-html-description": "<p>Position of field labels on cards</p>\n<ul>\n    <li>LEFT - Labels appear to the left of field values</li>\n    <li>TOP - Labels appear above field values</li>\n</ul>",
+      "x-intellij-enum-metadata": {
+        "LEFT": {
+          "description": "Labels appear to the left of field values"
+        },
+        "TOP": {
+          "description": "Labels appear above field values"
+        }
+      }
+    },
+    "readOnly": {
+      "type": "boolean",
+      "description": "Whether the board is read-only",
+      "default": false,
+      "x-intellij-html-description": "<p>Whether the board is read-only</p>\n<ul>\n    <li>When true, cards cannot be moved between columns</li>\n    <li>When false, users can drag cards between statuses (if permitted by workflows)</li>\n</ul>"
+    },
+    "disableTitle": {
+      "type": "boolean",
+      "description": "Whether to hide card titles",
+      "default": false,
+      "x-intellij-html-description": "<p>Whether to hide card titles</p>\n<ul>\n    <li>When true, card headers are hidden</li>\n    <li>When false, cards display their title/header</li>\n</ul>"
+    },
+    "name": {
+      "$ref": "#/definitions/mlText",
+      "description": "Board display name",
+      "x-intellij-html-description": "<p>Display name for the board</p>\n<ul>\n    <li>Appears in board list and as page title</li>\n</ul>"
+    },
+    "actions": {
+      "type": "array",
+      "description": "List of actions available on the board",
+      "items": {
+        "type": "string"
+      },
+      "x-intellij-html-description": "<p>List of actions available on the board</p>\n<ul>\n    <li>Format: uiserv/action@[action-id]</li>\n    <li>Actions that can be performed on cards</li>\n</ul>"
+    },
+    "columns": {
+      "type": "array",
+      "description": "List of board columns",
+      "items": {
+        "$ref": "#/definitions/boardColumn"
+      },
+      "x-intellij-html-description": "<p>List of board columns</p>\n<ul>\n    <li>Each column represents a status from the selected data type</li>\n    <li>Columns can be configured to hide old items</li>\n</ul>"
+    }
+  }
+}
