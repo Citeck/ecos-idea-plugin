@@ -3,6 +3,9 @@ id: ${NAME}
 name:
   en: ${NAME}
 
+description:
+  en: ${NAME}
+
 visibility: PUBLIC
 
 workspaceMembers:

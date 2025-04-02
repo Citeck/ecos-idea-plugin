@@ -1,0 +1,484 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Citeck Action Schema",
+  "description": "Schema for Citeck action YAML files",
+  "x-intellij-html-description": "<p>Schema for Citeck action files</p>\n<ul>\n    <li>Actions can be executed on records in journals or record dashboard</li>\n    <li>One action can be used in different parts of the system</li>\n</ul>",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "type"
+  ],
+  "definitions": {
+    "mlText": {
+      "oneOf": [
+        {
+          "type": "string",
+          "description": "Text value"
+        },
+        {
+          "type": "object",
+          "description": "Multilingual text",
+          "minProperties": 1,
+          "properties": {
+            "ru": {
+              "type": "string",
+              "description": "Russian text"
+            },
+            "en": {
+              "type": "string",
+              "description": "English text"
+            }
+          }
+        }
+      ]
+    },
+    "confirm": {
+      "type": "object",
+      "description": "Confirmation dialog configuration",
+      "x-intellij-html-description": "<p>Configuration for the confirmation dialog</p>\n<ul>\n    <li>If not specified, the action executes without confirmation</li>\n    <li>Can display a simple message or a complex form</li>\n    <li>Form data can be mapped to action configuration</li>\n</ul>",
+      "properties": {
+        "title": {
+          "$ref": "#/definitions/mlText",
+          "description": "Confirmation dialog title"
+        },
+        "message": {
+          "$ref": "#/definitions/mlText",
+          "description": "Confirmation message"
+        },
+        "formRef": {
+          "type": "string",
+          "description": "Reference to confirmation form",
+          "x-intellij-html-description": "<p>Reference to a form to display in the confirmation dialog</p>\n<ul>\n    <li>If specified, the message property is ignored</li>\n    <li>Format: uiserv/form@[form-id]</li>\n</ul>"
+        },
+        "formAttributes": {
+          "type": "object",
+          "description": "Attributes to pass to the confirmation form",
+          "additionalProperties": true,
+          "x-intellij-html-description": "<p>Additional attributes to pass to the confirmation form</p>\n<ul>\n    <li>Can include constants or record attributes using ${attribute} syntax</li>\n</ul>"
+        },
+        "attributesMapping": {
+          "type": "object",
+          "description": "Mapping of attributes from confirmation form to action configuration",
+          "additionalProperties": true,
+          "x-intellij-html-description": "<p>Maps data from the confirmation form to action configuration</p>\n<ul>\n    <li>Key: path in the action configuration</li>\n    <li>Value: field name in the confirmation form</li>\n    <li>Example: <code>\"body.comment\": \"comment\"</code> maps the comment field from the form to body.comment in the action config</li>\n</ul>"
+        }
+      }
+    },
+    "features": {
+      "type": "object",
+      "description": "Action features configuration",
+      "x-intellij-html-description": "<p>Configuration for action execution contexts</p>\n<ul>\n    <li>Controls where and how the action can be used</li>\n    <li>Single record, multiple records, or query-based execution</li>\n</ul>",
+      "properties": {
+        "execForRecord": {
+          "type": "boolean",
+          "description": "Whether the action can be executed for a single record",
+          "default": true,
+          "x-intellij-html-description": "<p>Whether the action can be executed for a single record</p>\n<ul>\n    <li>When true, available for individual records in journals or on record cards</li>\n</ul>"
+        },
+        "execForRecords": {
+          "type": "boolean",
+          "description": "Whether the action can be executed for selected records",
+          "default": true,
+          "x-intellij-html-description": "<p>Whether the action can be executed for selected records</p>\n<ul>\n    <li>When true, available in the dropdown above tables when users select records</li>\n</ul>"
+        },
+        "execForQuery": {
+          "type": "boolean",
+          "description": "Whether the action can be executed for the entire query",
+          "default": true,
+          "x-intellij-html-description": "<p>Whether the action can be executed for the entire query</p>\n<ul>\n    <li>When true, available in the dropdown above tables even when no records are selected</li>\n    <li>Applies to all records matching the current filter</li>\n</ul>"
+        }
+      }
+    }
+  },
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the action",
+      "pattern": "^[a-zA-Z][a-zA-Z0-9_-]*$",
+      "x-intellij-html-description": "<p>Unique identifier for the action</p>\n<ul>\n    <li>Must be unique among all actions in the system</li>\n    <li>Use hyphen-case or camelCase naming convention</li>\n</ul>"
+    },
+    "key": {
+      "type": "string",
+      "description": "Action key for filtering",
+      "pattern": "^[\\w$/.]+\\w",
+      "x-intellij-html-description": "<p>Key for filtering and grouping actions</p>\n<ul>\n    <li>Should be in dot-separated format: word0.word1.word2</li>\n    <li>Allows filtering by mask patterns</li>\n</ul>"
+    },
+    "name": {
+      "$ref": "#/definitions/mlText",
+      "description": "Action name displayed to users"
+    },
+    "type": {
+      "type": "string",
+      "description": "Action type that determines execution logic",
+      "enum": [
+        "view",
+        "edit",
+        "open-in-background",
+        "download",
+        "delete",
+        "download-card-template",
+        "download-by-template",
+        "view-card-template",
+        "upload-new-version",
+        "create",
+        "save-as-case-template",
+        "open-url",
+        "assoc-action",
+        "content-preview-modal",
+        "fetch",
+        "view-business-process",
+        "cancel-business-process",
+        "mutate",
+        "edit-menu",
+        "view-menu",
+        "task-outcome",
+        "tasks-actions",
+        "edit-password",
+        "open-submit-form",
+        "user-event",
+        "transform"
+      ],
+      "x-intellij-enum-metadata": {
+        "view": {
+          "description": "Open record for viewing"
+        },
+        "edit": {
+          "description": "Edit record"
+        },
+        "open-in-background": {
+          "description": "Open record in a new background tab"
+        },
+        "download": {
+          "description": "Download content related to the record"
+        },
+        "delete": {
+          "description": "Delete record"
+        },
+        "download-card-template": {
+          "description": "Download printed version of the document"
+        },
+        "download-by-template": {
+          "description": "Download document using a template"
+        },
+        "view-card-template": {
+          "description": "View printed version of the document in a new browser tab"
+        },
+        "upload-new-version": {
+          "description": "Upload a new version of the document"
+        },
+        "create": {
+          "description": "Create a new record, optionally with pre-filled attributes"
+        },
+        "save-as-case-template": {
+          "description": "Save as a case template"
+        },
+        "open-url": {
+          "description": "Open specified URL"
+        },
+        "assoc-action": {
+          "description": "Perform action on specified association"
+        },
+        "content-preview-modal": {
+          "description": "Show document preview in a modal window"
+        },
+        "fetch": {
+          "description": "Send a request to the specified URL"
+        },
+        "view-business-process": {
+          "description": "View business process (window with process preview and additional actions)"
+        },
+        "cancel-business-process": {
+          "description": "Cancel business process"
+        },
+        "mutate": {
+          "description": "Modify record attributes without user interaction"
+        },
+        "edit-menu": {
+          "description": "Launch menu configuration editor"
+        },
+        "view-menu": {
+          "description": "Launch menu configuration viewer"
+        },
+        "task-outcome": {
+          "description": "Action for task completion variant"
+        },
+        "tasks-actions": {
+          "description": "Action to load task completion variants"
+        },
+        "edit-password": {
+          "description": "Change password"
+        },
+        "open-submit-form": {
+          "description": "Open edit form with attempt to submit for consideration"
+        },
+        "user-event": {
+          "description": "Trigger a user event that can be handled by BPMN process"
+        },
+        "transform": {
+          "description": "Enterprise feature - transform content according to specified rules"
+        }
+      }
+    },
+    "icon": {
+      "type": "string",
+      "description": "Action icon code",
+      "x-intellij-html-description": "<p>Icon for the action from Citeck icon font</p>\n<ul>\n    <li>Examples: icon-delete, icon-edit, icon-download</li>\n    <li>All icons can be viewed in citeck/ecos-ui/src/fonts/citeck/demo.html</li>\n</ul>"
+    },
+    "config": {
+      "type": "object",
+      "description": "Action configuration",
+      "additionalProperties": true,
+      "x-intellij-html-description": "<p>Configuration specific to the action type</p>\n<ul>\n    <li>Each action type has different configuration options</li>\n    <li>Can include interpolated values using ${attribute} syntax</li>\n    <li>Special case: ${recordRef} is always replaced with the current record reference</li>\n</ul>",
+      "properties": {
+        "background": {
+          "type": "boolean",
+          "description": "(view) Open record in a new application tab in background mode",
+          "x-intellij-html-description": "<p>(view) Open record in a new application tab in background mode</p>"
+        },
+        "reopen": {
+          "type": "boolean",
+          "description": "(view) Open record in the current application tab",
+          "x-intellij-html-description": "<p>(view) Open record in the current application tab</p>"
+        },
+        "newBrowserTab": {
+          "type": "boolean",
+          "description": "(view) Open record in a new browser tab",
+          "x-intellij-html-description": "<p>(view) Open record in a new browser tab</p>"
+        },
+        "reopenBrowserTab": {
+          "type": "boolean",
+          "description": "(view) Open record in the current browser tab (page reload)",
+          "x-intellij-html-description": "<p>(view) Open record in the current browser tab (with page reload)</p>"
+        },
+        "attributes": {
+          "type": "object",
+          "description": "(edit, create) Attributes to pass to the creation/edit form",
+          "additionalProperties": true,
+          "x-intellij-html-description": "<p>(edit, create) Attributes to pass to the creation or edit form</p>\n<ul>\n    <li>Can include record attributes using ${attribute} syntax</li>\n</ul>"
+        },
+        "url": {
+          "type": "string",
+          "description": "(download, open-url, fetch) URL for operation",
+          "x-intellij-html-description": "<p>(download, open-url, fetch) URL for the operation</p>\n<ul>\n    <li>For download: URL for downloading content</li>\n    <li>For open-url: URL to open</li>\n    <li>For fetch: URL to send request to</li>\n    <li>Can include ${recordRef} for current record substitution</li>\n</ul>"
+        },
+        "isWaitResponse": {
+          "type": "boolean",
+          "description": "(delete) Wait for deletion response",
+          "default": true,
+          "x-intellij-html-description": "<p>(delete) Whether to wait for deletion response</p>"
+        },
+        "withoutConfirm": {
+          "type": "boolean",
+          "description": "(delete) Delete without confirmation",
+          "default": false,
+          "x-intellij-html-description": "<p>(delete) Whether to delete without confirmation</p>"
+        },
+        "templateType": {
+          "type": "string",
+          "description": "(download-card-template, view-card-template) Template type",
+          "x-intellij-html-description": "<p>(download-card-template, view-card-template) Template type for document</p>"
+        },
+        "format": {
+          "type": "string",
+          "description": "(download-card-template, view-card-template) Output format",
+          "enum": ["html", "pdf", "pdf2", "docx"],
+          "x-intellij-html-description": "<p>(download-card-template, view-card-template) Output format for document</p>\n<ul>\n    <li>Possible values: html, pdf, pdf2, docx</li>\n</ul>"
+        },
+        "includeTimezone": {
+          "type": "boolean",
+          "description": "(view-card-template) Include timezone",
+          "default": true,
+          "x-intellij-html-description": "<p>(view-card-template) Whether to include timezone</p>"
+        },
+        "templateRef": {
+          "type": "string",
+          "description": "(download-by-template) Reference to template",
+          "x-intellij-html-description": "<p>(download-by-template) Reference to template</p>"
+        },
+        "resultName": {
+          "type": "string",
+          "description": "(download-by-template) Name of downloaded file",
+          "x-intellij-html-description": "<p>(download-by-template) Name of the file to be downloaded</p>"
+        },
+        "requestParams": {
+          "type": "object",
+          "description": "(download-by-template) Additional parameters for server request",
+          "additionalProperties": true,
+          "x-intellij-html-description": "<p>(download-by-template) Additional parameters to send to server</p>"
+        },
+        "typeRef": {
+          "type": "string",
+          "description": "(create) Type reference for creating new entity",
+          "x-intellij-html-description": "<p>(create) Reference to data type for creation</p>\n<ul>\n    <li>Format: emodel/type@[type-id]</li>\n    <li>Required parameter</li>\n</ul>"
+        },
+        "createVariantId": {
+          "type": "string",
+          "description": "(create) Creation variant identifier",
+          "x-intellij-html-description": "<p>(create) Identifier of creation variant for the type</p>\n<ul>\n    <li>If not specified, first available variant is used</li>\n</ul>"
+        },
+        "createVariant": {
+          "type": "object",
+          "description": "(create) Creation variant object",
+          "additionalProperties": true,
+          "x-intellij-html-description": "<p>(create) Creation variant object for complete definition</p>\n<ul>\n    <li>Used when no suitable creation variant from type exists</li>\n</ul>"
+        },
+        "redirectToPage": {
+          "type": "boolean",
+          "description": "(create) Redirect to created entity",
+          "x-intellij-html-description": "<p>(create) Whether to redirect to created entity</p>"
+        },
+        "download": {
+          "type": "boolean",
+          "description": "(save-as-case-template) Download template or redirect to dashboard",
+          "default": true,
+          "x-intellij-html-description": "<p>(save-as-case-template) Download behavior</p>\n<ul>\n    <li>true - Download template</li>\n    <li>false - Redirect to template dashboard</li>\n</ul>"
+        },
+        "assoc": {
+          "type": "string",
+          "description": "(assoc-action) Association to perform action on",
+          "x-intellij-html-description": "<p>(assoc-action) Association to perform action on</p>"
+        },
+        "action": {
+          "type": "object",
+          "description": "(assoc-action) Action object to execute",
+          "additionalProperties": true,
+          "x-intellij-html-description": "<p>(assoc-action) Action object to execute</p>"
+        },
+        "scale": {
+          "type": "string",
+          "description": "(content-preview-modal) Document scale",
+          "enum": ["auto", "0", "1", "2", "3", "4", "page-fit", "page-height", "page-width"],
+          "x-intellij-html-description": "<p>(content-preview-modal) Document scale for preview</p>\n<ul>\n    <li>Possible values: auto, 0-4, page-fit, page-height, page-width</li>\n</ul>"
+        },
+        "recordRef": {
+          "type": "string",
+          "description": "(content-preview-modal) Record reference",
+          "x-intellij-html-description": "<p>(content-preview-modal) Record reference</p>"
+        },
+        "method": {
+          "type": "string",
+          "description": "(fetch) HTTP method",
+          "enum": ["GET", "POST", "PUT", "DELETE", "PATCH"],
+          "x-intellij-html-description": "<p>(fetch) HTTP method for request</p>\n<ul>\n    <li>Possible values: GET, POST, PUT, DELETE, PATCH</li>\n</ul>"
+        },
+        "args": {
+          "type": "object",
+          "description": "(fetch) Arguments to pass in URL",
+          "additionalProperties": true,
+          "x-intellij-html-description": "<p>(fetch) Arguments to pass in URL</p>\n<ul>\n    <li>Added as query parameters</li>\n</ul>"
+        },
+        "body": {
+          "type": "object",
+          "description": "(fetch) Arguments to pass in request body",
+          "additionalProperties": true,
+          "x-intellij-html-description": "<p>(fetch) Arguments to pass in request body</p>"
+        },
+        "workflowFromRecord": {
+          "type": "boolean",
+          "description": "(view-business-process) Get workflow ID from record",
+          "x-intellij-html-description": "<p>(view-business-process) How to get workflow ID</p>\n<ul>\n    <li>true - Get workflow ID from the record passed to action</li>\n    <li>false - The record value is the workflow ID</li>\n</ul>"
+        },
+        "record": {
+          "type": "object",
+          "description": "(mutate) Record modification configuration",
+          "x-intellij-html-description": "<p>(mutate) Record modification configuration</p>",
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "Record ID for modification",
+              "x-intellij-html-description": "<p>Record ID for modification</p>\n<ul>\n    <li>Optional parameter</li>\n    <li>Can use ${recordRef} for current record</li>\n</ul>"
+            },
+            "attributes": {
+              "type": "object",
+              "description": "Attributes to modify and their values",
+              "additionalProperties": true,
+              "x-intellij-html-description": "<p>Attributes to modify and their values</p>"
+            }
+          }
+        },
+        "implSourceId": {
+          "type": "string",
+          "description": "(mutate) Implementation source ID",
+          "x-intellij-html-description": "<p>(mutate) Implementation source ID</p>\n<ul>\n    <li>Format: ARTIFACT_ID/action-id</li>\n    <li>Used to get download link from a record</li>\n</ul>"
+        },
+        "noResultModal": {
+          "type": "boolean",
+          "description": "Disable result window",
+          "default": false,
+          "x-intellij-html-description": "<p>Whether to disable result window</p>"
+        },
+        "hideConfirmEmptyForm": {
+          "type": "boolean",
+          "description": "(tasks-actions) Hide confirmation for empty form",
+          "x-intellij-html-description": "<p>(tasks-actions) Whether to hide confirmation for empty form</p>\n<ul>\n    <li>When true, tasks with empty forms will be completed without confirmation</li>\n</ul>"
+        },
+        "formId": {
+          "type": "string",
+          "description": "(open-submit-form) Form ID",
+          "x-intellij-html-description": "<p>(open-submit-form) Form ID to open</p>\n<ul>\n    <li>Optional parameter; default form is loaded if not specified</li>\n</ul>"
+        },
+        "eventData": {
+          "type": "object",
+          "description": "(user-event) Event data payload",
+          "additionalProperties": true,
+          "x-intellij-html-description": "<p>(user-event) Event data payload</p>\n<ul>\n    <li>Can include record attributes using ${attribute} syntax</li>\n    <li>For entity references, use ${attribute?id} syntax</li>\n</ul>"
+        },
+        "input": {
+          "type": "object",
+          "description": "(transform) Content source",
+          "additionalProperties": true,
+          "x-intellij-html-description": "<p>(transform) Content source configuration</p>\n<ul>\n    <li>Default: main content of current document</li>\n</ul>"
+        },
+        "transformations": {
+          "type": "array",
+          "description": "(transform) Content transformations",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "x-intellij-html-description": "<p>(transform) Content transformations configuration</p>\n<ul>\n    <li>Array of transformation objects</li>\n</ul>"
+        },
+        "output": {
+          "type": "object",
+          "description": "(transform) Transformation result target",
+          "additionalProperties": true,
+          "x-intellij-html-description": "<p>(transform) Transformation result target</p>\n<ul>\n    <li>Default: temporary file that is immediately downloaded</li>\n</ul>"
+        }
+      }
+    },
+    "predicate": {
+      "type": "object",
+      "description": "Predicate for conditional display",
+      "additionalProperties": true,
+      "x-intellij-html-description": "<p>Predicate for conditionally controlling action visibility</p>\n<ul>\n    <li>Used to dynamically determine action availability based on record properties</li>\n    <li>For example, Edit and Delete actions can be hidden for users without write permissions</li>\n</ul>"
+    },
+    "confirm": {
+      "$ref": "#/definitions/confirm"
+    },
+    "features": {
+      "$ref": "#/definitions/features"
+    },
+    "timeoutErrorMessage": {
+      "$ref": "#/definitions/mlText",
+      "description": "Error message displayed on action timeout"
+    },
+    "execForRecordsBatchSize": {
+      "type": "integer",
+      "description": "Batch size for processing multiple records",
+      "minimum": 0,
+      "x-intellij-html-description": "<p>Number of records to process in a single batch</p>\n<ul>\n    <li>Used for optimizing performance when executing action on many records</li>\n</ul>"
+    },
+    "execForRecordsParallelBatchesCount": {
+      "type": "integer",
+      "description": "Number of parallel batches for processing records",
+      "minimum": 1,
+      "x-intellij-html-description": "<p>Number of batches to process in parallel</p>\n<ul>\n    <li>Used for optimizing performance when executing action on many records</li>\n</ul>"
+    },
+    "preActionModule": {
+      "type": "string",
+      "description": "Module for pre-action JavaScript processing",
+      "x-intellij-html-description": "<p>Reference to JavaScript module for pre-processing</p>\n<ul>\n    <li>Module must export execForRecord or execForRecords functions</li>\n    <li>Called before the main action execution</li>\n    <li>Can modify action configuration or provide partial results</li>\n</ul>"
+    }
+  }
+}

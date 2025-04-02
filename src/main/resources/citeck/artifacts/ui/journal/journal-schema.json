@@ -403,12 +403,20 @@
               },
               "formRef": {
                 "type": "string",
-                "description": "Reference to confirmation form"
+                "description": "Reference to confirmation form",
+                "x-intellij-html-description": "<p>Reference to a form to display in the confirmation dialog</p>\n<ul>\n    <li>If specified, the message property is ignored</li>\n    <li>Format: uiserv/form@[form-id]</li>\n</ul>"
+              },
+              "formAttributes": {
+                "type": "object",
+                "description": "Attributes to pass to the confirmation form",
+                "additionalProperties": true,
+                "x-intellij-html-description": "<p>Additional attributes to pass to the confirmation form</p>\n<ul>\n    <li>Can include constants or record attributes using ${attribute} syntax</li>\n</ul>"
               },
               "attributesMapping": {
                 "type": "object",
-                "description": "Mapping of attributes to confirmation form fields",
-                "additionalProperties": true
+                "description": "Mapping of attributes from confirmation form to action configuration",
+                "additionalProperties": true,
+                "x-intellij-html-description": "<p>Maps data from the confirmation form to action configuration</p>\n<ul>\n    <li>Key: path in the action configuration</li>\n    <li>Value: field name in the confirmation form</li>\n    <li>Example: <code>\"body.comment\": \"comment\"</code> maps the comment field from the form to body.comment in the action config</li>\n</ul>"
               }
             }
           },
