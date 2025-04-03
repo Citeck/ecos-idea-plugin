@@ -1,0 +1,131 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Citeck Template Schema",
+  "description": "Schema for Citeck document template files",
+  "x-intellij-html-description": "<p>Schema for Citeck document template files</p>\n<ul>\n    <li>Used to define templates for document generation</li>\n    <li>Templates can be used for automatic document creation from record data</li>\n</ul>",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "engine"
+  ],
+  "definitions": {
+    "mlText": {
+      "oneOf": [
+        {
+          "type": "string",
+          "description": "Text value"
+        },
+        {
+          "type": "object",
+          "description": "Multilingual text",
+          "minProperties": 1,
+          "properties": {
+            "ru": {
+              "type": "string",
+              "description": "Russian text"
+            },
+            "en": {
+              "type": "string",
+              "description": "English text"
+            }
+          }
+        }
+      ]
+    },
+    "computedAttributesItems": {
+      "type": "object",
+      "required": [
+        "id",
+        "type"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Attribute identifier in output model",
+          "pattern": "^[\\w$/-_]+\\w",
+          "x-intellij-html-description": "<p>Attribute identifier that will be added to output model</p>\n<ul>\n    <li>If an attribute with this name already exists in the model, its value will be updated</li>\n</ul>"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["html-to-text"],
+          "description": "Type of attribute transformation",
+          "x-intellij-html-description": "<p>Type of attribute transformation to apply</p>",
+          "x-intellij-enum-metadata": {
+            "html-to-text": {
+              "description": "Converts HTML text into plain text by removing HTML tags"
+            }
+          }
+        },
+        "config": {
+          "type": "object",
+          "description": "Transformation configuration",
+          "x-intellij-html-description": "<p>Transformation configuration parameters</p>\n<ul>\n    <li>Common parameters for all transformation types:</li>\n    <ul>\n        <li><b>attribute</b> - Source attribute name from model. If not specified, attribute with ID will be used</li>\n    </ul>\n</ul>",
+          "properties": {
+            "attribute": {
+              "type": "string",
+              "description": "Source attribute name from model",
+              "x-intellij-html-description": "<p>Source attribute name from model</p>\n<ul>\n    <li>If not specified, attribute with the same ID will be used</li>\n</ul>"
+            }
+          }
+        }
+      }
+    }
+  },
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the template",
+      "pattern": "^[a-zA-Z][a-zA-Z0-9_-]*$",
+      "x-intellij-html-description": "<p>Unique identifier for the template</p>\n<ul>\n    <li>Must be unique within the system</li>\n    <li>Use hyphen-case or camelCase naming convention</li>\n</ul>"
+    },
+    "name": {
+      "$ref": "#/definitions/mlText",
+      "description": "Template display name"
+    },
+    "engine": {
+      "type": "string",
+      "description": "Template processing engine",
+      "enum": ["freemarker", "ecos-table", "none"],
+      "x-intellij-html-description": "<p>Template processing engine</p>\n<ul>\n    <li>Defines how the template will be processed</li>\n    <li>Available engines:</li>\n    <ul>\n        <li><b>freemarker</b> - For document generation with FreeMarker processing</li>\n        <li><b>ecos-table</b> - For generating XLSX tables</li>\n        <li><b>none</b> - For template processing without any transformation</li>\n    </ul>\n</ul>",
+      "x-intellij-enum-metadata": {
+        "freemarker": {
+          "description": "Document generation with FreeMarker template processing"
+        },
+        "ecos-table": {
+          "description": "Special engine for working with XLSX files, combining FreeMarker syntax with table generation capabilities"
+        },
+        "none": {
+          "description": "Returns template without any transformation. Template is returned as is"
+        }
+      }
+    },
+    "mimeType": {
+      "type": "string",
+      "description": "MIME type of the template file",
+      "x-intellij-html-description": "<p>MIME type of the template file</p>\n<ul>\n    <li>Common types:</li>\n    <ul>\n        <li>application/vnd.openxmlformats-officedocument.wordprocessingml.document - DOCX files</li>\n        <li>application/vnd.openxmlformats-officedocument.spreadsheetml.sheet - XLSX files</li>\n        <li>text/plain - Text files</li>\n    </ul>\n</ul>"
+    },
+    "model": {
+      "type": "object",
+      "description": "Data mapping between template and source record",
+      "additionalProperties": true,
+      "x-intellij-html-description": "<p>Data mapping between template and source record</p>\n<ul>\n    <li>Key-value mapping where:</li>\n    <ul>\n        <li>Key - Attribute name used in template</li>\n        <li>Value - Path to source attribute in record (supports Records API syntax)</li>\n    </ul>\n    <li>Example: <code>regNumber: registrationNumber</code></li>\n    <li>Can use Records API syntax for attribute paths and transformations</li>\n</ul>"
+    },
+    "computedAttributes": {
+      "type": "array",
+      "description": "List of computed attributes for preprocessing",
+      "items": {
+        "$ref": "#/definitions/computedAttributesItems"
+      },
+      "x-intellij-html-description": "<p>List of computed attributes for preprocessing</p>\n<ul>\n    <li>Transforms attribute values before template processing</li>\n    <li>Can update existing model values or add new ones</li>\n</ul>"
+    },
+    "tags": {
+      "type": "array",
+      "description": "List of tags for categorization",
+      "items": {
+        "type": "string"
+      },
+      "x-intellij-html-description": "<p>List of tags for template categorization</p>\n<ul>\n    <li>Used for easier searching and organization</li>\n</ul>"
+    }
+  }
+}
