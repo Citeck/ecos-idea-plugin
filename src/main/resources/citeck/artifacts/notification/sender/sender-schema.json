@@ -1,0 +1,149 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Citeck Notification Sender Schema",
+  "description": "Schema for Citeck notification sender configuration files",
+  "x-intellij-html-description": "<p>Schema for Citeck notification sender configuration files</p>\n<ul>\n    <li>Used to configure notification senders for routing notifications to appropriate channels</li>\n    <li>Supports different sender types like 'default' and 'command'</li>\n    <li>Allows conditional sending based on templates and predicates</li>\n</ul>",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "notificationType",
+    "senderType"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the notification sender",
+      "pattern": "^[a-zA-Z]([a-zA-Z0-9_-])*$"
+    },
+    "name": {
+      "$ref": "#/definitions/nameValue",
+      "description": "Sender name"
+    },
+    "enabled": {
+      "type": "boolean",
+      "description": "Whether the sender is enabled",
+      "default": true
+    },
+    "condition": {
+      "type": "object",
+      "description": "Additional condition for applying the sender (predicate format)",
+      "x-intellij-html-description": "<p>Additional condition for applying the sender in predicate format</p>",
+      "default": {}
+    },
+    "notificationType": {
+      "type": "string",
+      "description": "Type of notification this sender handles",
+      "enum": ["EMAIL_NOTIFICATION", "FIREBASE_NOTIFICATION"],
+      "default": "EMAIL_NOTIFICATION",
+      "x-intellij-enum-metadata": {
+        "EMAIL_NOTIFICATION": "Email notifications",
+        "FIREBASE_NOTIFICATION": "Mobile app notifications"
+      }
+    },
+    "order": {
+      "type": "number",
+      "description": "Processing order (lower values are processed first)",
+      "default": 1000
+    },
+    "senderType": {
+      "type": "string",
+      "description": "Type of sender implementation",
+      "enum": ["default", "command"],
+      "x-intellij-enum-metadata": {
+        "default": "Default sender implementation without additional configuration",
+        "command": "Command-based sender that executes a command in the target application"
+      }
+    },
+    "templates": {
+      "type": "array",
+      "description": "List of notification templates this sender applies to (empty means all templates)",
+      "items": {
+        "type": "string",
+        "description": "Reference to a notification template",
+        "pattern": "^notification/template@[\\w.-]+$"
+      }
+    },
+    "senderConfig": {
+      "$ref": "#/definitions/senderConfig"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "senderType": { "enum": ["command"] }
+        }
+      },
+      "then": {
+        "properties": {
+          "senderConfig": {
+            "required": ["targetApp", "commandType"]
+          }
+        }
+      }
+    }
+  ],
+  "definitions": {
+    "nameValue": {
+      "oneOf": [
+        {
+          "type": "string",
+          "description": "Sender name"
+        },
+        {
+          "type": "object",
+          "description": "Multilingual sender name",
+          "minProperties": 1,
+          "properties": {
+            "ru": {
+              "type": "string",
+              "description": "Russian name"
+            },
+            "en": {
+              "type": "string",
+              "description": "English name"
+            }
+          }
+        }
+      ]
+    },
+    "senderConfig": {
+      "type": "object",
+      "description": "Sender-specific configuration",
+      "properties": {
+        "targetApp": {
+          "type": "string",
+          "description": "Target application to execute the command (for command sender type)",
+          "examples": ["alfresco", "ecos-notifications"]
+        },
+        "commandType": {
+          "type": "string",
+          "description": "Type of command to execute (for command sender type)",
+          "examples": ["skif-block-email-notification", "skif-modeling-email-notification"]
+        },
+        "certSignConfig": {
+          "type": "object",
+          "description": "Certificate signing configuration (for email notifications)",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "Whether email signing is enabled",
+              "default": false
+            },
+            "certificate": {
+              "type": "string",
+              "description": "ID of the secret containing the certificate for signing",
+              "pattern": "^[a-zA-Z]([a-zA-Z0-9_-])*$"
+            },
+            "skipSignIfCertificateNotValid": {
+              "type": "boolean",
+              "description": "Skip signing if certificate is not valid (expires or not yet valid)",
+              "default": true
+            }
+          }
+        }
+      }
+    }
+  }
+}
