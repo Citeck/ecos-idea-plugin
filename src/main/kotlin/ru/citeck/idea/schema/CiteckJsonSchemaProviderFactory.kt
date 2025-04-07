@@ -6,6 +6,7 @@ import com.jetbrains.jsonSchema.extension.JsonSchemaProviderFactory
 import ru.citeck.idea.schema.impl.ActionJsonSchemaProvider
 import ru.citeck.idea.schema.impl.AspectJsonSchemaProvider
 import ru.citeck.idea.schema.impl.BoardJsonSchemaProvider
+import ru.citeck.idea.schema.impl.BpmnKpiSettingsJsonSchemaProvider
 import ru.citeck.idea.schema.impl.EndpointJsonSchemaProvider
 import ru.citeck.idea.schema.impl.JournalJsonSchemaProvider
 import ru.citeck.idea.schema.impl.ModelTypeJsonSchemaProvider
@@ -24,6 +25,7 @@ class CiteckJsonSchemaProviderFactory : JsonSchemaProviderFactory {
             ActionJsonSchemaProvider(project),
             AspectJsonSchemaProvider(project),
             BoardJsonSchemaProvider(project),
+            BpmnKpiSettingsJsonSchemaProvider(project),
             EndpointJsonSchemaProvider(project),
             JournalJsonSchemaProvider(project),
             ModelTypeJsonSchemaProvider(project),

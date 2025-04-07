@@ -3,16 +3,14 @@ id: ${NAME}
 name: ${NAME}
 kpiType: DURATION
 
-enabled: true
-processRef: eproc/bpmn-proc-latest@alrosa-contract-main-process
+enabled: false
+processRef: eproc/bpmn-proc-latest@contract-process
 
-# dmnCondition: null
+sourceBpmnActivityId: Task_fill_approval
+sourceBpmnActivityEvent: START
 
-# sourceBpmnActivityId: Task_fill_approval
-# sourceBpmnActivityEvent: START
-
-# targetBpmnActivityId: Event_end_contract_approval
-# targetBpmnActivityEvent: END
+targetBpmnActivityId: Event_end_contract_approval
+targetBpmnActivityEvent: END
 
 durationKpi: 4h
 durationKpiTimeType: WORKING
