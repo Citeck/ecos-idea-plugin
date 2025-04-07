@@ -1,5 +1,6 @@
 package ru.citeck.idea.search.index
 
+import com.intellij.openapi.fileTypes.LanguageFileType
 import com.intellij.util.indexing.*
 import com.intellij.util.io.DataExternalizer
 import com.intellij.util.io.KeyDescriptor
@@ -21,12 +22,10 @@ class CiteckIndex : FileBasedIndexExtension<IndexKey, List<IndexValue>>() {
 
     private fun map(inputData: FileContent): Map<IndexKey, List<IndexValue>> {
         val indexes = Indexes()
-        if (inputData.file.fileType.isBinary) {
-            return indexes
-        }
+        val virtualFile = inputData.file
 
         val artifactsService = ArtifactsService.getInstance()
-        val artifactInfo = artifactsService.getArtifactInfo(inputData.file, inputData.project) ?: return indexes
+        val artifactInfo = artifactsService.getArtifactInfo(virtualFile, inputData.project) ?: return indexes
         if (!artifactInfo.getController().isIndexable(inputData.psiFile)) {
             return indexes
         }
@@ -53,7 +52,9 @@ class CiteckIndex : FileBasedIndexExtension<IndexKey, List<IndexValue>>() {
     }
 
     override fun getInputFilter(): FileBasedIndex.InputFilter {
-        return FileBasedIndex.InputFilter { true }
+        return FileBasedIndex.InputFilter {
+            it.fileType is LanguageFileType && it.isInLocalFileSystem
+        }
     }
 
     override fun dependsOnFileContent(): Boolean {
