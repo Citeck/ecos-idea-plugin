@@ -14,6 +14,7 @@ import ru.citeck.idea.schema.impl.ModelTypeJsonSchemaProvider
 import ru.citeck.idea.schema.impl.NumberTemplateJsonSchemaProvider
 import ru.citeck.idea.schema.impl.PermissionDefJsonSchemaProvider
 import ru.citeck.idea.schema.impl.PermissionsJsonSchemaProvider
+import ru.citeck.idea.schema.impl.ReminderJsonSchemaProvider
 import ru.citeck.idea.schema.impl.SecretJsonSchemaProvider
 import ru.citeck.idea.schema.impl.TemplateJsonSchemaProvider
 import ru.citeck.idea.schema.impl.WorkingCalendarJsonSchemaProvider
@@ -34,6 +35,7 @@ class CiteckJsonSchemaProviderFactory : JsonSchemaProviderFactory {
             NumberTemplateJsonSchemaProvider(project),
             PermissionDefJsonSchemaProvider(project),
             PermissionsJsonSchemaProvider(project),
+            ReminderJsonSchemaProvider(project),
             SecretJsonSchemaProvider(project),
             TemplateJsonSchemaProvider(project),
             WorkingCalendarJsonSchemaProvider(project),

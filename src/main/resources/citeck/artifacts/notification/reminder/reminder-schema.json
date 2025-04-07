@@ -1,0 +1,111 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Citeck Reminder Schema",
+  "description": "Schema for Citeck reminder configuration files",
+  "x-intellij-html-description": "<p>Schema for Citeck reminder configuration files</p>\n<ul>\n    <li>Used to configure automated reminders for various system events</li>\n    <li>Currently supports certificate expiration reminders</li>\n    <li>Can be configured with multiple threshold durations and recipients</li>\n</ul>",
+  "type": "object",
+  "required": [
+    "id",
+    "reminderType"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the reminder",
+      "pattern": "^[a-zA-Z][a-zA-Z0-9_-]*$"
+    },
+    "name": {
+      "$ref": "#/definitions/nameMlText",
+      "description": "Reminder name"
+    },
+    "enabled": {
+      "type": "boolean",
+      "description": "Whether the reminder is enabled",
+      "default": true
+    },
+    "reminderType": {
+      "type": "string",
+      "description": "Type of reminder",
+      "enum": ["CERTIFICATE_EXPIRATION"],
+      "default": "CERTIFICATE_EXPIRATION",
+      "x-intellij-enum-metadata": {
+        "CERTIFICATE_EXPIRATION": "Reminder about certificate expiration date"
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "reminderType": { "enum": ["CERTIFICATE_EXPIRATION"] }
+        }
+      },
+      "then": {
+        "required": ["certificates", "notificationTemplate", "recipients", "reminderThresholdDurations"],
+        "properties": {
+          "certificates": {
+            "type": "array",
+            "description": "List of certificates to monitor for expiration",
+            "pattern": "^emodel/secret@[\\w.-]+$",
+            "items": {
+              "type": "string",
+              "description": "Reference to a certificate in the system (emodel/secret@some-certificate)"
+            },
+            "minItems": 1
+          },
+          "notificationTemplate": {
+            "type": "string",
+            "description": "Reference to the notification template to use for the reminder",
+            "default": "notifications/template@default-certificate-expiration-templat"
+          },
+          "recipients": {
+            "type": "array",
+            "x-intellij-html-description": "<p>Reference to a user or group in the system</p>\n<ul>\n    <li>User format: <code>emodel/person@username</code> (e.g. emodel/person@ivan.petrov)</li>\n    <li>Group format: <code>emodel/authority-group@groupname</code></li>\n</ul>",
+            "items": {
+              "type": "string",
+              "pattern": "^emodel/(person|authority-group)@[\\w.-]+$",
+              "x-intellij-html-description": "<p>Reference to a user or group in the system</p>\n<ul>\n    <li>User format: <code>emodel/person@username</code> (e.g. emodel/person@ivan.petrov)</li>\n    <li>Group format: <code>emodel/authority-group@groupname</code></li>\n</ul>"
+            },
+            "minItems": 1
+          },
+          "reminderThresholdDurations": {
+            "type": "array",
+            "description": "List of durations before expiration when reminders should be sent",
+            "items": {
+              "type": "string",
+              "description": "Duration in format 'd' for days, 'h' for hours, 'm' for minutes (e.g. '15d', '1h 30m')",
+              "pattern": "^([0-9]+d)?\\s*([0-9]+h)?\\s*([0-9]+m)?\\s*$"
+            },
+            "minItems": 1,
+            "examples": ["15d", "5d", "1d", "1h 30m"]
+          }
+        }
+      }
+    }
+  ],
+  "definitions": {
+    "nameMlText": {
+      "oneOf": [
+        {
+          "type": "string",
+          "description": "Reminder name"
+        },
+        {
+          "type": "object",
+          "description": "Multilingual reminder name",
+          "minProperties": 1,
+          "properties": {
+            "ru": {
+              "type": "string",
+              "description": "Russian name"
+            },
+            "en": {
+              "type": "string",
+              "description": "English name"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
