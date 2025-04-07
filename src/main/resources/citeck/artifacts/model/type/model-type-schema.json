@@ -685,7 +685,7 @@
           "id": {
             "type": "string",
             "description": "Association identifier",
-            "pattern": "^[\\w$/.-]+\\w$"
+            "pattern": "^[\\w$/:-]+\\w$"
           },
           "name": {
             "$ref": "#/definitions/nameMlText"
