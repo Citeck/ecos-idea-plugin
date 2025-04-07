@@ -1,0 +1,185 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Citeck BPMN Task Attributes Synchronization Schema",
+  "description": "Schema for Citeck BPMN task attributes synchronization configuration",
+  "x-intellij-html-description": "<p>Schema for Citeck BPMN task attributes synchronization configuration</p>\n<ul>\n    <li>Used to define synchronization of attributes between records and tasks</li>\n    <li>Allows filtering BPMN tasks by document attributes</li>\n    <li>Supports two sources: Record and Type</li>\n</ul>",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "source",
+    "attributesSync"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the task attributes synchronization configuration",
+      "pattern": "^[a-zA-Z][a-zA-Z0-9_-]*$"
+    },
+    "name": {
+      "$ref": "#/definitions/nameMlText",
+      "description": "Configuration name"
+    },
+    "enabled": {
+      "type": "boolean",
+      "description": "Whether the configuration is enabled",
+      "default": true
+    },
+    "source": {
+      "type": "string",
+      "description": "Source of attributes to be synchronized",
+      "enum": ["RECORD", "TYPE"],
+      "default": "RECORD",
+      "x-intellij-enum-metadata": {
+        "RECORD": "Source is a record for which the business process is running",
+        "TYPE": "Source is the data type of the record for which the business process is running"
+      }
+    },
+    "attributesSync": {
+      "type": "array",
+      "description": "List of attributes to synchronize",
+      "items": {
+        "$ref": "#/definitions/attributeSync"
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "source": { "enum": ["RECORD"] }
+        }
+      },
+      "then": {
+        "properties": {
+          "attributesSync": {
+            "items": {
+              "properties": {
+                "ecosTypes": {
+                  "items": {
+                    "required": ["attribute"],
+                    "not": {
+                      "required": ["recordExpressionAttribute"]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "source": { "enum": ["TYPE"] }
+        }
+      },
+      "then": {
+        "properties": {
+          "attributesSync": {
+            "items": {
+              "properties": {
+                "ecosTypes": {
+                  "items": {
+                    "required": ["recordExpressionAttribute"],
+                    "not": {
+                      "required": ["attribute"]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "definitions": {
+    "nameMlText": {
+      "oneOf": [
+        {
+          "type": "string",
+          "description": "Configuration name"
+        },
+        {
+          "type": "object",
+          "description": "Multilingual configuration name",
+          "minProperties": 1,
+          "properties": {
+            "ru": {
+              "type": "string",
+              "description": "Russian name"
+            },
+            "en": {
+              "type": "string",
+              "description": "English name"
+            }
+          }
+        }
+      ]
+    },
+    "attributeSync": {
+      "type": "object",
+      "required": [
+        "id",
+        "type",
+        "ecosTypes"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the task attribute",
+          "pattern": "(^$|[_a-zA-Z][_\\w-.:]*)",
+          "x-intellij-html-description": "<p>Unique identifier for the task attribute</p>\n<ul>\n    <li>Must be unique across all tasks atts</li>\n    <li>Used to reference the attribute in journal configurations</li>\n    <li>For showing in journals, add prefix 'doc_' for RECORD source and 'doc_t_' for TYPE source</li>\n</ul>"
+        },
+        "type": {
+          "type": "string",
+          "description": "Type of the attribute",
+          "enum": ["TEXT", "NUMBER", "BOOLEAN", "DATE", "DATETIME", "ASSOC", "AUTHORITY", "PERSON", "AUTHORITY_GROUP"],
+          "x-intellij-enum-metadata": {
+            "TEXT": "Text attribute",
+            "NUMBER": "Numeric attribute",
+            "BOOLEAN": "Boolean attribute (true/false)",
+            "DATE": "Date attribute",
+            "DATETIME": "Date and time attribute",
+            "ASSOC": "Association attribute (reference to another entity)",
+            "AUTHORITY": "User or group reference",
+            "PERSON": "User reference (person from organization structure)",
+            "AUTHORITY_GROUP": "Group reference (groups only)"
+          }
+        },
+        "ecosTypes": {
+          "type": "array",
+          "description": "List of ECOS data types for which the attribute should be synchronized",
+          "items": {
+            "$ref": "#/definitions/ecosTypeMapping"
+          }
+        }
+      }
+    },
+    "ecosTypeMapping": {
+      "type": "object",
+      "required": [
+        "typeRef"
+      ],
+      "properties": {
+        "typeRef": {
+          "type": "string",
+          "description": "Reference to the Citeck data type"
+        },
+        "attribute": {
+          "type": "string",
+          "description": "Attribute name from the record (for RECORD source)",
+          "x-intellij-html-description": "<p>Attribute name from the record for RECORD source</p>"
+        },
+        "recordExpressionAttribute": {
+          "type": "string",
+          "description": "Record expression to access the attribute (for TYPE source)",
+          "x-intellij-html-description": "<p>Record expression to access the attribute for TYPE source</p>\n<ul>\n    <li>Used to access custom configuration</li>\n    <li>Example: config.urgency?num</li>\n</ul>",
+          "examples": ["config.urgency?num", "config.procedure"]
+        }
+      }
+    }
+  }
+}
