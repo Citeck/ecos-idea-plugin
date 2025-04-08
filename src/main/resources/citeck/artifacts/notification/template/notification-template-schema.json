@@ -1,0 +1,118 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Citeck Notification Template Schema",
+  "description": "Schema for Citeck notification template configuration files",
+  "x-intellij-html-description": "<p>Schema for Citeck notification template configuration files</p>\n<ul>\n    <li>Used to define templates for notifications sent via different channels (email, etc.)</li>\n    <li>Supports multilingual content with Freemarker templating</li>\n    <li>Allows conditional templating based on document types</li>\n</ul>",
+  "type": "object",
+  "required": [
+    "id"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the notification template",
+      "pattern": "^[a-zA-Z]([a-zA-Z0-9_-])*$"
+    },
+    "name": {
+      "$ref": "#/definitions/nameValue",
+      "description": "Template name"
+    },
+    "notificationTitle": {
+      "$ref": "#/definitions/mlText",
+      "description": "Notification title with Freemarker support",
+      "x-intellij-html-description": "<p>Notification title with Freemarker support</p>\n<ul>\n    <li>Multilingual field supporting variables from the model</li>\n    <li>Variables are referenced using ${variable_name} syntax</li>\n    <li>For emails, this becomes the subject line</li>\n</ul>"
+    },
+    "tags": {
+      "type": "array",
+      "description": "List of tags for categorizing the template",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "model": {
+      "type": "object",
+      "description": "Variables available for use in the template",
+      "x-intellij-html-description": "<p>Variables available for use in the template</p>\n<ul>\n    <li>Keys become variable names in the template</li>\n    <li>Values are ECOS records expressions for getting variable values</li>\n    <li>Base record is the document associated with the process</li>\n    <li>Special objects are available via $ prefix (e.g., $process, $now, $user, $webUrl)</li>\n</ul>",
+      "additionalProperties": {
+        "type": "string",
+        "description": "ECOS record expression"
+      }
+    },
+    "multiTemplateConfig": {
+      "type": "array",
+      "description": "Configuration for type-specific templates",
+      "x-intellij-html-description": "<p>Configuration for type-specific templates</p>\n<ul>\n    <li>Allows different templates for different document types</li>\n    <li>If document type matches, the corresponding template is used</li>\n    <li>If no match is found, the base template is used</li>\n</ul>",
+      "items": {
+        "$ref": "#/definitions/multiTemplateElement"
+      },
+      "default": []
+    }
+  },
+  "definitions": {
+    "nameValue": {
+      "oneOf": [
+        {
+          "type": "string",
+          "description": "Template name"
+        },
+        {
+          "type": "object",
+          "description": "Multilingual template name",
+          "minProperties": 1,
+          "properties": {
+            "ru": {
+              "type": "string",
+              "description": "Russian name"
+            },
+            "en": {
+              "type": "string",
+              "description": "English name"
+            }
+          }
+        }
+      ]
+    },
+    "mlText": {
+      "type": "object",
+      "description": "Multilingual text with Freemarker support",
+      "minProperties": 1,
+      "properties": {
+        "ru": {
+          "type": "string",
+          "description": "Russian text"
+        },
+        "en": {
+          "type": "string",
+          "description": "English text"
+        }
+      },
+      "additionalProperties": {
+        "type": "string",
+        "description": "Text for other languages"
+      }
+    },
+    "multiTemplateElement": {
+      "type": "object",
+      "description": "Configuration for a type-specific template",
+      "properties": {
+        "template": {
+          "type": "string",
+          "description": "Reference to the template to use for this type. Format: notifications/template@<template_id>",
+          "pattern": "^notifications/template@[\\w.-]+$"
+        },
+        "type": {
+          "type": "string",
+          "description": "Reference to the document type this template applies to. Format: emodel/type@<type_id>",
+          "pattern": "^emodel/type@[\\w.-]+$"
+        },
+        "condition": {
+          "type": "object",
+          "description": "Additional condition for applying this template (predicate format)",
+          "x-intellij-html-description": "<p>Additional condition for applying this template in predicate format</p>"
+        }
+      },
+      "required": ["template", "type"]
+    }
+  }
+}

@@ -11,6 +11,7 @@ import ru.citeck.idea.schema.impl.BpmnTaskAttsSyncJsonSchemaProvider
 import ru.citeck.idea.schema.impl.EndpointJsonSchemaProvider
 import ru.citeck.idea.schema.impl.JournalJsonSchemaProvider
 import ru.citeck.idea.schema.impl.ModelTypeJsonSchemaProvider
+import ru.citeck.idea.schema.impl.NotificationTemplateJsonSchemaProvider
 import ru.citeck.idea.schema.impl.NumberTemplateJsonSchemaProvider
 import ru.citeck.idea.schema.impl.PermissionDefJsonSchemaProvider
 import ru.citeck.idea.schema.impl.PermissionsJsonSchemaProvider
@@ -33,6 +34,7 @@ class CiteckJsonSchemaProviderFactory : JsonSchemaProviderFactory {
             EndpointJsonSchemaProvider(project),
             JournalJsonSchemaProvider(project),
             ModelTypeJsonSchemaProvider(project),
+            NotificationTemplateJsonSchemaProvider(project),
             NumberTemplateJsonSchemaProvider(project),
             PermissionDefJsonSchemaProvider(project),
             PermissionsJsonSchemaProvider(project),
