@@ -118,7 +118,7 @@ tasks {
 
     patchPluginXml {
         sinceBuild.set("231.9423.9")
-        untilBuild.set("250.*")
+        untilBuild.set("251.*")
     }
 
     processResources {

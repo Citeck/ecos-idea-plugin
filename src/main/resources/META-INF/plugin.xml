@@ -46,7 +46,10 @@
                 id="ru.citeck.idea.settings.servers.CiteckServersConfiguration"
                 displayName="Servers"
                 nonDefaultProject="true"/>
+    </extensions>
 
+    <extensions defaultExtensionNs="org.jetbrains.kotlin">
+        <supportsKotlinPluginMode supportsK2="true" />
     </extensions>
 
     <extensionPoints>

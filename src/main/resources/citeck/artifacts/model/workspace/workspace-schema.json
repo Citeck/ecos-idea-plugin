@@ -6,9 +6,7 @@
   "type": "object",
   "required": [
     "id",
-    "name",
-    "description",
-    "visibility"
+    "name"
   ],
   "definitions": {
     "mlText": {
@@ -45,7 +43,7 @@
         "id": {
           "type": "string",
           "description": "Member identifier",
-          "pattern": "^[a-zA-Z][a-zA-Z0-9_-]*$",
+          "pattern": "^[\\w$/-_]+\\w",
           "x-intellij-html-description": "<p>Member identifier</p>\n<ul>\n    <li>Must be unique within workspace members</li>\n    <li>Used to identify the member in the workspace</li>\n</ul>"
         },
         "authority": {
@@ -95,7 +93,7 @@
         "PUBLIC",
         "PRIVATE"
       ],
-      "x-intellij-html-description": "<p>Workspace visibility</p>\n<ul>\n    <li>Options:</li>\n    <ul>\n        <li><b>PUBLIC</b> - Visible to all users, free to join</li>\n        <li><b>PRIVATE</b> - Only visible to workspace members</li>\n    </ul>\n</ul>",
+      "x-intellij-html-description": "<p>Workspace visibility</p>\n<ul>\n    <li>Options:</li>\n    <ul>\n        <li><b>PUBLIC</b> - Visible to all users, free to join (default)</li>\n        <li><b>PRIVATE</b> - Only visible to workspace members</li>\n    </ul>\n</ul>",
       "x-intellij-enum-metadata": {
         "PUBLIC": {
           "description": "Visible to all users, free to join"
