@@ -12,7 +12,7 @@ plugins {
 }
 
 group = "ru.citeck.idea"
-version = "3.0.5"
+version = "3.0.6"
 
 kotlin {
     jvmToolchain(17)
