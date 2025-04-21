@@ -41,7 +41,7 @@ class CiteckFormLanguageInjector : MultiHostInjector {
     }
 
     private fun inject(registrar: MultiHostRegistrar, literal: JsonStringLiteral) {
-        registrar.startInjecting(JavascriptLanguage.INSTANCE)
+        registrar.startInjecting(JavascriptLanguage)
         registrar.addPlace(null, null, literal as PsiLanguageInjectionHost, TextRange(1, literal.getTextLength() - 1))
         registrar.doneInjecting()
     }
