@@ -3,6 +3,7 @@ package ru.citeck.idea.artifacts
 import com.intellij.ide.fileTemplates.FileTemplate
 import com.intellij.json.psi.JsonPsiUtil
 import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.application.ReadAction
 import com.intellij.openapi.command.CommandProcessor
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.module.ModuleUtil
@@ -153,7 +154,7 @@ class ArtifactsService {
 
         val typeInfo = artifactTypes[filePath.substring(1, typeIdDelimIdx)] ?: return null
 
-        val psiFile = file.toPsiFile(project) ?: return null
+        val psiFile = ReadAction.compute<PsiFile?, Throwable> { file.toPsiFile(project) } ?: return null
 
         return ArtifactInfoImpl(psiFile, typeInfo)
     }

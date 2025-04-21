@@ -6,6 +6,6 @@ import ru.citeck.idea.completion.js.contributor.CompletionProvider
 
 interface JsCompletionProvider : CompletionProvider {
     override fun getLanguage(): Language {
-        return JavascriptLanguage.INSTANCE
+        return JavascriptLanguage
     }
 }

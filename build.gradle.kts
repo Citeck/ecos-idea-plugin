@@ -12,7 +12,7 @@ plugins {
 }
 
 group = "ru.citeck.idea"
-version = "3.0.5"
+version = "3.0.6"
 
 kotlin {
     jvmToolchain(17)
@@ -66,7 +66,7 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok:1.18.36")
 
     intellijPlatform {
-        intellijIdeaUltimate("2023.3.8")
+        intellijIdeaUltimate("2025.1")
         // intellijIdeaUltimate("2024.3.5")
 
         bundledPlugins(
