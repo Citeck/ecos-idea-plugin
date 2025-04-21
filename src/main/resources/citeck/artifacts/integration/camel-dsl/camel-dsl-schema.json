@@ -1,0 +1,94 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Citeck Camel DSL Schema",
+  "description": "Schema for Citeck Camel DSL configuration files",
+  "x-intellij-html-description": "<p>Schema for Citeck Camel DSL (Domain Specific Language) configuration files</p>\n<ul>\n    <li>Used to define integration routes using Apache Camel</li>\n    <li>Supports YAML and XML formats</li>\n    <li>Controls the lifecycle state of Camel contexts</li>\n</ul>",
+  "type": "object",
+  "required": [
+    "id",
+    "type",
+    "state",
+    "startupType",
+    "content"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the Camel DSL configuration",
+      "pattern": "^[a-zA-Z][a-zA-Z0-9_-]*$"
+    },
+    "type": {
+      "type": "string",
+      "description": "DSL (Domain-specific language) type",
+      "x-intellij-html-description": "<p>DSL (Domain-specific language) type</p>\n<ul>\n    <li>YAML: YAML format (recommended and fully supported)</li>\n    <li>XML: XML format (limited support)</li>\n</ul>",
+      "enum": ["YAML", "XML"],
+      "default": "YAML",
+      "x-intellij-enum-metadata": {
+        "YAML": "YAML format (recommended and fully supported)",
+        "XML": "XML format (limited support)"
+      }
+    },
+    "startupType": {
+      "type": "string",
+      "description": "Type of startup behavior",
+      "x-intellij-html-description": "<p>Type of startup behavior</p>\n<ul>\n    <li>MANUALLY: Works like a regular Camel DSL. Started and stopped through action</li>\n    <li>IMPORT_DATA: Used to describe file processing during data import</li>\n</ul>",
+      "enum": ["MANUALLY", "IMPORT_DATA"],
+      "default": "MANUALLY",
+      "x-intellij-enum-metadata": {
+        "MANUALLY": "Works like a regular Camel DSL. Started and stopped through action",
+        "IMPORT_DATA": "Used to describe file processing during data import"
+      }
+    },
+    "state": {
+      "type": "string",
+      "description": "Current lifecycle state of the Camel context",
+      "x-intellij-html-description": "<p>Current lifecycle state of the Camel context</p>\n<ul>\n    <li>STOPPED: Context is stopped and not processing routes</li>\n    <li>STARTED: Context is started and actively processing routes</li>\n    <li>SUSPENDED: Context is temporarily suspended</li>\n</ul>",
+      "enum": ["STOPPED", "STARTED", "SUSPENDED"],
+      "default": "STOPPED",
+      "x-intellij-enum-metadata": {
+        "STOPPED": "Context is stopped and not processing routes",
+        "STARTED": "Context is started and actively processing routes",
+        "SUSPENDED": "Context is temporarily suspended"
+      }
+    },
+    "content": {
+      "type": "string",
+      "description": "Camel route definitions in YAML or XML format",
+      "x-intellij-html-description": "<p>Camel route definitions in the specified format (YAML or XML)</p>\n<ul>\n    <li>For YAML, use standard Camel YAML DSL format</li>\n    <li>Routes define integration flows between systems</li>\n    <li>Supports Citeck-specific components and endpoints</li>\n</ul>"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "type": { "enum": ["YAML"] }
+        }
+      },
+      "then": {
+        "properties": {
+          "content": {
+            "x-intellij-language-injection": {
+              "language": "yaml"
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "type": { "enum": ["XML"] }
+        }
+      },
+      "then": {
+        "properties": {
+          "content": {
+            "x-intellij-language-injection": {
+              "language": "XML"
+            }
+          }
+        }
+      }
+    }
+  ]
+}
