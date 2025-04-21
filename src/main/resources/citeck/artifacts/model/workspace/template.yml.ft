@@ -10,8 +10,11 @@ visibility: PUBLIC
 
 workspaceMembers:
   - id: managers
-    authority: emodel/authority-group@ECOS_ADMINISTRATORS
+    authorities:
+      - emodel/authority-group@ECOS_ADMINISTRATORS
+      - emodel/person@ivan.petrov
     memberRole: MANAGER
   - id: users
-    authority: emodel/authority-group@EVERYONE
+    authorities:
+      - emodel/authority-group@EVERYONE
     memberRole: USER
