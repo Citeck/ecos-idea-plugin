@@ -1,0 +1,152 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Citeck BPMN KPI Settings Schema",
+  "description": "Schema for Citeck BPMN KPI settings configuration files",
+  "x-intellij-html-description": "<p>Schema for Citeck BPMN KPI settings configuration files</p>\n<ul>\n    <li>Used to define time norms for BPMN process elements</li>\n    <li>Supports two types of KPI: duration (time between events) and count (number of occurrences)</li>\n    <li>Can be conditioned using DMN</li>\n</ul>",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "kpiType",
+    "processRef"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the KPI setting",
+      "pattern": "^[a-zA-Z][a-zA-Z0-9_-]*$"
+    },
+    "name": {
+      "$ref": "#/definitions/nameMlText",
+      "description": "KPI setting name"
+    },
+    "kpiType": {
+      "type": "string",
+      "description": "Type of KPI measurement",
+      "enum": ["DURATION", "COUNT"],
+      "x-intellij-enum-metadata": {
+        "DURATION": "Tracks time between source and target events",
+        "COUNT": "Tracks number of occurrences of a target event"
+      }
+    },
+    "enabled": {
+      "type": "boolean",
+      "description": "Whether the KPI setting is enabled",
+      "default": true
+    },
+    "processRef": {
+      "type": "string",
+      "description": "Reference to the BPMN process where this KPI applies. For example - eproc/bpmn-proc-latest@contract-process"
+    },
+    "dmnCondition": {
+      "type": "string",
+      "description": "Reference to a DMN model that determines if this KPI applies to a specific process instance"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "kpiType": { "enum": ["DURATION"] }
+        }
+      },
+      "then": {
+        "required": ["sourceBpmnActivityId", "sourceBpmnActivityEvent", "targetBpmnActivityId", "targetBpmnActivityEvent", "durationKpi", "durationKpiTimeType"],
+        "properties": {
+          "sourceBpmnActivityId": {
+            "type": "string",
+            "description": "ID of the source BPMN activity (starting point)"
+          },
+          "sourceBpmnActivityEvent": {
+            "$ref": "#/definitions/bpmnActivityEvent",
+            "description": "Event type of the source BPMN activity"
+          },
+          "targetBpmnActivityId": {
+            "type": "string",
+            "description": "ID of the target BPMN activity (ending point)"
+          },
+          "targetBpmnActivityEvent": {
+            "$ref": "#/definitions/bpmnActivityEvent",
+            "description": "Event type of the target BPMN activity"
+          },
+          "durationKpi": {
+            "type": "string",
+            "description": "Duration norm in format: 3h 10m (hours, minutes)"
+          },
+          "durationKpiTimeType": {
+            "type": "string",
+            "description": "How to calculate duration time",
+            "enum": ["CALENDAR", "WORKING"],
+            "x-intellij-enum-metadata": {
+              "CALENDAR": "Use calendar time (24/7)",
+              "WORKING": "Use working time according to schedule (DEFAULT)"
+            }
+          },
+          "manualOverrideDisplayKpi": {
+            "type": "string",
+            "description": "Optional ID of a BPMN element to display KPI at"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kpiType": { "enum": ["COUNT"] }
+        }
+      },
+      "then": {
+        "required": ["targetBpmnActivityId", "targetBpmnActivityEvent", "countKpi"],
+        "properties": {
+          "targetBpmnActivityId": {
+            "type": "string",
+            "description": "ID of the target BPMN activity to count"
+          },
+          "targetBpmnActivityEvent": {
+            "$ref": "#/definitions/bpmnActivityEvent",
+            "description": "Event type of the target BPMN activity"
+          },
+          "countKpi": {
+            "type": "integer",
+            "description": "Target count norm (number of occurrences)",
+            "minimum": 1
+          }
+        }
+      }
+    }
+  ],
+  "definitions": {
+    "nameMlText": {
+      "oneOf": [
+        {
+          "type": "string",
+          "description": "KPI name"
+        },
+        {
+          "type": "object",
+          "description": "Multilingual KPI name",
+          "minProperties": 1,
+          "properties": {
+            "ru": {
+              "type": "string",
+              "description": "Russian name"
+            },
+            "en": {
+              "type": "string",
+              "description": "English name"
+            }
+          }
+        }
+      ]
+    },
+    "bpmnActivityEvent": {
+      "type": "string",
+      "description": "BPMN activity event type",
+      "enum": ["START", "END"],
+      "x-intellij-enum-metadata": {
+        "START": "Activity start event",
+        "END": "Activity end event"
+      }
+    }
+  }
+}

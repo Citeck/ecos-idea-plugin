@@ -1,0 +1,137 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Citeck Permissions Schema",
+  "description": "Schema for Citeck permissions configuration files",
+  "x-intellij-html-description": "<p>Schema for Citeck permissions configuration files</p>\n<ul>\n    <li>Used to define permissions for entity types and their attributes</li>\n    <li>Supports matrix and rules-based permission configuration</li>\n</ul>",
+  "type": "object",
+  "required": [
+    "id",
+    "typeRef"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the permissions configuration",
+      "x-intellij-html-description": "<p>Unique identifier for the permissions configuration</p>\n<ul>\n    <li>Must be unique within the system</li>\n</ul>",
+      "pattern": "^[\\w$/-_]+\\w"
+    },
+    "typeRef": {
+      "type": "string",
+      "description": "Reference to the entity type these permissions apply to",
+      "pattern": "^[\\w$/.-]+@[\\w$/.-]+$",
+      "x-intellij-html-description": "<p>Reference to the entity type these permissions apply to</p>\n<ul>\n    <li>Format: <code>emodel/type@[type-id]</code></li>\n    <li>Example: <code>emodel/type@endpoint</code></li>\n</ul>"
+    },
+    "permissions": {
+      "type": "object",
+      "description": "Permission configuration for the document/entity",
+      "x-intellij-html-description": "<p>Permission configuration for the document/entity</p>\n<ul>\n    <li>Defines who can access and modify the entity itself</li>\n</ul>",
+      "properties": {
+        "matrix": {
+          "$ref": "#/definitions/permissionMatrix"
+        },
+        "rules": {
+          "type": "array",
+          "description": "Additional permission rules for more complex conditions",
+          "x-intellij-html-description": "<p>Additional permission rules for more complex conditions</p>\n<ul>\n    <li>Used when permission logic cannot be expressed with a simple matrix</li>\n    <li>Allows conditional permission granting based on attributes or other factors</li>\n</ul>",
+          "items": {
+            "$ref": "#/definitions/permissionRule",
+            "required": ["roles", "permissions", "statuses"]
+          }
+        }
+      }
+    },
+    "attributes": {
+      "type": "object",
+      "description": "Permission configurations for specific attributes",
+      "x-intellij-html-description": "<p>Permission configurations for specific attributes</p>\n<ul>\n    <li>Keys are attribute identifiers</li>\n    <li>Values are permission definitions for each attribute</li>\n    <li>Allows fine-grained access control at the attribute level</li>\n</ul>",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "matrix": {
+            "$ref": "#/definitions/permissionMatrix"
+          },
+          "rules": {
+            "type": "array",
+            "description": "Additional permission rules for this attribute",
+            "items": {
+              "$ref": "#/definitions/permissionRule",
+              "required": ["roles", "permissions", "statuses"]
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "permissionLevel": {
+      "type": "string",
+      "enum": ["READ", "WRITE", "NONE"],
+      "x-intellij-enum-metadata": {
+        "READ": "Permission for read-only access",
+        "WRITE": "Permission for read and write access",
+        "NONE": "No access granted"
+      }
+    },
+    "rulePermission": {
+      "type": "string",
+      "enum": ["READ", "WRITE"],
+      "x-intellij-enum-metadata": {
+        "READ": "Permission for read-only access",
+        "WRITE": "Permission for read and write access"
+      }
+    },
+    "permissionMatrix": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": {
+          "$ref": "#/definitions/permissionLevel"
+        }
+      },
+      "x-intellij-html-description": "<p>Matrix of permissions based on roles and statuses</p>\n<ul>\n    <li><strong>System roles</strong>:\n        <ul>\n            <li><code>EVERYONE</code> - virtual role that includes all users. Assignees for this role are always empty, but if EVERYONE gets permissions via matrix, they apply to all users in the system.</li>\n        </ul>\n    </li>\n    <li><strong>System statuses</strong>:\n        <ul>\n            <li><code>EMPTY</code> - empty status. Useful for private entities that aren't readable by all users. Empty status may occur if a process for a case is not found or process start operation hasn't completed yet.</li>\n            <li><code>ANY</code> - any status. Use case: for reference books, you can set permissions for ANY and EVERYONE for reading, while creating a separate group for modifying records.</li>\n        </ul>\n    </li>\n</ul>"
+    },
+    "permissionRule": {
+      "type": "object",
+      "properties": {
+        "roles": {
+          "type": "array",
+          "description": "Roles to which the rule applies",
+          "items": {
+            "type": "string"
+          },
+          "x-intellij-html-description": "<p>Roles to which the rule applies</p>\n<ul>\n    <li><strong>System roles</strong>:\n        <ul>\n            <li><code>EVERYONE</code> - virtual role that includes all users. Assignees for this role are always empty, but if EVERYONE gets permissions via matrix, they apply to all users in the system.</li>\n        </ul>\n    </li>\n</ul>"
+        },
+        "permissions": {
+          "type": "array",
+          "description": "Permissions that this rule grants or revokes",
+          "items": {
+            "$ref": "#/definitions/rulePermission"
+          }
+        },
+        "statuses": {
+          "type": "array",
+          "description": "Statuses in which the rule applies",
+          "items": {
+            "type": "string"
+          },
+          "x-intellij-html-description": "<p>Statuses in which the rule applies</p>\n<ul>\n    <li><strong>System statuses</strong>:\n        <ul>\n            <li><code>EMPTY</code> - empty status. Useful for private entities that aren't readable by all users. Empty status may occur if a process for a case is not found or process start operation hasn't completed yet.</li>\n            <li><code>ANY</code> - any status. Use case: for reference books, you can set permissions for ANY and EVERYONE for reading, while creating a separate group for modifying records.</li>\n        </ul>\n    </li>\n</ul>"
+        },
+        "condition": {
+          "type": "object",
+          "description": "Predicate condition that must be satisfied for the rule to apply",
+          "x-intellij-html-description": "<p>Predicate condition for rule application</p>\n<ul>\n    <li>Simple conditions use format: <code>{\"t\": \"eq\", \"att\": \"attributeName\", \"val\": \"value\"}</code></li>\n    <li>Complex conditions can use nested predicates</li>\n</ul>"
+        },
+        "type": {
+          "type": "string",
+          "description": "Type of rule (allow or revoke permissions)",
+          "enum": ["ALLOW", "REVOKE"],
+          "default": "ALLOW",
+          "x-intellij-enum-metadata": {
+            "ALLOW": "Grants the specified permissions when condition is met",
+            "REVOKE": "Removes the specified permissions when condition is met"
+          }
+        }
+      }
+    }
+  }
+}

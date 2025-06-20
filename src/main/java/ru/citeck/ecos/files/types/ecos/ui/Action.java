@@ -2,9 +2,10 @@ package ru.citeck.ecos.files.types.ecos.ui;
 
 import ru.citeck.ecos.files.types.ecos.EcosArtifact;
 import ru.citeck.ecos.files.types.ecos.JsonEcosArtifact;
+import ru.citeck.ecos.files.types.ecos.JsonSchemaArtifact;
 import ru.citeck.ecos.files.types.ecos.YamlEcosArtifact;
 
-public interface Action extends EcosArtifact {
+public interface Action extends EcosArtifact, JsonSchemaArtifact {
 
     String SOURCE_ID = "uiserv/action";
     String PATH = "/ui/action/";
@@ -24,6 +25,11 @@ public interface Action extends EcosArtifact {
     @Override
     default String getDocumentationUrl() {
         return "https://citeck-ecos.readthedocs.io/ru/latest/settings_kb/ui_actions.html";
+    }
+
+    @Override
+    default String getSchemaName() {
+        return "action-schema.json";
     }
 
 }

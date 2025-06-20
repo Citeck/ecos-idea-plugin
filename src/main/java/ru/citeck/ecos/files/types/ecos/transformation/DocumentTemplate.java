@@ -6,6 +6,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.util.io.Compressor;
 import org.jetbrains.annotations.Nullable;
+import ru.citeck.ecos.files.types.ecos.JsonSchemaArtifact;
 import ru.citeck.ecos.files.types.ecos.YamlEcosArtifact;
 import ru.citeck.ecos.files.types.filters.FileFilter;
 import ru.citeck.ecos.files.types.filters.FolderNamePatternsFilter;
@@ -22,7 +23,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.Deflater;
 
-public class DocumentTemplate extends YamlEcosArtifact {
+public class DocumentTemplate extends YamlEcosArtifact implements JsonSchemaArtifact {
 
     public static final String SOURCE_ID = "transformations/template";
     public static final String PATH = "/transformation/template/";
@@ -136,6 +137,11 @@ public class DocumentTemplate extends YamlEcosArtifact {
             throw new RuntimeException("Unable to get parent directory");
         }
         EcosZipContentUtil.applyBase64ZipContentToDirectory(psiFile.getParent(), content.asText());
+    }
+
+    @Override
+    public String getSchemaName() {
+        return "template-schema.json";
     }
 
 }

@@ -1,0 +1,59 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Citeck Endpoint Schema",
+  "description": "Schema for Citeck endpoint YAML files",
+  "x-intellij-html-description": "<p>Schema for Citeck endpoint files</p>\n<ul>\n    <li>Used to define network endpoints in Citeck</li>\n    <li>Contains connection parameters for external services</li>\n</ul>",
+  "type": "object",
+  "required": [
+    "id"
+  ],
+  "definitions": {
+    "nameMlText": {
+      "oneOf": [
+        {
+          "type": "string",
+          "description": "Name"
+        },
+        {
+          "type": "object",
+          "description": "Multilingual name",
+          "minProperties": 1,
+          "properties": {
+            "ru": {
+              "type": "string",
+              "description": "Russian name"
+            },
+            "en": {
+              "type": "string",
+              "description": "English name"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the endpoint",
+      "pattern": "^[a-zA-Z][a-zA-Z0-9_-]*$",
+      "x-intellij-html-description": "<p>Unique identifier for the endpoint</p>\n<ul>\n    <li>Must be unique within the system</li>\n    <li>Use hyphen-case or camelCase naming convention</li>\n    <li>This identifier is used to access the endpoint from code</li>\n    <li>Can be configured via environment variables by converting to uppercase with specific rules</li>\n</ul>"
+    },
+    "name": {
+      "$ref": "#/definitions/nameMlText",
+      "description": "Endpoint name",
+      "x-intellij-html-description": "<p>Human-readable name for the endpoint</p>\n<ul>\n    <li>Can be multilingual</li>\n    <li>Displayed in UI and admin panels</li>\n</ul>"
+    },
+    "url": {
+      "type": "string",
+      "description": "Endpoint URL",
+      "format": "uri",
+      "x-intellij-html-description": "<p>URL address of the endpoint</p>\n<ul>\n    <li>Should include protocol (http:// or https://)</li>\n    <li>Can be overridden by environment variable Citeck_ENDPOINT_[ID]_URL</li>\n</ul>"
+    },
+    "credentials": {
+      "type": "string",
+      "description": "Reference to credentials",
+      "x-intellij-html-description": "<p>Reference to credentials stored as EcosSecret</p>\n<ul>\n    <li>Format: emodel/secret@[secret-id]</li>\n    <li>Credentials typically contain authentication information</li>\n    <li>Can be overridden by environment variable Citeck_ENDPOINT_[ID]_CREDENTIALS</li>\n</ul>"
+    }
+  }
+}

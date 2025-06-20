@@ -1,0 +1,900 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Citeck Journal Schema",
+  "description": "Schema for Citeck journal YAML files",
+  "x-intellij-html-description": "<p>Schema for Citeck journal files</p>\n<ul>\n    <li>Used to define journals in Citeck</li>\n    <li>Configures columns, actions, and other journal settings</li>\n</ul>",
+  "type": "object",
+  "required": [
+    "id"
+  ],
+  "definitions": {
+    "nameMlText": {
+      "oneOf": [
+        {
+          "type": "string",
+          "description": "Name"
+        },
+        {
+          "type": "object",
+          "description": "Multilingual name",
+          "minProperties": 1,
+          "properties": {
+            "ru": {
+              "type": "string",
+              "description": "Russian name"
+            },
+            "en": {
+              "type": "string",
+              "description": "English name"
+            }
+          }
+        }
+      ]
+    },
+    "formatterConfig": {
+      "type": "object",
+      "minProperties": 1,
+      "properties": {
+        "showPointer": {
+          "type": "boolean",
+          "description": "(colored) Show colored pointer instead of background",
+          "x-intellij-html-description": "<p>Display colored dot as an indicator instead of background color</p>\n<ul>\n    <li>True - Show a colored circle indicator</li>\n    <li>False - Color the whole cell background</li>\n</ul>"
+        },
+        "color": {
+          "type": "object",
+          "description": "Color mapping for values (colored)",
+          "additionalProperties": {
+            "type": "string",
+            "description": "CSS color name or HEX color code"
+          },
+          "x-intellij-html-description": "<p>(colored) Map values to colors</p>\n<ul>\n    <li>Keys are possible values</li>\n    <li>Values are either CSS color names or HEX codes</li>\n    <li>Example: { \"low\": \"green\", \"medium\": \"yellow\", \"high\": \"red\", \"someElse\": \"#e2e2e2\" }</li>\n</ul>"
+        },
+        "defaultColor": {
+          "type": "string",
+          "description": "Default color (CSS name or HEX) for values without mapping (colored)",
+          "x-intellij-html-description": "<p>(colored) Color (CSS name or HEX) to use when no matching value found in the color map</p>"
+        },
+        "format": {
+          "type": "string",
+          "description": "Format string for date/time (date, datetime)",
+          "x-intellij-html-description": "<p>(date, datetime) Format pattern</p>\n<ul>\n    <li>Example: 'DD.MM.YYYY HH:mm:ss'</li>\n</ul>"
+        },
+        "relative": {
+          "type": "boolean",
+          "description": "Whether to show relative time (datetime)",
+          "x-intellij-html-description": "<p>(datetime) Whether to calculate and show time that has passed</p>\n<ul>\n    <li>Example: '3 hours ago', 'yesterday', etc.</li>\n</ul>"
+        },
+        "fn": {
+          "type": "string",
+          "description": "JavaScript function for script formatter (script, colored)",
+          "x-intellij-language-injection": {
+            "language": "JavaScript"
+          },
+          "x-intellij-html-description": "<p>(script, colored) JavaScript function body for script formatter</p>\n<ul>\n    <li>Has access to cell value and additional context</li>\n    <li>Return value will be displayed in the cell</li>\n</ul>"
+        },
+        "vars": {
+          "type": "object",
+          "description": "Variables for script formatter (script)",
+          "additionalProperties": true,
+          "x-intellij-html-description": "<p>(script) Additional variables available to the script</p>\n<ul>\n    <li>Can include record expressions like ${...}</li>\n</ul>"
+        },
+        "sourceId": {
+          "type": "string",
+          "description": "Source ID for association formatter (assoc)",
+          "x-intellij-html-description": "<p>(assoc) Data source identifier</p>"
+        },
+        "openInBackground": {
+          "type": "boolean",
+          "description": "Open association in background (assoc)",
+          "x-intellij-html-description": "<p>(assoc) Open linked item in background tab</p>"
+        },
+        "openNewBrowserTab": {
+          "type": "boolean",
+          "description": "Open association in new browser tab (assoc)",
+          "x-intellij-html-description": "<p>(assoc) Open linked item in new browser tab</p>"
+        },
+        "type": {
+          "type": "string",
+          "description": "Action type for action formatter (action)",
+          "x-intellij-html-description": "<p>(action) Action type</p>\n<ul>\n    <li>Example: \"view\" for opening dashboard</li>\n</ul>"
+        },
+        "actionId": {
+          "type": "string",
+          "description": "Action ID for action formatter (action)",
+          "x-intellij-html-description": "<p>(action) Action ID</p>\n<ul>\n    <li>Example: \"view-dashboard\" for opening item details</li>\n</ul>"
+        },
+        "maximumFractionDigits": {
+          "type": "integer",
+          "description": "Maximum fraction digits for number formatter (number)",
+          "x-intellij-html-description": "<p>(number) Maximum number of decimal places to display</p>"
+        },
+        "mask": {
+          "type": "string",
+          "description": "Value mask for number formatter (number)",
+          "x-intellij-html-description": "<p>(number) Format pattern with {value} placeholder</p>\n<ul>\n    <li>Example: '{value} руб.' -> '1000 руб.'</li>\n</ul>"
+        },
+        "locales": {
+          "type": "string",
+          "description": "Locale for number formatting (number)",
+          "x-intellij-html-description": "<p>(number) Locale code for number formatting</p>\n<ul>\n    <li>Example: 'ru', 'en-US'</li>\n    <li>Affects thousands and decimal separators</li>\n</ul>"
+        },
+        "decimalSeparator": {
+          "type": "string",
+          "description": "Decimal separator for number formatter (number)",
+          "x-intellij-html-description": "<p>(number) Character to use as decimal separator</p>\n<ul>\n    <li>Example: '.', ','</li>\n</ul>"
+        },
+        "thousandSeparator": {
+          "type": "string",
+          "description": "Thousand separator for number formatter (number)",
+          "x-intellij-html-description": "<p>(number) Character to use as thousand separator</p>\n<ul>\n    <li>Example: ',', ' ', '_'</li>\n</ul>"
+        },
+        "showSeconds": {
+          "type": "boolean",
+          "description": "Whether to show seconds in duration formatter (duration)",
+          "default": true,
+          "x-intellij-html-description": "<p>(duration) Whether to include seconds in duration display</p>\n<ul>\n    <li>Format: 1d 2h 30m 45s (with seconds)</li>\n    <li>Format: 1d 2h 30m (without seconds)</li>\n</ul>"
+        },
+        "maxAsHours": {
+          "type": "boolean",
+          "description": "Whether to convert all to hours in duration formatter (duration)",
+          "default": false,
+          "x-intellij-html-description": "<p>(duration) Whether to convert days to hours</p>\n<ul>\n    <li>Example: 2d 3h 30m -> 51h 30m</li>\n</ul>"
+        },
+        "html": {
+          "type": "string",
+          "description": "HTML content for html formatter (html)",
+          "x-intellij-html-description": "<p>(html) HTML content to render in the cell</p>"
+        },
+        "url": {
+          "type": "string",
+          "description": "URL for link formatter (link)",
+          "x-intellij-html-description": "<p>(link) Static or computed URL for link</p>\n<ul>\n    <li>Can include ${...} expressions</li>\n</ul>"
+        }
+      }
+    },
+    "editorConfig": {
+      "type": "object",
+      "minProperties": 1,
+      "properties": {
+        "mode": {
+          "type": "string",
+          "description": "Editor mode (boolean)",
+          "enum": ["select", "checkbox"],
+          "default": "select",
+          "x-intellij-html-description": "<p>(boolean) Editor display mode</p>\n<ul>\n    <li>select - dropdown with Yes/No options</li>\n    <li>checkbox - simple checkbox component</li>\n</ul>"
+        },
+        "journalId": {
+          "type": "string",
+          "description": "Journal ID to use for selection (journal)",
+          "x-intellij-html-description": "<p>(journal) Identifier of the journal to select records from</p>"
+        },
+        "allowedAuthorityTypes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["GROUP", "USER"]
+          },
+          "description": "Allowed authority types (orgstruct)",
+          "x-intellij-html-description": "<p>(orgstruct) Types of authorities that can be selected</p>\n<ul>\n    <li>GROUP - Allow groups selection</li>\n    <li>USER - Allow users selection</li>\n</ul>"
+        },
+        "multiple": {
+          "type": "boolean",
+          "description": "Whether multiple selection is allowed (orgstruct)",
+          "default": false,
+          "x-intellij-html-description": "<p>(orgstruct) Enable multiple authorities selection</p>"
+        },
+        "options": {
+          "type": "array",
+          "description": "Options for select editor (select)",
+          "items": {
+            "type": "object",
+            "properties": {
+              "value": {
+                "type": ["string", "number", "boolean"],
+                "description": "Option value"
+              },
+              "label": {
+                "$ref": "#/definitions/nameMlText",
+                "description": "Option display label"
+              }
+            }
+          },
+          "x-intellij-html-description": "<p>(select) Static list of options to choose from</p>\n<ul>\n    <li>Example: [{\"label\":\"priority.high\",\"value\":1}, {\"label\":\"priority.medium\",\"value\":2}]</li>\n</ul>"
+        },
+        "optionsAtt": {
+          "type": "string",
+          "description": "Attribute for dynamic options (select)",
+          "x-intellij-html-description": "<p>(select) Expression to retrieve options dynamically</p>\n<ul>\n    <li>Example: _edge.${attribute}.options{value:?str,label:?disp}</li>\n</ul>"
+        }
+      }
+    }
+  },
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the journal",
+      "pattern": "^[\\w$/.-]+\\w$",
+      "x-intellij-html-description": "<p>Unique identifier for the journal</p>\n<ul>\n    <li>Must be unique within the system</li>\n    <li>Use kebab-case naming convention</li>\n</ul>"
+    },
+    "name": {
+      "$ref": "#/definitions/nameMlText",
+      "description": "Journal name"
+    },
+    "typeRef": {
+      "type": "string",
+      "description": "Reference to type",
+      "examples": [
+        "emodel/type@hr-offices-type"
+      ],
+      "x-intellij-html-description": "<p>Reference to the entity type that will be displayed in the journal</p>\n<ul>\n    <li>Format: emodel/type@[type-id]</li>\n</ul>"
+    },
+    "sourceId": {
+      "type": "string",
+      "description": "Identifier of the data source",
+      "pattern": "^[a-zA-Z][a-zA-Z0-9/_-]*$",
+      "x-intellij-html-description": "<p>Identifier of the data source</p>\n\n<p>Loaded from typeRef by default</p>"
+    },
+    "system": {
+      "type": "boolean",
+      "description": "Whether this is a system journal",
+      "default": false,
+      "x-intellij-html-description": "<p>Whether this is a system journal</p>\n<ul>\n    <li>Default: false</li>\n    <li>System journals are hidden by default in the admin journal</li>\n</ul>"
+    },
+    "editable": {
+      "type": "boolean",
+      "description": "Whether the journal allows inline editing",
+      "default": false,
+      "x-intellij-html-description": "<p>Whether the journal allows inline editing</p>\n<ul>\n    <li>Default: false</li>\n    <li>Enables or disables cell editing directly in the journal</li>\n</ul>"
+    },
+    "hideImportDataActions": {
+      "type": "boolean",
+      "description": "Whether to hide import data actions",
+      "default": false,
+      "x-intellij-html-description": "<p>Whether to hide import data actions</p>\n<ul>\n    <li>Default: false</li>\n    <li>When true, hides data import actions from the journal</li>\n</ul>"
+    },
+    "computed": {
+      "type": "array",
+      "description": "Computed attributes for the journal",
+      "items": {
+        "type": "object",
+        "required": ["id", "type"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Computed attribute ID"
+          },
+          "type": {
+            "type": "string",
+            "description": "Computed attribute type",
+            "enum": ["script", "value"],
+            "x-intellij-enum-metadata": {
+              "script": {
+                "description": "JavaScript script that returns attribute value"
+              },
+              "value": {
+                "description": "Static or record-based value for the attribute"
+              }
+            }
+          },
+          "config": {
+            "type": "object",
+            "description": "Computed attribute configuration",
+            "properties": {
+              "script": {
+                "type": "string",
+                "description": "JavaScript script for script type attributes",
+                "x-intellij-language-injection": {
+                  "language": "JavaScript"
+                }
+              },
+              "vars": {
+                "type": "object",
+                "description": "Variables available in script",
+                "additionalProperties": true
+              },
+              "value": {
+                "description": "Static value for value type attributes"
+              }
+            },
+            "additionalProperties": true
+          }
+        }
+      },
+      "x-intellij-html-description": "<p>Computed attributes definitions for the journal</p>\n<ul>\n    <li>Configure calculation of custom values based on record attributes</li>\n    <li>Accessible in formatters and editors via $computed</li>\n    <li>Two main types: Record (for each record) and Config (global for journal)</li>\n</ul>"
+    },
+    "actions": {
+      "type": "array",
+      "description": "List of available actions for records in the journal",
+      "items": {
+        "type": "string",
+        "anyOf": [
+          {
+            "enum": [
+              "uiserv/action@view-dashboard",
+              "uiserv/action@view-dashboard-in-background",
+              "uiserv/action@edit",
+              "uiserv/action@edit-in-onlyoffice-tfm",
+              "uiserv/action@edit-json",
+              "uiserv/action@delete",
+              "uiserv/action@upload-new-version",
+              "uiserv/action@content-download",
+              "uiserv/action@download-text-yml",
+              "uiserv/action@tasks-actions",
+              "uiserv/action@print"
+            ]
+          },
+          {
+            "pattern": ".*"
+          }
+        ],
+        "x-intellij-html-description": "<p>Reference to action for the journal</p>\n<ul>\n    <li>Format: uiserv/action@[action-id]</li>\n    <li>Common actions:</li>\n    <ul>\n        <li>view-dashboard - View record dashboard</li>\n        <li>edit - Edit record</li>\n        <li>delete - Delete record</li>\n    </ul>\n</ul>"
+      }
+    },
+    "actionsFromType": {
+      "type": "boolean",
+      "description": "Whether to include actions from the type definition",
+      "x-intellij-html-description": "<p>Controls whether actions from the associated type are included</p>\n<ul>\n    <li>true - Always include actions from type</li>\n    <li>false - Never include actions from type</li>\n    <li>null - Include actions from type if local actions and actionsDef are empty</li>\n</ul>"
+    },
+    "actionsDef": {
+      "type": "array",
+      "description": "Custom action definitions",
+      "x-intellij-html-description": "<p>Custom action definition</p>\n\n<p>\n    Configuration of UI action. If an action is specific only to a particular journal and is not intended to be used in other parts of the system\n</p>",
+      "items": {
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Action identifier",
+            "pattern": "^[\\w$/.-]+\\w$"
+          },
+          "name": {
+            "$ref": "#/definitions/nameMlText",
+            "description": "Action name"
+          },
+          "type": {
+            "type": "string",
+            "description": "Action type"
+          },
+          "config": {
+            "type": "object",
+            "description": "Action configuration",
+            "additionalProperties": true
+          },
+          "predicate": {
+            "type": "object",
+            "description": "Predicate for conditional display",
+            "additionalProperties": true
+          },
+          "features": {
+            "type": "object",
+            "description": "Action features configuration",
+            "properties": {
+              "execForRecord": {
+                "type": "boolean",
+                "description": "Whether the action can be executed for a single record",
+                "default": true
+              },
+              "execForRecords": {
+                "type": "boolean",
+                "description": "Whether the action can be executed for selected records",
+                "default": true
+              },
+              "execForQuery": {
+                "type": "boolean",
+                "description": "Whether the action can be executed for the entire query",
+                "default": true
+              }
+            }
+          },
+          "confirm": {
+            "type": "object",
+            "description": "Confirmation dialog configuration",
+            "properties": {
+              "title": {
+                "$ref": "#/definitions/nameMlText",
+                "description": "Confirmation dialog title"
+              },
+              "message": {
+                "$ref": "#/definitions/nameMlText",
+                "description": "Confirmation message"
+              },
+              "formRef": {
+                "type": "string",
+                "description": "Reference to confirmation form",
+                "x-intellij-html-description": "<p>Reference to a form to display in the confirmation dialog</p>\n<ul>\n    <li>If specified, the message property is ignored</li>\n    <li>Format: uiserv/form@[form-id]</li>\n</ul>"
+              },
+              "formAttributes": {
+                "type": "object",
+                "description": "Attributes to pass to the confirmation form",
+                "additionalProperties": true,
+                "x-intellij-html-description": "<p>Additional attributes to pass to the confirmation form</p>\n<ul>\n    <li>Can include constants or record attributes using ${attribute} syntax</li>\n</ul>"
+              },
+              "attributesMapping": {
+                "type": "object",
+                "description": "Mapping of attributes from confirmation form to action configuration",
+                "additionalProperties": true,
+                "x-intellij-html-description": "<p>Maps data from the confirmation form to action configuration</p>\n<ul>\n    <li>Key: path in the action configuration</li>\n    <li>Value: field name in the confirmation form</li>\n    <li>Example: <code>\"body.comment\": \"comment\"</code> maps the comment field from the form to body.comment in the action config</li>\n</ul>"
+              }
+            }
+          },
+          "timeoutErrorMessage": {
+            "$ref": "#/definitions/nameMlText",
+            "description": "Error message for timeout"
+          },
+          "execForRecordsBatchSize": {
+            "type": "integer",
+            "description": "Batch size for processing records",
+            "minimum": 0
+          },
+          "execForRecordsParallelBatchesCount": {
+            "type": "integer",
+            "description": "Number of parallel batches for processing records",
+            "minimum": 1
+          },
+          "preActionModule": {
+            "type": "string",
+            "description": "Module for pre-action JavaScript processing"
+          }
+        }
+      }
+    },
+    "columns": {
+      "type": "array",
+      "description": "List of columns in the journal",
+      "items": {
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Column identifier",
+            "pattern": "^[\\w$:/_-]+\\w$",
+            "x-intellij-html-description": "<p>Column identifier</p>\n<ul>\n    <li>Use attribute ID from the data model</li>\n    <li>Special system attributes start with underscore (_)</li>\n    <li>Examples: name, _created, documentNumber</li>\n</ul>"
+          },
+          "name": {
+            "$ref": "#/definitions/nameMlText",
+            "description": "Column name"
+          },
+          "type": {
+            "type": "string",
+            "description": "Column data type",
+            "enum": [
+              "TEXT",
+              "MLTEXT",
+              "NUMBER",
+              "BOOLEAN",
+              "DATE",
+              "DATETIME",
+              "CONTENT",
+              "ASSOC",
+              "PERSON",
+              "AUTHORITY",
+              "AUTHORITY_GROUP"
+            ],
+            "x-intellij-enum-metadata": {
+              "TEXT": {
+                "description": "Text value"
+              },
+              "MLTEXT": {
+                "description": "Multilingual text"
+              },
+              "NUMBER": {
+                "description": "Numeric value"
+              },
+              "BOOLEAN": {
+                "description": "Boolean value (yes/no)"
+              },
+              "DATE": {
+                "description": "Date without time"
+              },
+              "DATETIME": {
+                "description": "Date and time"
+              },
+              "CONTENT": {
+                "description": "File content"
+              },
+              "ASSOC": {
+                "description": "Association with another entity"
+              },
+              "PERSON": {
+                "description": "Person reference"
+              },
+              "AUTHORITY": {
+                "description": "User or group"
+              },
+              "AUTHORITY_GROUP": {
+                "description": "Group reference"
+              }
+            }
+          },
+          "attribute": {
+            "type": "string",
+            "description": "Attribute to load (default is column id)",
+            "x-intellij-html-description": "<p>Attribute to load (default is column id)</p>\n<ul>\n    <li>Can contain expressions</li>\n    <li>Supports complex paths and functions</li>\n    <li>Examples: (value - kpiSettingsRef.kpiAsNumber), _parent.totalPrice</li>\n</ul>"
+          },
+          "searchable": {
+            "type": "boolean",
+            "description": "Whether the column is searchable",
+            "default": true,
+            "x-intellij-html-description": "<p>Whether the column is searchable</p>\n<ul>\n    <li>Controls whether search can be performed on this column</li>\n</ul>"
+          },
+          "sortable": {
+            "type": "boolean",
+            "description": "Whether the column can be sorted",
+            "default": true,
+            "x-intellij-html-description": "<p>Whether the column can be sorted</p>\n<ul>\n    <li>Controls whether the column can be used for sorting</li>\n</ul>"
+          },
+          "groupable": {
+            "type": "boolean",
+            "description": "Whether the column can be grouped",
+            "default": true,
+            "x-intellij-html-description": "<p>Whether the column can be grouped</p>\n<ul>\n    <li>Controls whether grouping can be performed on this column</li>\n</ul>"
+          },
+          "editable": {
+            "type": "boolean",
+            "description": "Whether the column can be edited inline",
+            "default": false,
+            "x-intellij-html-description": "<p>Whether the column can be edited inline</p>\n<ul>\n    <li>Controls whether the column value can be edited directly in the table</li>\n    <li>Only works if journal editable=true</li>\n</ul>"
+          },
+          "hidden": {
+            "type": "boolean",
+            "description": "Whether the column is hidden but searchable",
+            "default": false,
+            "x-intellij-html-description": "<p>Whether the column is hidden but searchable</p>\n<ul>\n    <li>Column will not be visible but can be used for search</li>\n</ul>"
+          },
+          "visible": {
+            "type": "boolean",
+            "description": "Whether the column is visible by default",
+            "default": true,
+            "x-intellij-html-description": "<p>Whether the column is visible by default</p>\n<ul>\n</ul>"
+          },
+          "multiple": {
+            "type": "boolean",
+            "description": "Whether the column can have multiple values",
+            "default": false,
+            "x-intellij-html-description": "<p>Whether the column can have multiple values</p>\n<ul>\n    <li>Controls whether the column can hold multiple values</li>\n    <li>Used with association columns or multi-value attributes</li>\n</ul>"
+          },
+          "width": {
+            "type": "integer",
+            "description": "Column width in pixels",
+            "x-intellij-html-description": "<p>Column width in pixels</p>\n<ul>\n    <li>Default column width (can be resized by user)</li>\n</ul>"
+          },
+          "searchableByText": {
+            "type": "boolean",
+            "description": "Whether search can be performed from column header",
+            "default": true,
+            "x-intellij-html-description": "<p>Whether search can be performed from column header</p>\n<ul>\n    <li>Controls whether column header includes a search control</li>\n</ul>"
+          },
+          "computed": {
+            "type": "array",
+            "description": "Computed attributes for the column",
+            "items": {
+              "type": "object",
+              "required": ["id", "type"],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "Computed attribute ID"
+                },
+                "type": {
+                  "type": "string",
+                  "description": "Computed attribute type",
+                  "enum": ["script", "value"],
+                  "x-intellij-enum-metadata": {
+                    "script": {
+                      "description": "JavaScript script that returns attribute value"
+                    },
+                    "value": {
+                      "description": "Static or record-based value for the attribute"
+                    }
+                  }
+                },
+                "config": {
+                  "type": "object",
+                  "description": "Computed attribute configuration",
+                  "properties": {
+                    "script": {
+                      "type": "string",
+                      "description": "JavaScript script for script type attributes",
+                      "x-intellij-language-injection": {
+                        "language": "JavaScript"
+                      }
+                    },
+                    "vars": {
+                      "type": "object",
+                      "description": "Variables available in script",
+                      "additionalProperties": true
+                    },
+                    "value": {
+                      "description": "Static value for value type attributes"
+                    }
+                  },
+                  "additionalProperties": true
+                }
+              }
+            },
+            "x-intellij-html-description": "<p>Computed attributes definitions for the column</p>\n<ul>\n    <li>Configure calculation of custom values based on record attributes</li>\n    <li>Accessible in formatters and editors via $computed</li>\n    <li>Two main types: Record (for each record) and Config (global for column)</li>\n</ul>"
+          },
+          "formatter": {
+            "type": "object",
+            "description": "Column formatter configuration",
+            "required": [
+              "type"
+            ],
+            "properties": {
+              "type": {
+                "type": "string",
+                "description": "Formatter type",
+                "enum": [
+                  "assoc",
+                  "action",
+                  "bool",
+                  "colored",
+                  "date",
+                  "datetime",
+                  "default",
+                  "duration",
+                  "filename",
+                  "html",
+                  "link",
+                  "number",
+                  "script",
+                  "workflowPriority"
+                ],
+                "x-intellij-enum-metadata": {
+                  "assoc": {
+                    "description": "formats references to other entities"
+                  },
+                  "action": {
+                    "description": "makes cells clickable with an action"
+                  },
+                  "bool": {
+                    "description": "formats true/false as Yes/No"
+                  },
+                  "colored": {
+                    "description": "adds color coding based on value"
+                  },
+                  "date": {
+                    "description": "formats date without time"
+                  },
+                  "datetime": {
+                    "description": "formats dates in specified format"
+                  },
+                  "default": {
+                    "description": "when no special formatting is needed"
+                  },
+                  "duration": {
+                    "description": "formats time durations in days, hours, minutes"
+                  },
+                  "filename": {
+                    "description": "formats file names with appropriate icons"
+                  },
+                  "html": {
+                    "description": "renders HTML content in cells"
+                  },
+                  "link": {
+                    "description": "formats cell value as clickable link"
+                  },
+                  "number": {
+                    "description": "formats numbers with specified options"
+                  },
+                  "script": {
+                    "description": "custom formatting logic"
+                  },
+                  "workflowPriority": {
+                    "description": "specially handles workflow priority values"
+                  }
+                }
+              },
+              "config": {
+                "$ref": "#/definitions/formatterConfig",
+                "description": "Formatter configuration"
+              }
+            }
+          },
+          "editor": {
+            "type": "object",
+            "description": "Column editor configuration",
+            "required": [
+              "type"
+            ],
+            "properties": {
+              "type": {
+                "type": "string",
+                "description": "Editor type",
+                "enum": [
+                  "text",
+                  "number",
+                  "boolean",
+                  "date",
+                  "datetime",
+                  "select",
+                  "orgstruct",
+                  "journal"
+                ],
+                "x-intellij-enum-metadata": {
+                  "text": {
+                    "description": "Text input field"
+                  },
+                  "number": {
+                    "description": "Number input field"
+                  },
+                  "boolean": {
+                    "description": "Boolean toggle/checkbox"
+                  },
+                  "date": {
+                    "description": "Date picker without time"
+                  },
+                  "datetime": {
+                    "description": "Date and time picker"
+                  },
+                  "select": {
+                    "description": "Dropdown select for options"
+                  },
+                  "orgstruct": {
+                    "description": "Organization structure picker"
+                  },
+                  "journal": {
+                    "description": "Journal selector"
+                  }
+                }
+              },
+              "config": {
+                "$ref": "#/definitions/editorConfig",
+                "description": "Editor configuration"
+              }
+            }
+          },
+          "searchConfig": {
+            "type": "object",
+            "description": "Search configuration for column",
+            "properties": {
+              "delimiters": {
+                "type": "array",
+                "description": "Delimiters for multiple values",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "searchByText": {
+                "type": "object",
+                "description": "Text search configuration",
+                "properties": {
+                  "innerQuery": {
+                    "type": "object",
+                    "description": "Inner query configuration",
+                    "properties": {
+                      "sourceId": {
+                        "type": "string",
+                        "description": "Source ID for the query"
+                      },
+                      "query": {
+                        "type": "object",
+                        "description": "Query predicate",
+                        "additionalProperties": true
+                      },
+                      "page": {
+                        "type": "object",
+                        "description": "Pagination for inner query",
+                        "properties": {
+                          "maxItems": {
+                            "type": "integer",
+                            "description": "Maximum items to return"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "innerQueryAttribute": {
+                    "type": "string",
+                    "description": "Attribute to retrieve from inner query results"
+                  }
+                }
+              },
+              "searchAttribute": {
+                "type": "string",
+                "description": "Attribute to be searched for when filtering by column"
+              }
+            }
+          },
+          "headerFilterEditor": {
+            "type": "object",
+            "description": "Header filter editor configuration",
+            "properties": {
+              "type": {
+                "type": "string",
+                "description": "Filter editor type"
+              },
+              "config": {
+                "type": "object",
+                "description": "Filter editor configuration",
+                "additionalProperties": true
+              }
+            }
+          }
+        }
+      }
+    },
+    "predicate": {
+      "type": "object",
+      "description": "Default predicate for journal filtering",
+      "additionalProperties": true,
+      "x-intellij-html-description": "<p>Default predicate for journal filtering</p>\n<ul>\n    <li>Used to filter records shown in the journal</li>\n    <li>Uses the Citeck predicate format</li>\n</ul>"
+    },
+    "defaultFilters": {
+      "type": "array",
+      "description": "Default filters for the journal",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      },
+      "x-intellij-html-description": "<p>Default filters for the journal</p>\n<ul>\n    <li>Preset filters applied when journal is loaded</li>\n    <li>Uses the Citeck predicate format</li>\n</ul>"
+    },
+    "searchConfig": {
+      "type": "object",
+      "description": "Global search configuration for the journal",
+      "properties": {
+        "delimiters": {
+          "type": "array",
+          "description": "Delimiters used in search queries",
+          "items": {
+            "type": "string"
+          }
+        },
+        "headerSearchEnabled": {
+          "type": "boolean",
+          "description": "Whether to enable search from column headers",
+          "default": true
+        }
+      },
+      "x-intellij-html-description": "<p>Global search configuration</p>\n<ul>\n    <li>Configure global search behavior for the journal</li>\n</ul>"
+    },
+    "groupBy": {
+      "type": "array",
+      "description": "Default grouping for the journal",
+      "items": {
+        "type": "string",
+        "description": "Column to group by"
+      },
+      "x-intellij-html-description": "<p>Default grouping for the journal</p>\n<ul>\n    <li>List of column identifiers to group by default</li>\n</ul>"
+    },
+    "metaRecord": {
+      "type": "string",
+      "description": "Meta record configuration",
+      "x-intellij-html-description": "<p>\n    Record from which meta-information for filters will be loaded. Be default - \"{sourceId}@\"\n</p>"
+    },
+    "defaultSortBy": {
+      "type": "array",
+      "description": "Default sorting",
+      "items": {
+        "type": "object",
+        "required": [
+          "attribute"
+        ],
+        "properties": {
+          "attribute": {
+            "type": "string",
+            "description": "Attribute to sort by"
+          },
+          "ascending": {
+            "type": "boolean",
+            "description": "Sort direction",
+            "default": true
+          }
+        }
+      },
+      "x-intellij-html-description": "<p>Default sorting configuration</p>\n<ul>\n    <li>Can include multiple fields for multi-level sorting</li>\n</ul>"
+    },
+    "properties": {
+      "type": "object",
+      "description": "Additional properties for the journal",
+      "additionalProperties": true,
+      "x-intellij-html-description": "<p>Additional properties for the journal</p>\n<ul>\n    <li>Custom properties that can be used by applications</li>\n</ul>"
+    }
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Citeck Working Calendar Schema",
+  "description": "Schema for Citeck working calendar configuration files",
+  "x-intellij-html-description": "<p>Schema for Citeck working calendar configuration files</p>\n<ul>\n    <li>Used to define working days, holidays, and other special work day types</li>\n    <li>Supports specific dates and date ranges</li>\n</ul>",
+  "type": "object",
+  "required": [
+    "id",
+    "from",
+    "until",
+    "dates"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the working calendar",
+      "pattern": "^[a-zA-Z][a-zA-Z0-9_-]*$"
+    },
+    "extensionFor": {
+      "type": "string",
+      "description": "Reference to the base calendar that this calendar extends",
+      "default": "emodel/working-calendar@RU"
+    },
+    "from": {
+      "type": "string",
+      "description": "Start date of the calendar validity period (YYYY-MM-DD)",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "until": {
+      "type": "string",
+      "description": "End date of the calendar validity period (YYYY-MM-DD)",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "enabled": {
+      "type": "boolean",
+      "description": "Whether the calendar is enabled or not",
+      "default": true
+    },
+    "dates": {
+      "type": "array",
+      "description": "List of special dates or date ranges",
+      "items": {
+        "$ref": "#/definitions/dateEntry"
+      }
+    }
+  },
+  "definitions": {
+    "dateEntry": {
+      "type": "object",
+      "required": [
+        "date",
+        "type"
+      ],
+      "properties": {
+        "date": {
+          "type": "string",
+          "description": "Specific date or start date of a range (YYYY-MM-DD)",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "until": {
+          "type": "string",
+          "description": "End date of a range, inclusive (YYYY-MM-DD)",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "type": {
+          "type": "string",
+          "description": "Type of the date or all dates in a range",
+          "enum": ["WORKING", "HOLIDAY", "SHORTDAY", "WEEKEND", "NON_WORKING"],
+          "x-intellij-enum-metadata": {
+            "WORKING": "Working day (useful when marking a weekend as a working day)",
+            "HOLIDAY": "Holiday (non-working celebratory day)",
+            "SHORTDAY": "Short working day (1 hour shorter)",
+            "WEEKEND": "Weekend (regular day off)",
+            "NON_WORKING": "Non-working day (any other reason)"
+          }
+        },
+        "description": {
+          "type": "string",
+          "description": "Description of the date or date range"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Citeck Permission Definition Schema",
+  "description": "Schema for Citeck permission definition YAML files",
+  "x-intellij-html-description": "<p>Schema for Citeck permission definition files</p>\n<ul>\n    <li>Used to define permission types in Citeck</li>\n    <li>Specifies which entity types the permission applies to</li>\n</ul>",
+  "type": "object",
+  "required": [
+    "id",
+    "appliesToTypes"
+  ],
+  "definitions": {
+    "nameMlText": {
+      "oneOf": [
+        {
+          "type": "string",
+          "description": "Name"
+        },
+        {
+          "type": "object",
+          "description": "Multilingual name",
+          "minProperties": 1,
+          "properties": {
+            "ru": {
+              "type": "string",
+              "description": "Russian name"
+            },
+            "en": {
+              "type": "string",
+              "description": "English name"
+            }
+          },
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      ]
+    }
+  },
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the permission definition",
+      "pattern": "^[a-zA-Z][a-zA-Z0-9_-]*$",
+      "x-intellij-html-description": "<p>Unique identifier for the permission definition</p>\n<ul>\n    <li>Must be unique within the system</li>\n    <li>Use hyphen-case or camelCase naming convention</li>\n    <li>This identifier is used to reference the permission in access control settings</li>\n</ul>"
+    },
+    "name": {
+      "$ref": "#/definitions/nameMlText",
+      "description": "Permission name",
+      "x-intellij-html-description": "<p>Human-readable name for the permission</p>\n<ul>\n    <li>Can be multilingual</li>\n    <li>Usually includes the permission ID in parentheses for clarity</li>\n</ul>"
+    },
+    "appliesToTypes": {
+      "type": "array",
+      "description": "List of entity types this permission applies to",
+      "items": {
+        "type": "string",
+        "pattern": "^[\\w$/.-]+@[\\w$/.-]+$"
+      },
+      "x-intellij-html-description": "<p>List of entity types this permission applies to</p>\n<ul>\n    <li>Each item is a reference to a type in the format: emodel/type@[type-id]</li>\n    <li>Example: emodel/type@base - permission applies to the base type</li></ul>"
+    }
+  }
+}

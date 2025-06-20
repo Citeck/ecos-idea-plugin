@@ -1,0 +1,55 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Citeck Number Template Schema",
+  "description": "Schema for Citeck number template YAML files",
+  "x-intellij-html-description": "<p>Schema for Citeck number template files</p>\n<ul>\n    <li>Used to define number templates for automatic document numbering</li>\n    <li>Allows creating sequential numbers based on various parameters</li>\n</ul>",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "counterKey"
+  ],
+  "definitions": {
+    "nameMlText": {
+      "oneOf": [
+        {
+          "type": "string",
+          "description": "Name"
+        },
+        {
+          "type": "object",
+          "description": "Multilingual name",
+          "minProperties": 1,
+          "properties": {
+            "ru": {
+              "type": "string",
+              "description": "Russian name"
+            },
+            "en": {
+              "type": "string",
+              "description": "English name"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the number template",
+      "pattern": "^[a-zA-Z][a-zA-Z0-9_-]*$",
+      "x-intellij-html-description": "<p>Unique identifier for the number template</p>\n<ul>\n    <li>Must be unique within the system</li>\n    <li>Use hyphen-case or camelCase naming convention</li>\n    <li>This identifier is used to reference the template from type definitions</li>\n</ul>"
+    },
+    "name": {
+      "$ref": "#/definitions/nameMlText",
+      "description": "Template name",
+      "x-intellij-html-description": "<p>Human-readable name for the template</p>\n<ul>\n    <li>Can be multilingual or simple string</li>\n    <li>Used for reference in the admin interface</li>\n</ul>"
+    },
+    "counterKey": {
+      "type": "string",
+      "description": "Template for counter key",
+      "x-intellij-html-description": "<p>Template for the counter key</p>\n<ul>\n    <li>Can be a constant string (creates only one counter for the template)</li>\n    <li>Can include entity attributes in format ${attribute_name}</li>\n    <li>Supports expressions with entity attributes to create different counters</li>\n    <li>Used to determine which counter to increment when generating a new number</li>\n</ul>"
+    }
+  }
+}

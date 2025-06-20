@@ -1,0 +1,125 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Citeck Workspace Schema",
+  "description": "Schema for Citeck workspace YAML files",
+  "x-intellij-html-description": "<p>Schema for Citeck workspace files</p>\n<ul>\n    <li>Used to define workspaces in Citeck</li>\n    <li>Workspaces allow separation of data, menu items and open tabs</li>\n</ul>",
+  "type": "object",
+  "required": [
+    "id",
+    "name"
+  ],
+  "definitions": {
+    "mlText": {
+      "oneOf": [
+        {
+          "type": "string",
+          "description": "Text value"
+        },
+        {
+          "type": "object",
+          "description": "Multilingual text",
+          "minProperties": 1,
+          "properties": {
+            "ru": {
+              "type": "string",
+              "description": "Russian text"
+            },
+            "en": {
+              "type": "string",
+              "description": "English text"
+            }
+          }
+        }
+      ]
+    },
+    "workspaceMember": {
+      "type": "object",
+      "required": [
+        "id",
+        "authority",
+        "memberRole"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Member identifier",
+          "pattern": "^[\\w$/-_]+\\w",
+          "x-intellij-html-description": "<p>Member identifier</p>\n<ul>\n    <li>Must be unique within workspace members</li>\n    <li>Used to identify the member in the workspace</li>\n</ul>"
+        },
+        "authority": {
+          "type": "string",
+          "description": "Reference to authority (user or group)",
+          "x-intellij-html-description": "<p>Reference to authority (user or group)</p>\n<ul>\n    <li>Can be user or group</li>\n    <li>Examples:</li>\n    <ul>\n        <li>emodel/authority-group@EVERYONE</li>\n        <li>emodel/authority-person@admin</li>\n    </ul>\n</ul>"
+        },
+        "memberRole": {
+          "type": "string",
+          "description": "Role of the member in the workspace",
+          "enum": [
+            "USER",
+            "MANAGER"
+          ],
+          "x-intellij-html-description": "<p>Role of the member in the workspace</p>\n<ul>\n    <li>Available roles:</li>\n    <ul>\n        <li><b>USER</b> - Regular workspace user</li>\n        <li><b>MANAGER</b> - Workspace manager with administration rights</li>\n    </ul>\n</ul>",
+          "x-intellij-enum-metadata": {
+            "USER": {
+              "description": "Regular user of the workspace"
+            },
+            "MANAGER": {
+              "description": "Manager with rights to configure the workspace"
+            }
+          }
+        }
+      }
+    }
+  },
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the workspace",
+      "pattern": "^[a-zA-Z][a-zA-Z0-9_-]*$",
+      "x-intellij-html-description": "<p>Unique identifier for the workspace</p>\n<ul>\n    <li>Must be unique within the system</li>\n    <li>Will be used in URLs and API calls</li>\n    <li>Use hyphen-case or camelCase naming convention</li>\n</ul>"
+    },
+    "name": {
+      "$ref": "#/definitions/mlText",
+      "description": "Workspace name"
+    },
+    "description": {
+      "$ref": "#/definitions/mlText",
+      "description": "Workspace description"
+    },
+    "visibility": {
+      "type": "string",
+      "description": "Workspace visibility",
+      "enum": [
+        "PUBLIC",
+        "PRIVATE"
+      ],
+      "x-intellij-html-description": "<p>Workspace visibility</p>\n<ul>\n    <li>Options:</li>\n    <ul>\n        <li><b>PUBLIC</b> - Visible to all users, free to join (default)</li>\n        <li><b>PRIVATE</b> - Only visible to workspace members</li>\n    </ul>\n</ul>",
+      "x-intellij-enum-metadata": {
+        "PUBLIC": {
+          "description": "Visible to all users, free to join"
+        },
+        "PRIVATE": {
+          "description": "Only visible to workspace members"
+        }
+      }
+    },
+    "homePageLink": {
+      "type": "string",
+      "description": "Home page link",
+      "x-intellij-html-description": "<p>Link to the home page of the workspace</p>\n<ul>\n    <li>Will be opened when user enters the workspace</li>\n    <li>If not specified, the default dashboard will be used</li>\n    <li>Example: /v2/dashboard?ws=EPT</li>\n</ul>"
+    },
+    "icon": {
+      "type": "string",
+      "description": "Workspace icon",
+      "x-intellij-html-description": "<p>Reference to the workspace icon</p>\n<ul>\n    <li>Used in the workspace selection dropdown</li>\n    <li>Examples:</li>\n    <ul>\n        <li>uiserv/icon@some-icon</li>\n    </ul>\n</ul>"
+    },
+    "workspaceMembers": {
+      "type": "array",
+      "description": "List of workspace members",
+      "items": {
+        "$ref": "#/definitions/workspaceMember"
+      },
+      "x-intellij-html-description": "<p>List of workspace members</p>\n<ul>\n    <li>Users and groups that have access to this workspace</li>\n    <li>Each member has a role - USER or MANAGER</li>\n    <li>Workspace creator automatically becomes a MANAGER</li>\n</ul>"
+    }
+  }
+}

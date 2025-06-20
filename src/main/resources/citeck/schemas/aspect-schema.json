@@ -1,0 +1,330 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Citeck Aspect Schema",
+  "description": "Schema for Citeck aspect YAML files",
+  "x-intellij-html-description": "<p>Schema for Citeck aspect files</p>\n<ul>\n    <li>Used to define aspects in Citeck</li>\n    <li>Aspects extend functionality of types without modifying the types</li>\n</ul>",
+  "type": "object",
+  "required": [
+    "id"
+  ],
+  "definitions": {
+    "nameMlText": {
+      "oneOf": [
+        {
+          "type": "string",
+          "description": "Name"
+        },
+        {
+          "type": "object",
+          "description": "Multilingual name",
+          "minProperties": 1,
+          "properties": {
+            "ru": {
+              "type": "string",
+              "description": "Russian name"
+            },
+            "en": {
+              "type": "string",
+              "description": "English name"
+            }
+          }
+        }
+      ]
+    },
+    "modelAttributesItems": {
+      "type": "object",
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Attribute identifier (camelCase)",
+          "x-intellij-html-description": "<p>Attribute identifier (camelCase).</p>\n<ul>\n    <li>Rules:</li>\n    <ul>\n        <li>Start with lowercase</li>\n        <li>Use camelCase for multi-word names</li>\n        <li>No special chars</li>\n    </ul>\n    <li>Examples:</li>\n    <ul>\n        <li>firstName</li>\n        <li>documentNumber</li>\n        <li>creationDate</li>\n    </ul>\n</ul>",
+          "pattern": "^[a-zA-Z][a-zA-Z0-9_-]*$"
+        },
+        "name": {
+          "$ref": "#/definitions/nameMlText"
+        },
+        "type": {
+          "type": "string",
+          "description": "Attribute type",
+          "enum": [
+            "TEXT",
+            "MLTEXT",
+            "NUMBER",
+            "BOOLEAN",
+            "DATE",
+            "DATETIME",
+            "CONTENT",
+            "JSON",
+            "BINARY",
+            "ASSOC",
+            "PERSON",
+            "AUTHORITY",
+            "AUTHORITY_GROUP",
+            "OPTIONS",
+            "GROUP"
+          ],
+          "x-intellij-html-description": "<p>Attribute type</p>\n<ul>\n    <li>Basic types:</li>\n    <ul>\n        <li><b>TEXT</b> - Plain text value</li>\n        <li><b>MLTEXT</b> - Multilingual text value</li>\n        <li><b>NUMBER</b> - Numeric value</li>\n        <li><b>BOOLEAN</b> - Boolean value (true/false)</li>\n    </ul>\n    <li>Date/Time:</li>\n    <ul>\n        <li><b>DATE</b> - Date without time</li>\n        <li><b>DATETIME</b> - Date and time</li>\n    </ul>\n    <li>Complex types:</li>\n    <ul>\n        <li><b>CONTENT</b> - Files and content</li>\n        <li><b>JSON</b> - Structured data</li>\n        <li><b>BINARY</b> - Binary data</li>\n    </ul>\n    <li>References:</li>\n    <ul>\n        <li><b>ASSOC</b> - Entity associations</li>\n        <li><b>PERSON</b> - Person references</li>\n        <li><b>AUTHORITY</b> - Users and groups</li>\n        <li><b>AUTHORITY_GROUP</b> - Groups only</li>\n    </ul>\n    <li>Special:</li>\n    <ul>\n        <li><b>OPTIONS</b> - Predefined values</li>\n    </ul>\n</ul>",
+          "x-intellij-enum-metadata": {
+            "TEXT": {
+              "description": "Text"
+            },
+            "MLTEXT": {
+              "description": "Multilingual text. Content changes depending on the selected localization."
+            },
+            "NUMBER": {
+              "description": "Number"
+            },
+            "BOOLEAN": {
+              "description": "Boolean value yes/no"
+            },
+            "DATE": {
+              "description": "Date"
+            },
+            "DATETIME": {
+              "description": "Date with time"
+            },
+            "CONTENT": {
+              "description": "Content. Fields of this type are typically used for storing large volumes of data. For example - document content."
+            },
+            "JSON": {
+              "description": "Text-based, structured data format."
+            },
+            "BINARY": {
+              "description": "Byte array. Similar to content, but much simpler. Not recommended to store more than 1MB of data here."
+            },
+            "ASSOC": {
+              "description": "Association with another entity."
+            },
+            "PERSON": {
+              "description": "User from organization structure"
+            },
+            "AUTHORITY": {
+              "description": "User or group. This is essentially the base type for both users and groups"
+            },
+            "AUTHORITY_GROUP": {
+              "description": "Groups only"
+            },
+            "OPTIONS": {
+              "description": "Ability to configure attribute constraints as a list of possible values."
+            }
+          }
+        },
+        "multiple": {
+          "type": "boolean",
+          "description": "Whether the attribute can have multiple values",
+          "x-intellij-html-description": "<p>Whether the attribute can have multiple values</p>\n<ul>\n    <li>Effects:</li>\n    <ul>\n        <li>true - Allows multiple selections</li>\n        <li>false - Single value only</li>\n    </ul>\n</ul>"
+        },
+        "mandatory": {
+          "type": "boolean",
+          "description": "Whether the attribute is mandatory",
+          "x-intellij-html-description": "<p>Whether the attribute is mandatory</p>\n<ul>\n    <li>Effects:</li>\n    <ul>\n        <li>true - Value required</li>\n        <li>false - Optional field</li>\n    </ul>\n</ul>"
+        },
+        "config": {
+          "type": "object",
+          "description": "Attribute configuration",
+          "x-intellij-html-description": "<p>Attribute configuration</p>\n<ul>\n    <li>Options type:</li>\n    <ul>\n        <li>source - Values source</li>\n        <li>values - Predefined list</li>\n        <li>labels - Display names</li>\n    </ul>\n    <li>Association type:</li>\n    <ul>\n        <li>typeRef - Target type</li>\n        <li>child - Child association</li>\n    </ul>\n</ul>",
+          "properties": {
+            "source": {
+              "type": "string",
+              "enum": [
+                "values"
+              ],
+              "default": "values",
+              "description": "Source of values",
+              "x-intellij-html-description": "<p>(OPTIONS) Source of values</p>\n<ul>\n    <li>Can be:</li>\n    <ul>\n        <li>Static list</li>\n    </ul>\n</ul>",
+              "x-intellij-enum-metadata": {
+                "values": {
+                  "description": "Static list of values"
+                }
+              }
+            },
+            "values": {
+              "type": "array",
+              "description": "List of values (for OPTIONS)",
+              "minItems": 1,
+              "x-intellij-html-description": "<p>(OPTIONS) List of predefined values</p>\n<ul>\n    <li>Structure:</li>\n    <ul>\n        <li>value - Internal value</li>\n        <li>label - Display name</li>\n    </ul>\n</ul>",
+              "items": {
+                "type": "object",
+                "required": [
+                  "value"
+                ],
+                "properties": {
+                  "value": {
+                    "type": "string",
+                    "pattern": "^[\\w$/-_]+\\w",
+                    "description": "Value (for OPTIONS)",
+                    "x-intellij-html-description": "<p>(OPTIONS) Internal value stored in database</p>\n<ul>\n    <li>Best practices:</li>\n    <ul>\n        <li>Use meaningful IDs</li>\n        <li>Keep consistent format</li>\n        <li>Avoid special chars</li>\n    </ul>\n</ul>"
+                  },
+                  "label": {
+                    "$ref": "#/definitions/nameMlText"
+                  }
+                }
+              }
+            },
+            "typeRef": {
+              "type": "string",
+              "description": "Target type reference for ASSOC type (for ASSOC)",
+              "x-intellij-html-description": "<p>(ASSOC) Target type reference for association</p>\n<ul>\n    <li>References another data type</li>\n    <li>Must be a valid type ref</li>\n</ul>"
+            },
+            "child": {
+              "type": "boolean",
+              "description": "Whether this is a child association (for ASSOC)",
+              "x-intellij-html-description": "<p>(ASSOC) Whether this is a child association</p>\n<ul>\n    <li>Effects:</li>\n    <ul>\n        <li>true - Creates parent-child relationship</li>\n        <li>false - Regular association</li>\n    </ul>\n    <li>Features:</li>\n    <ul>\n        <li>Child gets automatic _parent association</li>\n        <li>Parent deletion cascades to children</li>\n        <li>Permission inheritance from parent</li>\n    </ul>\n</ul>"
+            },
+            "unique": {
+              "type": "boolean",
+              "description": "Whether the attribute value must be unique (for TEXT)",
+              "x-intellij-html-description": "<p>(TEXT) Whether the attribute value must be unique</p>\n<ul>\n    <li>Effects:</li>\n    <ul>\n        <li>true - Enforces uniqueness</li>\n        <li>false - No uniqueness constraint</li>\n    </ul>\n</ul>"
+            }
+          }
+        },
+        "computed": {
+          "type": "object",
+          "required": [
+            "type",
+            "config"
+          ],
+          "description": "Computed attribute configuration",
+          "x-intellij-html-description": "<p>Computed attribute configuration</p>\n<ul>\n    <li>Types:</li>\n    <ul>\n        <li>NONE - Not computed</li>\n        <li>ATTRIBUTE - From other field</li>\n        <li>SCRIPT - JavaScript logic</li>\n        <li>VALUE - Constant value</li>\n        <li>COUNTER - Generated value from counter</li>\n        <li>TEMPLATE - Template string with placeholders</li>\n    </ul>\n    <li>Storage:</li>\n    <ul>\n        <li>NONE - Calculate on read</li>\n        <li>ON_CREATE - Store on create</li>\n        <li>ON_EMPTY - Store only if saved value is absent</li>\n        <li>ON_MUTATE - Store on each mutation</li>\n    </ul>\n</ul>",
+          "properties": {
+            "type": {
+              "type": "string",
+              "description": "Type of computation",
+              "enum": [
+                "NONE",
+                "ATTRIBUTE",
+                "SCRIPT",
+                "VALUE",
+                "COUNTER",
+                "TEMPLATE"
+              ],
+              "x-intellij-html-description": "<p>Type of computation</p>\n<ul>\n    <li>Available types:</li>\n    <ul>\n        <li><b>NONE</b> - Not computed</li>\n        <li><b>ATTRIBUTE</b> - Copy from other field</li>\n        <li><b>SCRIPT</b> - JavaScript computation</li>\n        <li><b>VALUE</b> - Constant value</li>\n        <li><b>COUNTER</b> - Generated value from counter. Storing type should be \"ON_CREATE\" for counters</li>\n        <li><b>TEMPLATE</b> - Template string with placeholders</li>\n    </ul>\n</ul>",
+              "x-intellij-enum-metadata": {
+                "NONE": {
+                  "description": "Not computed attribute"
+                },
+                "ATTRIBUTE": {
+                  "description": "Computing attribute based on another attribute. You can create an alias for a deeply nested attribute. For example: counterparty.idocs:fullOrganizationName?str"
+                },
+                "SCRIPT": {
+                  "description": "Computing attribute based on javascript"
+                },
+                "VALUE": {
+                  "description": "Constant value"
+                },
+                "COUNTER": {
+                  "description": "Value is generated by counter when document is created"
+                },
+                "TEMPLATE": {
+                  "description": "Template string with support for attribute insertions ${...}"
+                }
+              }
+            },
+            "config": {
+              "type": "object",
+              "description": "Computation configuration",
+              "x-intellij-html-description": "<p>Configuration for computed value</p>\n<ul>\n    <li>For ATTRIBUTE:</li>\n    <ul>\n        <li>attribute - Source field</li>\n    </ul>\n    <li>For SCRIPT:</li>\n    <ul>\n        <li>fn - JavaScript function</li>\n        <li>Available context</li>\n        <li>Helper methods</li>\n    </ul>\n    <li>For VALUE:</li>\n    <ul>\n        <li>value - Constant value</li>\n    </ul>\n    <li>For TEMPLATE:</li>\n    <ul>\n        <li>template - Template string with ${...} placeholders</li>\n    </ul>\n    <li>For COUNTER:</li>\n    <ul>\n        <li>numTemplateRef - Template reference for the counter</li>\n    </ul>\n</ul>",
+              "properties": {
+                "attribute": {
+                  "type": "string",
+                  "description": "Attribute to compute from (for ATTRIBUTE)",
+                  "x-intellij-html-description": "<p>(ATTRIBUTE) Source attribute for computation</p>\n\n<p>You can create an alias for a deeply nested attribute. For example: counterparty.idocs:fullOrganizationName?str</p>"
+                },
+                "fn": {
+                  "type": "string",
+                  "description": "Function to compute value (for SCRIPT)",
+                  "x-intellij-html-description": "<p>(SCRIPT) JavaScript function for computation</p>\n<ul>\n    <li>Available objects:</li>\n    <ul>\n        <li>Records - Records service adapted</li>\n        <li>value - Current record</li>\n        <li>log - Logger</li>\n    </ul>\n</ul>",
+                  "x-intellij-language-injection": {
+                    "language": "JavaScript"
+                  }
+                },
+                "value": {
+                  "type": "string",
+                  "description": "Constant value (for VALUE)",
+                  "x-intellij-html-description": "<p>(VALUE) Constant value</p>"
+                },
+                "template": {
+                  "type": "string",
+                  "description": "Template string with placeholders (for TEMPLATE)",
+                  "x-intellij-html-description": "<p>(TEMPLATE) Template string with ${...} placeholders</p>\n<ul>\n    <li>Example: ${firstName} ${lastName}</li>\n    <li>Placeholders are replaced with attribute values</li>\n</ul>"
+                },
+                "numTemplateRef": {
+                  "type": "string",
+                  "description": "Number template reference (for COUNTER)",
+                  "x-intellij-html-description": "<p>(COUNTER) Template reference for the counter</p>\n\n<ul>\n    <li>Storing type should be \"ON_CREATE\" for counters</li>\n</ul>"
+                }
+              }
+            },
+            "storingType": {
+              "type": "string",
+              "description": "Type of storing",
+              "enum": [
+                "NONE",
+                "ON_CREATE",
+                "ON_EMPTY",
+                "ON_MUTATE"
+              ],
+              "x-intellij-html-description": "<p>When to store computed value</p>\n<ul>\n    <li>Options:</li>\n    <ul>\n        <li><b>NONE</b> - Calculate on each read</li>\n        <li><b>ON_CREATE</b> - Calculate and store on creation</li>\n        <li><b>ON_EMPTY</b> - Store only if saved value is absent</li>\n        <li><b>ON_MUTATE</b> - Store on each mutation</li>\n    </ul>\n</ul>",
+              "x-intellij-enum-metadata": {
+                "NONE": {
+                  "description": "No storage needed. Value is recalculated on each access"
+                },
+                "ON_EMPTY": {
+                  "description": "Store calculated value only if the saved value is absent"
+                },
+                "ON_CREATE": {
+                  "description": "Store calculated value only after creation"
+                },
+                "ON_MUTATE": {
+                  "description": "Store calculated value on each mutation"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the aspect",
+      "pattern": "^[a-zA-Z][a-zA-Z0-9_-]*$",
+      "x-intellij-html-description": "<p>Unique identifier for the aspect</p>\n<ul>\n    <li>Must be unique within the system</li>\n    <li>Use hyphen-case or camelCase naming convention</li>\n</ul>"
+    },
+    "name": {
+      "$ref": "#/definitions/nameMlText",
+      "description": "Aspect name"
+    },
+    "prefix": {
+      "type": "string",
+      "pattern": "^[a-zA-Z][a-zA-Z0-9_-]*$",
+      "description": "Prefix for aspect attributes",
+      "x-intellij-html-description": "<p>Prefix for all attributes of this aspect</p>\n<ul>\n    <li>Will be added to all attribute IDs to form their full IDs</li>\n    <li>If not specified, aspect ID will be used as prefix</li>\n    <li>Example: With prefix 'doc', attribute 'status' becomes 'doc:status'</li>\n</ul>"
+    },
+    "configFormRef": {
+      "type": "string",
+      "description": "Reference to configuration form",
+      "x-intellij-html-description": "<p>Reference to the form used for aspect configuration</p>\n<ul>\n    <li>Format: uiserv/form@[form-id]</li>\n    <li>This form will be shown when configuring the aspect in a type</li>\n</ul>"
+    },
+    "attributes": {
+      "type": "array",
+      "description": "List of aspect attributes",
+      "items": {
+        "$ref": "#/definitions/modelAttributesItems"
+      },
+      "x-intellij-html-description": "<p>Regular attributes of the aspect</p>\n<ul>\n    <li>These attributes will be added to entities with this aspect</li>\n    <li>Can be modified by users with appropriate permissions</li>\n</ul>"
+    },
+    "systemAttributes": {
+      "type": "array",
+      "description": "List of system attributes",
+      "items": {
+        "$ref": "#/definitions/modelAttributesItems"
+      },
+      "x-intellij-html-description": "<p>System attributes of the aspect</p>\n<ul>\n    <li>These attributes will be added to entities with this aspect</li>\n    <li>Can only be modified by system user</li>\n</ul>"
+    }
+  }
+}

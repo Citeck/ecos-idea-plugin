@@ -5,6 +5,7 @@ import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.util.io.Compressor;
+import ru.citeck.ecos.files.types.ecos.JsonSchemaArtifact;
 import ru.citeck.ecos.files.types.ecos.YamlEcosArtifact;
 import ru.citeck.ecos.files.types.filters.FileFilter;
 import ru.citeck.ecos.files.types.filters.FilterAnd;
@@ -19,7 +20,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.zip.Deflater;
 
-public class NotificationTemplate extends YamlEcosArtifact {
+public class NotificationTemplate extends YamlEcosArtifact implements JsonSchemaArtifact {
 
     public static final String SOURCE_ID = "notifications/template";
     public static final String PATH = "/notification/template/";
@@ -126,4 +127,8 @@ public class NotificationTemplate extends YamlEcosArtifact {
         EcosZipContentUtil.applyBase64ZipContentToDirectory(psiFile.getParent(), content.asText());
     }
 
+    @Override
+    public String getSchemaName() {
+        return "notification-template-schema.json";
+    }
 }

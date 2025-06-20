@@ -4,13 +4,14 @@ import com.intellij.json.psi.*;
 import com.intellij.psi.PsiFile;
 import ru.citeck.ecos.files.types.ecos.EcosArtifact;
 import ru.citeck.ecos.files.types.ecos.JsonEcosArtifact;
+import ru.citeck.ecos.files.types.ecos.JsonSchemaArtifact;
 import ru.citeck.ecos.files.types.ecos.YamlEcosArtifact;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public interface Journal extends EcosArtifact {
+public interface Journal extends EcosArtifact, JsonSchemaArtifact {
 
     String SOURCE_ID = "uiserv/journal";
     String PATH = "/ui/journal/";
@@ -55,6 +56,11 @@ public interface Journal extends EcosArtifact {
     @Override
     default String getDocumentationUrl() {
         return "https://citeck-ecos.readthedocs.io/ru/latest/settings_kb/interface/journals.html";
+    }
+
+    @Override
+    default String getSchemaName() {
+        return "journal-schema.json";
     }
 
 }

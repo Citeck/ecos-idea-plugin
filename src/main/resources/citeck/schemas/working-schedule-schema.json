@@ -1,0 +1,112 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Citeck Working Schedule Schema",
+  "description": "Schema for Citeck working schedule configuration files",
+  "x-intellij-html-description": "<p>Schema for Citeck working schedule configuration files</p>\n<ul>\n    <li>Used to define regular working day schedules</li>\n    <li>Specifies working days, hours, and associated working calendar</li>\n</ul>",
+  "type": "object",
+  "required": [
+    "id",
+    "type",
+    "config"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the working schedule",
+      "pattern": "^[a-zA-Z][a-zA-Z0-9_-]*$",
+      "examples": ["DEFAULT"]
+    },
+    "name": {
+      "oneOf": [
+        {
+          "type": "string",
+          "description": "Name"
+        },
+        {
+          "type": "object",
+          "description": "Multilingual name",
+          "minProperties": 1,
+          "properties": {
+            "ru": {
+              "type": "string",
+              "description": "Russian name"
+            },
+            "en": {
+              "type": "string",
+              "description": "English name"
+            }
+          }
+        }
+      ]
+    },
+    "type": {
+      "type": "string",
+      "description": "Type of schedule",
+      "enum": ["weekly"],
+      "x-intellij-enum-metadata": {
+        "weekly": "Weekly schedule"
+      }
+    },
+    "version": {
+      "type": "integer",
+      "description": "Version of the schedule configuration",
+      "default": 1
+    },
+    "config": {
+      "$ref": "#/definitions/scheduleConfig"
+    }
+  },
+  "definitions": {
+    "scheduleConfig": {
+      "type": "object",
+      "required": [
+        "workingDayStart",
+        "workingDayEnd",
+        "workingDays",
+        "workingCalendar"
+      ],
+      "properties": {
+        "workingDayStart": {
+          "type": "string",
+          "description": "Start time of the working day in HH:MM format",
+          "pattern": "^([01]?[0-9]|2[0-3]):[0-5][0-9]$",
+          "examples": ["09:00"]
+        },
+        "workingDayEnd": {
+          "type": "string",
+          "description": "End time of the working day in HH:MM format",
+          "pattern": "^([01]?[0-9]|2[0-3]):[0-5][0-9]$",
+          "examples": ["17:00"]
+        },
+        "workingDayTimeZone": {
+          "type": "string",
+          "description": "Time zone for the working day times",
+          "pattern": "^[+-][0-1][0-9]:[0-5][0-9]$",
+          "examples": ["+03:00"]
+        },
+        "workingDays": {
+          "type": "array",
+          "description": "List of working days of the week",
+          "items": {
+            "type": "string",
+            "enum": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
+            "x-intellij-enum-metadata": {
+              "MONDAY": "Monday",
+              "TUESDAY": "Tuesday",
+              "WEDNESDAY": "Wednesday",
+              "THURSDAY": "Thursday",
+              "FRIDAY": "Friday",
+              "SATURDAY": "Saturday",
+              "SUNDAY": "Sunday"
+            }
+          }
+        },
+        "workingCalendar": {
+          "type": "string",
+          "description": "Reference to the working calendar used for holidays and special days",
+          "default": "emodel/working-calendar@RU"
+        }
+      }
+    }
+  }
+}

@@ -2,9 +2,10 @@ package ru.citeck.ecos.files.types.ecos.model;
 
 import ru.citeck.ecos.files.types.ecos.EcosArtifact;
 import ru.citeck.ecos.files.types.ecos.JsonEcosArtifact;
+import ru.citeck.ecos.files.types.ecos.JsonSchemaArtifact;
 import ru.citeck.ecos.files.types.ecos.YamlEcosArtifact;
 
-public interface NumTemplate extends EcosArtifact {
+public interface NumTemplate extends EcosArtifact, JsonSchemaArtifact {
 
     String SOURCE_ID = "emodel/num-template";
     String PATH = "/model/num-template/";
@@ -24,6 +25,11 @@ public interface NumTemplate extends EcosArtifact {
     @Override
     default String getDocumentationUrl() {
         return "https://citeck-ecos.readthedocs.io/ru/latest/settings_kb/number_template.html";
+    }
+
+    @Override
+    default String getSchemaName() {
+        return "num-template-schema.json";
     }
 
 }

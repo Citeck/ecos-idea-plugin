@@ -17,8 +17,8 @@ dependencies {
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
-    version.set("2024.1")
-//    version.set("2023.3.6")
+//    version.set("2024.1")
+    version.set("2023.3.8")
 //    version.set("2022.2.5")
     type.set("IU") // Target IDE Platform
     plugins.set(listOf("com.intellij.java", "JavaScript", "org.jetbrains.plugins.yaml", "org.jetbrains.idea.maven"))
