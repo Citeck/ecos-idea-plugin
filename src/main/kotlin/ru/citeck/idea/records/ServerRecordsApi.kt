@@ -10,6 +10,7 @@ import ru.citeck.ecos.commons.promise.Promises
 import ru.citeck.ecos.webapp.api.entity.EntityRef
 import ru.citeck.ecos.webapp.api.promise.Promise
 import ru.citeck.idea.authentication.AuthenticationService
+import ru.citeck.idea.authentication.Authenticator
 import ru.citeck.idea.http.CiteckHttpClient
 import ru.citeck.idea.http.UnauthorizedException
 import ru.citeck.idea.settings.servers.CiteckServer
@@ -89,18 +90,28 @@ class ServerRecordsApi(private val project: Project) {
     private fun <T : Any> exchangeRequest(endpoint: RecordsEndpoint, body: Any, respType: Class<T>): Promise<T> {
 
         return getServer(project).thenPromise { server: CiteckServer ->
-            val request = httpClient.newRequest()
-                .uri(server.host + endpoint.urlPath)
-                .jsonBody(body)
+
             val authenticator = AuthenticationService.getInstance().getAuthenticator(server)
 
-            authenticator.getAuthHeader(project, false).then { authHeader: String ->
-                request.authHeader(authHeader).postForJson(respType).get()
-            }.catchPromise(UnauthorizedException::class.java) {
-                authenticator.getAuthHeader(project, true).then { authHeader: String ->
-                    request.authHeader(authHeader).postForJson(respType).get()
-                }
+            doWithAuthHeader(authenticator, false) { authHeader ->
+                httpClient.newRequest()
+                    .uri(server.host + endpoint.urlPath)
+                    .jsonBody(body)
+                    .authHeader(authHeader)
+                    .postForJson(respType).get()
             }
+        }
+    }
+
+    private fun <T : Any> doWithAuthHeader(
+        authenticator: Authenticator,
+        reset: Boolean,
+        action: (String) -> T
+    ): Promise<T> {
+        return authenticator.getAuthHeader(project, reset).then { authHeader: String ->
+            action(authHeader)
+        }.catchPromise(UnauthorizedException::class.java) {
+            doWithAuthHeader(authenticator, true, action)
         }
     }
 

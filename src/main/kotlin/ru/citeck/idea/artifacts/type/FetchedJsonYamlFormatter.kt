@@ -221,5 +221,4 @@ object FetchedJsonYamlFormatter {
         }
         return null
     }
-
 }

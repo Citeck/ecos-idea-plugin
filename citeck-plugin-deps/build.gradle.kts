@@ -12,7 +12,7 @@ repositories {
 }
 
 dependencies {
-    implementation("ru.citeck.ecos.commons:ecos-commons:2.17.14")
+    implementation("ru.citeck.ecos.commons:ecos-commons:2.17.18")
     implementation("ru.citeck.ecos:ecos-snakeyaml:2.2.0")
     implementation("ru.citeck.ecos:ecos-jackson:2.10.4.3")
     implementation("io.github.microutils:kotlin-logging:1.12.5")

@@ -14,8 +14,8 @@ import javax.swing.JComponent
 
 class CiteckModuleWizardStep(private val builder: CiteckModuleBuilder) : ModuleWizardStep() {
 
-    private val groupId = JBTextField("org.example")
-    private val artifactId = JBTextField("untitled")
+    private val groupId = JBTextField("ru.citeck.webapp.custom")
+    private val artifactId = JBTextField("custom")
     private val version = JBTextField("1.0.0-SNAPSHOT")
     private val port = JBTextField("8686")
 

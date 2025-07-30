@@ -6,6 +6,7 @@ import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.application.ReadAction
 import com.intellij.openapi.command.CommandProcessor
 import com.intellij.openapi.components.Service
+import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.module.ModuleUtil
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
@@ -30,6 +31,11 @@ class ArtifactsService {
 
     companion object {
         private const val NOT_EXISTS_ATT = "_notExists?bool!"
+        // Minimal type prefix: /a/b/
+        private const val MINIMAL_TYPE_PATH_LENGTH = 5
+
+        private val log = Logger.getInstance(ArtifactsService::class.java)
+
         @JvmStatic
         fun getInstance(): ArtifactsService {
             return ApplicationManager.getApplication().getService(ArtifactsService::class.java)
@@ -148,7 +154,7 @@ class ArtifactsService {
         }
         filePath = filePath.substring(artifactsRootIdx + artifactsRoot.length)
         val typeIdDelimIdx = filePath.indexOf('/', filePath.indexOf('/', 1) + 1)
-        if (typeIdDelimIdx == -1) {
+        if (typeIdDelimIdx < MINIMAL_TYPE_PATH_LENGTH) {
             return null
         }
 
@@ -164,8 +170,20 @@ class ArtifactsService {
     }
 
     fun register(artifactTypeMeta: ArtifactTypeMeta, template: List<FileTemplate>) {
+
+        fun printInvalidParamsMsg() {
+            log.error("Invalid params for type " + artifactTypeMeta.typeId + ". Artifact type won't be registered")
+        }
+
         val controller: ArtifactTypeController = when (artifactTypeMeta.kind) {
-            ArtifactKind.JSON, ArtifactKind.YAML -> JsonYamlArtifactType()
+            ArtifactKind.JSON, ArtifactKind.YAML -> {
+                val params = artifactTypeMeta.controller.getAs(JsonYamlArtifactType.Params::class.java)
+                if (params == null) {
+                    printInvalidParamsMsg()
+                    return
+                }
+                JsonYamlArtifactType(params)
+            }
             ArtifactKind.BPMN -> ProcXmlArtifactType(ProcXmlArtifactType.SubType.BPMN)
             ArtifactKind.DMN -> ProcXmlArtifactType(ProcXmlArtifactType.SubType.DMN)
             ArtifactKind.NOTIFICATION_TEMPLATE -> NotificationTemplateType()

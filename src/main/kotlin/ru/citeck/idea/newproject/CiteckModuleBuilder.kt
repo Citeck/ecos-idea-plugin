@@ -86,7 +86,7 @@ class CiteckModuleBuilder : AbstractMavenModuleBuilder() {
 
         runner.run(mavenParams, runner.state.clone()) {
             try {
-                val artifactId = propertiesToCreateByArtifact["artifactId"]
+                val artifactId = propertiesToCreateByArtifact["artifactId"] ?: "unknown"
                 FileUtil.copyDir(
                     File(tmpDir, artifactId),
                     File(moduleDir!!.path)

@@ -3,7 +3,6 @@ package ru.citeck.idea.artifacts.type
 import com.intellij.json.psi.JsonPsiUtil
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
-import org.jetbrains.kotlin.idea.projectConfiguration.getJvmStdlibArtifactId
 import ru.citeck.ecos.commons.data.ObjectData
 import ru.citeck.ecos.webapp.api.entity.EntityRef
 

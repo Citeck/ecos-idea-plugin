@@ -1,7 +1,6 @@
 package ru.citeck.idea.artifacts.type
 
 import com.intellij.json.psi.JsonObject
-import com.intellij.json.psi.JsonPsiUtil
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.impl.source.PsiFileImpl
@@ -15,7 +14,9 @@ import ru.citeck.idea.utils.CiteckPsiUtils
 import java.nio.charset.StandardCharsets
 import java.util.*
 
-class JsonYamlArtifactType : ArtifactTypeController {
+class JsonYamlArtifactType(
+    private val params: Params = Params()
+) : ArtifactTypeController {
 
     companion object {
         private const val CONTENT_ATT_ALIAS = "content"
@@ -37,7 +38,12 @@ class JsonYamlArtifactType : ArtifactTypeController {
         dataStr.append(
             Base64.getEncoder().encodeToString(file.text.toByteArray(StandardCharsets.UTF_8))
         )
-        atts["_self"] = DataValue.createObj().set("url", dataStr.toString())
+        val deployData = DataValue.createObj().set("url", dataStr.toString())
+        if (params.deployUsingContentAtt) {
+            atts["_content"] = DataValue.createArr().add(deployData)
+        } else {
+            atts["_self"] = deployData
+        }
         return atts
     }
 
@@ -110,4 +116,8 @@ class JsonYamlArtifactType : ArtifactTypeController {
     private fun getArtifactIdFromYaml(file: YAMLFile): PsiElement? {
         return YAMLUtil.getValue(file, "id")?.first
     }
+
+    class Params(
+        val deployUsingContentAtt: Boolean = false
+    )
 }
