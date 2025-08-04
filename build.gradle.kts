@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "ru.citeck.ecos"
-version = "2.0.21"
+version = "2.0.22"
 
 repositories {
     mavenCentral()
