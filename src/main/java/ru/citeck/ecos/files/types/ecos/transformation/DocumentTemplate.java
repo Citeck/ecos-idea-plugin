@@ -106,7 +106,7 @@ public class DocumentTemplate extends YamlEcosArtifact implements JsonSchemaArti
                     .Zip(byteArrayOutputStream)
                     .withLevel(Deflater.BEST_COMPRESSION);
 
-            String pattern = getId(psiFile) + "(|_[\\w][\\w]).([\\w]*|meta.yml)";
+            String pattern = getId(psiFile) + "(|_[\\w][\\w]).[\\w]*(|.meta.yml)";
             List<PsiFile> bundle = Arrays
                     .stream(psiDirectory.getFiles())
                     .filter(child -> child.getName().matches(pattern))
