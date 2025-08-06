@@ -12,7 +12,7 @@ plugins {
 }
 
 group = "ru.citeck.idea"
-version = "3.0.7"
+version = "3.1.0"
 
 kotlin {
     jvmToolchain(17)
@@ -118,7 +118,7 @@ tasks {
 
     patchPluginXml {
         sinceBuild.set("231.9423.9")
-        untilBuild.set("251.*")
+        untilBuild.set("252.*")
     }
 
     processResources {
