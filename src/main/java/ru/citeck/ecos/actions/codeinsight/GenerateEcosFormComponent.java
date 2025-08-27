@@ -147,9 +147,7 @@ public class GenerateEcosFormComponent extends SimpleCodeInsightAction {
             JsonNode jsonNode = objectMapper.readValue(editor.getDocument().getText(), JsonNode.class);
 
             if (component instanceof InputComponent inputComponent) {
-                inputComponent.setKey(attribute.replace(":", "_"));
-                inputComponent.getProperties().setAttribute(attribute);
-                inputComponent.setLabel(attribute);
+                inputComponent.setKey(attribute);
             } else {
                 Set<String> keys = jsonNode.findValues("key").stream().map(JsonNode::asText).collect(Collectors.toSet());
                 String key;
@@ -158,7 +156,6 @@ public class GenerateEcosFormComponent extends SimpleCodeInsightAction {
                     key = component.getType() + (++i);
                 } while (keys.contains(key));
                 component.setKey(key);
-                component.setLabel(key);
             }
 
             ((ArrayNode) jsonNode.at(insertionPosition.path())).insert(

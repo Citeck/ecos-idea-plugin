@@ -7,7 +7,6 @@ import java.util.List;
 
 public abstract class Component {
 
-    private String label = "";
     private String key = "";
     private List<String> refreshOn = new ArrayList<>();
 
@@ -17,14 +16,6 @@ public abstract class Component {
     @JsonProperty("input")
     boolean getInput() {
         return false;
-    }
-
-    public String getLabel() {
-        return label;
-    }
-
-    public void setLabel(String label) {
-        this.label = label;
     }
 
     public String getKey() {

@@ -1,6 +1,5 @@
 package ru.citeck.ecos.codeinsight.forms.components;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -35,9 +34,4 @@ public class Columns extends Component {
         return columns;
     }
 
-    @Override
-    @JsonIgnore
-    public String getLabel() {
-        return super.getLabel();
-    }
 }

@@ -2,6 +2,8 @@ package ru.citeck.ecos.codeinsight.forms.components;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Map;
+
 public class Panel extends Container {
 
     public static final String TYPE = "panel";
@@ -11,9 +13,12 @@ public class Panel extends Container {
         return TYPE;
     }
 
-    @Override
     @JsonProperty("title")
-    public String getLabel() {
-        return super.getLabel();
+    public Map<String, String> getTitle() {
+        return Map.of(
+                "ru", "",
+                "en", ""
+        );
     }
+
 }

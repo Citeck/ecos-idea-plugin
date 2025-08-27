@@ -1,7 +1,5 @@
 package ru.citeck.ecos.codeinsight.forms.components;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 public class Column extends Container {
 
     public static final String TYPE = "column";
@@ -26,9 +24,4 @@ public class Column extends Container {
         return "column";
     }
 
-    @Override
-    @JsonIgnore
-    public String getLabel() {
-        return super.getLabel();
-    }
 }
