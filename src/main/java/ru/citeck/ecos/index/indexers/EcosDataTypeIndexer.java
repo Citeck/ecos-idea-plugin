@@ -19,6 +19,7 @@ import ru.citeck.ecos.files.types.ecos.EcosArtifact;
 import ru.citeck.ecos.files.types.ecos.model.DataType;
 import ru.citeck.ecos.index.EcosFileIndexer;
 import ru.citeck.ecos.index.IndexKey;
+import ru.citeck.ecos.index.IndexValue;
 import ru.citeck.ecos.index.Indexes;
 import ru.citeck.ecos.utils.CommonUtils;
 import ru.citeck.ecos.utils.EcosPsiUtils;
@@ -117,6 +118,17 @@ public interface EcosDataTypeIndexer extends EcosFileIndexer {
             if (Strings.isEmpty(typeId)) {
                 return;
             }
+
+            YAMLKeyValue parentRefKeyValue = YAMLUtil.getQualifiedKeyInFile(yamlFile, "parentRef");
+            Optional
+                    .ofNullable(YAMLUtil.getQualifiedKeyInFile(yamlFile, "parentRef"))
+                    .map(YAMLKeyValue::getValueText)
+                    .map(String::trim)
+                    .filter(parentRef -> parentRef.startsWith(DataType.EMODEL_TYPE))
+                    .map(parentRef -> parentRef.replace(DataType.EMODEL_TYPE, DataType.SOURCE_ID + "@"))
+                    .ifPresent(parentRef -> indexes
+                            .add(new IndexKey(typeId, "parentRef"), parentRef, parentRefKeyValue)
+                    );
 
             MODEL_PARTITIONS_MAPPING.forEach((key, value) ->
                     getItems(yamlFile, value).forEach(keyValue -> {

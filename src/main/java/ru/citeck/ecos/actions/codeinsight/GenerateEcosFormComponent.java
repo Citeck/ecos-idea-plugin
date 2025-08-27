@@ -36,6 +36,7 @@ import ru.citeck.ecos.utils.JsonPrettyPrinter;
 import java.util.*;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class GenerateEcosFormComponent extends SimpleCodeInsightAction {
 
@@ -116,7 +117,7 @@ public class GenerateEcosFormComponent extends SimpleCodeInsightAction {
 
     }
 
-    private void onComponentTypeSelected(Editor editor,@NotNull PsiFile psiFile, String componentType, InsertionPosition insertionPosition) {
+    private void onComponentTypeSelected(Editor editor, @NotNull PsiFile psiFile, String componentType, InsertionPosition insertionPosition) {
 
         Component component = COMPONENTS.get(componentType).get();
 
@@ -193,14 +194,10 @@ public class GenerateEcosFormComponent extends SimpleCodeInsightAction {
                 .map(CommonUtils.filterAndCast(JsonObject.class))
                 .map(jsonObject -> EcosPsiUtils.getProperty(jsonObject, "typeRef"))
                 .map(typeRef -> typeRef.replace("emodel/type", "emodel/types-repo"))
-                .map(typeRef -> ServiceRegistry
-                        .getIndexesService(project)
-                        .stream(new IndexKey(typeRef, EcosDataTypeIndexer.ATTRIBUTE))
-                        .map(IndexValue::getId)
-                        .toList())
-                .orElse(null);
+                .map(typeRef -> getAttributes(project, typeRef).collect(Collectors.toList()))
+                .orElseGet(Collections::emptyList);
 
-        if (typeRefAttributes != null && !typeRefAttributes.isEmpty()) {
+        if (!typeRefAttributes.isEmpty()) {
             return typeRefAttributes;
         }
 
@@ -212,6 +209,26 @@ public class GenerateEcosFormComponent extends SimpleCodeInsightAction {
                 .map(IndexValue::getId)
                 .collect(Collectors.toCollection(ArrayList::new));
 
+    }
+
+    @NotNull
+    private static Stream<String> getAttributes(Project project, String typeRef) {
+        IndexesService indexesService = ServiceRegistry.getIndexesService(project);
+        Stream<String> attributes = indexesService
+                .stream(new IndexKey(typeRef, EcosDataTypeIndexer.ATTRIBUTE))
+                .map(IndexValue::getId);
+
+        String parentRef = indexesService
+                .stream(new IndexKey(typeRef, "parentRef"))
+                .findFirst()
+                .map(IndexValue::getId)
+                .orElse(null);
+
+        if (parentRef == null) {
+            return attributes;
+        }
+
+        return Stream.concat(attributes, getAttributes(project, parentRef));
     }
 
     @Override
