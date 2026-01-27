@@ -86,8 +86,7 @@
             "PERSON",
             "AUTHORITY",
             "AUTHORITY_GROUP",
-            "OPTIONS",
-            "GROUP"
+            "OPTIONS"
           ],
           "x-intellij-html-description": "<p>Attribute type</p>\n<ul>\n    <li>Basic types:</li>\n    <ul>\n        <li><b>TEXT</b> - Plain text value</li>\n        <li><b>MLTEXT</b> - Multilingual text value</li>\n        <li><b>NUMBER</b> - Numeric value</li>\n        <li><b>BOOLEAN</b> - Boolean value (true/false)</li>\n    </ul>\n    <li>Date/Time:</li>\n    <ul>\n        <li><b>DATE</b> - Date without time</li>\n        <li><b>DATETIME</b> - Date and time</li>\n    </ul>\n    <li>Complex types:</li>\n    <ul>\n        <li><b>CONTENT</b> - Files and content</li>\n        <li><b>JSON</b> - Structured data</li>\n        <li><b>BINARY</b> - Binary data</li>\n    </ul>\n    <li>References:</li>\n    <ul>\n        <li><b>ASSOC</b> - Entity associations</li>\n        <li><b>PERSON</b> - Person references</li>\n        <li><b>AUTHORITY</b> - Users and groups</li>\n        <li><b>AUTHORITY_GROUP</b> - Groups only</li>\n    </ul>\n    <li>Special:</li>\n    <ul>\n        <li><b>OPTIONS</b> - Predefined values</li>\n    </ul>\n</ul>",
           "x-intellij-enum-metadata": {

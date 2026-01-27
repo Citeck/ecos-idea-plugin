@@ -137,7 +137,8 @@
         "edit-password",
         "open-submit-form",
         "user-event",
-        "transform"
+        "transform",
+        "script"
       ],
       "x-intellij-enum-metadata": {
         "view": {
@@ -217,7 +218,9 @@
         },
         "transform": {
           "description": "Enterprise feature - transform content according to specified rules"
-        }
+        },
+        "script": {
+          "description": "Execute custom script (JavaScript) to perform action logic"
       }
     },
     "icon": {
