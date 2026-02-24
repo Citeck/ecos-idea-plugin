@@ -7,6 +7,7 @@ import ru.citeck.ecos.webapp.api.promise.Promise
 import java.net.URI
 import java.net.URLEncoder
 import java.net.http.HttpClient
+import java.net.http.HttpClient.Version
 import java.net.http.HttpRequest
 import java.net.http.HttpRequest.BodyPublisher
 import java.net.http.HttpResponse
@@ -22,6 +23,7 @@ class CiteckHttpClient {
 
     private val client: HttpClient = HttpClient.newBuilder()
         .connectTimeout(Duration.ofSeconds(10))
+        .version(Version.HTTP_1_1)
         .build()
 
     fun newRequest(): Request {
@@ -121,7 +123,7 @@ class CiteckHttpClient {
                 }
 
                 if (response.statusCode() == 401) {
-                    throw UnauthorizedException(uri.toString())
+                    throw UnauthorizedException(uri.toString(), response.body())
                 } else if (response.statusCode() != 200) {
                     throw HttpRequestFailedException(
                         uri.toString(),

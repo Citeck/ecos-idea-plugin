@@ -8,9 +8,9 @@ import com.intellij.util.ui.FormBuilder
 import java.awt.Dimension
 import javax.swing.JComponent
 
-class PasswordInputDialog(project: Project) : DialogWrapper(project) {
+class PasswordInputDialog(project: Project, savedUserName: String = "") : DialogWrapper(project) {
 
-    private val userName = JBTextField()
+    private val userName = JBTextField(savedUserName)
     private val password = JBPasswordField()
 
     init {

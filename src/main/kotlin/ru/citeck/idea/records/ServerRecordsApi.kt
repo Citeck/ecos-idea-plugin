@@ -111,7 +111,11 @@ class ServerRecordsApi(private val project: Project) {
         return authenticator.getAuthHeader(project, reset).then { authHeader: String ->
             action(authHeader)
         }.catchPromise(UnauthorizedException::class.java) {
-            doWithAuthHeader(authenticator, true, action)
+            if (reset) {
+                Promises.reject(RuntimeException("Authentication failed. Please check your credentials."))
+            } else {
+                doWithAuthHeader(authenticator, true, action)
+            }
         }
     }
 
