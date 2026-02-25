@@ -1,6 +1,6 @@
 ---
 id: "${NAME}"
-date: "${DATE}T${TIME}Z"
+date: "${YEAR}-${MONTH}-${DAY}T${TIME}Z"
 targetApp: emodel
 # type: mutate
 # config:
