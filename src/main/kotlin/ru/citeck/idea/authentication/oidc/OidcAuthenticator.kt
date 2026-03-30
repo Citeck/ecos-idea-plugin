@@ -98,7 +98,7 @@ class OidcAuthenticator(
             }
         }
 
-        if (currentTokens.accessTokenValidUntilMs < System.currentTimeMillis()) {
+        if (currentTokens.accessTokenValidUntilMs > System.currentTimeMillis()) {
             return Promises.resolve(currentTokens.accessToken)
         }
 
@@ -139,9 +139,9 @@ class OidcAuthenticator(
         }
 
         val eisUrl = StringBuilder()
-        val eisId = serverEisConfig.eisId
+        val eisId = resolveLocalEisId(serverEisConfig.eisId)
         if (!eisId.startsWith("http")) {
-            if (eisId.startsWith("localhost")) {
+            if (eisId.startsWith("localhost") || eisId.startsWith("127.0.0.1")) {
                 eisUrl.append("http")
             } else {
                 eisUrl.append("https")
@@ -158,9 +158,56 @@ class OidcAuthenticator(
             .getForJson(OidcServerInfo::class.java)
             .continueInCurrentThread()
             .then { info: OidcServerInfo ->
-                oidcServerInfo = info
-                info
+                val resolvedInfo = resolveLocalOidcServerInfo(info)
+                oidcServerInfo = resolvedInfo
+                resolvedInfo
             }
+    }
+
+    private fun isLocalServer(): Boolean {
+        val hostname = citeckServer.host
+            .substringAfter("://")
+            .substringBefore(":")
+            .substringBefore("/")
+        return hostname == "localhost" || hostname == "127.0.0.1"
+    }
+
+    private fun resolveLocalEisId(eisId: String): String {
+        if (!isLocalServer()) return eisId
+        // For local server, Keycloak is accessible through the gateway at /ecos-idp/
+        val serverBase = citeckServer.host.substringAfter("://").trimEnd('/')
+        return "$serverBase/ecos-idp"
+    }
+
+    private fun resolveLocalUrl(url: String): String {
+        if (!isLocalServer() || !url.contains("://")) return url
+        val protocol = url.substringBefore("://")
+        val withoutProtocol = url.substringAfter("://")
+        val path = withoutProtocol.substringAfter("/", "")
+        if (path.isEmpty()) return url
+        val serverBase = citeckServer.host.substringAfter("://").trimEnd('/')
+        // Normalize all Keycloak endpoints to /ecos-idp/auth/realms/ format,
+        // since ECOS Gateway only exposes the legacy /auth/ path publicly
+        val normalizedPath = when {
+            path.startsWith("ecos-idp/auth/") -> path
+            path.startsWith("ecos-idp/realms/") -> "ecos-idp/auth/" + path.removePrefix("ecos-idp/")
+            path.startsWith("ecos-idp/") -> path
+            path.startsWith("auth/") -> "ecos-idp/$path"
+            path.startsWith("realms/") -> "ecos-idp/auth/$path"
+            else -> "ecos-idp/auth/$path"
+        }
+        return "$protocol://$serverBase/$normalizedPath"
+    }
+
+    private fun resolveLocalOidcServerInfo(info: OidcServerInfo): OidcServerInfo {
+        if (!isLocalServer()) return info
+        return info.copy(
+            authEndpoint = resolveLocalUrl(info.authEndpoint),
+            tokenEndpoint = resolveLocalUrl(info.tokenEndpoint),
+            endSessionEndpoint = resolveLocalUrl(info.endSessionEndpoint),
+            userInfoEndpoint = resolveLocalUrl(info.userInfoEndpoint),
+            introspectionEndpoint = resolveLocalUrl(info.introspectionEndpoint)
+        )
     }
 
     private fun getInitialTokens(

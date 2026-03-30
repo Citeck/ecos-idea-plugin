@@ -87,9 +87,11 @@ class CiteckServer(
                 fixedHost = fixedHost.substring(0, fixedHost.length - 1)
             }
             if (!fixedHost.contains("://")) {
-                var protocol = "http"
-                if (fixedHost != "localhost" && fixedHost != "127.0.0.1") {
-                    protocol += "s"
+                val hostWithoutPort = fixedHost.substringBefore(":")
+                val protocol = if (hostWithoutPort == "localhost" || hostWithoutPort == "127.0.0.1") {
+                    "http"
+                } else {
+                    "https"
                 }
                 fixedHost = "$protocol://$fixedHost"
             }
