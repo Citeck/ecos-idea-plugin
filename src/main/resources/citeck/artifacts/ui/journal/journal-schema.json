@@ -474,7 +474,8 @@
               "ASSOC",
               "PERSON",
               "AUTHORITY",
-              "AUTHORITY_GROUP"
+              "AUTHORITY_GROUP",
+              "OPTIONS"
             ],
             "x-intellij-enum-metadata": {
               "TEXT": {
@@ -509,6 +510,9 @@
               },
               "AUTHORITY_GROUP": {
                 "description": "Group reference"
+              },
+              "OPTIONS": {
+                "description": "Ability to configure attribute constraints as a list of possible values."
               }
             }
           },

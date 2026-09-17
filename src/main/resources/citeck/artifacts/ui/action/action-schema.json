@@ -221,6 +221,7 @@
         },
         "script": {
           "description": "Execute custom script (JavaScript) to perform action logic"
+        }
       }
     },
     "icon": {
