@@ -31,6 +31,13 @@
         <completion.contributor implementationClass="ru.citeck.idea.completion.CiteckJsonYamlCompletionContributor" language="JSON"/>
         <completion.contributor implementationClass="ru.citeck.idea.completion.CiteckJsonYamlCompletionContributor" language="yaml"/>
 
+        <localInspection implementationClass="ru.citeck.idea.inspections.ModelAttColumnNameLengthInspection"
+                         shortName="ModelAttColumnNameLength"
+                         displayName="Attribute id exceeds PostgreSQL column name limit (63 bytes)"
+                         groupName="Citeck"
+                         enabledByDefault="true"
+                         level="ERROR"/>
+
         <notificationGroup id="Citeck" displayType="BALLOON"/>
 
         <projectConfigurable

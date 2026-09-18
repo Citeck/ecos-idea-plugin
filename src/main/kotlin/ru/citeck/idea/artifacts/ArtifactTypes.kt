@@ -19,6 +19,7 @@ object ArtifactTypes {
     const val TYPE_FORM = "ui/form"
     const val TYPE_JOURNAL = "ui/journal"
     const val TYPE_TYPE = "model/type"
+    const val TYPE_ASPECT = "model/aspect"
 
     fun getArtifactRefsByType(typeId: String, project: Project): List<String> {
         return IndexesService.getInstance(project)

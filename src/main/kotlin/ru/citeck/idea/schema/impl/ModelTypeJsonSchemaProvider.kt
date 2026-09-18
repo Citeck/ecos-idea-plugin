@@ -6,13 +6,14 @@ import com.jetbrains.jsonSchema.extension.JsonSchemaFileProvider
 import com.jetbrains.jsonSchema.extension.JsonSchemaProviderFactory
 import com.jetbrains.jsonSchema.extension.SchemaType
 import com.jetbrains.jsonSchema.impl.JsonSchemaVersion
+import ru.citeck.idea.artifacts.ArtifactTypes
 import ru.citeck.idea.artifacts.ArtifactsService
 
 class ModelTypeJsonSchemaProvider(private val project: Project) : JsonSchemaFileProvider {
 
     override fun isAvailable(file: VirtualFile): Boolean {
         val meta = ArtifactsService.getInstance().getArtifactInfo(file, project) ?: return false
-        return meta.getTypeId() == "model/type"
+        return meta.getTypeId() == ArtifactTypes.TYPE_TYPE
     }
 
     override fun getName(): String = "Citeck Model Type Schema"

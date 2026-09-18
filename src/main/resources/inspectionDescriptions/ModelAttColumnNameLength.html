@@ -1,0 +1,18 @@
+<html>
+<body>
+<p>Reports attributes of Citeck data types and aspects whose database column name is longer than 63 bytes.
+</p>
+<!-- tooltip end -->
+<p>The ECOS storage layer uses the attribute id as the database column name. For an aspect the column name is
+<code>&lt;prefix&gt;:&lt;attribute id&gt;</code>, where the prefix is the aspect <code>prefix</code> or, when it is
+blank, the aspect <code>id</code>.</p>
+<p>PostgreSQL silently truncates identifiers longer than 63 bytes (<code>NAMEDATALEN - 1</code>; quoting does not
+help). The storage layer then cannot find the column by its full name, tries to add it again on every write and
+fails with <code>column "..." already exists</code>, so no record of the type can be saved.</p>
+<p>Attributes that never become database columns are not checked: ids that cannot be a column name, ids
+starting with <code>_</code> and computed attributes without a storing type
+(<code>computed.storingType: NONE</code>), whose value is recalculated on each read.</p>
+<p>Shorten the attribute id. For an aspect attribute a short aspect <code>prefix</code> also helps, but note that
+the prefix is part of every column name of the aspect, so changing it on a deployed system renames all of them.</p>
+</body>
+</html>
